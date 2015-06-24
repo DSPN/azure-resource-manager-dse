@@ -12,56 +12,56 @@
         "West Europe"
       ],
       "metadata": {
-        "description": "Location where resources will be provisioned"
+        "description": "Region where the Azure artifacts will be created"
       }
     },
     "storageAccountPrefix": {
       "type": "string",
       "metadata": {
-        "description": "Unique namespace for the Storage Account where the Virtual Machine's disks will be placed"
+        "description": "Unique DNS name for the storage account where the virtual machine disks will be placed"
       }
     },
     "dnsName": {
       "type": "string",
       "metadata": {
-        "description": "DNS subdomain name for the operations center public IP"
+        "description": "Domain name of the publicly accessible OpsCenter virtual machine.  This domain name will be appended to form the fully qualified name {domainName}.{region}.cloudapp.azure.com (e.g. mydomainname.westus.cloudapp.azure.com)"
       }
     },
     "virtualNetworkName": {
       "type": "string",
       "defaultValue": "myvnet",
       "metadata": {
-        "description": "Name of the virtual network provisioned for the cluster"
+        "description": "Name of the virtual network to be create and deployed to"
       }
     },
     "adminUsername": {
       "type": "string",
       "metadata": {
-        "description": "Administrator user name used when provisioning virtual machines"
+        "description": "Admin user name for the virtual machines"
       }
     },
     "adminPassword": {
       "type": "securestring",
       "metadata": {
-        "description": "Administrator password used when provisioning virtual machines"
+        "description": "Admin password for the virtual machines"
       }
     },
     "datastaxUsername": {
       "type": "string",
       "metadata": {
-        "description": "Your Datastax account username.  If you do not have one go to (datastax.com)"
+        "description": "Your DataStax account username.  You can register at (datastax.com)"
       }
     },
     "datastaxPassword": {
       "type": "securestring",
       "metadata": {
-        "description": "Your Datastax account password"
+        "description": "Your DataStax account password”
       }
     },
     "opsCenterAdminPassword": {
       "type": "securestring",
       "metadata": {
-        "description": "Sets the operations center admin user password.  You will use this when you login to the operations center portal"
+        "description": "DataStax OpsCenter admin user password"
       }
     },
     "clusterVmSize": {
@@ -78,24 +78,24 @@
         "Standard_D14"
       ],
       "metadata": {
-        "description": "The size of the virtual machines used when provisioning cluster nodes"
+        "description": "The size of virtual machine to provision for each cluster node"
       }
     },
     "clusterNodeCount": {
       "type": "int",
       "metadata": {
-        "description": "The number of nodes provisioned in the cluster"
+        "description": "The number of virtual machines to provision for the cluster"
       }
     },
     "clusterName": {
       "type": "string",
       "metadata": {
-        "description": "The name of the cluster provisioned"
+        "description": "The name of the new cluster"
       }
     }
   },
   "variables": {
-    "templateBaseUrl": "https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/datastax-enterprise/",
+    "templateBaseUrl": "https://raw.githubusercontent.com/DSPN/azure-arm-dse/master/",
     "sharedTemplateUrl": "[concat(variables('templateBaseUrl'), 'shared-resources.json')]",
     "clusterNodesTemplateUrl": "[concat(variables('templateBaseUrl'), 'ephemeral-nodes-resources.json')]",
     "opsCenterTemplateUrl": "[concat(variables('templateBaseUrl'), 'opscenter-resources.json')]",

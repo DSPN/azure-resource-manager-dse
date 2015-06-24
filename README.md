@@ -17,7 +17,7 @@ The template expects the following parameters:
 | adminUsername  | Admin user name for the virtual machines |
 | adminPassword  | Admin password for the virtual machines |
 | datastaxUsername | Your DataStax account username.  You can register at (datastax.com) |
-| datastaxPassword | Your DataStax account password. |
+| datastaxPassword | Your DataStax account password |
 | opsCenterAdminPassword | DataStax OpsCenter admin user password |
 | clusterVmSize | The size of virtual machine to provision for each cluster node |
 | clusterNodeCount | The number of virtual machines to provision for the cluster |
@@ -29,8 +29,7 @@ Once the deployment is complete you can access the DataStax OpsCenter machine in
 
 The DNS address for OpsCenter will include the dnsName and region entered as parameters when creating a deployment based on this template in the format `{dnsName}.{region}.cloudapp.azure.com`. If you created a deployment with the dnsName parameter set to datastax in the West US region you could access the DataStax OpsCenter virtual machine for the deployment at `http://datastax.westus.cloudapp.azure.com:8443`.
 
-NOTE: The certificate used in the deployment is a self signed certificate that will create a browser warning.  You can follow the process on the DataStax web site for replacing the certificate with your own SSL certificate.
-
 ##Known Issues and Limitations
-- The template uses username/password for provisioning cluster nodes in the cluster. Ideally it would use an SSH key
+- The certificate used in the deployment is a self signed certificate that will create a browser warning.  You can follow the process on the DataStax web site for replacing the certificate with your own SSL certificate.
+- The template uses username/password for provisioning cluster nodes in the cluster. Ideally it would use an SSH key.
 - The template deploys Cassandra data nodes configured to use ephemeral storage and attaches a data disk that can be used for data backups in the event of a cluster failure resulting in the loss of the data on the ephemeral disks.  Ideally it would use premium storage and support a backup strategy.
