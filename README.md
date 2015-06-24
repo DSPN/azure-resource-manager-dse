@@ -4,7 +4,7 @@
     <img src="http://azuredeploy.net/deploybutton.png"/>
 </a>
 
-This template deploys a Datastax Enterprise cluster to Azure running on Ubuntu virtual machines. The template also provisions a storage account, virtual network, availability sets, public IP addresses and network interfaces required by the installation.
+This template deploys a DataStax Enterprise cluster to Azure running on Ubuntu virtual machines. The template also provisions a storage account, virtual network, availability sets, public IP addresses and network interfaces required by the installation.
 
 The template expects the following parameters:
 
