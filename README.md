@@ -12,7 +12,7 @@ The template expects the following parameters:
 |:--- |:---|
 | region | Region where the Azure artifacts will be created |
 | storageAccountPrefix  | Unique DNS name for the storage account where the virtual machine disks will be placed |
-| dnsName | Domain name of the publicly accessible OpsCenter VM.  This domain name will be appended to form the fully qualified name {domainName}.{region}.cloudapp.azure.com (e.g. mydomainname.westus.cloudapp.azure.com) | 
+| dnsName | Domain name of the publicly accessible OpsCenter virtual machine.  This domain name will be appended to form the fully qualified name {domainName}.{region}.cloudapp.azure.com (e.g. mydomainname.westus.cloudapp.azure.com) | 
 | virtualNetworkName | Name of the virtual network to be create and deployed to |
 | adminUsername  | Admin user name for the virtual machines |
 | adminPassword  | Admin password for the virtual machines |
