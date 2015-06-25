@@ -1,7 +1,8 @@
 {
-  "itemDisplayName": "Datastax Enterprise Edition on Ubuntu",
+  "itemDisplayName": "DataStax Enterprise on Ubuntu",
   "description": "This template deploys a DataStax Enterprise cluster on a configurable number and size of Ubuntu virtual machines",
   "summary": "This template deploys a DataStax Enterprise cluster on Ubuntu",
   "githubUsername": "trentmswanson",
   "dateUpdated": "2015-04-28"
 }
+
