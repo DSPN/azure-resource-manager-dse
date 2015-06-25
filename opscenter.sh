@@ -25,30 +25,27 @@
 # Script Name: opscenter.sh
 # Author: Trent Swanson - Full Scale 180 Inc github:(trentmswanson)
 # Version: 0.1
-# Last Modified By:       Trent Swanson
-# Description:
-#  This scrtipt installs and configures Datastax Operations Center and deploys a cluster
-# Parameters :
+# Last Modified By: Trent Swanson
+# Description: This script installs and configures DataStax OpsCenter and deploys a cluster
+# Parameters:
 #  1 - n: Cluster name
 #  2 - u: Cluster node admin user that Operations Center uses for cluster provisioning
 #  3 - p: Cluster node admin password that Operations Center uses for cluster provisioning
 #  4 - d: List of successive cluster IP addresses represented as the starting address and a count used to increment the last octet (10.0.0.5-3)
 #  6 - k: Sets the Operations Center 'admin' password
 #  7 - v: Sets the DSE Version
-#  8- U: Datastax username
+#  8 - U: Datastax username
 #  9 - P: Datastax password
-#  10- h  Help 
-# Note : 
-# This script has only been tested on Ubuntu 12.04 LTS and must be root
+#  10 - h  Help 
+# Note: This script has only been tested on Ubuntu 12.04 LTS and must be root
 
 help()
 {
-    #TODO: Add help text here
-    echo "This script installs Datastax Opscenter and configures nodes"
+    echo "This script installs DataStax OpsCenter and configures nodes"
     echo "Parameters:"
     echo "-u username used to connect to and configure data nodes"
     echo "-p password used to connect to and configure data nodes"
-    echo "-d dse nodes to manage (suuccessive ip range 10.0.0.4-8 for 8 nodes)"
+    echo "-d dse nodes to manage (successive ip range 10.0.0.4-8 for 8 nodes)"
     echo "-e use ephemeral storage (yes/no)"
 }
 
@@ -56,11 +53,11 @@ help()
 log()
 {
     # If you want to enable this logging add a un-comment the line below and add your account id
-    #curl -X POST -H "content-type:text/plain" --data-binary "${HOSTNAME} - $1" https://logs-01.loggly.com/inputs/<key>/tag/es-extension,${HOSTNAME}
+    # curl -X POST -H "content-type:text/plain" --data-binary "${HOSTNAME} - $1" https://logs-01.loggly.com/inputs/<key>/tag/es-extension,${HOSTNAME}
     echo "$1"
 }
 
-log "Begin execution of cassandra script extension on ${HOSTNAME}"
+log "Begin execution of Cassandra script extension on ${HOSTNAME}"
 
 # You must be root to run this script
 if [ "${UID}" -ne 0 ];
@@ -78,12 +75,12 @@ then
   echo "${HOSTNAME}found in /etc/hosts"
 else
   echo "${HOSTNAME} not found in /etc/hosts"
-  # Append it to the hsots file if not there
+  # Append it to the hosts file if not there
   echo "127.0.0.1 ${HOSTNAME}" >> /etc/hosts
   log "hostname ${HOSTNAME} added to /etchosts"
 fi
 
-#Script Parameters
+# Script Parameters
 CLUSTER_NAME="Test Cluster"
 EPHEMERAL=0
 DSE_ENDPOINTS=""
@@ -134,14 +131,14 @@ while getopts :n:d:u:p:j:v:U:P:k:e optname; do
   esac
 done
 
-#Install Java
+# Install Java
 add-apt-repository -y ppa:webupd8team/java
 apt-get -y update 
 echo debconf shared/accepted-oracle-license-v1-1 select true | sudo debconf-set-selections
 echo debconf shared/accepted-oracle-license-v1-1 seen true | sudo debconf-set-selections
 apt-get -y install oracle-java7-installer
  
-#Install opscenter
+# Install OpsCenter
 echo "deb http://debian.datastax.com/community stable main" | sudo tee -a /etc/apt/sources.list.d/datastax.community.list
 curl -L http://debian.datastax.com/debian/repo_key | sudo apt-key add -
 apt-get update
@@ -158,7 +155,7 @@ sed -i '/^\[webserver\]$/,/^\[/ s/^#ssl_port/ssl_port/' /etc/opscenter/opscenter
 # Disable HTTP port
 # sed -i '/^\[webserver\]$/,/^\[/ s/^port/#port/' /etc/opscenter/opscenterd.conf
 
-# Start Ops Center
+# Start OpsCenter
 sudo service opscenterd start
 
 # CONFIGURE NODES
@@ -279,10 +276,6 @@ sudo tee provision.json > /dev/null <<EOF
 }
 EOF
 
-# "10.0.0.11": "2048 ee:58:a1:31:a8:b6:b2:d0:8c:0d:57:fa:3c:b3:64:9e (RSA)",
-#      "10.0.0.10": "2048 5a:f1:08:60:bc:c4:ab:0e:a4:5e:23:c6:c2:f3:10:dc (RSA)",
-#      "10.0.0.12": "2048 dd:ef:a4:a5:a4:41:e2:fd:ed:cf:8c:12:5f:56:fa:77 (RSA)"
-
 # We seem to be trying to hit the endpoint too early the service is not listening yet
 sleep 14
 
@@ -292,19 +285,7 @@ AUTH_SESSION=$(curl -k -X POST -d '{"username":"admin","password":"admin"}' 'htt
 # Provision a new cluster with the nodes passed
 curl -k -H "opscenter-session: $AUTH_SESSION" -H "Accept: application/json" -X POST https://127.0.0.1:8443/provision -d @provision.json
 
-#Update the admin password with the one passed as parameter
+# Update the admin password with the one passed as parameter
 curl -k -H "opscenter-session: $AUTH_SESSION" -H "Accept: application/json" -d "{\"password\": \"$OPS_CENTER_ADMIN_PASS\", \"role\": \"admin\" }" -X PUT https://127.0.0.1:8443/users/admin
-
-# If the user is still admin just udpate the password else create a new admin user
-#if ["$OPS_CENTER_ADMIN" == "admin"];
-#then
-#  curl -H "opscenter-session: $AUTH_SESSION" -H "Accept: application/json" -d "{\"password\": \"$OPS_CENTER_ADMIN_PASS\" }" -X PUT http://127.0.0.1:8888/users/admin
-#else
-  # Create new user using the credentials passed in
-#  curl -H "opscenter-session: $AUTH_SESSION" -H "Accept: application/json" -d "{\"password\": \"$OPS_CENTER_ADMIN_PASS\", \"role\": \"admin\"}" -X POST "http://127.0.0.1:8888/users/$OPS_CENTER_ADMIN"
-
-  # Remove the default admin user
-#  curl -X DELETE -H "opscenter-session: $AUTH_SESSION" http://127.0.0.1:8888/users/admin
-#fi
 
 exit 0
