@@ -33,5 +33,5 @@ The DNS address for OpsCenter will include the dnsName and region entered as par
 - The certificate used in the deployment is a self signed certificate that will create a browser warning.  You can follow the process on the DataStax web site for replacing the certificate with your own SSL certificate.
 - The template uses username/password for provisioning cluster nodes in the cluster. Ideally it would use an SSH key.
 - The template deploys Cassandra data nodes configured to use ephemeral storage and attaches a data disk that can be used for data backups in the event of a cluster failure resulting in the loss of the data on the ephemeral disks.  Ideally it would use premium storage and support a backup strategy.
-- Errors in OpCenter provisioning are not currently passed up to the Azure log.
+- Errors in OpsCenter provisioning are not currently passed up to the Azure log.
 
