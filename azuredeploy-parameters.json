@@ -15,7 +15,7 @@
     "value": "ben"
   },
   "adminPassword": {
-    "value": "foobar123"
+    "value": "foobar123!"
   },
   "datastaxUsername": {
     "value":"ben.lackey_datastax.com"
@@ -24,7 +24,7 @@
     "value": "cJgBIKarVugFjy7"
   },
   "opsCenterAdminPassword": {
-    "value": "foobar123"
+    "value": "foobar123!"
   },
   "clusterVmSize": {
     "value": "Standard_D3"
