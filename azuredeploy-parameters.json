@@ -3,13 +3,13 @@
     "value": "East Asia"
   },
   "storageAccountPrefix": {
-    "value": "ben_store"
+    "value": "benStore"
   },
   "dnsName": {
-    "value": "ben_cluster"
+    "value": "benCluster"
   },
   "virtualNetworkName": {
-    "value": "ben_vn"
+    "value": "benVN"
   },
   "adminUsername": {
     "value": "admin"
