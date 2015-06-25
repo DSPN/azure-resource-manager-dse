@@ -86,7 +86,7 @@ EPHEMERAL=0
 DSE_ENDPOINTS=""
 ADMIN_USER=""
 SSH_KEY_PATH=""
-DSE_VERSION="4.7.0"
+DSE_VERSION="4.6.3"
 DSE_USERNAME=""
 DSE_PASSWORD=""
 
@@ -136,7 +136,7 @@ add-apt-repository -y ppa:webupd8team/java
 apt-get -y update 
 echo debconf shared/accepted-oracle-license-v1-1 select true | sudo debconf-set-selections
 echo debconf shared/accepted-oracle-license-v1-1 seen true | sudo debconf-set-selections
-apt-get -y install oracle-java8-installer
+apt-get -y install oracle-java7-installer
  
 # Install OpsCenter
 echo "deb http://debian.datastax.com/community stable main" | sudo tee -a /etc/apt/sources.list.d/datastax.community.list
