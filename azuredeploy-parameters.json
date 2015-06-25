@@ -1,36 +1,36 @@
 {
+  "region": {
+    "value": “East Asia“
+  },
   "storageAccountPrefix": {
-    "value": "changeme"
+    "value": “ben_store”
   },
   "dnsName": {
-    "value": "changeme"
+    "value": “ben_cluster”
   },
   "virtualNetworkName": {
-    "value": "datastax"
+    "value": “ben_vn”
   },
   "adminUsername": {
-    "value": "adminuser"
+    "value": “admin”
   },
   "adminPassword": {
-    "value": "changeme"
+    "value": “foobar123”
   },
   "datastaxUsername": {
-    "value":"changeme"
+    "value”:”ben.lackey_datastax.com”
   },
   "datastaxPassword": {
-    "value": "changeme"
-  },
-  "region": {
-    "value": "West US"
+    "value": ""
   },
   "opsCenterAdminPassword": {
-    "value": "changeme"
+    "value": “foobar123”
   },
   "clusterVmSize": {
     "value": "Standard_D3"
   },
   "clusterNodeCount": {
-    "value": 3
+    "value": 4
   },
   "clusterName": {
     "value": "Test Cluster"
