@@ -2,6 +2,12 @@
   "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
+    "clusterName": {
+      "type": "string",
+      "metadata": {
+        "description": "The name of the new cluster"
+      }
+    },
     "region": {
       "type": "string",
       "allowedValues": [
@@ -15,23 +21,27 @@
         "description": "Region where the Azure artifacts will be created"
       }
     },
-    "storageAccountPrefix": {
-      "type": "string",
+    "clusterNodeCount": {
+      "type": "int",
       "metadata": {
-        "description": "Unique DNS name for the storage account where the virtual machine disks will be placed"
+        "description": "The number of virtual machines to provision for the cluster"
       }
     },
-    "dnsName": {
+    "clusterVmSize": {
       "type": "string",
+      "defaultValue": "Standard_D3",
+      "allowedValues": [
+        "Standard_D1",
+        "Standard_D2",
+        "Standard_D3",
+        "Standard_D4",
+        "Standard_D11",
+        "Standard_D12",
+        "Standard_D13",
+        "Standard_D14"
+      ],
       "metadata": {
-        "description": "Domain name of the publicly accessible OpsCenter virtual machine.  This domain name will be appended to form the fully qualified name {domainName}.{region}.cloudapp.azure.com (e.g. mydomainname.westus.cloudapp.azure.com)"
-      }
-    },
-    "virtualNetworkName": {
-      "type": "string",
-      "defaultValue": "myvnet",
-      "metadata": {
-        "description": "Name of the virtual network to be create and deployed to"
+        "description": "The size of virtual machine to provision for each cluster node"
       }
     },
     "adminUsername": {
@@ -57,41 +67,6 @@
       "metadata": {
         "description": "Your DataStax account password"
       }
-    },
-    "opsCenterAdminPassword": {
-      "type": "securestring",
-      "metadata": {
-        "description": "DataStax OpsCenter admin user password"
-      }
-    },
-    "clusterVmSize": {
-      "type": "string",
-      "defaultValue": "Standard_D3",
-      "allowedValues": [
-        "Standard_D1",
-        "Standard_D2",
-        "Standard_D3",
-        "Standard_D4",
-        "Standard_D11",
-        "Standard_D12",
-        "Standard_D13",
-        "Standard_D14"
-      ],
-      "metadata": {
-        "description": "The size of virtual machine to provision for each cluster node"
-      }
-    },
-    "clusterNodeCount": {
-      "type": "int",
-      "metadata": {
-        "description": "The number of virtual machines to provision for the cluster"
-      }
-    },
-    "clusterName": {
-      "type": "string",
-      "metadata": {
-        "description": "The name of the new cluster"
-      }
     }
   },
   "variables": {
@@ -102,7 +77,7 @@
     "opsCenterInstallTemplateUrl": "[concat(variables('templateBaseUrl'), 'opscenter-install-resources.json')]",
     "opsCenterVmSize": "Standard_A1",
     "networkSettings": {
-      "virtualNetworkName": "[parameters('virtualNetworkName')]",
+      "virtualNetworkName": "[parameters('clusterName')]",
       "addressPrefix": "10.0.0.0/16",
       "subnet": {
         "dse": {
@@ -132,7 +107,7 @@
         "https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/shared_scripts/ubuntu/vm-disk-utils-0.1.sh"
       ]
     },
-    "sharedStorageAccountName": "[concat(parameters('storageAccountPrefix'),'cmn')]",
+    "sharedStorageAccountName": "[concat(parameters('clusterName'),'cmn')]",
     "nodeList": "[concat(variables('networkSettings').statics.clusterRange.base, variables('networkSettings').statics.clusterRange.start, '-', parameters('clusterNodeCount'))]"
   },
   "resources": [
@@ -183,7 +158,7 @@
             "value": "[parameters('region')]"
           },
           "storageAccountPrefix": {
-            "value": "[parameters('storageAccountPrefix')]"
+            "value": "[parameters('clusterName')]"
           },
           "vmSize": {
             "value": "[parameters('clusterVmSize')]"
@@ -218,7 +193,7 @@
         },
         "parameters": {
           "dnsName": {
-            "value": "[parameters('dnsName')]"
+            "value": "[parameters('clusterName')]"
           },
           "storageAccountName": {
             "value": "[variables('sharedStorageAccountName')]"
@@ -290,7 +265,7 @@
             "value": {
               "clusterName": "[parameters('clusterName')]",
               "nodeList": "[variables('nodeList')]",
-              "adminPassword": "[parameters('opsCenterAdminPassword')]"
+              "adminPassword": "[parameters('adminPassword')]"
             }
           }
         }
