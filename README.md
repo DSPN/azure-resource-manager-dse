@@ -29,6 +29,6 @@ The OpsCenter instance has port 22 for SSH, port 8888 for HTTP and port 8443 for
 - We would prefer to derive the cluster name from the resource group as this would eliminate one more parameter.
 - The certificate used in the deployment is a self signed certificate that will create a browser warning.  You can follow the process on the DataStax web site for replacing the certificate with your own SSL certificate.
 - The template uses username/password for provisioning cluster nodes in the cluster. Ideally it would use an SSH key.
-- The template deploys Cassandra data nodes configured to use ephemeral storage and attaches a data disk that can be used for data backups in the event of a cluster failure resulting in the loss of the data on the ephemeral disks.  Ideally it would use premium storage and support a backup strategy.
+- The template deploys DSE nodes configured to use ephemeral storage and attaches a data disk that can be used for data backups in the event of a cluster failure resulting in the loss of the data on the ephemeral disks.  Ideally it would offer a choice better ephemeral and premium storage.  Additionally, it might support a backup strategy.
 - Errors in OpsCenter provisioning are not currently passed up to the Azure log.
 
