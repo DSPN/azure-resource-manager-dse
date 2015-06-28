@@ -1,15 +1,15 @@
 {
+  "clusterName": {
+    "value": "bencluster9"
+  },
   "region": {
     "value": "East Asia"
   },
-  "storageAccountPrefix": {
-    "value": "benstore"
+  "clusterNodeCount": {
+    "value": 4
   },
-  "dnsName": {
-    "value": "bencluster"
-  },
-  "virtualNetworkName": {
-    "value": "benvn"
+  "clusterVmSize": {
+    "value": "Standard_D3"
   },
   "adminUsername": {
     "value": "ben"
@@ -22,17 +22,5 @@
   },
   "datastaxPassword": {
     "value": ""
-  },
-  "opsCenterAdminPassword": {
-    "value": "foobar123!"
-  },
-  "clusterVmSize": {
-    "value": "Standard_D3"
-  },
-  "clusterNodeCount": {
-    "value": 4
-  },
-  "clusterName": {
-    "value": "Test Cluster"
   }
 }

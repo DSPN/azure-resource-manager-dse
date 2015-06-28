@@ -83,7 +83,7 @@
         "dse": {
           "name": "dse",
           "prefix": "10.0.0.0/24",
-          "vnet": "[parameters('virtualNetworkName')]"
+          "vnet": "[parameters('clusterName')]"
         }
       },
       "statics": {
