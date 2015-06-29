@@ -27,10 +27,10 @@ The OpsCenter virtual machine has port 22 for SSH, port 8888 for HTTP and port 8
 
 ##Known Issues and Limitations
 - We would prefer to derive the cluster name from the resource group as this would eliminate one more parameter.
-- The certificate used in the deployment is a self signed certificate that will create a browser warning.  You can follow the process on the DataStax web site for replacing the certificate with your own SSL certificate.
+- If SSL is enabled (by uncommenting lines in opscenter.sh), the certificate used in the deployment is a self signed certificate that will create a browser warning.  You can follow the process for replacing the certificate with your own SSL certificate here: http://docs.datastax.com/en/opscenter/5.1/opsc/configure/opscConfiguringEnablingHttps_t.html
 - The template uses username/password for provisioning cluster nodes in the cluster. Ideally it would offer an option to use an SSH key.
 - The template deploys DSE nodes configured to use ephemeral storage and attaches a data disk that can be used for data backups in the event of a cluster failure resulting in the loss of the data on the ephemeral disks.  Ideally it would offer a choice better ephemeral and premium storage.  Additionally, it might support a backup strategy.
 - Errors in OpsCenter provisioning are not currently passed up to the Azure log.
 - Azure cli will return completed even while OpsCenter is still provisioning nodes.
 - There are various validations (is there a name conflict, is a password of sufficient strength, is a username valid) that are performed on the backend but not in the web UI.  Ideally this would happen in the web UI.
-
+- Cannot provision more than 256 cluster nodes as the nodes are named 10.0.0.1, 10.0.0.2, ...
