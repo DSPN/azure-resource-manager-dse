@@ -35,8 +35,8 @@
         4,
         12,
         36,
-        100,
-        250
+        120,
+        240
       ],
       "metadata": {
         "description": "The number of virtual machines to provision for the cluster"
