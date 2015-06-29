@@ -32,3 +32,5 @@ The OpsCenter virtual machine has port 22 for SSH, port 8888 for HTTP and port 8
 - The template deploys DSE nodes configured to use ephemeral storage and attaches a data disk that can be used for data backups in the event of a cluster failure resulting in the loss of the data on the ephemeral disks.  Ideally it would offer a choice better ephemeral and premium storage.  Additionally, it might support a backup strategy.
 - Errors in OpsCenter provisioning are not currently passed up to the Azure log.
 - Azure cli will return completed even while OpsCenter is still provisioning nodes.
+- There are various validations (is there a name conflict, is a password of sufficient strength, is a username valid) that are performed on the backen but not in the web UI.  Ideally this would happen in the web UI.
+
