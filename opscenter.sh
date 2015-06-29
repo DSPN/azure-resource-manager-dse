@@ -156,7 +156,7 @@ expand_ip_range() {
     echo "${EXPAND_STATICIP_RANGE_RESULTS[@]}"
 }
 
-# Convert the DSE endpoint range to a list for the provisioniing configuration
+# Convert the DSE endpoint range to a list for the provisioning configuration
 NODE_IP_LIST=$(expand_ip_range "$DSE_ENDPOINTS")
 
 get_node_fingerprints() {
