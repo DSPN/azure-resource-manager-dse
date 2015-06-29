@@ -10,6 +10,7 @@
     },
     "region": {
       "type": "string",
+      "defaultValue": "East Asia",
       "allowedValues": [
         "West US",
         "East US",
@@ -23,6 +24,7 @@
     },
     "clusterNodeCount": {
       "type": "int",
+      "defaultValue": 4,
       "allowedValues": [
         4,
         12,
