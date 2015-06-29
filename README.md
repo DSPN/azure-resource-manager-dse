@@ -33,6 +33,6 @@ The OpsCenter virtual machine has port 22 for SSH, port 8888 for HTTP and port 8
 - Errors in OpsCenter provisioning are not currently passed up to the Azure log.
 - Azure cli will return completed even while OpsCenter is still provisioning nodes.
 - There are various validations (is there a name conflict, is a password of sufficient strength, is a username valid) that are performed on the backend but not in the web UI.  Ideally this would happen in the web UI.
-- Cannot provision more than 256 cluster nodes as the nodes are named 10.0.0.1, 10.0.0.2, ...
+- Cannot provision more than 255 cluster nodes as the nodes are named 10.0.0.1, 10.0.0.2, ...
 - There is a for loop in opscenter.sh which does not scale well with large numbers of nodes.
 
