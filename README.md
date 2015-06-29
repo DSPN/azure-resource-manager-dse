@@ -35,4 +35,5 @@ The OpsCenter virtual machine has port 22 for SSH, port 8888 for HTTP and port 8
 - There are various validations (is there a name conflict, is a password of sufficient strength, is a username valid) that are performed on the backend but not in the web UI.  Ideally this would happen in the web UI.
 - Cannot provision more than 251 cluster nodes as the nodes are named 10.0.0.5, 10.0.0.6, ...
 - There is a for loop in opscenter.sh which does not scale well with large numbers of nodes.
+- Deletion of a storage account takes some time after the command is entered.  Given that, it is currently neccessary to give new clusters a different name than previously created clusters to avoid a name collision.
 
