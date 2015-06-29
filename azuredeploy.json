@@ -24,10 +24,10 @@
     "clusterNodeCount": {
       "type": "int",
       "allowedValues": [
-        "4",
-        "12",
-        "100",
-        "250"
+        4,
+        12,
+        100,
+        250
       ],
       "metadata": {
         "description": "The number of virtual machines to provision for the cluster"
