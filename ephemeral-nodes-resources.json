@@ -46,7 +46,7 @@
       "location": "[parameters('region')]",
       "properties": {
         "platformFaultDomainCount": 3,
-        "platformUpdateDomainCount": 20
+        "platformUpdateDomainCount": 6
       }
     },
     {
