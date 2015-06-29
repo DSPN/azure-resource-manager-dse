@@ -47,19 +47,19 @@
     "adminUsername": {
       "type": "string",
       "metadata": {
-        "description": "Admin user name for the virtual machines"
+        "description": "Admin user name for the virtual machines.  The OpsCenter user is admin."
       }
     },
     "adminPassword": {
       "type": "securestring",
       "metadata": {
-        "description": "Admin password for the virtual machines"
+        "description": "Admin password for the virtual machines and OpsCenter"
       }
     },
     "datastaxUsername": {
       "type": "string",
       "metadata": {
-        "description": "Your DataStax account username.  You can register at (datastax.com)"
+        "description": "Your DataStax account username.  You can register at http://datastax.com/"
       }
     },
     "datastaxPassword": {
