@@ -126,9 +126,6 @@ sed -i '/^\[webserver\]$/,/^\[/ s/^#ssl_keyfile/ssl_keyfile/' /etc/opscenter/ops
 sed -i '/^\[webserver\]$/,/^\[/ s/^#ssl_certfile/ssl_certfile/' /etc/opscenter/opscenterd.conf
 sed -i '/^\[webserver\]$/,/^\[/ s/^#ssl_port/ssl_port/' /etc/opscenter/opscenterd.conf
 
-# Disable HTTP port
-# sed -i '/^\[webserver\]$/,/^\[/ s/^port/#port/' /etc/opscenter/opscenterd.conf
-
 # Start OpsCenter
 sudo service opscenterd start
 
@@ -261,6 +258,8 @@ curl -k -H "opscenter-session: $AUTH_SESSION" -H "Accept: application/json" -X P
 
 # Update the admin password with the one passed as parameter
 curl -k -H "opscenter-session: $AUTH_SESSION" -H "Accept: application/json" -d "{\"password\": \"$OPS_CENTER_ADMIN_PASS\", \"role\": \"admin\" }" -X PUT https://127.0.0.1:8443/users/admin
+
+# Note - this exits before the OpsCenter curl operations complete.
 
 exit 0
 
