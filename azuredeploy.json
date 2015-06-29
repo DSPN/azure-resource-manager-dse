@@ -12,12 +12,17 @@
       "type": "string",
       "defaultValue": "East Asia",
       "allowedValues": [
-        "West US",
-        "Central US",
-        "East US",
-        "East Asia",
-        "Southeast Asia",
-        "West Europe"
+        "East US", 
+        "East US 2", 
+        "West US", 
+        "Central US", 
+        "South Central US", 
+        "North Europe", 
+        "West Europe", 
+        "East Asia", 
+        "Southeast Asia", 
+        "Japan East", 
+        "Japan West"
       ],
       "metadata": {
         "description": "Region where the Azure artifacts will be created"
