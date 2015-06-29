@@ -66,38 +66,47 @@ DSE_PASSWORD=""
 
 #Loop through options passed
 while getopts :n:d:u:p:j:v:U:P:k:e optname; do
-    log "Option $optname set with value ${OPTARG}"
+  log "Option $optname set with value ${OPTARG}"
   case $optname in
     n)
       CLUSTER_NAME=${OPTARG}
       ;;
-  	u) #Credentials used for node install
+      u) #Credentials used for node install
       ADMIN_USER=${OPTARG}
       ;;
-    p) #Credentials used for node install
+    p)
+      #Credentials used for node install
       ADMIN_PASSWORD=${OPTARG}
       ;;
-    d) #Static dicovery endpoints
+    d)
+      #Static dicovery endpoints
       DSE_ENDPOINTS=${OPTARG}
       ;;
-    k) # Ops Center Admin Password
-       OPS_CENTER_ADMIN_PASS=${OPTARG}
-       ;;
-    v) # DSE Version
-       DSE_VERSION=${OPTARG}
-       ;;
-    U) DSE_USERNAME=${OPTARG}
-       ;;
-    P) DSE_PASSWORD=${OPTARG}
-       ;;
-    e) #place data on local resource disk
+    k) 
+      # OpsCenter Admin Password
+      OPS_CENTER_ADMIN_PASS=${OPTARG}
+      ;;
+    v) 
+      # DSE Version
+      DSE_VERSION=${OPTARG}
+      ;;
+    U) 
+      DSE_USERNAME=${OPTARG}
+      ;;
+    P) 
+      DSE_PASSWORD=${OPTARG}
+      ;;
+    e) 
+      #place data on local resource disk
       EPHEMERAL=1
       ;;
-    h)  #show help
+    h) 
+      #show help
       help
       exit 2
       ;;
-    \?) #unrecognized option - show help
+    \?)
+      #unrecognized option - show help
       echo -e \\n"Option -${BOLD}$OPTARG${NORM} not allowed."
       help
       exit 2
