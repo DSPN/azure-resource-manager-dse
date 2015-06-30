@@ -36,7 +36,7 @@ The OpsCenter virtual machine has port 22 for SSH, port 8888 for HTTP and port 8
 ##Known Issues and Limitations (P1)
 - Deletion of a storage account takes some time (one estimate is 12 minutes) after the command is entered.  Given that, it is currently neccessary to give new clusters a different name than previously created clusters to avoid a name collision.
 - There are various validations (is there a name conflict, is a password of sufficient strength, is a username valid) that are performed on the backend but not in the web UI.  Ideally this would happen in the web UI.
-- Storage groups are limited to 40 nodes.  Currently our cluster shares a single storage group and as, given that, limited to 40 nodes.
+- Storage groups are limited to 40 nodes.  Currently our cluster shares a single storage group and is, as a result, limited to 40 nodes.
 - Cannot provision more than 251 cluster nodes as the nodes are named 10.0.0.5, 10.0.0.6, ...
 - The certificate used in the deployment is a self signed certificate that will create a browser warning.  You can follow the process for replacing the certificate with your own SSL certificate here: http://docs.datastax.com/en/opscenter/5.1/opsc/configure/opscConfiguringEnablingHttps_t.html
 - The template uses username/password for provisioning cluster nodes in the cluster. Ideally it would offer an option to use an SSH key.
