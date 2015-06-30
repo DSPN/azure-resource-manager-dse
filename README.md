@@ -25,13 +25,15 @@ This template will deploy OpsCenter to `http://{clusterName}.{region}.cloudapp.a
 
 The OpsCenter virtual machine has port 22 for SSH, port 8888 for HTTP and port 8443 for HTTPS enabled.  
 
-##Known Issues and Limitations
+##Known Issues and Limitations (P0)
 - We would prefer to derive the cluster name from the resource group as this would eliminate one more parameter.
 - There's an intermittent issue where provisioning of the datadisk fails.
 - There are intermittent issues with OpsCenter provisioning nodes.
 - Currently logging in the shell scripts is directed to STDOUT.  We would prefer it be directed to the Azure audit log.
 - Errors in OpsCenter provisioning are not currently passed up to the Azure log.
 - Azure cli will return completed even while OpsCenter is still provisioning nodes.
+
+##Known Issues and Limitations (P1)
 - The certificate used in the deployment is a self signed certificate that will create a browser warning.  You can follow the process for replacing the certificate with your own SSL certificate here: http://docs.datastax.com/en/opscenter/5.1/opsc/configure/opscConfiguringEnablingHttps_t.html
 - The template uses username/password for provisioning cluster nodes in the cluster. Ideally it would offer an option to use an SSH key.
 - The template deploys DSE nodes configured to use ephemeral storage and attaches a data disk that can be used for data backups in the event of a cluster failure resulting in the loss of the data on the ephemeral disks.  Ideally we would automate this backup process.
@@ -39,7 +41,7 @@ The OpsCenter virtual machine has port 22 for SSH, port 8888 for HTTP and port 8
 - There are various validations (is there a name conflict, is a password of sufficient strength, is a username valid) that are performed on the backend but not in the web UI.  Ideally this would happen in the web UI.
 - Cannot provision more than 251 cluster nodes as the nodes are named 10.0.0.5, 10.0.0.6, ...
 - There is a for loop in opscenter.sh which does not scale well with large numbers of nodes.
-- Deletion of a storage account takes some time after the command is entered.  Given that, it is currently neccessary to give new clusters a different name than previously created clusters to avoid a name collision.
+- Deletion of a storage account takes some time (one estimate is 12 minutes) after the command is entered.  Given that, it is currently neccessary to give new clusters a different name than previously created clusters to avoid a name collision.
 - Storage groups are limited to 40 nodes.  Currently our cluster shares a single storage group and as, given that, limited to 40 nodes.
 - Would like to add support for selecting JVM and DSE versions from the template parameters.
 - The parameters passed to OpsCenter need to be updated from DSE 4.6.3 to DSE 4.7.0
