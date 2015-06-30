@@ -16,7 +16,7 @@ The template expects the following parameters:
 | clusterVmSize | The size of virtual machine to provision for each cluster node |
 | adminUsername  | Admin user name for the virtual machines.  The OpsCenter user is admin. |
 | adminPassword  | Admin password for the virtual machines and OpsCenter |
-| datastaxUsername | Your DataStax account username.  You can register at http://www.datastax.com/ |
+| datastaxUsername | Your DataStax account username.  You can register at http://www.datastax.com/download |
 | datastaxPassword | Your DataStax account password |
 
 A configurable number of cluster nodes of a configurable size are created.  These are prepared with prerequisites for OpsCenter. The cluster nodes IPs are statically assigned and only accessible on the internal virtual network.  After the cluster nodes are created, a single OpsCenter instance is provisioned.  It is responsible for provisioning and managing the cluster nodes.
