@@ -33,7 +33,7 @@
     {
       "type": "Microsoft.Compute/virtualMachines/extensions",
       "name": "[concat(parameters('namespace'), 'vm', '/installopscenter')]",
-      "apiVersion": "2015-05-01-preview",
+      "apiVersion": "2015-06-15",
       "location": "[parameters('region')]",
       "properties": {
         "publisher": "Microsoft.OSTCExtensions",
