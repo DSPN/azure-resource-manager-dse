@@ -208,7 +208,7 @@ sudo tee provision.json > /dev/null <<EOF
         "dynamic_snitch_badness_threshold": 0.1,
         "dynamic_snitch_reset_interval_in_ms": 600000,
         "dynamic_snitch_update_interval_in_ms": 100,
-        "encryption_options": {
+        "server_encryption_options": {
             "internode_encryption": "none",
             "keystore": "conf/.keystore",
             "keystore_password": "cassandra",
