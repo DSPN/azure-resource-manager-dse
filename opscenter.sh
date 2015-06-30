@@ -137,8 +137,8 @@ sed -i '/^\[webserver\]$/,/^\[/ s/^#ssl_port/ssl_port/' /etc/opscenter/opscenter
 
 # Increase agent_install_timeout from default of 120 seconds
 # Had an issue where clients were marked as timed out on startup
-echo '[parameters]' >> /etc/opscenter/opscenter.conf
-echo 'agent_install_timeout=6000' >> /etc/opscenter/opscenter.conf
+echo '[parameters]' >> /etc/opscenter/opscenterd.conf
+echo 'agent_install_timeout=6000' >> /etc/opscenter/opscenterd.conf
 
 # Start OpsCenter
 sudo service opscenterd start
