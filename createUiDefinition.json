@@ -1,0 +1,152 @@
+{
+    "handler": "Microsoft.Compute.MultiVm",
+    "version": "0.0.1-preview",
+    "parameters": {
+        "basics": [
+            {
+                "name": "clusterName",
+                "type": "Microsoft.Common.TextBox",
+                "label": "Cluster Name",
+                "toolTip": "Name for the Datastax Cluster.",
+                "constraints": {
+                    "required": true,
+                    "regex": "[a-z0-9]{3,24}",
+                    "validationMessage": "Cluster names must be between 3 and 24 characters in length and use numbers and lower-case letters only"
+                }
+            },
+            {
+                "name": "adminUsername",
+                "type": "Microsoft.Compute.UserNameTextBox",
+                "label": "User name",
+                "toolTip": "Username for the Virtual Machines",
+                "osPlatform": "Linux"
+            },
+            {
+                "name": "adminPasswordCredentials",
+                "type": "Microsoft.Compute.CredentialsCombo",
+                "label": {
+                    "authenticationType": "Authentication type",
+                    "password": "Password",
+                    "confirmPassword": "Confirm password",
+                    "sshPublicKey": "SSH public key"
+                },
+                "toolTip": {
+                    "authenticationType": "Defines the Authentication type offered",
+                    "password": "Password for the Virtual Machines",
+                    "sshPublicKey": "SSH Public Key for the Virtual Machines"
+                },
+                "options": {
+                    "hideConfirmation": false
+                },
+                "osPlatform": "Linux"
+            }
+        ],
+        "steps": [
+            {
+                "name": "datastaxConfiguration",
+                "label": "Datastax Cluster Configuration",
+                "subLabel": {
+                    "preValidation": "Configure the Cluster Details",
+                    "postValidation": "Done"
+                },
+                "bladeTitle": "Datastax Cluster Configuration",
+                "bladeSubTitle": "Cluster Details",
+                "elements": [
+                    {
+                        "name": "clusterNodeCount",
+                        "type": "Microsoft.Common.DropDown",
+                        "label": "Cluster Size",
+                        "defaultValue": "size1",
+                        "toolTip": "Possible Cluster Node Count",
+                        "constraints": {
+                            "allowedValues": [
+                                {
+                                    "label": "size1",
+                                    "value": 4
+                                },
+                                {
+                                    "label": "size2",
+                                    "value": 12
+                                },
+                                {
+                                    "label": "size2",
+                                    "value": 36
+                                },
+                                {
+                                    "label": "size2",
+                                    "value": 72
+                                },
+                                {
+                                    "label": "size2",
+                                    "value": 99
+                                }
+                            ]
+                        }
+                    },
+                    {
+                        "name": "clusterVmSize",
+                        "type": "Microsoft.Compute.SizeSelector",
+                        "label": "Virtual Machine Size",
+                        "toolTip": "Virtual Machine Sizes for Cluster Nodes",
+                        "recommendedSizes": [
+                            "Standard_D12",
+                            "Standard_D13",
+                            "Standard_D14",
+                            "Standard_G2",
+                            "Standard_G3",
+                            "Standard_G4",
+                            "Standard_G5"
+                        ],
+                        "osPlatform": "Linux",
+                        "imageReference": {
+                            "publisher": "Canonical",
+                            "offer": "UbuntuServer",
+                            "sku": "14.04.2-LTS"
+                        },
+                        "count": "[basics(‘clusterNodeCount’)]"
+                    },
+                    {
+                        "name": "datastaxUsername",
+                        "type": "Microsoft.Common.TextBox",
+                        "label": "Datastax Username",
+                        "toolTip": "Datastax Username for Application Downloads",
+                        "constraints": {
+                            "required": true,
+                            "regex": "[a-zA-Z0-9._]{6,254}",
+                            "validationMessage": "Datastax Username names must be between 6 and 254 characters in length"
+                        }
+                    },
+                    {
+                        "name": "datastaxPassword",
+                        "type": "Microsoft.Common.PasswordBox",
+                        "label": {
+                            "password": "PasswordBoxsword",
+                            "confirmPassword": "Confirm password"
+                        },
+                        "toolTip": "",
+                        "constraints": {
+                            "required": true,
+                            "regex": "[a-zA-Z0-9]{15,15}",
+                            "validationMessage": "Datastax Password must be alphanumberic and must be 15 characters in length "
+                        },
+                        "options": {
+                            "hideConfirmation": true
+                        }
+                    }
+                ]
+            }
+        ],
+        "outputs": {
+            "clusterName": "[basics('clusterName')]",
+            "adminUsername": "[basics('adminUsername')]",
+            "adminPassword": "[basics('adminPasswordCredentials').password]",
+            "sshPublicKey": "[basics('adminPasswordCredentials').sshPublicKey]",
+            "authenticationType": "[basics('adminPasswordCredentials').authenticationType]",
+            "clusterNodeCount": "[steps('datastaxConfiguration').clusterNodeCount]",
+            "clusterVmSize": "[steps('datastaxConfiguration').clusterVmSize]",
+            "datastaxUsername": "[steps('datastaxConfiguration').datastaxUsername]",
+            "datastaxPassword": "[steps('datastaxConfiguration').datastaxPassword]",
+            "region": "[location()]"
+        }
+    }
+}
