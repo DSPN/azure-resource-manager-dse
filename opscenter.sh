@@ -197,6 +197,7 @@ sudo tee provision.json > /dev/null <<EOF
 {
     "cassandra_config": {
         "authenticator": "org.apache.cassandra.auth.AllowAllAuthenticator",
+        "auto_bootstrap": false,
         "auto_snapshot": true,
         "start_native_transport": true,
         "cluster_name": "${CLUSTER_NAME}",
