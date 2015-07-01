@@ -26,7 +26,6 @@ This template will deploy OpsCenter to `http://{clusterName}.{region}.cloudapp.a
 The OpsCenter virtual machine has port 22 for SSH, port 8888 for HTTP and port 8443 for HTTPS enabled.  
 
 ##Known Issues and Limitations (P0)
-- We would prefer to derive the cluster name from the resource group as this would eliminate one more parameter.
 - There's an intermittent issue where provisioning of the datadisk fails.
 - There's an intermittent issue where OpsCenter times out while waiting for nodes to connect.
 - There's an intermittent issue where OpsCenter runs an apt-get command which fails authorization. 
