@@ -28,7 +28,8 @@ The OpsCenter virtual machine has port 22 for SSH, port 8888 for HTTP and port 8
 ##Known Issues and Limitations (P0)
 - We would prefer to derive the cluster name from the resource group as this would eliminate one more parameter.
 - There's an intermittent issue where provisioning of the datadisk fails.
-- There are intermittent issues with OpsCenter provisioning nodes.
+- There's an intermittent issue where OpsCenter times out while waiting for nodes to connect.
+- There's an intermittent issue where OpsCenter runs an apt-get command which fails authorization. 
 - Currently logging in the shell scripts is directed to STDOUT.  We would prefer it be directed to the Azure audit log.
 - Errors in OpsCenter provisioning are not currently passed up to the Azure log.
 - Azure cli will return completed even while OpsCenter is still provisioning nodes.
