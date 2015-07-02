@@ -9,7 +9,7 @@
     "value": 4
   },
   "clusterVmSize": {
-    "value": "Standard_D3"
+    "value": "Standard_D12"
   },
   "adminUsername": {
     "value": "ben"

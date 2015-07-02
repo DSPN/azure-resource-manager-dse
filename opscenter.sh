@@ -3,31 +3,17 @@
 # Description: This script installs and configures DataStax OpsCenter and deploys a cluster
 # Parameters:
 #  1 - n: Cluster name
-#  2 - u: Cluster node admin user that Operations Center uses for cluster provisioning
-#  3 - p: Cluster node admin password that Operations Center uses for cluster provisioning
+#  2 - u: Cluster node admin user that OpsCenter uses for cluster provisioning
+#  3 - p: Cluster node admin password that OpsCenter uses for cluster provisioning
 #  4 - d: List of successive cluster IP addresses represented as the starting address and a count used to increment the last octet (10.0.0.5-3)
-#  6 - k: Sets the Operations Center 'admin' password
+#  6 - k: Sets the Ops Center 'admin' password
 #  7 - v: Sets the DSE Version
 #  8 - U: Datastax username
 #  9 - P: Datastax password
-#  10 - h  Help 
-# Note: This script has only been tested on Ubuntu 12.04 LTS and must be root
-
-help()
-{
-    echo "This script installs DataStax OpsCenter and configures nodes"
-    echo "Parameters:"
-    echo "-u username used to connect to and configure data nodes"
-    echo "-p password used to connect to and configure data nodes"
-    echo "-d dse nodes to manage (successive ip range 10.0.0.4-8 for 8 nodes)"
-    echo "-e use ephemeral storage (yes/no)"
-}
 
 # Log method to control/redirect log output
 log()
 {
-    # If you want to enable this logging add a un-comment the line below and add your account id
-    # curl -X POST -H "content-type:text/plain" --data-binary "${HOSTNAME} - $1" https://logs-01.loggly.com/inputs/<key>/tag/es-extension,${HOSTNAME}
     echo "$1"
 }
 
@@ -37,21 +23,18 @@ log "Begin execution of Cassandra script extension on ${HOSTNAME}"
 if [ "${UID}" -ne 0 ];
 then
     log "Script executed without root permissions"
-    echo "You must be root to run this program." >&2
+    log "You must be root to run this program."
     exit 3
 fi
 
-# TEMP FIX - Re-evaluate and remove when possible
-# This is an interim fix for hostname resolution in current VM (If it does not exist add it)
+# Add hostnames to /etc/hosts
 grep -q "${HOSTNAME}" /etc/hosts
 if [ $? == 0 ];
 then
-  echo "${HOSTNAME}found in /etc/hosts"
+  log "${HOSTNAME}found in /etc/hosts"
 else
-  echo "${HOSTNAME} not found in /etc/hosts"
-  # Append it to the hosts file if not there
+  log "${HOSTNAME} not found in /etc/hosts, going to add it..."
   echo "127.0.0.1 ${HOSTNAME}" >> /etc/hosts
-  log "hostname ${HOSTNAME} added to /etchosts"
 fi
 
 # Script Parameters
@@ -71,7 +54,7 @@ while getopts :n:d:u:p:j:v:U:P:k:e optname; do
     n)
       CLUSTER_NAME=${OPTARG}
       ;;
-      u) #Credentials used for node install
+    u) #Credentials used for node install
       ADMIN_USER=${OPTARG}
       ;;
     p)
@@ -100,15 +83,9 @@ while getopts :n:d:u:p:j:v:U:P:k:e optname; do
       #place data on local resource disk
       EPHEMERAL=1
       ;;
-    h) 
-      #show help
-      help
-      exit 2
-      ;;
     \?)
       #unrecognized option - show help
       echo -e \\n"Option -${BOLD}$OPTARG${NORM} not allowed."
-      help
       exit 2
       ;;
   esac
@@ -168,6 +145,7 @@ expand_ip_range() {
 }
 
 # Convert the DSE endpoint range to a list for the provisioning configuration
+log "DSE_ENDPOINTS are: $DSE_ENDPOINTS"
 NODE_IP_LIST=$(expand_ip_range "$DSE_ENDPOINTS")
 
 get_node_fingerprints() {
@@ -186,7 +164,7 @@ get_node_fingerprints() {
     done
     ACCEPTED_FINGERPRINTS="${ACCEPTED_FINGERPRINTS%?}"
 
-    echo "$ACCEPTED_FINGERPRINTS"
+    log "ACCEPTED_FINGERPRINTS: $ACCEPTED_FINGERPRINTS"
 }
 
 NODE_CONFIG_LIST="\"${NODE_IP_LIST// /\",\"}\""
@@ -266,7 +244,7 @@ EOF
 sleep 14
 
 # Logging is limited, so we are going to write this somewhere we can look at it later.
-cat provision.json > /var/log/provision.json
+cat provision.json > /var/log/azure/provision.json
 
 # Login and get session token
 AUTH_SESSION=$(curl -k -X POST -d '{"username":"admin","password":"admin"}' 'https://127.0.0.1:8443/login' | sed -e 's/^.*"sessionid"[ ]*:[ ]*"//' -e 's/".*//')
