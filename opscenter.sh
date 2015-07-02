@@ -11,10 +11,9 @@
 #  8 - U: Datastax username
 #  9 - P: Datastax password
 
-# Log method to control/redirect log output
 log()
 {
-    echo "$1"
+    echo "$1" >> /var/log/azure/opscenter.sh.log
 }
 
 log "Begin execution of Cassandra script extension on ${HOSTNAME}"
@@ -243,7 +242,7 @@ EOF
 # We seem to be trying to hit the endpoint too early the service is not listening yet
 sleep 14
 
-# Logging is limited, so we are going to write this somewhere we can look at it later.
+# Write this somewhere we can look at it later for debugging
 cat provision.json > /var/log/azure/provision.json
 
 # Login and get session token
