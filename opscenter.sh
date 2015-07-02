@@ -83,14 +83,14 @@ while getopts :n:d:u:p:j:v:U:P:k:e optname; do
       EPHEMERAL=1
       ;;
     \?)
-      #unrecognized option - show help
+      #unrecognized option
       echo -e \\n"Option -${BOLD}$OPTARG${NORM} not allowed."
       exit 2
       ;;
   esac
 done
 
-# Install Java
+# Installing Java
 add-apt-repository -y ppa:webupd8team/java
 apt-get -y update 
 echo debconf shared/accepted-oracle-license-v1-1 select true | sudo debconf-set-selections
@@ -103,13 +103,13 @@ curl -L http://debian.datastax.com/debian/repo_key | sudo apt-key add -
 apt-get update
 apt-get install opscenter
 
-# Enable authentication in /etc/opscenter/opscenterd.conf
-sed -i '/^\[authentication\]$/,/^\[/ s/^enabled = False/enabled = True/' /etc/opscenter/opscenterd.conf
+#Enable authentication in /etc/opscenter/opscenterd.conf
+#sed -i '/^\[authentication\]$/,/^\[/ s/^enabled = False/enabled = True/' /etc/opscenter/opscenterd.conf
 
 # Enable SSL - uncomment webserver SSL settings and leave them set to the default
-sed -i '/^\[webserver\]$/,/^\[/ s/^#ssl_keyfile/ssl_keyfile/' /etc/opscenter/opscenterd.conf
-sed -i '/^\[webserver\]$/,/^\[/ s/^#ssl_certfile/ssl_certfile/' /etc/opscenter/opscenterd.conf
-sed -i '/^\[webserver\]$/,/^\[/ s/^#ssl_port/ssl_port/' /etc/opscenter/opscenterd.conf
+#sed -i '/^\[webserver\]$/,/^\[/ s/^#ssl_keyfile/ssl_keyfile/' /etc/opscenter/opscenterd.conf
+#sed -i '/^\[webserver\]$/,/^\[/ s/^#ssl_certfile/ssl_certfile/' /etc/opscenter/opscenterd.conf
+#sed -i '/^\[webserver\]$/,/^\[/ s/^#ssl_port/ssl_port/' /etc/opscenter/opscenterd.conf
 
 # Increase agent_install_timeout from default of 120 seconds
 # Had an issue where clients were marked as timed out on startup
@@ -125,22 +125,22 @@ sudo service opscenterd start
 # This increments the last octet of an IP start range using a defined value
 # 10.0.0.4-3 would be converted to "10.0.0.4 10.0.0.5 10.0.0.6"
 expand_ip_range() {
-    IFS='-' read -a IP_RANGE <<< "$1"
-    BASE_IP=`echo ${IP_RANGE[0]} | cut -d"." -f1-3`
-    LAST_OCTET=`echo ${IP_RANGE[0]} | cut -d"." -f4-4`
+  IFS='-' read -a IP_RANGE <<< "$1"
+  BASE_IP=`echo ${IP_RANGE[0]} | cut -d"." -f1-3`
+  LAST_OCTET=`echo ${IP_RANGE[0]} | cut -d"." -f4-4`
 
-    #Get the IP Addresses on this machine
-    declare -a MY_IPS=`ifconfig | grep -Eo 'inet (addr:)?([0-9]*\.){3}[0-9]*' | grep -Eo '([0-9]*\.){3}[0-9]*' | grep -v '127.0.0.1'`
-    declare -a EXPAND_STATICIP_RANGE_RESULTS=()
+  #Get the IP Addresses on this machine
+  declare -a MY_IPS=`ifconfig | grep -Eo 'inet (addr:)?([0-9]*\.){3}[0-9]*' | grep -Eo '([0-9]*\.){3}[0-9]*' | grep -v '127.0.0.1'`
+  declare -a EXPAND_STATICIP_RANGE_RESULTS=()
 
-    for (( n=LAST_OCTET; n<("${IP_RANGE[1]}"+LAST_OCTET) ; n++))
-    do
-        HOST="${BASE_IP}.${n}"
-        if ! [[ "${MY_IPS[@]}" =~ "${HOST}" ]]; then
-            EXPAND_STATICIP_RANGE_RESULTS+=($HOST)
-        fi
-    done
-    echo "${EXPAND_STATICIP_RANGE_RESULTS[@]}"
+  for (( n=LAST_OCTET; n<("${IP_RANGE[1]}"+LAST_OCTET) ; n++))
+  do
+    HOST="${BASE_IP}.${n}"
+    if ! [[ "${MY_IPS[@]}" =~ "${HOST}" ]]; then
+      EXPAND_STATICIP_RANGE_RESULTS+=($HOST)
+    fi
+  done
+  log "EXPAND_STATICIP_RANGE_RESULTS: ${EXPAND_STATICIP_RANGE_RESULTS[@]}"
 }
 
 # Convert the DSE endpoint range to a list for the provisioning configuration
@@ -148,22 +148,20 @@ log "DSE_ENDPOINTS are: $DSE_ENDPOINTS"
 NODE_IP_LIST=$(expand_ip_range "$DSE_ENDPOINTS")
 
 get_node_fingerprints() {
-    TR=($1)
+  TR=($1)
 
-    ACCEPTED_FINGERPRINTS=""
-    for HOST in "${TR[@]}";
-    do
-        ssh-keyscan -p 22 -t rsa "$HOST" > /tmp/tmpsshkeyhost.pub
-        HOSTKEY=$(ssh-keygen -lf /tmp/tmpsshkeyhost.pub)
+  ACCEPTED_FINGERPRINTS=""
+  for HOST in "${TR[@]}";
+  do
+    ssh-keyscan -p 22 -t rsa "$HOST" > /tmp/tmpsshkeyhost.pub
+    HOSTKEY=$(ssh-keygen -lf /tmp/tmpsshkeyhost.pub)
 
-        # TODO - This is a bit of a formatting hack job, need to clean it up
-        HOSTKEY=`echo ${HOSTKEY} | cut -d" " -f1-2`
-        HOSTKEY+=" (RSA)"
-        ACCEPTED_FINGERPRINTS+="\"$HOST\": \"$HOSTKEY\","
-    done
-    ACCEPTED_FINGERPRINTS="${ACCEPTED_FINGERPRINTS%?}"
-
-    log "ACCEPTED_FINGERPRINTS: $ACCEPTED_FINGERPRINTS"
+    HOSTKEY=`echo ${HOSTKEY} | cut -d" " -f1-2`
+    HOSTKEY+=" (RSA)"
+    ACCEPTED_FINGERPRINTS+="\"$HOST\": \"$HOSTKEY\","
+  done
+  ACCEPTED_FINGERPRINTS="${ACCEPTED_FINGERPRINTS%?}"
+  log "ACCEPTED_FINGERPRINTS: $ACCEPTED_FINGERPRINTS"
 }
 
 NODE_CONFIG_LIST="\"${NODE_IP_LIST// /\",\"}\""
@@ -246,13 +244,13 @@ sleep 14
 cat provision.json > /var/log/azure/provision.json
 
 # Login and get session token
-AUTH_SESSION=$(curl -k -X POST -d '{"username":"admin","password":"admin"}' 'https://127.0.0.1:8443/login' | sed -e 's/^.*"sessionid"[ ]*:[ ]*"//' -e 's/".*//')
+AUTH_SESSION=$(curl -k -X POST -d '{"username":"admin","password":"admin"}' 'http://127.0.0.1:8888/login' | sed -e 's/^.*"sessionid"[ ]*:[ ]*"//' -e 's/".*//')
 
 # Provision a new cluster with the nodes passed
-curl -k -H "opscenter-session: $AUTH_SESSION" -H "Accept: application/json" -X POST https://127.0.0.1:8443/provision -d @provision.json
+curl -k -H "opscenter-session: $AUTH_SESSION" -H "Accept: application/json" -X POST http://127.0.0.1:8888/provision -d @provision.json
 
 # Update the admin password with the one passed as parameter
-curl -k -H "opscenter-session: $AUTH_SESSION" -H "Accept: application/json" -d "{\"password\": \"$OPS_CENTER_ADMIN_PASS\", \"role\": \"admin\" }" -X PUT https://127.0.0.1:8443/users/admin
+#curl -k -H "opscenter-session: $AUTH_SESSION" -H "Accept: application/json" -d "{\"password\": \"$OPS_CENTER_ADMIN_PASS\", \"role\": \"admin\" }" -X PUT https://127.0.0.1:8443/users/admin
 
 # Note - this exits before the OpsCenter curl operations complete.
 
