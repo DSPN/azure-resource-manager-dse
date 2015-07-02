@@ -265,6 +265,9 @@ EOF
 # We seem to be trying to hit the endpoint too early the service is not listening yet
 sleep 14
 
+# Logging is limited, so we are going to write this somewhere we can look at it later.
+cat provision.json > /var/log/provision.json
+
 # Login and get session token
 AUTH_SESSION=$(curl -k -X POST -d '{"username":"admin","password":"admin"}' 'https://127.0.0.1:8443/login' | sed -e 's/^.*"sessionid"[ ]*:[ ]*"//' -e 's/".*//')
 
