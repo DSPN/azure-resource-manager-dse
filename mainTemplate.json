@@ -45,7 +45,7 @@
       "type": "string",
       "defaultValue": "Standard_D4",
       "allowedValues": [
-        "Standard_D4",
+        "Standard_D3",
         "Standard_D12",
         "Standard_D13",
         "Standard_D14",
