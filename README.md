@@ -14,8 +14,8 @@ The template expects the following parameters:
 | region | Region where the Azure artifacts will be created |
 | clusterNodeCount | The number of virtual machines to provision for the cluster |
 | clusterVmSize | The size of virtual machine to provision for each cluster node |
-| adminUsername  | Admin user name for the virtual machines.  The OpsCenter user is admin. |
-| adminPassword  | Admin password for the virtual machines and OpsCenter |
+| adminUsername  | Admin user name for the virtual machines |
+| adminPassword  | Admin password for the virtual machines |
 | datastaxUsername | Your DataStax account username.  You can register at http://www.datastax.com/download |
 | datastaxPassword | Your DataStax account password |
 
@@ -26,10 +26,8 @@ This template will deploy OpsCenter to `http://{clusterName}.{region}.cloudapp.a
 The OpsCenter virtual machine has port 22 for SSH, port 8888 for HTTP and port 8443 for HTTPS enabled.  
 
 ##Known Issues and Limitations (P0)
-- There's an intermittent issue where provisioning of the datadisk fails.
-- There's an intermittent issue where OpsCenter times out while waiting for nodes to connect.
 - There's an intermittent issue where OpsCenter runs an apt-get command which fails authorization. 
-- Currently logging in the shell scripts is directed to STDOUT.  We would prefer it be directed to the Azure audit log.
+- Currently logging in the shell scripts is directed to STDOUT and is not recorded.  We would prefer it be directed to the Azure audit log.
 - Errors in OpsCenter provisioning are not currently passed up to the Azure log.
 - Azure cli will return completed even while OpsCenter is still provisioning nodes.
 
@@ -37,8 +35,7 @@ The OpsCenter virtual machine has port 22 for SSH, port 8888 for HTTP and port 8
 - Deletion of a storage account takes some time (one estimate is 12 minutes) after the command is entered.  Given that, it is currently neccessary to give new clusters a different name than previously created clusters to avoid a name collision.
 - There are various validations (is there a name conflict, is a password of sufficient strength, is a username valid) that are performed on the backend but not in the web UI.  Ideally this would happen in the web UI.
 - Storage groups are limited to 40 nodes.  Currently our cluster shares a single storage group and is, as a result, limited to 40 nodes.
-- Cannot provision more than 251 cluster nodes as the nodes are named 10.0.0.5, 10.0.0.6, ...
-- The certificate used in the deployment is a self signed certificate that will create a browser warning.  You can follow the process for replacing the certificate with your own SSL certificate here: http://docs.datastax.com/en/opscenter/5.1/opsc/configure/opscConfiguringEnablingHttps_t.html
+- Cannot provision more than 251 cluster nodes as the nodes are named 10.0.0.5, 10.0.0.6, ...  There is a further limitation due to how broadcast groups are set up.
 - The template uses username/password for provisioning cluster nodes in the cluster. Ideally it would offer an option to use an SSH key.
 - We would like to offer a choice between premium and standard storage.  Currently only standard is supported.
 - The template deploys DSE nodes configured to use ephemeral storage and attaches a data disk that can be used for data backups in the event of a cluster failure resulting in the loss of the data on the ephemeral disks.  Ideally we would automate this backup process.
