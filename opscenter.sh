@@ -5,41 +5,42 @@ echo "Setting default parameters"
 CLUSTER_NAME="Test Cluster"
 DSE_VERSION="4.7.0"
 
-while getopts :n:u:p:e:v:U:P optname; do
-  echo "Option $optname set with value ${OPTARG}"
-  case $optname in
+while getopts ":n:u:p:e:v:U:P:" opt; do
+  echo "Option $opt set with value $OPTARG"
+  case $opt in
     n)
-      CLUSTER_NAME=${OPTARG}
+      CLUSTER_NAME=$OPTARG
       ;;
     u) 
       # Cluster node admin user that OpsCenter uses for cluster provisioning
-      ADMIN_USER=${OPTARG}
+      ADMIN_USERNAME=$OPTARG
       ;;
     p)
       # Cluster node password that OpsCenter uses for cluster provisioning
-      ADMIN_PASSWORD=${OPTARG}
+      ADMIN_PASSWORD=$OPTARG
       ;;
     e)
       # List of successive cluster IP addresses represented as the starting address and a count used to increment the last octet (10.0.0.5-3)
-      DSE_ENDPOINTS=${OPTARG}
+      DSE_ENDPOINTS=$OPTARG
       ;;
     v) 
-      DSE_VERSION=${OPTARG}
+      DSE_VERSION=$OPTARG
       ;;
     U)
       # DataStax download site username 
-      DSE_USERNAME=${OPTARG}
+      DSE_USERNAME=$OPTARG
       ;;
     P)
       # DataStax download site password
-      DSE_PASSWORD=${OPTARG}
+      DSE_PASSWORD=$OPTARG
       ;;
     \?)
-      echo "Option -${BOLD}$OPTARG${NORM} is an invalid.  Exiting."
-      exit 2
+      echo "Invalid option: -$OPTARG"
       ;;
   esac
 done
+
+exit 0
 
 echo "Installing Java"
 add-apt-repository -y ppa:webupd8team/java
@@ -160,7 +161,7 @@ sudo tee provision.json > /dev/null <<EOF
         "trickle_fsync_interval_in_kb": 10240
     },
     "install_params": {
-        "username": "${ADMIN_USER}",
+        "username": "${ADMIN_USERNAME}",
         "password": "${ADMIN_PASSWORD}",
         "package": "dse",
         "version": "${DSE_VERSION}",
