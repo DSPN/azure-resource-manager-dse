@@ -90,9 +90,9 @@
       "statics": {
         "clusterRange": {
           "base": "10.0.0.",
-          "start": 2
+          "start": 5
         },
-        "opsCenter": "10.0.0.1"
+        "opsCenter": "10.0.0.240"
       }
     },
     "osSettings": {
