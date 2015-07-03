@@ -73,7 +73,7 @@
   "variables": {
     "templateBaseUrl": "https://raw.githubusercontent.com/DSPN/azure-arm-dse/master/",
     "sharedTemplateUrl": "[concat(variables('templateBaseUrl'), 'shared-resources.json')]",
-    "clusterNodesTemplateUrl": "[concat(variables('templateBaseUrl'), 'ephemeral-nodes-resources.json')]",
+    "clusterNodesTemplateUrl": "[concat(variables('templateBaseUrl'), 'dse-nodes-resources.json')]",
     "opsCenterTemplateUrl": "[concat(variables('templateBaseUrl'), 'opscenter-resources.json')]",
     "opsCenterInstallTemplateUrl": "[concat(variables('templateBaseUrl'), 'opscenter-install-resources.json')]",
     "opsCenterVmSize": "Standard_A1",
