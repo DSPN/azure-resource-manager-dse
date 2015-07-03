@@ -21,18 +21,18 @@ while getopts ":n:u:p:e:v:U:P:" opt; do
       ;;
     e)
       # List of successive cluster IP addresses represented as the starting address and a count used to increment the last octet (10.0.0.5-3)
-      DSE_ENDPOINTS=$OPTARG
+      DSE_NODE_IP_RANGE=$OPTARG
       ;;
     v) 
       DSE_VERSION=$OPTARG
       ;;
     U)
       # DataStax download site username 
-      DSE_USERNAME=$OPTARG
+      DATASTAX_USERNAME=$OPTARG
       ;;
     P)
       # DataStax download site password
-      DSE_PASSWORD=$OPTARG
+      DATASTAX_PASSWORD=$OPTARG
       ;;
     \?)
       echo "Invalid option: -$OPTARG"
@@ -83,8 +83,7 @@ expand_ip_range() {
 }
 
 # Convert the DSE endpoint range to a list for the provisioning configuration
-echo "DSE_ENDPOINTS are: $DSE_ENDPOINTS"
-NODE_IP_LIST=$(expand_ip_range "$DSE_ENDPOINTS")
+NODE_IP_LIST=$(expand_ip_range "$DSE_NODE_IP_RANGE")
 
 get_node_fingerprints() {
   TR=($1)
@@ -162,8 +161,8 @@ sudo tee provision.json > /dev/null <<EOF
     "password": "${ADMIN_PASSWORD}",
     "package": "dse",
     "version": "${DSE_VERSION}",
-    "repo-user": "${DSE_USERNAME}",
-    "repo-password": "${DSE_PASSWORD}"
+    "repo-user": "${DATASTAX_USERNAME}",
+    "repo-password": "${DATASTAX_PASSWORD}"
   },
   "nodes": [
     ${NODE_CONFIG_LIST}
