@@ -66,7 +66,7 @@
     "datastaxPassword": {
       "type": "securestring",
       "metadata": {
-        "description": "Your DataStax account password"
+        "description": "Your DataStax account password.  You can register at http://datastax.com/"
       }
     }
   },
