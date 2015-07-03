@@ -262,12 +262,8 @@
           "datastaxPassword": {
             "value": "[parameters('datastaxPassword')]"
           },
-          "opsCenterSettings": {
-            "value": {
-              "clusterName": "[parameters('clusterName')]",
-              "nodeList": "[variables('nodeList')]",
-              "adminPassword": "[parameters('adminPassword')]"
-            }
+          "nodeList": {
+            "value": "[variables('nodeList')]"
           }
         }
       }
