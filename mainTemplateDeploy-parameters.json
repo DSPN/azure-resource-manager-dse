@@ -1,12 +1,12 @@
 {
   "clusterName": {
-    "value": "bencluster9"
+    "value": "bencluster22"
   },
   "region": {
     "value": "East Asia"
   },
   "clusterNodeCount": {
-    "value": 4
+    "value": 36
   },
   "clusterVmSize": {
     "value": "Standard_D12"
@@ -18,9 +18,10 @@
     "value": "foobar123!"
   },
   "datastaxUsername": {
-    "value":"ben.lackey_datastax.com"
+    "value":"mkennedy_datastax.com"
   },
   "datastaxPassword": {
     "value": ""
   }
 }
+
