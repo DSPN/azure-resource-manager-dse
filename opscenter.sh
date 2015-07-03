@@ -40,8 +40,6 @@ while getopts ":n:u:p:e:v:U:P:" opt; do
   esac
 done
 
-exit 0
-
 echo "Installing Java"
 add-apt-repository -y ppa:webupd8team/java
 apt-get -y update 
