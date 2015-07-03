@@ -1,20 +1,12 @@
 #!/bin/bash
 # This script installs and configures DataStax OpsCenter.  It then deploys a DataStax cluster using OpsCenter.
 
-log()
-{
-    echo "$1" >> /var/log/azure/opscenter.sh.log
-}
-
-#log "Adding hostname to /etc/hosts"
-#echo "127.0.0.1 ${HOSTNAME}" >> /etc/hosts
-
-log "Setting default parameters"
+echo "Setting default parameters"
 CLUSTER_NAME="Test Cluster"
 DSE_VERSION="4.7.0"
 
 while getopts :n:u:p:e:v:U:P optname; do
-  log "Option $optname set with value ${OPTARG}"
+  echo "Option $optname set with value ${OPTARG}"
   case $optname in
     n)
       CLUSTER_NAME=${OPTARG}
@@ -32,7 +24,6 @@ while getopts :n:u:p:e:v:U:P optname; do
       DSE_ENDPOINTS=${OPTARG}
       ;;
     v) 
-      # DSE Version
       DSE_VERSION=${OPTARG}
       ;;
     U)
@@ -44,26 +35,26 @@ while getopts :n:u:p:e:v:U:P optname; do
       DSE_PASSWORD=${OPTARG}
       ;;
     \?)
-      log "Option -${BOLD}$OPTARG${NORM} is an invalid.  Exiting."
+      echo "Option -${BOLD}$OPTARG${NORM} is an invalid.  Exiting."
       exit 2
       ;;
   esac
 done
 
-log "Installing Java"
+echo "Installing Java"
 add-apt-repository -y ppa:webupd8team/java
 apt-get -y update 
 echo debconf shared/accepted-oracle-license-v1-1 select true | sudo debconf-set-selections
 echo debconf shared/accepted-oracle-license-v1-1 seen true | sudo debconf-set-selections
 apt-get -y install oracle-java8-installer
  
-log "Installing OpsCenter"
+echo "Installing OpsCenter"
 echo "deb http://debian.datastax.com/community stable main" | sudo tee -a /etc/apt/sources.list.d/datastax.community.list
 curl -L http://debian.datastax.com/debian/repo_key | sudo apt-key add -
 apt-get update
 apt-get install opscenter
 
-log "Starting OpsCenter"
+echo "Starting OpsCenter"
 sudo service opscenterd start
 
 #############################################################################
@@ -89,11 +80,11 @@ expand_ip_range() {
       EXPAND_STATICIP_RANGE_RESULTS+=($HOST)
     fi
   done
-  log "EXPAND_STATICIP_RANGE_RESULTS: ${EXPAND_STATICIP_RANGE_RESULTS[@]}"
+  echo "EXPAND_STATICIP_RANGE_RESULTS: ${EXPAND_STATICIP_RANGE_RESULTS[@]}"
 }
 
 # Convert the DSE endpoint range to a list for the provisioning configuration
-log "DSE_ENDPOINTS are: $DSE_ENDPOINTS"
+echo "DSE_ENDPOINTS are: $DSE_ENDPOINTS"
 NODE_IP_LIST=$(expand_ip_range "$DSE_ENDPOINTS")
 
 get_node_fingerprints() {
@@ -104,13 +95,12 @@ get_node_fingerprints() {
   do
     ssh-keyscan -p 22 -t rsa "$HOST" > /tmp/tmpsshkeyhost.pub
     HOSTKEY=$(ssh-keygen -lf /tmp/tmpsshkeyhost.pub)
-
     HOSTKEY=`echo ${HOSTKEY} | cut -d" " -f1-2`
     HOSTKEY+=" (RSA)"
     ACCEPTED_FINGERPRINTS+="\"$HOST\": \"$HOSTKEY\","
   done
   ACCEPTED_FINGERPRINTS="${ACCEPTED_FINGERPRINTS%?}"
-  log "ACCEPTED_FINGERPRINTS: $ACCEPTED_FINGERPRINTS"
+  echo "ACCEPTED_FINGERPRINTS: $ACCEPTED_FINGERPRINTS"
 }
 
 NODE_CONFIG_LIST="\"${NODE_IP_LIST// /\",\"}\""
@@ -191,6 +181,6 @@ cat provision.json > /var/log/azure/provision.json
 
 # Give OpsCenter a bit to come up and then provision a new cluster
 sleep 15
-log "Calling OpsCenter with curl."
+echo "Calling OpsCenter with curl."
 curl -H "Accept: application/json" -X POST http://127.0.0.1:8888/provision -d @provision.json
 

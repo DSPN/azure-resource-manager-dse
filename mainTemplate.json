@@ -11,19 +11,6 @@
     "region": {
       "type": "string",
       "defaultValue": "East Asia",
-      "allowedValues": [
-        "East US", 
-        "East US 2", 
-        "West US", 
-        "Central US", 
-        "South Central US", 
-        "North Europe", 
-        "West Europe", 
-        "East Asia", 
-        "Southeast Asia", 
-        "Japan East", 
-        "Japan West"
-      ],
       "metadata": {
         "description": "Region where the Azure artifacts will be created"
       }
@@ -61,13 +48,13 @@
     "adminUsername": {
       "type": "string",
       "metadata": {
-        "description": "Admin user name for the virtual machines.  The OpsCenter user is admin."
+        "description": "Admin user name for the virtual machines"
       }
     },
     "adminPassword": {
       "type": "securestring",
       "metadata": {
-        "description": "Admin password for the virtual machines and OpsCenter"
+        "description": "Admin password for the virtual machines"
       }
     },
     "datastaxUsername": {
