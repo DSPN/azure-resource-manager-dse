@@ -1,135 +1,84 @@
 #!/bin/bash
-
-# Description: This script installs and configures DataStax OpsCenter and deploys a cluster
-# Parameters:
-#  1 - n: Cluster name
-#  2 - u: Cluster node admin user that OpsCenter uses for cluster provisioning
-#  3 - p: Cluster node admin password that OpsCenter uses for cluster provisioning
-#  4 - d: List of successive cluster IP addresses represented as the starting address and a count used to increment the last octet (10.0.0.5-3)
-#  6 - k: Sets the Ops Center 'admin' password
-#  7 - v: Sets the DSE Version
-#  8 - U: Datastax username
-#  9 - P: Datastax password
+# This script installs and configures DataStax OpsCenter.  It then deploys a DataStax cluster using OpsCenter.
 
 log()
 {
     echo "$1" >> /var/log/azure/opscenter.sh.log
 }
 
-log "Begin execution of Cassandra script extension on ${HOSTNAME}"
+#log "Adding hostname to /etc/hosts"
+#echo "127.0.0.1 ${HOSTNAME}" >> /etc/hosts
 
-# You must be root to run this script
-if [ "${UID}" -ne 0 ];
-then
-    log "Script executed without root permissions"
-    log "You must be root to run this program."
-    exit 3
-fi
-
-# Add hostnames to /etc/hosts
-grep -q "${HOSTNAME}" /etc/hosts
-if [ $? == 0 ];
-then
-  log "${HOSTNAME}found in /etc/hosts"
-else
-  log "${HOSTNAME} not found in /etc/hosts, going to add it..."
-  echo "127.0.0.1 ${HOSTNAME}" >> /etc/hosts
-fi
-
-# Script Parameters
+log "Setting default parameters"
 CLUSTER_NAME="Test Cluster"
-EPHEMERAL=0
-DSE_ENDPOINTS=""
-ADMIN_USER=""
-SSH_KEY_PATH=""
 DSE_VERSION="4.7.0"
-DSE_USERNAME=""
-DSE_PASSWORD=""
 
-#Loop through options passed
-while getopts :n:d:u:p:j:v:U:P:k:e optname; do
+while getopts :n:u:p:e:v:U:P optname; do
   log "Option $optname set with value ${OPTARG}"
   case $optname in
     n)
       CLUSTER_NAME=${OPTARG}
       ;;
-    u) #Credentials used for node install
+    u) 
+      # Cluster node admin user that OpsCenter uses for cluster provisioning
       ADMIN_USER=${OPTARG}
       ;;
     p)
-      #Credentials used for node install
+      # Cluster node password that OpsCenter uses for cluster provisioning
       ADMIN_PASSWORD=${OPTARG}
       ;;
-    d)
-      #Static dicovery endpoints
+    e)
+      # List of successive cluster IP addresses represented as the starting address and a count used to increment the last octet (10.0.0.5-3)
       DSE_ENDPOINTS=${OPTARG}
-      ;;
-    k) 
-      # OpsCenter Admin Password
-      OPS_CENTER_ADMIN_PASS=${OPTARG}
       ;;
     v) 
       # DSE Version
       DSE_VERSION=${OPTARG}
       ;;
-    U) 
+    U)
+      # DataStax download site username 
       DSE_USERNAME=${OPTARG}
       ;;
-    P) 
+    P)
+      # DataStax download site password
       DSE_PASSWORD=${OPTARG}
       ;;
-    e) 
-      #place data on local resource disk
-      EPHEMERAL=1
-      ;;
     \?)
-      #unrecognized option
-      echo -e \\n"Option -${BOLD}$OPTARG${NORM} not allowed."
+      log "Option -${BOLD}$OPTARG${NORM} is an invalid.  Exiting."
       exit 2
       ;;
   esac
 done
 
-# Installing Java
+log "Installing Java"
 add-apt-repository -y ppa:webupd8team/java
 apt-get -y update 
 echo debconf shared/accepted-oracle-license-v1-1 select true | sudo debconf-set-selections
 echo debconf shared/accepted-oracle-license-v1-1 seen true | sudo debconf-set-selections
 apt-get -y install oracle-java8-installer
  
-# Install OpsCenter
+log "Installing OpsCenter"
 echo "deb http://debian.datastax.com/community stable main" | sudo tee -a /etc/apt/sources.list.d/datastax.community.list
 curl -L http://debian.datastax.com/debian/repo_key | sudo apt-key add -
 apt-get update
 apt-get install opscenter
 
-#Enable authentication in /etc/opscenter/opscenterd.conf
-#sed -i '/^\[authentication\]$/,/^\[/ s/^enabled = False/enabled = True/' /etc/opscenter/opscenterd.conf
-
-# Enable SSL - uncomment webserver SSL settings and leave them set to the default
-#sed -i '/^\[webserver\]$/,/^\[/ s/^#ssl_keyfile/ssl_keyfile/' /etc/opscenter/opscenterd.conf
-#sed -i '/^\[webserver\]$/,/^\[/ s/^#ssl_certfile/ssl_certfile/' /etc/opscenter/opscenterd.conf
-#sed -i '/^\[webserver\]$/,/^\[/ s/^#ssl_port/ssl_port/' /etc/opscenter/opscenterd.conf
-
-# Increase agent_install_timeout from default of 120 seconds
-# Had an issue where clients were marked as timed out on startup
-echo '[provisioning]' >> /etc/opscenter/opscenterd.conf
-echo 'agent_install_timeout=3600' >> /etc/opscenter/opscenterd.conf
-
-# Start OpsCenter
+log "Starting OpsCenter"
 sudo service opscenterd start
 
-# CONFIGURE NODES
+#############################################################################
+#### Now that we have OpsCenter installed, let's configure our cluster. #####
+#############################################################################
 
 # Expand a list of successive ip range and filter my local local ip from the list
 # This increments the last octet of an IP start range using a defined value
-# 10.0.0.4-3 would be converted to "10.0.0.4 10.0.0.5 10.0.0.6"
+# 10.0.0.5-3 would be converted to "10.0.0.5 10.0.0.6 10.0.0.7"
 expand_ip_range() {
   IFS='-' read -a IP_RANGE <<< "$1"
   BASE_IP=`echo ${IP_RANGE[0]} | cut -d"." -f1-3`
   LAST_OCTET=`echo ${IP_RANGE[0]} | cut -d"." -f4-4`
 
-  #Get the IP Addresses on this machine
+  # Get the IP Addresses on this machine
   declare -a MY_IPS=`ifconfig | grep -Eo 'inet (addr:)?([0-9]*\.){3}[0-9]*' | grep -Eo '([0-9]*\.){3}[0-9]*' | grep -v '127.0.0.1'`
   declare -a EXPAND_STATICIP_RANGE_RESULTS=()
 
@@ -237,22 +186,11 @@ sudo tee provision.json > /dev/null <<EOF
 }
 EOF
 
-# We seem to be trying to hit the endpoint too early the service is not listening yet
-sleep 14
-
 # Write this somewhere we can look at it later for debugging
 cat provision.json > /var/log/azure/provision.json
 
-# Login and get session token
-AUTH_SESSION=$(curl -k -X POST -d '{"username":"admin","password":"admin"}' 'http://127.0.0.1:8888/login' | sed -e 's/^.*"sessionid"[ ]*:[ ]*"//' -e 's/".*//')
-
-# Provision a new cluster with the nodes passed
-curl -k -H "opscenter-session: $AUTH_SESSION" -H "Accept: application/json" -X POST http://127.0.0.1:8888/provision -d @provision.json
-
-# Update the admin password with the one passed as parameter
-#curl -k -H "opscenter-session: $AUTH_SESSION" -H "Accept: application/json" -d "{\"password\": \"$OPS_CENTER_ADMIN_PASS\", \"role\": \"admin\" }" -X PUT https://127.0.0.1:8443/users/admin
-
-# Note - this exits before the OpsCenter curl operations complete.
-
-exit 0
+# Give OpsCenter a bit to come up and then provision a new cluster
+sleep 15
+log "Calling OpsCenter with curl."
+curl -H "Accept: application/json" -X POST http://127.0.0.1:8888/provision -d @provision.json
 
