@@ -20,8 +20,8 @@ while getopts ":n:u:p:e:v:U:P:" opt; do
       ADMIN_PASSWORD=$OPTARG
       ;;
     e)
-      # List of successive cluster IP addresses represented as the starting address and a count used to increment the last octet (10.0.0.5-3)
-      DSE_NODE_IP_RANGE=$OPTARG
+      # List of successive cluster IP addresses represented as the starting address and a count used to increment the last octet (for example 10.0.0.5-3)
+      NODE_IP_RANGE=$OPTARG
       ;;
     v) 
       DSE_VERSION=$OPTARG
@@ -60,30 +60,21 @@ sudo service opscenterd start
 #### Now that we have OpsCenter installed, let's configure our cluster. #####
 #############################################################################
 
-# Expand a list of successive ip range and filter my local local ip from the list
-# This increments the last octet of an IP start range using a defined value
-# 10.0.0.5-3 would be converted to "10.0.0.5 10.0.0.6 10.0.0.7"
+# Expand an IP range. 10.0.0.5-3 would be converted to "10.0.0.5 10.0.0.6 10.0.0.7"
 expand_ip_range() {
   IFS='-' read -a IP_RANGE <<< "$1"
   BASE_IP=`echo ${IP_RANGE[0]} | cut -d"." -f1-3`
   LAST_OCTET=`echo ${IP_RANGE[0]} | cut -d"." -f4-4`
 
-  # Get the IP Addresses on this machine
-  declare -a MY_IPS=`ifconfig | grep -Eo 'inet (addr:)?([0-9]*\.){3}[0-9]*' | grep -Eo '([0-9]*\.){3}[0-9]*' | grep -v '127.0.0.1'`
-  declare -a EXPAND_STATICIP_RANGE_RESULTS=()
-
   for (( n=LAST_OCTET; n<("${IP_RANGE[1]}"+LAST_OCTET) ; n++))
   do
     HOST="${BASE_IP}.${n}"
-    if ! [[ "${MY_IPS[@]}" =~ "${HOST}" ]]; then
-      EXPAND_STATICIP_RANGE_RESULTS+=($HOST)
-    fi
+    EXPAND_STATICIP_RANGE_RESULTS+=($HOST)
   done
   echo "${EXPAND_STATICIP_RANGE_RESULTS[@]}"
 }
 
-# Convert the DSE endpoint range to a list for the provisioning configuration
-NODE_IP_LIST=$(expand_ip_range "$DSE_NODE_IP_RANGE")
+NODE_IP_LIST=$(expand_ip_range "$NODE_IP_RANGE")
 
 get_node_fingerprints() {
   TR=($1)
