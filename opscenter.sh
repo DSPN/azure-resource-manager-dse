@@ -79,7 +79,7 @@ expand_ip_range() {
       EXPAND_STATICIP_RANGE_RESULTS+=($HOST)
     fi
   done
-  echo "EXPAND_STATICIP_RANGE_RESULTS: ${EXPAND_STATICIP_RANGE_RESULTS[@]}"
+  echo "${EXPAND_STATICIP_RANGE_RESULTS[@]}"
 }
 
 # Convert the DSE endpoint range to a list for the provisioning configuration
@@ -88,7 +88,6 @@ NODE_IP_LIST=$(expand_ip_range "$DSE_ENDPOINTS")
 
 get_node_fingerprints() {
   TR=($1)
-
   ACCEPTED_FINGERPRINTS=""
   for HOST in "${TR[@]}";
   do
@@ -99,7 +98,7 @@ get_node_fingerprints() {
     ACCEPTED_FINGERPRINTS+="\"$HOST\": \"$HOSTKEY\","
   done
   ACCEPTED_FINGERPRINTS="${ACCEPTED_FINGERPRINTS%?}"
-  echo "ACCEPTED_FINGERPRINTS: $ACCEPTED_FINGERPRINTS"
+  echo "$ACCEPTED_FINGERPRINTS"
 }
 
 NODE_CONFIG_LIST="\"${NODE_IP_LIST// /\",\"}\""
