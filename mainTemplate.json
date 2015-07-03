@@ -259,7 +259,7 @@
           "opsCenterSettings": {
             "value": {
               "nodeList": "[variables('nodeList')]",
-              "dataStaxUsername": "[parameters('dataStaxUsername')]"
+              "dataStaxUsername": "[parameters('dataStaxUsername')]",
               "dataStaxPassword": "[parameters('dataStaxPassword')]"
             }
           }
