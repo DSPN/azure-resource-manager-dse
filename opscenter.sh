@@ -107,70 +107,70 @@ ACCEPTED_FINGERPRINTS=$(get_node_fingerprints "$NODE_IP_LIST")
 # Create node provisioning document
 sudo tee provision.json > /dev/null <<EOF
 {
-    "cassandra_config": {
-        "authenticator": "org.apache.cassandra.auth.AllowAllAuthenticator",
-        "auto_bootstrap": false,
-        "auto_snapshot": true,
-        "start_native_transport": true,
-        "cluster_name": "${CLUSTER_NAME}",
-        "column_index_size_in_kb": 64,
-        "commitlog_directory": "/mnt/cassandra/commitlog",
-        "commitlog_sync": "periodic",
-        "commitlog_sync_period_in_ms": 10000,
-        "compaction_throughput_mb_per_sec": 16,
-        "concurrent_reads": 32,
-        "concurrent_writes": 32,
-        "data_file_directories": [
-            "/mnt/cassandra/data"
-        ],
-        "dynamic_snitch_badness_threshold": 0.1,
-        "dynamic_snitch_reset_interval_in_ms": 600000,
-        "dynamic_snitch_update_interval_in_ms": 100,
-        "server_encryption_options": {
-            "internode_encryption": "none",
-            "keystore": "conf/.keystore",
-            "keystore_password": "cassandra",
-            "truststore": "conf/.truststore",
-            "truststore_password": "cassandra"
-        },
-        "endpoint_snitch": "com.datastax.bdp.snitch.DseSimpleSnitch",
-        "hinted_handoff_enabled": true,
-        "incremental_backups": false,
-        "index_interval": 128,
-        "initial_token": null,
-        "key_cache_save_period": 14400,
-        "key_cache_size_in_mb": null,
-        "max_hint_window_in_ms": 3600000,
-        "partitioner": "org.apache.cassandra.dht.RandomPartitioner",
-        "request_scheduler": "org.apache.cassandra.scheduler.NoScheduler",
-        "row_cache_save_period": 0,
-        "row_cache_size_in_mb": 0,
-        "rpc_keepalive": true,
-        "rpc_port": 9160,
-        "rpc_server_type": "sync",
-        "saved_caches_directory": "/mnt/cassandra/saved_caches",
-        "snapshot_before_compaction": false,
-        "ssl_storage_port": 7001,
-        "storage_port": 7000,
-        "thrift_framed_transport_size_in_mb": 15,
-        "thrift_max_message_length_in_mb": 16,
-        "trickle_fsync": false,
-        "trickle_fsync_interval_in_kb": 10240
-    },
-    "install_params": {
-        "username": "${ADMIN_USERNAME}",
-        "password": "${ADMIN_PASSWORD}",
-        "package": "dse",
-        "version": "${DSE_VERSION}",
-        "repo-user": "${DSE_USERNAME}",
-        "repo-password": "${DSE_PASSWORD}"
-    },
-    "nodes": [
-        ${NODE_CONFIG_LIST}
+  "cassandra_config": {
+    "authenticator": "org.apache.cassandra.auth.AllowAllAuthenticator",
+    "auto_bootstrap": false,
+    "auto_snapshot": true,
+    "start_native_transport": true,
+    "cluster_name": "${CLUSTER_NAME}",
+    "column_index_size_in_kb": 64,
+    "commitlog_directory": "/mnt/cassandra/commitlog",
+    "commitlog_sync": "periodic",
+    "commitlog_sync_period_in_ms": 10000,
+    "compaction_throughput_mb_per_sec": 16,
+    "concurrent_reads": 32,
+    "concurrent_writes": 32,
+    "data_file_directories": [
+      "/mnt/cassandra/data"
     ],
-    "accepted_fingerprints": {
-        ${ACCEPTED_FINGERPRINTS}
-    }
+    "dynamic_snitch_badness_threshold": 0.1,
+    "dynamic_snitch_reset_interval_in_ms": 600000,
+    "dynamic_snitch_update_interval_in_ms": 100,
+    "server_encryption_options": {
+      "internode_encryption": "none",
+      "keystore": "conf/.keystore",
+      "keystore_password": "cassandra",
+      "truststore": "conf/.truststore",
+      "truststore_password": "cassandra"
+    },
+    "endpoint_snitch": "com.datastax.bdp.snitch.DseSimpleSnitch",
+    "hinted_handoff_enabled": true,
+    "incremental_backups": false,
+    "index_interval": 128,
+    "initial_token": null,
+    "key_cache_save_period": 14400,
+    "key_cache_size_in_mb": null,
+    "max_hint_window_in_ms": 3600000,
+    "partitioner": "org.apache.cassandra.dht.RandomPartitioner",
+    "request_scheduler": "org.apache.cassandra.scheduler.NoScheduler",
+    "row_cache_save_period": 0,
+    "row_cache_size_in_mb": 0,
+    "rpc_keepalive": true,
+    "rpc_port": 9160,
+    "rpc_server_type": "sync",
+    "saved_caches_directory": "/mnt/cassandra/saved_caches",
+    "snapshot_before_compaction": false,
+    "ssl_storage_port": 7001,
+    "storage_port": 7000,
+    "thrift_framed_transport_size_in_mb": 15,
+    "thrift_max_message_length_in_mb": 16,
+    "trickle_fsync": false,
+    "trickle_fsync_interval_in_kb": 10240
+  },
+  "install_params": {
+    "username": "${ADMIN_USERNAME}",
+    "password": "${ADMIN_PASSWORD}",
+    "package": "dse",
+    "version": "${DSE_VERSION}",
+    "repo-user": "${DSE_USERNAME}",
+    "repo-password": "${DSE_PASSWORD}"
+  },
+  "nodes": [
+    ${NODE_CONFIG_LIST}
+  ],
+  "accepted_fingerprints": {
+    ${ACCEPTED_FINGERPRINTS}
+  }
 }
 EOF
 
