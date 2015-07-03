@@ -39,7 +39,7 @@
     ],
     "steps": [
       {
-        "name": "datastaxConfig",
+        "name": "dataStaxConfig",
         "label": "DataStax cluster settings",
         "subLabel": {
           "preValidation": "Configure the cluster",
@@ -105,7 +105,7 @@
             "count": "[basics('clusterNodeCount')]"
           },
           {
-            "name": "datastaxUsername",
+            "name": "dataStaxUsername",
             "type": "Microsoft.Common.TextBox",
             "label": "DataStax username",
             "toolTip": "Your DataStax account username. You can register at [http://datastax.com](http://datastax.com).",
@@ -116,7 +116,7 @@
             }
           },
           {
-            "name": "datastaxPassword",
+            "name": "dataStaxPassword",
             "type": "Microsoft.Common.PasswordBox",
             "label": {
               "password": "DataStax password",
@@ -138,10 +138,10 @@
       "authenticationType": "[basics('adminCredentials').authenticationType]",
       "adminPassword": "[basics('adminCredentials').password]",
       "sshPublicKey": "[basics('adminCredentials').sshPublicKey]",
-      "clusterNodeCount": "[steps('datastaxConfig').clusterNodeCount]",
-      "clusterVmSize": "[steps('datastaxConfig').clusterVmSize]",
-      "datastaxUsername": "[steps('datastaxConfig').datastaxUsername]",
-      "datastaxPassword": "[steps('datastaxConfig').datastaxPassword]",
+      "clusterNodeCount": "[steps('dataStaxConfig').clusterNodeCount]",
+      "clusterVmSize": "[steps('dataStaxConfig').clusterVmSize]",
+      "dataStaxUsername": "[steps('dataStaxConfig').dataStaxUsername]",
+      "dataStaxPassword": "[steps('dataStaxConfig').dataStaxPassword]",
       "region": "[location()]"
     }
   }

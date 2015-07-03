@@ -57,13 +57,13 @@
         "description": "Admin password for the virtual machines"
       }
     },
-    "datastaxUsername": {
+    "dataStaxUsername": {
       "type": "string",
       "metadata": {
         "description": "Your DataStax account username.  You can register at http://datastax.com/"
       }
     },
-    "datastaxPassword": {
+    "dataStaxPassword": {
       "type": "securestring",
       "metadata": {
         "description": "Your DataStax account password.  You can register at http://datastax.com/"
@@ -256,14 +256,12 @@
           "osSettings": {
             "value": "[variables('osSettings')]"
           },
-          "datastaxUsername": {
-            "value": "[parameters('datastaxUsername')]"
-          },
-          "datastaxPassword": {
-            "value": "[parameters('datastaxPassword')]"
-          },
-          "nodeList": {
-            "value": "[variables('nodeList')]"
+          "opsCenterSettings": {
+            "value": {
+              "nodeList": "[variables('nodeList')]",
+              "dataStaxUsername": "[parameters('dataStaxUsername')]"
+              "dataStaxPassword": "[parameters('dataStaxPassword')]"
+            }
           }
         }
       }

@@ -17,18 +17,11 @@
     "osSettings": {
       "type": "object"
     },
-    "nodeList": {
-      "type": "string"
-    },
-    "datastaxUsername": {
-      "type": "string"
-    },
-    "datastaxPassword": {
-      "type": "securestring"
+    "opsCenterSettings": {
+      "type": "object"
     }
   },
-  "variables": {
-  },
+  "variables": {},
   "resources": [
     {
       "type": "Microsoft.Compute/virtualMachines/extensions",
@@ -41,7 +34,7 @@
         "typeHandlerVersion": "1.2",
         "settings": {
           "fileUris": "[parameters('osSettings').scripts]",
-          "commandToExecute": "[concat('bash opscenter.sh -u ', parameters('adminUsername'), ' -p ', parameters('adminPassword'), ' -U ', parameters('datastaxUsername'), ' -P ', parameters('datastaxPassword'), ' -e ', parameters('nodeList')]"
+          "commandToExecute": "[concat('bash opscenter.sh -u ', parameters('adminUsername'), ' -p ', parameters('adminPassword'), ' -U ', parameters('opsCenterSettings').dataStaxUsername, ' -P ', parameters('opsCenterSettings').dataStaxPassword, ' -e ', parameters('opsCenterSettings').nodeList)]"
         }
       }
     }

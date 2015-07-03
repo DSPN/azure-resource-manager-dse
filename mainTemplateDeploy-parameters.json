@@ -17,10 +17,10 @@
   "adminPassword": {
     "value": "foobar123!"
   },
-  "datastaxUsername": {
+  "dataStaxUsername": {
     "value":"mkennedy_datastax.com"
   },
-  "datastaxPassword": {
+  "dataStaxPassword": {
     "value": ""
   }
 }
