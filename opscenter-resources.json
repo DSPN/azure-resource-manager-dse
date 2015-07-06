@@ -62,6 +62,20 @@
             }
           },
           {
+            "name": "HTTP",
+            "properties": {
+              "description": "Allows HTTP traffic",
+              "protocol": "Tcp",
+              "sourcePortRange": "8888",
+              "destinationPortRange": "8888",
+              "sourceAddressPrefix": "*",
+              "destinationAddressPrefix": "*",
+              "access": "Allow",
+              "priority": 110,
+              "direction": "Inbound"
+            }
+          },
+          {
             "name": "HTTPS",
             "properties": {
               "description": "Allows HTTPS traffic",
@@ -71,7 +85,7 @@
               "sourceAddressPrefix": "*",
               "destinationAddressPrefix": "*",
               "access": "Allow",
-              "priority": 110,
+              "priority": 120,
               "direction": "Inbound"
             }
           }
