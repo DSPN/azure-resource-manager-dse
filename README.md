@@ -25,11 +25,12 @@ This template will deploy OpsCenter to `http://{clusterName}.{region}.cloudapp.a
 
 The OpsCenter virtual machine has port 22 for SSH, port 8888 for HTTP and port 8443 for HTTPS enabled.  
 
+##Known Issues and Limitations
+- SSL is currently commented out in the opscenter.sh file.  The SSL certificate OpsCenter uses is self signed and will likely generate a browser error.  This can be replaced with your own certificate by following the instructions here: xxxxx
+
 ##Known Issues and Limitations (P0)
 - There's an intermittent issue where OpsCenter runs an apt-get command which fails authorization. 
-- Currently logging in the shell scripts is directed to STDOUT and is not recorded.  We would prefer it be directed to the Azure audit log.
-- Errors in OpsCenter provisioning are not currently passed up to the Azure log.
-- Azure cli will return completed even while OpsCenter is still provisioning nodes.
+- There's an intermittent issue where Azure times out on setting up the cluster.
 
 ##Known Issues and Limitations (P1)
 - Deletion of a storage account takes some time (one estimate is 12 minutes) after the command is entered.  Given that, it is currently neccessary to give new clusters a different name than previously created clusters to avoid a name collision.
