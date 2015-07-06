@@ -53,6 +53,11 @@ curl -L http://debian.datastax.com/debian/repo_key | sudo apt-key add -
 apt-get update
 apt-get install opscenter
 
+# Enable SSL - uncomment webserver SSL settings and leave them set to the default
+#sed -i '/^\[webserver\]$/,/^\[/ s/^#ssl_keyfile/ssl_keyfile/' /etc/opscenter/opscenterd.conf
+#sed -i '/^\[webserver\]$/,/^\[/ s/^#ssl_certfile/ssl_certfile/' /etc/opscenter/opscenterd.conf
+#sed -i '/^\[webserver\]$/,/^\[/ s/^#ssl_port/ssl_port/' /etc/opscenter/opscenterd.conf
+
 echo "Starting OpsCenter"
 sudo service opscenterd start
 
