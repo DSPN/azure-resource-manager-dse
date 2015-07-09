@@ -79,20 +79,20 @@
     "opsCenterVmSize": "Standard_A1",
     "networkSettings": {
       "virtualNetworkName": "[parameters('clusterName')]",
-      "addressPrefix": "10.0.0.0/16",
+      "addressPrefix": "10.1.0.0/16",
       "subnet": {
         "dse": {
           "name": "dse",
-          "prefix": "10.0.0.0/24",
+          "prefix": "10.1.0.0/24",
           "vnet": "[parameters('clusterName')]"
         }
       },
       "statics": {
         "clusterRange": {
-          "base": "10.0.0.",
+          "base": "10.1.0.",
           "start": 6
         },
-        "opsCenter": "10.0.0.5"
+        "opsCenter": "10.1.0.5"
       }
     },
     "osSettings": {
