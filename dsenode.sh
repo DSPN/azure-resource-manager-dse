@@ -4,6 +4,17 @@
 echo "Partitioning and formatting all attached data disks"
 bash vm-disk-utils-0.1.sh
 
+grep -q "${HOSTNAME}" /etc/hosts
+if [ $? == 0 ];
+then
+  echo "${HOSTNAME}found in /etc/hosts"
+else
+  echo "${HOSTNAME} not found in /etc/hosts"
+  # Append it to the hsots file if not there
+  echo "127.0.0.1 ${HOSTNAME}" >> /etc/hosts
+  log "hostname ${HOSTNAME} added to /etchosts"
+fi
+
 echo "Installing Java"
 add-apt-repository -y ppa:webupd8team/java
 apt-get -y update 
