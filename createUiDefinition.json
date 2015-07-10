@@ -100,14 +100,14 @@
             "name": "opsCenterAdminPassword",
             "type": "Microsoft.Common.PasswordBox",
             "label": {
-              "password": "OpsCenter Admin password",
+              "password": "OpsCenter admin password",
               "confirmPassword": "Confirm password"
             },
-            "toolTip": "DataStax OpsCenter Admin password.",
+            "toolTip": "DataStax OpsCenter admin password.",
             "constraints": {
               "required": true,
-              "regex": "[a-zA-Z0-9]{15,15}",
-              "validationMessage": "DataStax OpsCenter passwords be 15 characters long and can contain only letters and numbers."
+              "regex": "^.{1,}$",
+              "validationMessage": "DataStax OpsCenter passwords must be atleast 1 character long and can contain letters, numbers, and special characters."
             }
           },
           {
