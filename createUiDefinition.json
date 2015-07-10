@@ -128,7 +128,7 @@
             "toolTip": "Your DataStax account username. You can register at [http://datastax.com/download](http://datastax.com/download).",
             "constraints": {
               "required": true,
-              "regex": "^[\\w+_\\w+.\\w+]{5,254}$",
+              "regex": "\\S+_\\S+\\.\\S+",
               "validationMessage": "DataStax account usernames must be between 6 and 254 characters long."
             }
           },
