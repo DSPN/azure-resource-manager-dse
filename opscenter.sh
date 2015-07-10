@@ -5,7 +5,7 @@ echo "127.0.0.1 ${HOSTNAME}" >> /etc/hosts
 
 echo "Setting default parameters"
 CLUSTER_NAME="Test Cluster"
-DSE_VERSION="4.7.0"
+DSE_VERSION="4.7.1"
 
 while getopts ":n:u:p:e:v:c:U:P:" opt; do
   echo "Option $opt set with value $OPTARG"
@@ -92,6 +92,8 @@ expand_ip_range() {
 
 NODE_IP_LIST=$(expand_ip_range "$NODE_IP_RANGE" "$NUM_NODE_IP_RANGE")
 
+date
+
 get_node_fingerprints() {
   TR=($1)
   ACCEPTED_FINGERPRINTS=""
@@ -106,6 +108,8 @@ get_node_fingerprints() {
   ACCEPTED_FINGERPRINTS="${ACCEPTED_FINGERPRINTS%?}"
   echo "$ACCEPTED_FINGERPRINTS"
 }
+
+date
 
 NODE_CONFIG_LIST="\"${NODE_IP_LIST// /\",\"}\""
 ACCEPTED_FINGERPRINTS=$(get_node_fingerprints "$NODE_IP_LIST")
