@@ -46,7 +46,7 @@
     "subnet1" : "[parameters('subnet').dse1]",
     "subnet2" : "[parameters('subnet').dse2]",
     "subnet3" : "[parameters('subnet').dse3]",
-    "subnet4" : "[parameters('subnet').dse4]",
+    "subnet4" : "[parameters('subnet').dse4]"
   },
   "resources": [
     {
