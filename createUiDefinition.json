@@ -10,7 +10,7 @@
         "toolTip": "The name of the new DataStax cluster.",
         "constraints": {
           "required": true,
-          "regex": "[a-z0-9]{3,24}",
+          "regex": "^[a-z0-9]{3,24}$",
           "validationMessage": "Cluster names must be between 3 and 24 characters long, and can contain only numbers and lowercase letters."
         }
       },
@@ -64,20 +64,12 @@
                   "value": 12
                 },
                 {
-                  "label": "30",
-                  "value": 30
+                  "label": "36",
+                  "value": 36
                 },
                 {
-                  "label": "60",
-                  "value": 60
-                },
-                {
-                  "label": "120",
-                  "value": 120
-                },
-                {
-                  "label": "120",
-                  "value": 240
+                  "label": "90",
+                  "value": 90
                 }
               ]
             }
@@ -105,13 +97,27 @@
             "count": "[basics('clusterNodeCount')]"
           },
           {
+            "name": "opsCenterAdminPassword",
+            "type": "Microsoft.Common.PasswordBox",
+            "label": {
+              "password": "OpsCenter Admin password",
+              "confirmPassword": "Confirm password"
+            },
+            "toolTip": "DataStax OpsCenter Admin password.",
+            "constraints": {
+              "required": true,
+              "regex": "[a-zA-Z0-9]{15,15}",
+              "validationMessage": "DataStax OpsCenter passwords be 15 characters long and can contain only letters and numbers."
+            }
+          },
+          {
             "name": "dataStaxUsername",
             "type": "Microsoft.Common.TextBox",
             "label": "DataStax username",
             "toolTip": "Your DataStax account username. You can register at [http://datastax.com](http://datastax.com).",
             "constraints": {
               "required": true,
-              "regex": "[a-zA-Z0-9._]{6,254}",
+              "regex": "^[a-zA-Z0-9._]{6,254}&",
               "validationMessage": "DataStax account usernames must be between 6 and 254 characters long."
             }
           },
@@ -125,7 +131,7 @@
             "toolTip": "Your DataStax account password.",
             "constraints": {
               "required": true,
-              "regex": "[a-zA-Z0-9]{15,15}",
+              "regex": "^[a-zA-Z0-9]{15,15}$",
               "validationMessage": "DataStax account passwords be 15 characters long and can contain only letters and numbers."
             }
           }
@@ -140,6 +146,7 @@
       "sshPublicKey": "[basics('adminCredentials').sshPublicKey]",
       "clusterNodeCount": "[steps('dataStaxConfig').clusterNodeCount]",
       "clusterVmSize": "[steps('dataStaxConfig').clusterVmSize]",
+      "opsCenterAdminPassword" : "[steps('dataStaxConfig').opsCenterAdminPassword]",
       "dataStaxUsername": "[steps('dataStaxConfig').dataStaxUsername]",
       "dataStaxPassword": "[steps('dataStaxConfig').dataStaxPassword]",
       "region": "[location()]"

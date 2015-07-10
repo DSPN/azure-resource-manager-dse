@@ -1,11 +1,23 @@
 #!/bin/bash
 # This script installs Oracle Java and DataStax OpsCenter.  It then deploys a DataStax Enterprise cluster using OpsCenter.
 
+# TEMP FIX - Re-evaluate and remove when possible
+# This is an interim fix for hostname resolution in current VM (If it does not exist add it)
+grep -q "${HOSTNAME}" /etc/hosts
+if [ $? == 0 ];
+then
+  echo "${HOSTNAME}found in /etc/hosts"
+else
+  echo "${HOSTNAME} not found in /etc/hosts"
+  # Append it to the hsots file if not there
+  echo "127.0.0.1 ${HOSTNAME}" >> /etc/hosts
+fi
+
 echo "Setting default parameters"
 CLUSTER_NAME="Test Cluster"
 DSE_VERSION="4.7.0"
 
-while getopts ":n:u:p:e:v:U:P:" opt; do
+while getopts ":n:u:p:e:v:c:U:P:" opt; do
   echo "Option $opt set with value $OPTARG"
   case $opt in
     n)
@@ -23,6 +35,10 @@ while getopts ":n:u:p:e:v:U:P:" opt; do
       # List of successive cluster IP addresses represented as the starting address and a count used to increment the last octet (for example 10.0.0.5-3)
       NODE_IP_RANGE=$OPTARG
       ;;
+    c)
+      # Number of successive cluster IP addresses sent for NODE_IP_RANGE
+      NUM_NODE_IP_RANGE=$OPTARG
+      ;;
     v) 
       DSE_VERSION=$OPTARG
       ;;
@@ -39,8 +55,6 @@ while getopts ":n:u:p:e:v:U:P:" opt; do
       ;;
   esac
 done
-
-echo "127.0.0.1 $HOSTNAME >> /etc/hosts
 
 echo "Installing Java"
 add-apt-repository -y ppa:webupd8team/java
@@ -67,21 +81,27 @@ sudo service opscenterd start
 #### Now that we have OpsCenter installed, let's configure our cluster. #####
 #############################################################################
 
-# Expand an IP range. 10.0.0.5-3 would be converted to "10.0.0.5 10.0.0.6 10.0.0.7"
+# Expand an IP range. 10.0.0.5-2;10.0.1.5-2; would be converted to "10.0.0.5 10.0.0.6 10.0.1.5 10.0.1.6"
 expand_ip_range() {
-  IFS='-' read -a IP_RANGE <<< "$1"
-  BASE_IP=`echo ${IP_RANGE[0]} | cut -d"." -f1-3`
-  LAST_OCTET=`echo ${IP_RANGE[0]} | cut -d"." -f4-4`
+  IFS=';' read -a IP_LIST <<< "$1"
 
-  for (( n=LAST_OCTET; n<("${IP_RANGE[1]}"+LAST_OCTET) ; n++))
+  for (( k=0; k<$2 ; k++))
   do
-    HOST="${BASE_IP}.${n}"
-    EXPAND_STATICIP_RANGE_RESULTS+=($HOST)
+    IFS='-' read -a IP_RANGE <<< "${IP_LIST[${k}]}"
+    BASE_IP=`echo ${IP_RANGE[0]} | cut -d"." -f1-3`
+    LAST_OCTET=`echo ${IP_RANGE[0]} | cut -d"." -f4-4`
+    echo "${IP_RANGE[0]} ${IP_RANGE[1]} ${LAST_OCTET}"
+
+    for (( n=LAST_OCTET; n<("${IP_RANGE[1]}"+LAST_OCTET) ; n++))
+    do
+      HOST="${BASE_IP}.${n}"
+      EXPAND_STATICIP_RANGE_RESULTS+=($HOST)
+    done
   done
   echo "${EXPAND_STATICIP_RANGE_RESULTS[@]}"
 }
 
-NODE_IP_LIST=$(expand_ip_range "$NODE_IP_RANGE")
+NODE_IP_LIST=$(expand_ip_range "$NODE_IP_RANGE" "$NUM_NODE_IP_RANGE")
 
 get_node_fingerprints() {
   TR=($1)

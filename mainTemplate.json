@@ -21,7 +21,8 @@
       "allowedValues": [
         4,
         12,
-        36
+        36,
+        90
       ],
       "metadata": {
         "description": "The number of virtual machines to provision for the cluster"
@@ -31,7 +32,6 @@
       "type": "string",
       "defaultValue": "Standard_D12",
       "allowedValues": [
-        "Standard_D3",
         "Standard_D12",
         "Standard_D13",
         "Standard_D14",
@@ -52,8 +52,33 @@
     },
     "adminPassword": {
       "type": "securestring",
+      "defaultValue" : "",
       "metadata": {
         "description": "Admin password for the virtual machines"
+      }
+    },
+    "sshPublicKey" : {
+      "type" : "string",
+      "defaultValue" : "",
+      "metadata" : {
+        "description" : "SSH Key for the virtual machines"
+      }
+    },
+    "authenticationType" : {
+      "type": "string",
+      "defaultValue" : "password",
+      "allowedValues" : [
+        "password",
+        "sshPublicKey"
+      ],
+      "metadata": {
+        "description": "Authentication Type to chose for the Virtual Machines"
+      }
+    },
+    "opsCenterAdminPassword" : {
+      "type": "securestring",
+      "metadata": {
+        "description": "Password for the OpsCenter Login."
       }
     },
     "dataStaxUsername": {
@@ -72,26 +97,94 @@
   "variables": {
     "templateBaseUrl": "https://raw.githubusercontent.com/DSPN/azure-arm-dse/master/",
     "sharedTemplateUrl": "[concat(variables('templateBaseUrl'), 'shared-resources.json')]",
-    "clusterNodesTemplateUrl": "[concat(variables('templateBaseUrl'), 'dse-nodes-resources.json')]",
-    "opsCenterTemplateUrl": "[concat(variables('templateBaseUrl'), 'opscenter-resources.json')]",
+    "clusterNodesBaseTemplateUrl": "[concat(variables('templateBaseUrl'), 'dse-nodes-base-resources.json')]",
+    "clusterNodesTemplateUrl": "[concat(variables('templateBaseUrl'), 'dse-nodes-specific-resources-',parameters('authenticationType'),'.json')]",
+    "opsCenterTemplateUrl": "[concat(variables('templateBaseUrl'), 'opscenter-resources-',parameters('authenticationType'),'.json')]",
     "opsCenterInstallTemplateUrl": "[concat(variables('templateBaseUrl'), 'opscenter-install-resources.json')]",
     "opsCenterVmSize": "Standard_A1",
+    "clusterSpec" : "[variables(concat('clusterSize',parameters('clusterNodeCount')))]",
+    "clusterSize4" : {
+      "storageAccountCount" : 1,
+      "vmCount" : 4,
+      "nodeList": "[concat(variables('networkSettings').subnet.dse0.statics.clusterRange.base, variables('networkSettings').subnet.dse0.statics.clusterRange.start, '-', parameters('clusterNodeCount'))]"
+    },
+    "clusterSize12" : {
+      "storageAccountCount" : 1,
+      "vmCount" : 12,
+      "nodeList": "[concat(variables('networkSettings').subnet.dse0.statics.clusterRange.base, variables('networkSettings').subnet.dse0.statics.clusterRange.start, '-', parameters('clusterNodeCount'))]"
+    },
+    "clusterSize36" : {
+      "storageAccountCount" : 2,
+      "vmCount" : 18,
+      "nodeList": "[concat(variables('networkSettings').subnet.dse0.statics.clusterRange.base, variables('networkSettings').subnet.dse0.statics.clusterRange.start, '-18', ';', variables('networkSettings').subnet.dse1.statics.clusterRange.base, variables('networkSettings').subnet.dse1.statics.clusterRange.start, '-18')]"
+    },
+    "clusterSize90" : {
+      "storageAccountCount" : 5,
+      "vmCount" : 18,
+      "nodeList": "[concat(variables('networkSettings').subnet.dse0.statics.clusterRange.base, variables('networkSettings').subnet.dse0.statics.clusterRange.start, '-18', ';', variables('networkSettings').subnet.dse1.statics.clusterRange.base, variables('networkSettings').subnet.dse1.statics.clusterRange.start, '-18',';',variables('networkSettings').subnet.dse2.statics.clusterRange.base, variables('networkSettings').subnet.dse2.statics.clusterRange.start, '-18',';',variables('networkSettings').subnet.dse3.statics.clusterRange.base, variables('networkSettings').subnet.dse3.statics.clusterRange.start, '-18',';',variables('networkSettings').subnet.dse4.statics.clusterRange.base, variables('networkSettings').subnet.dse4.statics.clusterRange.start, '-18')]"
+    },
     "networkSettings": {
       "virtualNetworkName": "[parameters('clusterName')]",
-      "addressPrefix": "10.1.0.0/16",
+      "addressPrefix": "10.0.0.0/16",
       "subnet": {
-        "dse": {
-          "name": "dse",
-          "prefix": "10.1.0.0/24",
-          "vnet": "[parameters('clusterName')]"
+        "dse0": {
+          "name": "dse0",
+          "prefix": "10.0.0.0/24",
+          "vnet": "[parameters('clusterName')]",
+          "statics": {
+            "clusterRange": {
+              "base": "10.0.0.",
+              "start": 6
+            }
+          }
+        },
+        "dse1": {
+          "name": "dse1",
+          "prefix": "10.0.1.0/24",
+          "vnet": "[parameters('clusterName')]",
+          "statics": {
+            "clusterRange": {
+              "base": "10.0.1.",
+              "start": 6
+            }
+          }
+        },
+        "dse2": {
+          "name": "dse2",
+          "prefix": "10.0.2.0/24",
+          "vnet": "[parameters('clusterName')]",
+          "statics": {
+            "clusterRange": {
+              "base": "10.0.2.",
+              "start": 6
+            }
+          }
+        },
+        "dse3": {
+          "name": "dse3",
+          "prefix": "10.0.3.0/24",
+          "vnet": "[parameters('clusterName')]",
+          "statics": {
+            "clusterRange": {
+              "base": "10.0.3.",
+              "start": 6
+            }
+          }
+        },
+        "dse4": {
+          "name": "dse4",
+          "prefix": "10.0.4.0/24",
+          "vnet": "[parameters('clusterName')]",
+          "statics": {
+            "clusterRange": {
+              "base": "10.0.4.",
+              "start": 6
+            }
+          }
         }
       },
-      "statics": {
-        "clusterRange": {
-          "base": "10.1.0.",
-          "start": 6
-        },
-        "opsCenter": "10.1.0.5"
+      "opsCenterStatics": {
+        "opsCenter": "10.0.0.5"
       }
     },
     "osSettings": {
@@ -107,8 +200,7 @@
         "[concat(variables('templateBaseUrl'), 'vm-disk-utils-0.1.sh')]"
       ]
     },
-    "sharedStorageAccountName": "[concat(parameters('clusterName'),'cmn')]",
-    "nodeList": "[concat(variables('networkSettings').statics.clusterRange.base, variables('networkSettings').statics.clusterRange.start, '-', parameters('clusterNodeCount'))]"
+    "sharedStorageAccountName": "[concat(parameters('clusterName'),'cmn')]"
   },
   "resources": [
     {
@@ -144,7 +236,7 @@
       "properties": {
         "mode": "Incremental",
         "templateLink": {
-          "uri": "[variables('clusterNodesTemplateUrl')]",
+          "uri": "[variables('clusterNodesBaseTemplateUrl')]",
           "contentVersion": "1.0.0.0"
         },
         "parameters": {
@@ -164,19 +256,25 @@
             "value": "[parameters('clusterVmSize')]"
           },
           "subnet": {
-            "value": "[variables('networkSettings').subnet.dse]"
+            "value": "[variables('networkSettings').subnet]"
           },
           "osSettings": {
             "value": "[variables('osSettings')]"
           },
-          "staticIps": {
-            "value": "[variables('networkSettings').statics.clusterRange]"
-          },
           "nodeCount": {
-            "value": "[parameters('clusterNodeCount')]"
+            "value": "[variables('clusterSpec').vmCount]"
           },
           "namespace": {
             "value": "dc1"
+          },
+          "storageCount" : {
+            "value" : "[variables('clusterSpec').storageAccountCount]"
+          },
+          "templateUrl" : {
+            "value" : "[variables('clusterNodesTemplateUrl')]"
+          },
+          "sshkeyData" : {
+            "value" : "[parameters('sshPublicKey')]"
           }
         }
       }
@@ -185,6 +283,9 @@
       "name": "ops-center-nodes",
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2015-01-01",
+      "dependsOn": [
+        "[concat('Microsoft.Resources/deployments/', 'shared')]"
+      ],
       "properties": {
         "mode": "Incremental",
         "templateLink": {
@@ -208,19 +309,22 @@
             "value": "opc"
           },
           "staticIp": {
-            "value": "[variables('networkSettings').statics.opsCenter]"
+            "value": "[variables('networkSettings').opsCenterStatics.opsCenter]"
           },
           "region": {
             "value": "[parameters('region')]"
           },
           "subnet": {
-            "value": "[variables('networkSettings').subnet.dse]"
+            "value": "[variables('networkSettings').subnet.dse0]"
           },
           "vmSize": {
             "value": "[variables('opsCenterVmSize')]"
           },
           "osSettings": {
             "value": "[variables('osSettings')]"
+          },
+          "sshkeyData" : {
+            "value" : "[parameters('sshPublicKey')]"
           }
         }
       }
@@ -244,7 +348,7 @@
             "value": "[parameters('adminUsername')]"
           },
           "adminPassword": {
-            "value": "[parameters('adminPassword')]"
+            "value": "[parameters('opsCenterAdminPassword')]"
           },
           "namespace": {
             "value": "opc"
@@ -257,7 +361,8 @@
           },
           "opsCenterSettings": {
             "value": {
-              "nodeList": "[variables('nodeList')]",
+              "nodeList": "[variables('clusterSpec').nodeList]",
+              "subnetCount" : "[variables('clusterSpec').storageAccountCount]",
               "dataStaxUsername": "[parameters('dataStaxUsername')]",
               "dataStaxPassword": "[parameters('dataStaxPassword')]"
             }
