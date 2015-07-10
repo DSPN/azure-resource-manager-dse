@@ -80,7 +80,6 @@ expand_ip_range() {
     IFS='-' read -a IP_RANGE <<< "${IP_LIST[${k}]}"
     BASE_IP=`echo ${IP_RANGE[0]} | cut -d"." -f1-3`
     LAST_OCTET=`echo ${IP_RANGE[0]} | cut -d"." -f4-4`
-    echo "${IP_RANGE[0]} ${IP_RANGE[1]} ${LAST_OCTET}"
 
     for (( n=LAST_OCTET; n<("${IP_RANGE[1]}"+LAST_OCTET) ; n++))
     do
