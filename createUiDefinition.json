@@ -94,7 +94,7 @@
               "offer": "UbuntuServer",
               "sku": "14.04.2-LTS"
             },
-            "count": "[basics('clusterNodeCount')]"
+            "count": "[steps('dataStaxConfig').clusterNodeCount]"
           },
           {
             "name": "opsCenterAdminPassword",
@@ -103,11 +103,11 @@
               "password": "OpsCenter admin password",
               "confirmPassword": "Confirm password"
             },
-            "toolTip": "DataStax OpsCenter admin password.",
+            "toolTip": "The password for the OpsCenter admin account. [Learn more](http://docs.datastax.com/en/opscenter/5.0/opsc/online_help/opscLoggingInOut.html)", 
             "constraints": {
               "required": true,
               "regex": "^.{1,}$",
-              "validationMessage": "DataStax OpsCenter passwords must be atleast 1 character long and can contain letters, numbers, and special characters."
+              "validationMessage": "DataStax OpsCenter passwords must be at least 1 character long and can contain letters, numbers, and special characters."
             }
           },
           {
@@ -117,7 +117,7 @@
             "toolTip": "Your DataStax account username. You can register at [http://datastax.com](http://datastax.com).",
             "constraints": {
               "required": true,
-              "regex": "^[a-zA-Z0-9._]{6,254}&",
+              "regex": "^[a-zA-Z0-9._]{6,254}$",
               "validationMessage": "DataStax account usernames must be between 6 and 254 characters long."
             }
           },

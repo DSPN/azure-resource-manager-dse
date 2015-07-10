@@ -184,7 +184,7 @@ EOF
 cat provision.json > /var/log/azure/provision.json
 
 # Give OpsCenter a bit to come up and then provision a new cluster
-sleep 15
+sleep 200
 echo "Calling OpsCenter with curl."
 curl -H "Accept: application/json" -X POST http://127.0.0.1:8888/provision -d @provision.json
 
