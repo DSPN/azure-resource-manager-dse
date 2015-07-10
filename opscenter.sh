@@ -1,8 +1,6 @@
 #!/bin/bash
 # This script installs Oracle Java and DataStax OpsCenter.  It then deploys a DataStax Enterprise cluster using OpsCenter.
 
-echo "127.0.0.1 ${HOSTNAME}" >> /etc/hosts
-
 echo "Setting default parameters"
 CLUSTER_NAME="Test Cluster"
 DSE_VERSION="4.7.0"
@@ -46,6 +44,22 @@ while getopts ":n:u:p:e:v:c:U:P:" opt; do
   esac
 done
 
+IFS='-' read -a IP_RANGE <<< "${NODE_IP_RANGE}"
+NODE_COUNT="${IP_RANGE[1]}"
+
+echo "127.0.0.1 ${HOSTNAME}" >> /etc/hosts
+echo "127.0.0.1 localhost.localdomain localhost" >> /etc/hosts
+echo "10.0.0.5  opcvm" >> /etc/hosts
+echo '*/1 * * * * sudo service walinuxagent start' > cronjob
+crontab cronjob
+for (( i=0; i<$NUM_NODE_IP_RANGE ; i++))
+do
+    for (( j=0; j<$NODE_COUNT ; j++))
+    do
+        echo "10.0.$i.$(expr $j + 6)  dc${i}vm${j}" >> /etc/hosts
+    done
+done
+
 echo "Installing Java"
 add-apt-repository -y ppa:webupd8team/java
 apt-get -y update 
@@ -60,9 +74,9 @@ apt-get update
 apt-get install opscenter
 
 # Enable SSL - uncomment webserver SSL settings and leave them set to the default
-#sed -i '/^\[webserver\]$/,/^\[/ s/^#ssl_keyfile/ssl_keyfile/' /etc/opscenter/opscenterd.conf
-#sed -i '/^\[webserver\]$/,/^\[/ s/^#ssl_certfile/ssl_certfile/' /etc/opscenter/opscenterd.conf
-#sed -i '/^\[webserver\]$/,/^\[/ s/^#ssl_port/ssl_port/' /etc/opscenter/opscenterd.conf
+sed -i '/^\[webserver\]$/,/^\[/ s/^#ssl_keyfile/ssl_keyfile/' /etc/opscenter/opscenterd.conf
+sed -i '/^\[webserver\]$/,/^\[/ s/^#ssl_certfile/ssl_certfile/' /etc/opscenter/opscenterd.conf
+sed -i '/^\[webserver\]$/,/^\[/ s/^#ssl_port/ssl_port/' /etc/opscenter/opscenterd.conf
 
 echo "Starting OpsCenter"
 sudo service opscenterd start
@@ -92,8 +106,6 @@ expand_ip_range() {
 
 NODE_IP_LIST=$(expand_ip_range "$NODE_IP_RANGE" "$NUM_NODE_IP_RANGE")
 
-date
-
 get_node_fingerprints() {
   TR=($1)
   ACCEPTED_FINGERPRINTS=""
@@ -108,8 +120,6 @@ get_node_fingerprints() {
   ACCEPTED_FINGERPRINTS="${ACCEPTED_FINGERPRINTS%?}"
   echo "$ACCEPTED_FINGERPRINTS"
 }
-
-date
 
 NODE_CONFIG_LIST="\"${NODE_IP_LIST// /\",\"}\""
 ACCEPTED_FINGERPRINTS=$(get_node_fingerprints "$NODE_IP_LIST")
