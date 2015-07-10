@@ -88,6 +88,17 @@
               "Standard_G4",
               "Standard_G5"
             ],
+            "constraints": {
+              "allowedSizes": [
+                "Standard_D12",
+                "Standard_D13",
+                "Standard_D14",
+                "Standard_G2",
+                "Standard_G3",
+                "Standard_G4",
+                "Standard_G5" 
+              ]
+            },
             "osPlatform": "Linux",
             "imageReference": {
               "publisher": "Canonical",
@@ -114,7 +125,7 @@
             "name": "dataStaxUsername",
             "type": "Microsoft.Common.TextBox",
             "label": "DataStax username",
-            "toolTip": "Your DataStax account username. You can register at [http://datastax.com](http://datastax.com).",
+            "toolTip": "Your DataStax account username. You can register at [http://datastax.com/download](http://datastax.com/download).",
             "constraints": {
               "required": true,
               "regex": "^[a-zA-Z0-9._]{6,254}$",
@@ -133,6 +144,9 @@
               "required": true,
               "regex": "^[a-zA-Z0-9]{15,15}$",
               "validationMessage": "DataStax account passwords be 15 characters long and can contain only letters and numbers."
+            },
+            "options": {
+              "hideConfirmation": false
             }
           }
         ]
