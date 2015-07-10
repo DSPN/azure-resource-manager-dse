@@ -1,12 +1,12 @@
 {
   "clusterName": {
-    "value": "bencluster22"
+    "value": "bencluster30"
   },
   "region": {
     "value": "East Asia"
   },
   "clusterNodeCount": {
-    "value": 36
+    "value": 4
   },
   "clusterVmSize": {
     "value": "Standard_D12"
@@ -23,6 +23,8 @@
   "dataStaxPassword": {
     "value": ""
   },
-  "opsCenterAdminPassword"
+  "opsCenterAdminPassword": {
+    "value": ""
+  }
 }
 
