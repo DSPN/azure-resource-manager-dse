@@ -146,7 +146,7 @@
               "validationMessage": "DataStax account passwords be 15 characters long and can contain only letters and numbers."
             },
             "options": {
-              "hideConfirmation": false
+              "hideConfirmation": true
             }
           }
         ]
