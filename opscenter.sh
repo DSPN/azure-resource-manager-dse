@@ -107,6 +107,8 @@ expand_ip_range() {
 
 NODE_IP_LIST=$(expand_ip_range "$NODE_IP_RANGE" "$NUM_NODE_IP_RANGE")
 
+date
+
 get_node_fingerprints() {
   TR=($1)
   ACCEPTED_FINGERPRINTS=""
@@ -121,6 +123,8 @@ get_node_fingerprints() {
   ACCEPTED_FINGERPRINTS="${ACCEPTED_FINGERPRINTS%?}"
   echo "$ACCEPTED_FINGERPRINTS"
 }
+
+date
 
 NODE_CONFIG_LIST="\"${NODE_IP_LIST// /\",\"}\""
 ACCEPTED_FINGERPRINTS=$(get_node_fingerprints "$NODE_IP_LIST")
