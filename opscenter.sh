@@ -44,7 +44,8 @@ while getopts ":n:u:p:e:v:c:U:P:" opt; do
   esac
 done
 
-IFS='-' read -a IP_RANGE <<< "${NODE_IP_RANGE}"
+IFS=';' read -a IP_LIST <<< "${NODE_IP_RANGE}"
+IFS='-' read -a IP_RANGE <<< "${IP_LIST[0]}"
 NODE_COUNT="${IP_RANGE[1]}"
 
 echo "127.0.0.1 ${HOSTNAME}" >> /etc/hosts
