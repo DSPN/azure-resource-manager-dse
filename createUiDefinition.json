@@ -31,7 +31,7 @@
           "sshPublicKey": "SSH public key"
         },
         "toolTip": {
-          "password": "Admin password for the virtual machines and OpsCenter.",
+          "password": "Admin password for the virtual machines.",
           "sshPublicKey": "SSH public key for the virtual machines."
         },
         "osPlatform": "Linux"
@@ -125,7 +125,7 @@
             "name": "dataStaxUsername",
             "type": "Microsoft.Common.TextBox",
             "label": "DataStax username",
-            "toolTip": "Your DataStax account username. You can register at [http://datastax.com/download](http://datastax.com/download).",
+            "toolTip": "Your DataStax account username. If you don't have an account, you can create one at [http://datastax.com/download](http://datastax.com/download).",            
             "constraints": {
               "required": true,
               "regex": "^[\\S+_\\S+\\.\\S+]{5,254}$",
@@ -143,7 +143,7 @@
             "constraints": {
               "required": true,
               "regex": "^[a-zA-Z0-9]{15,15}$",
-              "validationMessage": "DataStax account passwords be 15 characters long and can contain only letters and numbers."
+              "validationMessage": "DataStax account passwords are exactly 15 characters long and can contain only letters and numbers."
             },
             "options": {
               "hideConfirmation": true
