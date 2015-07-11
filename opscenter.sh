@@ -1,8 +1,6 @@
 #!/bin/bash
 # This script installs Oracle Java and DataStax OpsCenter.  It then deploys a DataStax Enterprise cluster using OpsCenter.
 
-echo "127.0.0.1 ${HOSTNAME}" >> /etc/hosts
-
 echo "Setting default parameters"
 CLUSTER_NAME="Test Cluster"
 DSE_VERSION="4.7.0"
@@ -44,6 +42,23 @@ while getopts ":n:u:p:e:v:c:U:P:" opt; do
       echo "Invalid option: -$OPTARG"
       ;;
   esac
+done
+
+IFS=';' read -a IP_LIST <<< "${NODE_IP_RANGE}"
+IFS='-' read -a IP_RANGE <<< "${IP_LIST[0]}"
+NODE_COUNT="${IP_RANGE[1]}"
+
+echo "127.0.0.1 ${HOSTNAME}" >> /etc/hosts
+echo "127.0.0.1 localhost.localdomain localhost" >> /etc/hosts
+echo "10.0.0.5  opcvm" >> /etc/hosts
+echo '*/1 * * * * sudo service walinuxagent start' > cronjob
+crontab cronjob
+for (( i=0; i<$NUM_NODE_IP_RANGE ; i++))
+do
+    for (( j=0; j<$NODE_COUNT ; j++))
+    do
+        echo "10.0.$i.$(expr $j + 6)  dc${i}vm${j}" >> /etc/hosts
+    done
 done
 
 echo "Installing Java"

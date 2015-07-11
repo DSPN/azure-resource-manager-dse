@@ -37,6 +37,9 @@
     },
     "sshKeyData" : {
       "type" : "string"
+    },
+    "nodeListSettings" : {
+      "type" : "object"
     }
   },
   "variables": {
@@ -123,6 +126,9 @@
           },
           "sshKeyData" : {
             "value" : "[parameters('sshKeyData')]"
+          },
+          "nodeListSettings" : {
+            "value" : "[parameters('nodeListSettings')]"
           }
         }
       }
@@ -130,4 +136,3 @@
   ],
   "outputs": {}
 }
-
