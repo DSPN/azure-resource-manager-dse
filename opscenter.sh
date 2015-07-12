@@ -110,8 +110,6 @@ expand_ip_range() {
 
 NODE_IP_LIST=$(expand_ip_range "$NODE_IP_RANGE" "$NUM_NODE_IP_RANGE")
 
-date
-
 get_node_fingerprints() {
   TR=($1)
   ACCEPTED_FINGERPRINTS=""
@@ -126,8 +124,6 @@ get_node_fingerprints() {
   ACCEPTED_FINGERPRINTS="${ACCEPTED_FINGERPRINTS%?}"
   echo "$ACCEPTED_FINGERPRINTS"
 }
-
-date
 
 NODE_CONFIG_LIST="\"${NODE_IP_LIST// /\",\"}\""
 ACCEPTED_FINGERPRINTS=$(get_node_fingerprints "$NODE_IP_LIST")
@@ -208,8 +204,12 @@ cat provision.json > /var/log/azure/provision.json
 # Give OpsCenter a bit to come up and then provision a new cluster
 sleep 200
 
+# Login and get session token
 AUTH_SESSION=$(curl -k -X POST -d '{"username":"admin","password":"admin"}' 'https://127.0.0.1:8443/login' | sed -e 's/^.*"sessionid"[ ]*:[ ]*"//' -e 's/".*//')
 
-curl --insecure -H "Accept: application/json" -X POST https://127.0.0.1:8443/provision -d @provision.json
+# Provision a new cluster with the nodes passed
+curl -k -H "opscenter-session: $AUTH_SESSION" -H "Accept: application/json" -X POST https://127.0.0.1:8443/provision -d @provision.json
 
-curl -insecure -H "opscenter-session: $AUTH_SESSION" -H "Accept: application/json" -d "{\"password\": \"$ADMIN_PASSWORD\", \"role\": \"admin\" }" -X PUT https://127.0.0.1:8443/users/admin
+#Update the admin password with the one passed as parameter
+curl -k -H "opscenter-session: $AUTH_SESSION" -H "Accept: application/json" -d "{\"password\": \"$ADMIN_PASSWORD\", \"role\": \"admin\" }" -X PUT https://127.0.0.1:8443/users/admin
+
