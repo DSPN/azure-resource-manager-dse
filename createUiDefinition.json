@@ -22,19 +22,21 @@
         "osPlatform": "Linux"
       },
       {
-        "name": "adminCredentials",
-        "type": "Microsoft.Compute.CredentialsCombo",
+        "name": "adminPassword",
+        "type": "Microsoft.Common.PasswordBox",
         "label": {
-          "authenticationType": "Authentication type",
           "password": "Password",
-          "confirmPassword": "Confirm password",
-          "sshPublicKey": "SSH public key"
+          "confirmPassword": "Confirm password"
         },
-        "toolTip": {
-          "password": "Admin password for the virtual machines and OpsCenter.",
-          "sshPublicKey": "SSH public key for the virtual machines."
+        "toolTip": "Admin password for the virtual machines and the OpsCenter admin account.",
+        "constraints": {
+          "required": true,
+          "regex": "^(?:(?=.*[a-z])(?:(?=.*[A-Z])(?=.*[\\d\\W])|(?=.*\\W)(?=.*\\d))|(?=.*\\W)(?=.*[A-Z])(?=.*\\d)).{6,72}$",
+          "validationMessage": "The password must be between 6 and 72 characters long, and contain characters from at least 3 of the following groups: uppercase characters, lowercase characters, numbers, and special characters."
         },
-        "osPlatform": "Linux"
+        "options": {
+          "hideConfirmation": false
+        }
       }
     ],
     "steps": [
@@ -66,10 +68,6 @@
                 {
                   "label": "36",
                   "value": 36
-                },
-                {
-                  "label": "90",
-                  "value": 90
                 }
               ]
             }
@@ -96,7 +94,7 @@
                 "Standard_G2",
                 "Standard_G3",
                 "Standard_G4",
-                "Standard_G5" 
+                "Standard_G5"
               ]
             },
             "osPlatform": "Linux",
@@ -108,28 +106,14 @@
             "count": "[steps('dataStaxConfig').clusterNodeCount]"
           },
           {
-            "name": "opsCenterAdminPassword",
-            "type": "Microsoft.Common.PasswordBox",
-            "label": {
-              "password": "OpsCenter admin password",
-              "confirmPassword": "Confirm password"
-            },
-            "toolTip": "The password for the OpsCenter admin account. [Learn more](http://docs.datastax.com/en/opscenter/5.0/opsc/online_help/opscLoggingInOut.html)", 
-            "constraints": {
-              "required": true,
-              "regex": "^.{1,}$",
-              "validationMessage": "DataStax OpsCenter passwords must be at least 1 character long and can contain letters, numbers, and special characters."
-            }
-          },
-          {
             "name": "dataStaxUsername",
             "type": "Microsoft.Common.TextBox",
             "label": "DataStax username",
-            "toolTip": "Your DataStax account username. You can register at [http://datastax.com/download](http://datastax.com/download).",
+            "toolTip": "Your DataStax account username. If you don't have an account, you can create one at [http://datastax.com/download](http://datastax.com/download).",
             "constraints": {
               "required": true,
-              "regex": "^[\\S+_\\S+\\.\\S+]{5,254}$",
-              "validationMessage": "DataStax account usernames must be between 6 and 254 characters long."
+              "regex": "^(\\S+_\\S+\\.\\S+){0,254}$",
+              "validationMessage": "Not a valid DataStax account username. If you don't have an account, you can create one at [http://datastax.com/download](http://datastax.com/download)."
             }
           },
           {
@@ -142,8 +126,8 @@
             "toolTip": "Your DataStax account password.",
             "constraints": {
               "required": true,
-              "regex": "^[a-zA-Z0-9]{15,15}$",
-              "validationMessage": "DataStax account passwords be 15 characters long and can contain only letters and numbers."
+              "regex": "^[a-zA-Z0-9]{15}$",
+              "validationMessage": "DataStax account passwords are exactly 15 characters long and can contain only letters and numbers."
             },
             "options": {
               "hideConfirmation": true
@@ -155,16 +139,13 @@
     "outputs": {
       "clusterName": "[basics('clusterName')]",
       "adminUsername": "[basics('adminUsername')]",
-      "authenticationType": "[basics('adminCredentials').authenticationType]",
-      "adminPassword": "[basics('adminCredentials').password]",
-      "sshPublicKey": "[basics('adminCredentials').sshPublicKey]",
+      "adminPassword": "[basics('adminPassword')]",
       "clusterNodeCount": "[steps('dataStaxConfig').clusterNodeCount]",
       "clusterVmSize": "[steps('dataStaxConfig').clusterVmSize]",
-      "opsCenterAdminPassword" : "[steps('dataStaxConfig').opsCenterAdminPassword]",
+      "opsCenterAdminPassword" : "[basics('adminUsername')]",
       "dataStaxUsername": "[steps('dataStaxConfig').dataStaxUsername]",
       "dataStaxPassword": "[steps('dataStaxConfig').dataStaxPassword]",
       "region": "[location()]"
     }
   }
 }
-

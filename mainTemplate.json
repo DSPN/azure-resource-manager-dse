@@ -21,8 +21,7 @@
       "allowedValues": [
         4,
         12,
-        36,
-        90
+        36
       ],
       "metadata": {
         "description": "The number of virtual machines to provision for the cluster"
@@ -92,10 +91,17 @@
       "metadata": {
         "description": "Your DataStax account password.  You can register at http://datastax.com/"
       }
+    },
+    "artifactsBaseUrl" : {
+      "type" : "string",
+      "metadata" : {
+        "artifactsBaseUrl" : "Base URL of the DataStax Template gallery package"
+      },
+      "defaultValue" : ""
     }
   },
   "variables": {
-    "templateBaseUrl": "https://raw.githubusercontent.com/DSPN/azure-arm-dse/master/",
+    "templateBaseUrl": "[concat(parameters('artifactsBaseUrl'),'/')]",
     "sharedTemplateUrl": "[concat(variables('templateBaseUrl'), 'shared-resources.json')]",
     "clusterNodesBaseTemplateUrl": "[concat(variables('templateBaseUrl'), 'dse-nodes-base-resources.json')]",
     "clusterNodesTemplateUrl": "[concat(variables('templateBaseUrl'), 'dse-nodes-specific-resources-',parameters('authenticationType'),'.json')]",
