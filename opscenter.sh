@@ -74,6 +74,9 @@ curl -L http://debian.datastax.com/debian/repo_key | sudo apt-key add -
 apt-get update
 apt-get install opscenter
 
+# Enable authentication in /etc/opscenter/opscenterd.conf
+sed -i '/^\[authentication\]$/,/^\[/ s/^enabled = False/enabled = True/' /etc/opscenter/opscenterd.conf
+
 # Enable SSL - uncomment webserver SSL settings and leave them set to the default
 sed -i '/^\[webserver\]$/,/^\[/ s/^#ssl_keyfile/ssl_keyfile/' /etc/opscenter/opscenterd.conf
 sed -i '/^\[webserver\]$/,/^\[/ s/^#ssl_certfile/ssl_certfile/' /etc/opscenter/opscenterd.conf
@@ -205,8 +208,8 @@ cat provision.json > /var/log/azure/provision.json
 # Give OpsCenter a bit to come up and then provision a new cluster
 sleep 200
 
-echo "Calling OpsCenter with curl."
+AUTH_SESSION=$(curl -k -X POST -d '{"username":"admin","password":"admin"}' 'https://127.0.0.1:8443/login' | sed -e 's/^.*"sessionid"[ ]*:[ ]*"//' -e 's/".*//')
+
 curl --insecure -H "Accept: application/json" -X POST https://127.0.0.1:8443/provision -d @provision.json
 
-echo "Updating the admin password with the one passed as parameter."
 curl -insecure -H "opscenter-session: $AUTH_SESSION" -H "Accept: application/json" -d "{\"password\": \"$ADMIN_PASSWORD\", \"role\": \"admin\" }" -X PUT https://127.0.0.1:8443/users/admin
