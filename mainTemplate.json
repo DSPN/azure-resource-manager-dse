@@ -10,6 +10,7 @@
     },
     "region": {
       "type": "string",
+      "defaultValue" : "East Asia",
       "metadata": {
         "description": "Region where the Azure artifacts will be created"
       }
@@ -382,5 +383,10 @@
       }
     }
   ],
-  "outputs": {}
+  "outputs": {
+    "fqdn": {
+      "type": "string",
+      "value": "[reference(variables('publicIPAddressName')).dnsSettings.fqdn]"
+    }
+  }
 }
