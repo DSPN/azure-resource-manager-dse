@@ -1,0 +1,32 @@
+{
+  "clusterName": {
+    "value": "dxwus0401"
+  },
+  "region": {
+    "value": "westus"
+  },
+  "clusterNodeCount": {
+    "value": 4
+  },
+  "clusterVmSize": {
+    "value": "Standard_D12"
+  },
+  "adminUsername": {
+    "value": "cloudguy"
+  },
+  "sshPublicKey" : {
+    "value" : "ssh-rsa AAAAB3NzaC1yc2EAAAABJQAAAQEAnQnCv9BdhEhwp6Qp2c/HpVZfh5RiZHhNSWOcQ+FywF0lW8ayrsSqQBpzWvW0UgKvY6MS7enHbOg4ukcXQqyuK2T8BTjDoXnLscpJNmIywPdXTGpdp0zD4oSn+RnEIyNiitG+0TDiGDZwJL0x2LoNlx0UJPre2GdhNZ5ArFBmuPAHw4LFuaxolX9V+54YBfbWUMmUDP541VgVQre7bvmNm0nypGMnRbVDRj6vd5eqwV7DOmmfkzyIKJOlZbOolwhfl2cebrOPXkLi2kQGN3SCC2Jg8qQEJWPgBDd+qZPCOneM1xtEG5h9oA6147TjMC6gISzN4Zz7DFS2Kj5Kj6oKOQ== rsa-key-20150709"
+  },
+  "datastaxUsername": {
+    "value":"mahthi_microsoft.com"
+  },
+  "datastaxPassword": {
+    "value": "gC0eLGFaDDyMXk8"
+  },
+  "opsCenterAdminPassword":{
+    "value" : "abc_123!"
+  },
+  "authenticationType" : {
+    "value" : "sshPublicKey"
+  }
+}
