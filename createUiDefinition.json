@@ -113,7 +113,7 @@
             "constraints": {
               "required": true,
               "regex": "^(\\S+_\\S+\\.\\S+){0,254}$",
-              "validationMessage": "Not a valid DataStax account username. If you don't have an account, you can create one at [http://datastax.com/download](http://datastax.com/download)."
+              "validationMessage": "Not a valid DataStax account username. If you don't have an account, you can create one at (http://datastax.com/download)."
             }
           },
           {

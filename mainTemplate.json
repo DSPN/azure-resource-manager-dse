@@ -10,7 +10,6 @@
     },
     "region": {
       "type": "string",
-      "defaultValue": "East Asia",
       "metadata": {
         "description": "Region where the Azure artifacts will be created"
       }
