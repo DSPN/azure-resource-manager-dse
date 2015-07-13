@@ -142,7 +142,7 @@
       "adminPassword": "[basics('adminPassword')]",
       "clusterNodeCount": "[steps('dataStaxConfig').clusterNodeCount]",
       "clusterVmSize": "[steps('dataStaxConfig').clusterVmSize]",
-      "opsCenterAdminPassword" : "[basics('adminPassword')]",
+      "opsCenterAdminPassword" : "[basics('adminUsername')]",
       "dataStaxUsername": "[steps('dataStaxConfig').dataStaxUsername]",
       "dataStaxPassword": "[steps('dataStaxConfig').dataStaxPassword]",
       "region": "[location()]"
