@@ -35,7 +35,7 @@ do
 done
 
 echo "Installing Java"
-apt-get install default-jre
+apt-get -y install default-jre
 
 echo "Partitioning and formatting all attached data disks"
 bash vm-disk-utils-0.1.sh

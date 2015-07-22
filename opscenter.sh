@@ -57,7 +57,7 @@ do
 done
 
 echo "Installing Java"
-apt-get install default-jre
+apt-get -y install default-jre
 
 echo "Installing OpsCenter"
 echo "deb http://debian.datastax.com/community stable main" | sudo tee -a /etc/apt/sources.list.d/datastax.community.list
