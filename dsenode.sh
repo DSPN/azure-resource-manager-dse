@@ -1,5 +1,5 @@
 #!/bin/bash
-# This script gets a VM ready so DataStax OpsCenter can perform an install on it.
+# This script installs OpenJDK and gets a VM ready so DataStax OpsCenter can perform an install on it.
 
 while getopts ":e:c:" opt; do
   echo "Option $opt set with value $OPTARG"
@@ -33,6 +33,9 @@ do
         echo "10.0.$i.$(expr $j + 6)  dc${i}vm${j}" >> /etc/hosts
     done
 done
+
+echo "Installing Java"
+apt-get install default-jre
 
 echo "Partitioning and formatting all attached data disks"
 bash vm-disk-utils-0.1.sh
