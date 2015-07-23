@@ -121,7 +121,7 @@ get_node_fingerprints() {
       HOSTKEY=$(ssh-keygen -lf /tmp/tmpsshkeyhost.pub)
       HOSTKEY=`echo ${HOSTKEY} | cut -d" " -f1-2`
       HOSTKEY+=" (RSA)"
-      ACCEPTED_FINGERPRINTS+="\"$HOST\": \"$HOSTKEY\","
+      ACCEPTED_FINGERPRINTS+="\"$IP\": \"$HOSTKEY\","
     done
   done
 
