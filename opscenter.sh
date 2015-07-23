@@ -103,6 +103,7 @@ get_node_information() {
   echo "$NODE_INFORMATION"
 }
 
+echo "Getting node information"
 NODE_INFORMATION=$(get_node_information "$NODE_IP_RANGE" "$NUM_NODE_IP_RANGE")
 
 get_node_fingerprints() {
@@ -128,9 +129,10 @@ get_node_fingerprints() {
   echo "$ACCEPTED_FINGERPRINTS"
 }
 
+echo "Getting fingerprints"
 ACCEPTED_FINGERPRINTS=$(get_node_fingerprints "$NODE_IP_RANGE" "$NUM_NODE_IP_RANGE")
 
-# Create node provisioning document
+echo "Writing provision.json"
 sudo tee provision.json > /dev/null <<EOF
 {
   "cassandra_config" : {
