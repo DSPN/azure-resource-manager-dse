@@ -99,7 +99,7 @@ get_node_information() {
     done
   done
 
-  $NODE_INFORMATION="${NODE_INFORMATION%?}"
+  $NODE_INFORMATION="${${NODE_INFORMATION}%?}"
   echo "$NODE_INFORMATION"
 }
 
