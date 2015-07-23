@@ -145,7 +145,6 @@ sudo tee provision.json > /dev/null <<EOF
     "permissions_validity_in_ms" : 2000,
     "memtable_allocation_type" : "heap_buffers",
     "column_index_size_in_kb" : 64,
-    "commitlog_sync_period_in_ms" : 10000,
     "native_transport_max_threads" : 128,
     "partitioner" : "org.apache.cassandra.dht.Murmur3Partitioner",
     "ssl_storage_port" : 7001,
