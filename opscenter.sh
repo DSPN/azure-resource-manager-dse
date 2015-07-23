@@ -279,8 +279,8 @@ EOF
 # Write this somewhere we can look at it later for debugging
 cat provision.json > /var/log/azure/provision.json
 
-# Give OpsCenter a bit to come up and then provision a new cluster
-sleep 15
+# We need to wait for OpsCenter to come up (which is <15 sec) as well as the DSE nodes (which can take a while)
+sleep 200
 
 # Login and get session token
 AUTH_SESSION=$(curl -k -X POST -d '{"username":"admin","password":"admin"}' 'https://127.0.0.1:8443/login' | sed -e 's/^.*"sessionid"[ ]*:[ ]*"//' -e 's/".*//')
