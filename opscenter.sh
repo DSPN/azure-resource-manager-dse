@@ -1,7 +1,7 @@
 #!/bin/bash
 # This script installs OpenJDK and DataStax OpsCenter.  It then deploys a DataStax Enterprise cluster using OpsCenter.
 
-DSE_VERSION="4.7.1"
+DSE_VERSION="4.7.0"
 
 while getopts ":n:u:p:e:v:c:U:P:" opt; do
   echo "Option $opt set with value $OPTARG"
@@ -57,7 +57,11 @@ do
 done
 
 echo "Installing Java"
-apt-get -y install default-jre
+add-apt-repository -y ppa:webupd8team/java
+apt-get -y update 
+echo debconf shared/accepted-oracle-license-v1-1 select true | sudo debconf-set-selections
+echo debconf shared/accepted-oracle-license-v1-1 seen true | sudo debconf-set-selections
+apt-get -y install oracle-java8-installer
 
 echo "Installing OpsCenter"
 echo "deb http://debian.datastax.com/community stable main" | sudo tee -a /etc/apt/sources.list.d/datastax.community.list
