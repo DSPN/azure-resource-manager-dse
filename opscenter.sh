@@ -45,7 +45,7 @@ NUMBER_OF_IPS_IN_FIRST_RANGE="${FIRST_NODE_IP_RANGE[1]}"
 
 echo "127.0.0.1 ${HOSTNAME}" >> /etc/hosts
 echo "127.0.0.1 localhost.localdomain localhost" >> /etc/hosts
-echo "10.0.0.5  opcvm" >> /etc/hosts
+echo "10.1.0.5  opcvm" >> /etc/hosts
 echo '*/1 * * * * sudo service walinuxagent start' > cronjob
 crontab cronjob
 for (( i=0; i<$NUM_NODE_IP_RANGE ; i++))
