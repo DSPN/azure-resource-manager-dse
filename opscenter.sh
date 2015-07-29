@@ -40,7 +40,7 @@ while getopts ":n:u:p:e:v:c:U:P:" opt; do
 done
 
 echo "Installing Java"
-apt-get -y install default-jre
+bash install-java.sh
 
 echo "Installing OpsCenter"
 echo "deb http://debian.datastax.com/community stable main" | sudo tee -a /etc/apt/sources.list.d/datastax.community.list
