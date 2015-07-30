@@ -203,7 +203,7 @@
       "scripts": [
         "[concat(variables('templateBaseUrl'), 'dsenode.sh')]",
         "[concat(variables('templateBaseUrl'), 'opscenter.sh')]",
-        "[concat(variables('templateBaseUrl'), 'vm-disk-utils-0.1.sh')]"
+        "[concat(variables('templateBaseUrl'), 'vm-disk-utils-0.1.sh')]",
         "[concat(variables('templateBaseUrl'), 'install-java.sh')]"
       ]
     },
