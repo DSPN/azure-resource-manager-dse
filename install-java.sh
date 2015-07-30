@@ -1,4 +1,4 @@
-# Install Default JDK
+# Install Default OpenJDK 7
 # apt-get -y install default-jre
 
 # Install Oracle JDK
