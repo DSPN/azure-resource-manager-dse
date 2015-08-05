@@ -26,4 +26,3 @@ The template also sets up a node to run DataStax OpsCenter.  This node has the i
 The script opscenter.sh installs OpsCenter and creates a cluster using OpsCenter.  These cluster creation process installs DSE on all the cluster nodes and starts it up.  
 
 On completion, OpsCenter will be accessible at `http://{clusterName}.{region}.cloudapp.azure.com:8888` For instance, if you created a deployment with the clusterName parameter set to datastax in the West US region you could access OpsCenter for the deployment at `http://datastax.westus.cloudapp.azure.com:8888`  The default username for OpsCenter is admin.  The password will be set to adminPassword.
-
