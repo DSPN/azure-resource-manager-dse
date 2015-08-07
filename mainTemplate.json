@@ -2,18 +2,6 @@
   "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
-    "region": {
-      "type": "string",
-      "defaultValue": "East Asia",
-      "allowedValues": [
-        "East Asia",
-        "West US",
-        "East US"
-      ],      
-      "metadata": {
-        "description": "Region where the cluster will be created"
-      }
-    },
     "nodeCount": {
       "type": "int",
       "defaultValue": 4,
@@ -72,6 +60,7 @@
   },
   "variables": {
     "clusterName": "[concat(resourcegroup().name, 'cluster')]",
+    "region": "[resourcegroup().location]",
     "templateBaseUrl": "https://raw.githubusercontent.com/DSPN/azure-arm-dse/master/",
     "sharedTemplateUrl": "[concat(variables('templateBaseUrl'), 'sharedResources.json')]",
     "clusterNodesBaseTemplateUrl": "[concat(variables('templateBaseUrl'), 'node.json')]",
@@ -192,7 +181,7 @@
         },
         "parameters": {
           "region": {
-            "value": "[parameters('region')]"
+            "value": "[variables('region')]"
           },
           "networkSettings": {
             "value": "[variables('networkSettings')]"
@@ -224,7 +213,7 @@
             "value": "[parameters('password')]"
           },
           "region": {
-            "value": "[parameters('region')]"
+            "value": "[variables('region')]"
           },
           "storageAccountPrefix": {
             "value": "[variables('clusterName')]"
@@ -292,7 +281,7 @@
             "value": "[variables('networkSettings').opsCenterStatics.opsCenter]"
           },
           "region": {
-            "value": "[parameters('region')]"
+            "value": "[variables('region')]"
           },
           "subnet": {
             "value": "[variables('networkSettings').subnet.dse0]"
@@ -331,7 +320,7 @@
             "value": "opc"
           },
           "region": {
-            "value": "[parameters('region')]"
+            "value": "[variables('region')]"
           },
           "osSettings": {
             "value": "[variables('osSettings')]"
