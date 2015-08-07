@@ -11,7 +11,5 @@ echo "Partitioning and formatting all attached data disks"
 bash vm-disk-utils-0.1.sh
 
 echo "Modifying permissions"
-chmod -R 777 /datadisks
-chgrp -R cassandra /datadisks
-chown -R cassandra /datadisks
+chmod -R 777 /datadisksi
 

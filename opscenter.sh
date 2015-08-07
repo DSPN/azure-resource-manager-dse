@@ -148,7 +148,7 @@ sudo tee provision.json > /dev/null <<EOF
     "saved_caches_directory" : "/datadisks/disk1/saved_caches",
     "trickle_fsync_interval_in_kb" : 10240,
     "data_file_directories" : [
-      "/datadisks/disk1"
+      "/datadisks/disk1/data"
     ],
     "rpc_port" : 9160,
     "native_transport_port" : 9042,
