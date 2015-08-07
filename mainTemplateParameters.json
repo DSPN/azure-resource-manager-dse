@@ -2,16 +2,16 @@
   "region": {
     "value": "East Asia"
   },
-  "clusterNodeCount": {
-    "value": 4
+  "nodeCount": {
+    "value": 90
   },
-  "clusterVmSize": {
+  "virtualMachineSize": {
     "value": "Standard_D12"
   },
-  "adminUsername": {
+  "username": {
     "value": "datastax"
   },
-  "adminPassword": {
+  "password": {
     "value": "foo123!"
   },
   "datastaxUsername": {
