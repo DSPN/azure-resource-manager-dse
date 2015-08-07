@@ -184,7 +184,7 @@
         "version": "latest"
       },
       "scripts": [
-        "[concat(variables('templateBaseUrl'), 'dsenode.sh')]",
+        "[concat(variables('templateBaseUrl'), 'node.sh')]",
         "[concat(variables('templateBaseUrl'), 'opscenter.sh')]",
         "[concat(variables('templateBaseUrl'), 'vm-disk-utils-0.1.sh')]"
       ]
