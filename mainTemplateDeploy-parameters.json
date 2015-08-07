@@ -23,9 +23,6 @@
   "datastaxPassword": {
     "value": ""
   },
-  "opsCenterAdminPassword":{
-    "value" : "foo123!"
-  },
   "artifactsBaseUrl" : {
     "value" : "https://raw.githubusercontent.com/DSPN/azure-arm-dse/master"
   }
