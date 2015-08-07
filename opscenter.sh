@@ -116,8 +116,10 @@ get_node_fingerprints() {
   echo "$ACCEPTED_FINGERPRINTS"
 }
 
+date
 echo "Getting fingerprints"
 ACCEPTED_FINGERPRINTS=$(get_node_fingerprints "$NODE_IP_RANGE" "$NUM_NODE_IP_RANGE")
+date
 
 echo "Writing provision.json"
 sudo tee provision.json > /dev/null <<EOF
