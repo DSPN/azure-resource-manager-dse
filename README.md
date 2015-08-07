@@ -10,7 +10,6 @@ The template expects the following parameters:
 
 | Name   | Description |
 |:--- |:---|
-| clusterName | The name of the new cluster |
 | region | Region where the Azure artifacts will be created |
 | clusterNodeCount | The number of virtual machines to provision for the cluster |
 | clusterVmSize | The size of virtual machine to provision for each cluster node |
@@ -25,5 +24,5 @@ The template also sets up a node to run DataStax OpsCenter.  This node has the i
 
 The script opscenter.sh installs OpsCenter and creates a cluster using OpsCenter.  These cluster creation process installs DSE on all the cluster nodes and starts it up.  
 
-On completion, OpsCenter will be accessible at `http://{clusterName}.{region}.cloudapp.azure.com:8888` For instance, if you created a deployment with the clusterName parameter set to datastax in the West US region you could access OpsCenter for the deployment at `http://datastax.westus.cloudapp.azure.com:8888`  The default username and password for OpsCenter is admin.
+On completion, OpsCenter will be accessible at `http://{resourceGroup}cluster.{region}.cloudapp.azure.com:8888` For instance, if you created a deployment with the resourceGroup parameter set to datastax in the West US region you could access OpsCenter for the deployment at `http://datastaxcluster.westus.cloudapp.azure.com:8888`  The default username and password for OpsCenter is admin.
 

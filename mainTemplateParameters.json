@@ -1,9 +1,6 @@
 {
-  "clusterName": {
-    "value": "bencluster3"
-  },
   "region": {
-    "value": "eastasia"
+    "value": "East Asia"
   },
   "clusterNodeCount": {
     "value": 4
@@ -18,13 +15,10 @@
     "value": "foo123!"
   },
   "datastaxUsername": {
-    "value":"mkennedy_datastax.com"
+    "value":"ben.lackey_datastax.com"
   },
   "datastaxPassword": {
     "value": ""
-  },
-  "artifactsBaseUrl" : {
-    "value" : "https://raw.githubusercontent.com/DSPN/azure-arm-dse/master"
   }
 }
 
