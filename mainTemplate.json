@@ -78,7 +78,7 @@
     }
   },
   "variables": {
-    "clusterName": "[concat(resourcegroup().name, 'cluster']",
+    "clusterName": "[concat(resourcegroup().name, 'cluster')]",
     "templateBaseUrl": "[concat(parameters('artifactsBaseUrl'),'/')]",
     "sharedTemplateUrl": "[concat(variables('templateBaseUrl'), 'sharedResources.json')]",
     "clusterNodesBaseTemplateUrl": "[concat(variables('templateBaseUrl'), 'node.json')]",
