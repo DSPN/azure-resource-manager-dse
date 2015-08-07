@@ -68,18 +68,11 @@
       "metadata": {
         "description": "Your DataStax account password.  You can register at http://datastax.com/"
       }
-    },
-    "artifactsBaseUrl" : {
-      "type" : "string",
-      "metadata" : {
-        "artifactsBaseUrl" : "Base URL of the DataStax Template gallery package"
-      },
-      "defaultValue" : ""
     }
   },
   "variables": {
     "clusterName": "[concat(resourcegroup().name, 'cluster')]",
-    "templateBaseUrl": "[concat(parameters('artifactsBaseUrl'),'/')]",
+    "templateBaseUrl": "https://raw.githubusercontent.com/DSPN/azure-arm-dse/master/",
     "sharedTemplateUrl": "[concat(variables('templateBaseUrl'), 'sharedResources.json')]",
     "clusterNodesBaseTemplateUrl": "[concat(variables('templateBaseUrl'), 'node.json')]",
     "clusterNodesTemplateUrl": "[concat(variables('templateBaseUrl'), 'nodeInstall.json')]",
