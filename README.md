@@ -13,8 +13,8 @@ The template expects the following parameters:
 | region | Region where the cluster will be created |
 | nodeCount | The number of virtual machines to provision for the cluster |
 | virtualMachineSize | The size of virtual machine to provision for each cluster node |
-| username  | Username for the virtual machines.  This is used for ssh. |
-| password  | Password for the virtual machines.  This is used for ssh. |
+| username  | SSH username for the virtual machines |
+| password  | SSH password for the virtual machines |
 | datastaxUsername | Your DataStax account username.  You can register at http://www.datastax.com/download |
 | datastaxPassword | Your DataStax account password.  You can register at http://www.datastax.com/download |
 

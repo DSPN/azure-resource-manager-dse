@@ -47,14 +47,14 @@
       "type": "string",
       "defaultValue": "datastax",
       "metadata": {
-        "description": "Username for the virtual machines.  This is used for ssh."
+        "description": "SSH username for the virtual machines"
       }
     },
     "password": {
       "type": "securestring",
       "defaultValue" : "foo123!",
       "metadata": {
-        "description": "Password for the virtual machines.  This is used for ssh."
+        "description": "SSH password for the virtual machines"
       }
     },
     "dataStaxUsername": {
