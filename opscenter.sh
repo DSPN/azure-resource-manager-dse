@@ -1,9 +1,7 @@
 #!/bin/bash
 # This script installs OpenJDK and DataStax OpsCenter.  It then deploys a DataStax Enterprise cluster using OpsCenter.
 
-DSE_VERSION="4.7.1"
-
-while getopts ":n:u:p:e:v:c:U:P:" opt; do
+while getopts ":n:u:p:e:c:U:P:" opt; do
   echo "Option $opt set with value $OPTARG"
   case $opt in
     u) 
@@ -21,9 +19,6 @@ while getopts ":n:u:p:e:v:c:U:P:" opt; do
     c)
       # Number of successive cluster IP addresses sent for NODE_IP_RANGE
       NUM_NODE_IP_RANGE=$OPTARG
-      ;;
-    v) 
-      DSE_VERSION=$OPTARG
       ;;
     U)
       # DataStax download site username 
@@ -241,7 +236,7 @@ sudo tee provision.json > /dev/null <<EOF
     "private_key" : "",
     "password" : "${ADMIN_PASSWORD}",
     "username" : "${ADMIN_USERNAME}",
-    "version" : "${DSE_VERSION}",
+    "version" : "4.7.1",
     "repo-password" : "${DATASTAX_PASSWORD}",
     "repo-user" : "${DATASTAX_USERNAME}"
    },
