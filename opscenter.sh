@@ -145,10 +145,10 @@ sudo tee provision.json > /dev/null <<EOF
     "auto_snapshot" : true,
     "counter_cache_save_period" : 7200,
     "read_request_timeout_in_ms" : 5000,
-    "saved_caches_directory" : "/datadisks/disk1/saved_caches",
+    "saved_caches_directory" : "/mnt/saved_caches",
     "trickle_fsync_interval_in_kb" : 10240,
     "data_file_directories" : [
-      "/datadisks/disk1/data"
+      "/mnt/data"
     ],
     "rpc_port" : 9160,
     "native_transport_port" : 9042,
@@ -201,7 +201,7 @@ sudo tee provision.json > /dev/null <<EOF
     "storage_port" : 7000,
     "commitlog_segment_size_in_mb" : 32,
     "native_transport_max_frame_size_in_mb" : 256,
-    "commitlog_directory" : "/datadisks/disk1/commitlog",
+    "commitlog_directory" : "/mnt/commitlog",
     "batch_size_warn_threshold_in_kb" : 64,
     "inter_dc_tcp_nodelay" : false,
     "snapshot_before_compaction" : false,
