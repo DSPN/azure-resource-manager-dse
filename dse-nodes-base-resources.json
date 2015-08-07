@@ -35,9 +35,6 @@
     "templateUrl" : {
       "type" : "string"
     },
-    "sshKeyData" : {
-      "type" : "string"
-    },
     "nodeListSettings" : {
       "type" : "object"
     }
