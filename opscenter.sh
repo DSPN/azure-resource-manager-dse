@@ -1,7 +1,7 @@
 #!/bin/bash
 # This script installs OpenJDK and DataStax OpsCenter.  It then deploys a DataStax Enterprise cluster using OpsCenter.
 
-DSE_VERSION="4.7.0"
+DSE_VERSION="4.7.1"
 
 while getopts ":n:u:p:e:v:c:U:P:" opt; do
   echo "Option $opt set with value $OPTARG"
