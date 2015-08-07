@@ -60,13 +60,13 @@
     "dataStaxUsername": {
       "type": "string",
       "metadata": {
-        "description": "Your DataStax account username.  You can register at http://datastax.com/"
+        "description": "Your DataStax account username.  You can register at http://datastax.com/download"
       }
     },
     "dataStaxPassword": {
       "type": "securestring",
       "metadata": {
-        "description": "Your DataStax account password.  You can register at http://datastax.com/"
+        "description": "Your DataStax account password.  You can register at http://datastax.com/download"
       }
     }
   },
