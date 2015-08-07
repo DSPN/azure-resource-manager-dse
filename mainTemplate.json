@@ -10,7 +10,7 @@
     },
     "region": {
       "type": "string",
-      "defaultValue:" "East Asia",
+      "defaultValue": "East Asia",
       "allowedValues": [
         "East Asia",
         "West US",
