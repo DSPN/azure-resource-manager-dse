@@ -10,11 +10,11 @@ The template expects the following parameters:
 
 | Name   | Description |
 |:--- |:---|
-| region | Region where the Azure artifacts will be created |
-| clusterNodeCount | The number of virtual machines to provision for the cluster |
-| clusterVmSize | The size of virtual machine to provision for each cluster node |
-| adminUsername  | Admin user name for the virtual machines |
-| adminPassword  | Admin password for the virtual machines |
+| region | Region where the cluster will be created |
+| nodeCount | The number of virtual machines to provision for the cluster |
+| virtualMachineSize | The size of virtual machine to provision for each cluster node |
+| username  | Username for the virtual machines.  This is used for ssh. |
+| password  | Password for the virtual machines.  This is used for ssh. |
 | datastaxUsername | Your DataStax account username.  You can register at http://www.datastax.com/download |
 | datastaxPassword | Your DataStax account password.  You can register at http://www.datastax.com/download |
 
