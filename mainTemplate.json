@@ -85,11 +85,11 @@
   },
   "variables": {
     "templateBaseUrl": "[concat(parameters('artifactsBaseUrl'),'/')]",
-    "sharedTemplateUrl": "[concat(variables('templateBaseUrl'), 'shared-resources.json')]",
-    "clusterNodesBaseTemplateUrl": "[concat(variables('templateBaseUrl'), 'dse-nodes-base-resources.json')]",
-    "clusterNodesTemplateUrl": "[concat(variables('templateBaseUrl'), 'dse-nodes-specific-resources-password.json')]",
-    "opsCenterTemplateUrl": "[concat(variables('templateBaseUrl'), 'opscenter-resources-password.json')]",
-    "opsCenterInstallTemplateUrl": "[concat(variables('templateBaseUrl'), 'opscenter-install-resources.json')]",
+    "sharedTemplateUrl": "[concat(variables('templateBaseUrl'), 'sharedResources.json')]",
+    "clusterNodesBaseTemplateUrl": "[concat(variables('templateBaseUrl'), 'node.json')]",
+    "clusterNodesTemplateUrl": "[concat(variables('templateBaseUrl'), 'nodeInstall.json')]",
+    "opsCenterTemplateUrl": "[concat(variables('templateBaseUrl'), 'opscenter.json')]",
+    "opsCenterInstallTemplateUrl": "[concat(variables('templateBaseUrl'), 'opscenterInstall.json')]",
     "opsCenterVmSize": "Standard_A1",
     "clusterSpec" : "[variables(concat('clusterSize',parameters('clusterNodeCount')))]",
     "clusterSize4" : {
@@ -186,8 +186,7 @@
       "scripts": [
         "[concat(variables('templateBaseUrl'), 'dsenode.sh')]",
         "[concat(variables('templateBaseUrl'), 'opscenter.sh')]",
-        "[concat(variables('templateBaseUrl'), 'vm-disk-utils-0.1.sh')]",
-        "[concat(variables('templateBaseUrl'), 'install-java.sh')]"
+        "[concat(variables('templateBaseUrl'), 'vm-disk-utils-0.1.sh')]"
       ]
     },
     "sharedStorageAccountName": "[concat(parameters('clusterName'),'cmn')]"
