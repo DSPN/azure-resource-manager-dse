@@ -2,12 +2,6 @@
   "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
-    "clusterName": {
-      "type": "string",
-      "metadata": {
-        "description": "The name of the new cluster"
-      }
-    },
     "region": {
       "type": "string",
       "defaultValue": "East Asia",
@@ -84,6 +78,7 @@
     }
   },
   "variables": {
+    "clusterName": "[concat(resourcegroup().name, 'cluster']",
     "templateBaseUrl": "[concat(parameters('artifactsBaseUrl'),'/')]",
     "sharedTemplateUrl": "[concat(variables('templateBaseUrl'), 'sharedResources.json')]",
     "clusterNodesBaseTemplateUrl": "[concat(variables('templateBaseUrl'), 'node.json')]",
@@ -113,13 +108,13 @@
       "nodeList": "[concat(variables('networkSettings').subnet.dse0.statics.clusterRange.base, variables('networkSettings').subnet.dse0.statics.clusterRange.start, '-18', ';', variables('networkSettings').subnet.dse1.statics.clusterRange.base, variables('networkSettings').subnet.dse1.statics.clusterRange.start, '-18',';',variables('networkSettings').subnet.dse2.statics.clusterRange.base, variables('networkSettings').subnet.dse2.statics.clusterRange.start, '-18',';',variables('networkSettings').subnet.dse3.statics.clusterRange.base, variables('networkSettings').subnet.dse3.statics.clusterRange.start, '-18',';',variables('networkSettings').subnet.dse4.statics.clusterRange.base, variables('networkSettings').subnet.dse4.statics.clusterRange.start, '-18')]"
     },
     "networkSettings": {
-      "virtualNetworkName": "[parameters('clusterName')]",
+      "virtualNetworkName": "[variables('clusterName')]",
       "addressPrefix": "10.0.0.0/16",
       "subnet": {
         "dse0": {
           "name": "dse0",
           "prefix": "10.0.0.0/24",
-          "vnet": "[parameters('clusterName')]",
+          "vnet": "[variables('clusterName')]",
           "statics": {
             "clusterRange": {
               "base": "10.0.0.",
@@ -130,7 +125,7 @@
         "dse1": {
           "name": "dse1",
           "prefix": "10.0.1.0/24",
-          "vnet": "[parameters('clusterName')]",
+          "vnet": "[variables('clusterName')]",
           "statics": {
             "clusterRange": {
               "base": "10.0.1.",
@@ -141,7 +136,7 @@
         "dse2": {
           "name": "dse2",
           "prefix": "10.0.2.0/24",
-          "vnet": "[parameters('clusterName')]",
+          "vnet": "[variables('clusterName')]",
           "statics": {
             "clusterRange": {
               "base": "10.0.2.",
@@ -152,7 +147,7 @@
         "dse3": {
           "name": "dse3",
           "prefix": "10.0.3.0/24",
-          "vnet": "[parameters('clusterName')]",
+          "vnet": "[variables('clusterName')]",
           "statics": {
             "clusterRange": {
               "base": "10.0.3.",
@@ -163,7 +158,7 @@
         "dse4": {
           "name": "dse4",
           "prefix": "10.0.4.0/24",
-          "vnet": "[parameters('clusterName')]",
+          "vnet": "[variables('clusterName')]",
           "statics": {
             "clusterRange": {
               "base": "10.0.4.",
@@ -189,7 +184,7 @@
         "[concat(variables('templateBaseUrl'), 'vm-disk-utils-0.1.sh')]"
       ]
     },
-    "sharedStorageAccountName": "[concat(parameters('clusterName'),'cmn')]"
+    "sharedStorageAccountName": "[concat(variables('clusterName'),'cmn')]"
   },
   "resources": [
     {
@@ -239,7 +234,7 @@
             "value": "[parameters('region')]"
           },
           "storageAccountPrefix": {
-            "value": "[parameters('clusterName')]"
+            "value": "[variables('clusterName')]"
           },
           "vmSize": {
             "value": "[parameters('clusterVmSize')]"
@@ -286,7 +281,7 @@
         },
         "parameters": {
           "dnsName": {
-            "value": "[parameters('clusterName')]"
+            "value": "[variables('clusterName')]"
           },
           "storageAccountName": {
             "value": "[variables('sharedStorageAccountName')]"
