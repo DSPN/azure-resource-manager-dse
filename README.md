@@ -1,4 +1,4 @@
-This template deploys a DataStax Enterprise (DSE) cluster to Azure running on Ubuntu virtual machines. The template also provisions a storage account, virtual network, public IP address and the network interfaces required by the installation.
+This template deploys a DataStax Enterprise (DSE) cluster to Azure running on Ubuntu virtual machines. The template also provisions a storage account, virtual network and public IP address required by the installation.
 
 The button below will deploy this template to Azure.  The template will be dynamically linked directly from this github repository.
 
