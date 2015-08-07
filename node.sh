@@ -11,5 +11,5 @@ echo "Partitioning and formatting all attached data disks"
 bash vm-disk-utils-0.1.sh
 
 echo "Modifying permissions"
-chmod -R 777 /mnt
+chmod 777 /mnt
 
