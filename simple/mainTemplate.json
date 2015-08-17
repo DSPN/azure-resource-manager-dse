@@ -61,7 +61,7 @@
   "variables": {
     "clusterName": "[concat(resourcegroup().name, 'cluster')]",
     "region": "[resourcegroup().location]",
-    "templateBaseUrl": "https://raw.githubusercontent.com/DSPN/azure-arm-dse/master/",
+    "templateBaseUrl": "https://raw.githubusercontent.com/DSPN/azure-arm-dse/master/simple/",
     "sharedTemplateUrl": "[concat(variables('templateBaseUrl'), 'sharedResources.json')]",
     "clusterNodesBaseTemplateUrl": "[concat(variables('templateBaseUrl'), 'node.json')]",
     "clusterNodesTemplateUrl": "[concat(variables('templateBaseUrl'), 'nodeInstall.json')]",
