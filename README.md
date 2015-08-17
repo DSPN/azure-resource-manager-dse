@@ -1,4 +1,4 @@
-# azure-arm-dse
-Azure Resource Manager templates for deploying DataStax Enterprise
+simple is a minimum ARM template that deploys DataStax Enterprise to Azure.
 
-asd
+marketplace includes functionality specific to the Azure Marketplace.
+
