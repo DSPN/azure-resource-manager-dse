@@ -91,66 +91,66 @@
     },
     "networkSettings": {
       "virtualNetworkName": "[variables('clusterName')]",
-      "addressPrefix": "10.0.0.0/16",
+      "addressPrefix": "10.1.0.0/16",
       "subnet": {
         "dse0": {
           "name": "dse0",
-          "prefix": "10.0.0.0/24",
+          "prefix": "10.1.0.0/24",
           "vnet": "[variables('clusterName')]",
           "statics": {
             "clusterRange": {
-              "base": "10.0.0.",
+              "base": "10.1.0.",
               "start": 6
             }
           }
         },
         "dse1": {
           "name": "dse1",
-          "prefix": "10.0.1.0/24",
+          "prefix": "10.1.1.0/24",
           "vnet": "[variables('clusterName')]",
           "statics": {
             "clusterRange": {
-              "base": "10.0.1.",
+              "base": "10.1.1.",
               "start": 6
             }
           }
         },
         "dse2": {
           "name": "dse2",
-          "prefix": "10.0.2.0/24",
+          "prefix": "10.1.2.0/24",
           "vnet": "[variables('clusterName')]",
           "statics": {
             "clusterRange": {
-              "base": "10.0.2.",
+              "base": "10.1.2.",
               "start": 6
             }
           }
         },
         "dse3": {
           "name": "dse3",
-          "prefix": "10.0.3.0/24",
+          "prefix": "10.1.3.0/24",
           "vnet": "[variables('clusterName')]",
           "statics": {
             "clusterRange": {
-              "base": "10.0.3.",
+              "base": "10.1.3.",
               "start": 6
             }
           }
         },
         "dse4": {
           "name": "dse4",
-          "prefix": "10.0.4.0/24",
+          "prefix": "10.1.4.0/24",
           "vnet": "[variables('clusterName')]",
           "statics": {
             "clusterRange": {
-              "base": "10.0.4.",
+              "base": "10.1.4.",
               "start": 6
             }
           }
         }
       },
       "opsCenterStatics": {
-        "opsCenter": "10.0.0.5"
+        "opsCenter": "10.1.0.5"
       }
     },
     "osSettings": {
