@@ -47,14 +47,6 @@ curl -L http://debian.datastax.com/debian/repo_key | sudo apt-key add -
 apt-get update
 apt-get -y install opscenter
 
-# Enable authentication in /etc/opscenter/opscenterd.conf
-sed -i '/^\[authentication\]$/,/^\[/ s/^enabled = False/enabled = True/' /etc/opscenter/opscenterd.conf
-
-# Enable SSL - uncomment webserver SSL settings and leave them set to the default
-sed -i '/^\[webserver\]$/,/^\[/ s/^#ssl_keyfile/ssl_keyfile/' /etc/opscenter/opscenterd.conf
-sed -i '/^\[webserver\]$/,/^\[/ s/^#ssl_certfile/ssl_certfile/' /etc/opscenter/opscenterd.conf
-sed -i '/^\[webserver\]$/,/^\[/ s/^#ssl_port/ssl_port/' /etc/opscenter/opscenterd.conf
-
 echo "Starting OpsCenter"
 sudo service opscenterd start
 
@@ -261,9 +253,6 @@ cat provision.json > /var/log/azure/provision.json
 # Wait for OpsCenter to start running
 sleep 15
 
-# Login and get session token
-AUTH_SESSION=$(curl -k -X POST -d '{"username":"admin","password":"admin"}' 'https://127.0.0.1:8443/login' | sed -e 's/^.*"sessionid"[ ]*:[ ]*"//' -e 's/".*//')
-
-# Provision a new cluster with the nodes passed
-curl -k -H "opscenter-session: $AUTH_SESSION" -H "Accept: application/json" -X POST https://127.0.0.1:8443/provision -d @provision.json
+# Provision a new cluster
+curl -k -H "Accept: application/json" -X POST https://127.0.0.1:8443/provision -d @provision.json
 
