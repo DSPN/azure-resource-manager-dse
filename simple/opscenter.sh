@@ -254,5 +254,5 @@ cat provision.json > /var/log/azure/provision.json
 sleep 15
 
 # Provision a new cluster
-curl -k -H "Accept: application/json" -X POST https://127.0.0.1:8443/provision -d @provision.json
+curl -k -H "Accept: application/json" -X POST https://127.0.0.1:8888/provision -d @provision.json
 
