@@ -35,7 +35,7 @@
 			"metadata": {
 				"description": "The name of the Virtual Network Gateway"
 			},
-			"defaultValue":"[concat(parameters('virtualNetworkName1'),'-gateway')]"
+			"defaultValue":"gateway1"
 		},
 		"virtualNetworkAddressRange1": {
 			"type": "string",
@@ -49,7 +49,7 @@
 			"metadata": {
 				"description": "The name of the Virtual Network Gateway"
 			},
-			"defaultValue":"[concat(parameters('virtualNetworkName2'),'-gateway')]"
+			"defaultValue":"gateway2"
 		},
 		"virtualNetworkAddressRange2": {
 			"type": "string",
