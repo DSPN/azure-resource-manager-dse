@@ -1,0 +1,8 @@
+{
+  "location": {
+    "value": "West US"
+  },
+  "virtualNetworkName": {
+    "value": "bengroup4cluster"
+  }
+}
