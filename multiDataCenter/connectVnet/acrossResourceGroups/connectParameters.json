@@ -1,0 +1,15 @@
+{
+
+  "location1": {
+    "value": "East Asia"
+  },
+  "location2": {
+    "value": "West US"
+  },
+  "gatewayName1": {
+    "value": "bengroup3cluster-gateway"
+  },
+  "gatewayName2": {
+    "value": "bengroup4cluster-gateway"
+  }
+}
