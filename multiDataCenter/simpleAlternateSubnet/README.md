@@ -1,4 +1,4 @@
-This template is identical to simple except it deploys to the subnet 10.1.0.0.
+This template is identical to simple except it deploys to the subnet 10.1.0.0 and the location West US.
 
 This template deploys a DataStax Enterprise (DSE) cluster to Azure running on Ubuntu virtual machines. The template also provisions a storage account, virtual network and public IP address required by the installation.  The template will deploy to the region that the resourceGroup it is part of is located in.
 
