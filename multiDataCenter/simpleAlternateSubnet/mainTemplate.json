@@ -60,7 +60,7 @@
   },
   "variables": {
     "clusterName": "[concat(resourcegroup().name, 'cluster')]",
-    "region": "[resourcegroup().location]",
+    "region": "West US",
     "templateBaseUrl": "https://raw.githubusercontent.com/DSPN/azure-arm-dse/master/multiDataCenter/simpleAlternateSubnet/",
     "sharedTemplateUrl": "[concat(variables('templateBaseUrl'), 'sharedResources.json')]",
     "clusterNodesBaseTemplateUrl": "[concat(variables('templateBaseUrl'), 'node.json')]",
