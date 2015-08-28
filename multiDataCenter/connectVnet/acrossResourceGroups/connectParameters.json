@@ -1,5 +1,4 @@
 {
-
   "location1": {
     "value": "East Asia"
   },
@@ -11,5 +10,8 @@
   },
   "gatewayName2": {
     "value": "bengroup4cluster-gateway"
+  },
+  "resourceGroupGateway2": {
+    "value": "bengroup4"
   }
 }
