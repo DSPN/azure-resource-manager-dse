@@ -4,10 +4,15 @@
   "parameters": {
     "nodeCount": {
       "type": "int",
-      "defaultValue": 4
+      "defaultValue": 4,
+      "allowedValues": [
+        4,
+        12,
+        36,
+        90
       ],
       "metadata": {
-        "description": "The number of nodes to provision."
+        "description": "The number of virtual machines to provision for the cluster"
       }
     },
     "virtualMachineSize": {
