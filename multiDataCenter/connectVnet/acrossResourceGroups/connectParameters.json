@@ -6,12 +6,12 @@
     "value": "West US"
   },
   "gatewayName1": {
-    "value": "bengroup3cluster-gateway"
+    "value": "bengroup5cluster-gateway"
   },
   "gatewayName2": {
-    "value": "bengroup4cluster-gateway"
+    "value": "bengroup6cluster-gateway"
   },
   "resourceGroupGateway2": {
-    "value": "bengroup4"
+    "value": "bengroup6"
   }
 }
