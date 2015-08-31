@@ -43,11 +43,11 @@
   "variables": {
     "region": "[resourcegroup().location]",
     "templateBaseUrl": "https://raw.githubusercontent.com/DSPN/azure-arm-dse/master/refactor/",
-    "sharedTemplateUrl": "[concat(variables('templateBaseUrl'), 'sharedResources.json')]",
+    "nodesTemplateUrl": "[concat(variables('templateBaseUrl'), 'nodes.json')]",
   },
   "resources": [
     {
-      "name": "shared",
+      "name": "nodes",
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2015-01-01",
       "properties": {
@@ -60,12 +60,21 @@
           "region": {
             "value": "[variables('region')]"
           },
-          "networkSettings": {
-            "value": "[variables('networkSettings')]"
+          "nodeCount": {
+            "value": "[variables('nodeCount')]"
           },
-          "storageAccountName": {
+          "virtualMachineSize": {
+            "value": "[variables('virtualMachineSize')]"
+          },
+          "username": {
             "value": "[variables('sharedStorageAccountName')]"
           }
+"username": {
+  "value": "[variables('sharedStorageAccountName')]"
+}
+
+
+
         }
       }
     }
