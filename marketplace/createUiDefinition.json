@@ -116,7 +116,6 @@
             "toolTip": "Your DataStax account username. If you don't have an account, you can create one at [http://datastax.com/download](http://datastax.com/download).",
             "constraints": {
               "required": true,
-              "regex": "^(\\S+_\\S+\\.\\S+){0,254}$",
               "validationMessage": "Not a valid DataStax account username. If you don't have an account, you can create one at (http://datastax.com/download)."
             }
           },
@@ -130,8 +129,8 @@
             "toolTip": "Your DataStax account password.",
             "constraints": {
               "required": true,
-              "regex": "^[a-zA-Z0-9]{15}$",
-              "validationMessage": "DataStax account passwords are exactly 15 characters long and can contain only letters and numbers."
+              "regex": "^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}$",
+              "validationMessage": "Password must contain at least one digit, one uppercase character, and one lowercase character.  Password must be at least 8 characters in length."
             },
             "options": {
               "hideConfirmation": true
