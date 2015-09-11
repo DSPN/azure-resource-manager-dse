@@ -12,24 +12,24 @@ Deploy nodes in 10.0.x.y:
 </a>
 
 Deploy nodes in 10.1.x.y:
-<a href="https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2FDSPN%2Fazure-arm-dse%2Fmaster%2FmultiDataCenter/simpleAlternateSubnet%2FmainTemplate.json" target="_blank">
+<a href="https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2FDSPN%2Fazure-arm-dse%2Fmaster%2FmultiDataCenter%2FsimpleAlternateSubnet%2FmainTemplate.json" target="_blank">
     <img src="http://azuredeploy.net/deploybutton.png"/>
 </a>
 
 After that, you'll want to deploy gateways into each of the clusters.  Note, these two steps can happen in parallel:
 
 Gateway 1:
-<a href="https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2FDSPN%2Fazure-arm-dse%2Fmaster%2FmultiDataCenter/connect%2FacrossResourceGroups/gateway1.json" target="_blank">
+<a href="https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2FDSPN%2Fazure-arm-dse%2Fmaster%2FmultiDataCenter%2Fconnect%2FacrossResourceGroups%2Fgateway1.json" target="_blank">
     <img src="http://azuredeploy.net/deploybutton.png"/>
 </a>
 
 Gateway 2:
-<a href="https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2FDSPN%2Fazure-arm-dse%2Fmaster%2FmultiDataCenter/connect%2FacrossResourceGroups/gateway2.json" target="_blank">
+<a href="https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2FDSPN%2Fazure-arm-dse%2Fmaster%2FmultiDataCenter%2Fconnect%2FacrossResourceGroups%2Fgateway2.json" target="_blank">
     <img src="http://azuredeploy.net/deploybutton.png"/>
 </a>
 
 Finally, connect the two gateways:
-<a href="https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2FDSPN%2Fazure-arm-dse%2Fmaster%2FmultiDataCenter/connect%2FacrossResourceGroups/connect.json" target="_blank">
+<a href="https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2FDSPN%2Fazure-arm-dse%2Fmaster%2FmultiDataCenter%2Fconnect%2FacrossResourceGroups%2Fconnect.json" target="_blank">
     <img src="http://azuredeploy.net/deploybutton.png"/>
 </a>
 
