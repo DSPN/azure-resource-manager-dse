@@ -9,7 +9,7 @@
       "type": "securestring"
     },
     "region": {
-      "type": "string",
+      "type": "string"
     }
   },
   "variables": {
