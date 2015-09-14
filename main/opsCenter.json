@@ -97,7 +97,7 @@
               "privateIPAllocationMethod": "Static",
               "privateIPAddress": "10.0.0.6",
               "subnet": {
-                "id": "subnet0"
+                "id":  "[concat(resourceId('Microsoft.Network/virtualNetworks', 'vnet'), '/subnets/', 'subnet0')]"
               },
               "networkSecurityGroup": {
                 "id": "[resourceId('Microsoft.Network/networkSecurityGroups','securityGroup')]"
@@ -119,7 +119,7 @@
     {
       "apiVersion": "2015-06-15",
       "type": "Microsoft.Compute/virtualMachines",
-      "name": "opscenterVM",
+      "name": "opscenter",
       "location": "[parameters('region')]",
       "dependsOn": [
         "Microsoft.Network/networkInterfaces/networkInterface"
@@ -143,7 +143,7 @@
           "osDisk": {
             "name": "osdisk",
             "vhd": {
-              "uri": "[concat('http://opscenter',resourceGroup().name,'.blob.core.windows.net/vhds/vm-osdisk.vhd')]"
+              "uri": "[concat('http://opscenter',resourceGroup().name,'.blob.core.windows.net/vhds/opscentervm-osdisk.vhd')]"
             },
             "caching": "ReadWrite",
             "createOption": "FromImage"
