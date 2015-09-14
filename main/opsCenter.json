@@ -2,10 +2,10 @@
   "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
-    "adminUsername": {
+    "username": {
       "type": "string"
     },
-    "adminPassword": {
+    "password": {
       "type": "securestring"
     },
     "region": {
@@ -81,13 +81,6 @@
     },
     {
       "apiVersion": "2015-06-15",
-      "type": "Microsoft.Compute/availabilitySets",
-      "name": "availabilitySet",
-      "location": "[parameters('region')]",
-      "properties": {}
-    },
-    {
-      "apiVersion": "2015-06-15",
       "type": "Microsoft.Network/networkInterfaces",
       "name": "networkInterface",
       "location": "[parameters('region')]",
@@ -117,6 +110,15 @@
       }
     },
     {
+      "apiVersion": "2015-05-01-preview",
+      "type": "Microsoft.Storage/storageAccounts",
+      "name": "storageAccount",
+      "location": "[parameters('region')]",
+      "properties": {
+        "accountType": "Standard_LRS"
+      }
+    },
+    {
       "apiVersion": "2015-06-15",
       "type": "Microsoft.Compute/virtualMachines",
       "name": "opscenterVM",
@@ -130,8 +132,8 @@
         },
         "osProfile": {
           "computername": "opscenter",
-          "adminUsername": "[parameters('adminUsername')]",
-          "adminPassword": "[parameters('adminPassword')]"
+          "adminUsername": "[parameters('username')]",
+          "adminPassword": "[parameters('password')]"
         },
         "storageProfile": {
           "imageReference": {
@@ -143,7 +145,7 @@
           "osDisk": {
             "name": "osdisk",
             "vhd": {
-              "uri": "[concat('http://',parameters('storageAccountName'),'.blob.core.windows.net/vhds/', parameters('namespace'), 'vm-osdisk.vhd')]"
+              "uri": "http://storageAccount.blob.core.windows.net/vhds/vm-osdisk.vhd"
             },
             "caching": "ReadWrite",
             "createOption": "FromImage"
