@@ -12,8 +12,6 @@
       "type": "string"
     }
   },
-  "variables": {
-  },
   "resources": [
     {
       "apiVersion": "2015-06-15",
@@ -75,7 +73,7 @@
       "properties": {
         "publicIPAllocationMethod": "Dynamic",
         "dnsSettings": {
-          "domainNameLabel": "[resourceGroupName]"
+          "domainNameLabel": "[resourceGroup().name]"
         }
       }
     },
