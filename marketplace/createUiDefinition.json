@@ -129,7 +129,7 @@
             "toolTip": "Your DataStax account password.",
             "constraints": {
               "required": true,
-              "regex": "^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}$",
+              "regex": "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z]).{8,}$",
               "validationMessage": "Password must contain at least one digit, one uppercase character, and one lowercase character.  Password must be at least 8 characters in length."
             },
             "options": {
