@@ -5,7 +5,7 @@
         "East Asia"
     ],
     "nodesPerRegion": 4,
-    "virtualMachineSize": "Standard_D12",
+    "nodeSize": "Standard_D12",
     "username": "datastax",
     "password": "foo123!",
     "datastaxUsername": "ben.lackey_datastax.com",
