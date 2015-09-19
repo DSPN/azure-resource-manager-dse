@@ -1,10 +1,14 @@
 {
-  "regions": ["Central US", "North Europe", "East Asia"],
-  "nodesPerRegion": 4,
-  "virtualMachineSize": "Standard_D12",
-  "username": "datastax",
-  "password": "foo123!",
-  "datastaxUsername": "ben.lackey_datastax.com",
-  "datastaxPassword": "abc123"
+    "regions": [
+        "Central US",
+        "North Europe",
+        "East Asia"
+    ],
+    "nodesPerRegion": 4,
+    "virtualMachineSize": "Standard_D12",
+    "username": "datastax",
+    "password": "foo123!",
+    "datastaxUsername": "ben.lackey_datastax.com",
+    "datastaxPassword": "abc123"
 }
 
