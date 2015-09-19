@@ -1,4 +1,4 @@
-| Name   | Description |
+| Directory | Description |
 |:--- |:---|
 | main  | Work in progress.  Ignore me. |
 | marketplace | Used by the DataStax Azure Marketplace offer |
