@@ -160,7 +160,8 @@ def virtualmachines(username, password):
         "name": "opscenter",
         "location": "[resourceGroup().location]",
         "dependsOn": [
-            "Microsoft.Network/networkInterfaces/networkInterface"
+            "Microsoft.Network/networkInterfaces/networkInterface",
+            "[concat('Microsoft.Storage/storageAccounts/opscsa',resourceGroup().name)]"
         ],
         "properties": {
             "hardwareProfile": {

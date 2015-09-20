@@ -22,8 +22,10 @@ datastaxPassword = clusterParameters['datastaxPassword']
 generatedTemplate = {
     "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
     "contentVersion": "1.0.0.0",
-    "resources": [
-    ]
+    "parameters": {},
+    "variables": {},
+    "resources": [],
+    "outputs": {}
 }
 
 # Create the OpsCenter node
