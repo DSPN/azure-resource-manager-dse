@@ -52,6 +52,7 @@ def virtualNetworks(region, subnetIndex):
 
 def networkInterfaces(region, vnetName, subnetIndex, nodeIndex):
     # Usable IPs start at 10.x.y.5
+    # At some point we're going to want some logic to deal with more than 255 nodes in a region
     nodeIP = '10.' + str(subnetIndex) + '.1.' + str(nodeIndex+5)
 
     resource = {
