@@ -1,5 +1,6 @@
 def generate_template(region, nodeSize, nodesPerRegion, username, password):
-    return []
+    resources = []
+    return resources
 
 
 resources = [

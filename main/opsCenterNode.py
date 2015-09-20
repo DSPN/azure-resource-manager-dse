@@ -10,7 +10,6 @@ def generate_template(username, password, dataStaxUsername, dataStaxPassword):
     resources.append(storageAccounts)
     resources.append(virtualmachines(username, password))
     resources.append(extension(username, password, dataStaxUsername, dataStaxPassword))
-
     return resources
 
 
@@ -215,12 +214,15 @@ def extension(username, password, dataStaxUsername, dataStaxPassword):
             "typeHandlerVersion": "1.3",
             "settings": {
                 "fileUris": [
-                    "https://raw.githubusercontent.com/DSPN/azure-resource-manager-dse/master/main/scripts/node.sh",
+                    "https://raw.githubusercontent.com/DSPN/azure-resource-manager-dse/master/main/scripts/configureOpsCenter.sh",
+                    "https://raw.githubusercontent.com/DSPN/azure-resource-manager-dse/master/main/scripts/dseNode.sh",
+                    "https://raw.githubusercontent.com/DSPN/azure-resource-manager-dse/master/main/scripts/installJava.sh",
                     "https://raw.githubusercontent.com/DSPN/azure-resource-manager-dse/master/main/scripts/opsCenter.sh",
+                    "https://raw.githubusercontent.com/DSPN/azure-resource-manager-dse/master/main/scripts/setupEphemeralDisks.sh",
                     "https://raw.githubusercontent.com/DSPN/azure-resource-manager-dse/master/main/scripts/turnOnOpsCenterAuth.sh",
                     "https://raw.githubusercontent.com/DSPN/azure-resource-manager-dse/master/main/scripts/vm-disk-utils-0.1.sh"
                 ],
-                "commandToExecute": "bash node.sh"
+                "commandToExecute": "bash opsCenter.sh " + username + " " + password + " " + dataStaxUsername + " " + dataStaxPassword
             }
         }
     }
