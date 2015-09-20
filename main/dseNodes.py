@@ -23,7 +23,7 @@ def generate_template(region, datacenterIndex, nodeSize, numberOfNodes, username
         resources.append(vm)
         vmName = vm['name']
 
-        # resources.append(extension(region, vmName))
+        resources.append(extension(region, vmName))
     return resources
 
 
