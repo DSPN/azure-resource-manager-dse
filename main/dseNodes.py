@@ -20,7 +20,11 @@ def generate_template(region, datacenterIndex, nodeSize, numberOfNodes, username
             resources.append(sa)
             saName = sa['name']
 
-        resources.append(virtualmachines(region, nodeSize, username, password, datacenterIndex, nodeIndex, saName, nicName))
+        vm = virtualmachines(region, nodeSize, username, password, datacenterIndex, nodeIndex, saName, nicName)
+        resources.append(vm)
+        vmName = vm['name']
+
+        #resources.append(extension(region, vmName))
     return resources
 
 
@@ -151,3 +155,28 @@ def virtualmachines(region, nodeSize, username, password, datacenterIndex, nodeI
         }
     }
     return resources
+
+def extension(region, virtualMachineName):
+    return {
+        "type": "Microsoft.Compute/virtualMachines/extensions",
+        "name": virtualMachineName + "/configuredsenode",
+        "apiVersion": "2015-06-15",
+        "location": region,
+        "dependsOn": [
+            "Microsoft.Compute/virtualMachines/" + virtualMachineName
+        ],
+        "properties": {
+            "publisher": "Microsoft.OSTCExtensions",
+            "type": "CustomScriptForLinux",
+            "typeHandlerVersion": "1.3",
+            "settings": {
+                "fileUris": [
+                    "https://raw.githubusercontent.com/DSPN/azure-resource-manager-dse/master/main/scripts/dseNode.sh",
+                    "https://raw.githubusercontent.com/DSPN/azure-resource-manager-dse/master/main/scripts/installJava.sh",
+                    "https://raw.githubusercontent.com/DSPN/azure-resource-manager-dse/master/main/scripts/setupEphemeralDisks.sh",
+                    "https://raw.githubusercontent.com/DSPN/azure-resource-manager-dse/master/main/scripts/vm-disk-utils-0.1.sh"
+                ],
+                "commandToExecute": "bash dseNode.sh"
+            }
+        }
+    }
