@@ -5,7 +5,7 @@
         "East Asia"
     ],
     "nodesPerRegion": 4,
-    "nodeSize": "Standard_D12",
+    "nodeSize": "Standard_D3",
     "username": "datastax",
     "password": "foo123!",
     "dataStaxUsername": "ben.lackey_datastax.com",
