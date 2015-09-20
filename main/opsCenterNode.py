@@ -1,19 +1,27 @@
 def generate_template(username, password, datastaxUsername, datastaxPassword):
+    # We're going to create all these resources in resourceGroup().location
+    # The OpsCenter node always has private IP 10.0.1.5
+
     resources = []
     resources.append(virtualNetworks)
     resources.append(networkSecurityGroups)
     resources.append(publicIPAddresses)
     resources.append(networkInterfaces)
     resources.append(storageAccounts)
-    resources.append(virtualMachines)
+    resources.append(virtualmachines(username, password))
 
     return resources
 
+
+# We want a subnet for the gateways to go in as well as one for any virtual machines.
+# 10.x.y.5-255 are usable.
+# This gives us 251 usable IPs.
+# That will be our maximum number of virtual machines in a region for now as well.
 virtualNetworks = {
     "apiVersion": "2015-06-15",
     "type": "Microsoft.Network/virtualNetworks",
     "name": "vnet",
-    "location": "[parameters('region')]",
+    "location": "[resourceGroup().location]",
     "properties": {
         "addressSpace": {
             "addressPrefixes": [
@@ -22,13 +30,13 @@ virtualNetworks = {
         },
         "subnets": [
             {
-                "name": "subnet0",
+                "name": "gatewaySubnet",
                 "properties": {
                     "addressPrefix": "10.0.0.0/24"
                 }
             },
             {
-                "name": "subnet1",
+                "name": "vmSubnet",
                 "properties": {
                     "addressPrefix": "10.0.1.0/24"
                 }
@@ -41,7 +49,7 @@ networkSecurityGroups = {
     "apiVersion": "2015-06-15",
     "type": "Microsoft.Network/networkSecurityGroups",
     "name": "securityGroup",
-    "location": "[parameters('region')]",
+    "location": "[resourceGroup().location]",
     "properties": {
         "securityRules": [
             {
@@ -94,7 +102,7 @@ publicIPAddresses = {
     "apiVersion": "2015-06-15",
     "type": "Microsoft.Network/publicIPAddresses",
     "name": "publicIP",
-    "location": "[parameters('region')]",
+    "location": "[resourceGroup().location]",
     "properties": {
         "publicIPAllocationMethod": "Dynamic",
         "dnsSettings": {
@@ -107,7 +115,7 @@ networkInterfaces = {
     "apiVersion": "2015-06-15",
     "type": "Microsoft.Network/networkInterfaces",
     "name": "networkInterface",
-    "location": "[parameters('region')]",
+    "location": "[resourceGroup().location]",
     "dependsOn": [
         "Microsoft.Network/publicIPAddresses/publicIP",
         "Microsoft.Network/networkSecurityGroups/securityGroup"
@@ -121,9 +129,9 @@ networkInterfaces = {
                         "id": "[resourceId('Microsoft.Network/publicIPAddresses','publicIP')]"
                     },
                     "privateIPAllocationMethod": "Static",
-                    "privateIPAddress": "10.0.0.6",
+                    "privateIPAddress": "10.0.1.5",
                     "subnet": {
-                        "id": "[concat(resourceId('Microsoft.Network/virtualNetworks', 'vnet'), '/subnets/', 'subnet0')]"
+                        "id": "[concat(resourceId('Microsoft.Network/virtualNetworks', 'vnet'), '/subnets/vmSubnet')]"
                     },
                     "networkSecurityGroup": {
                         "id": "[resourceId('Microsoft.Network/networkSecurityGroups','securityGroup')]"
@@ -137,52 +145,54 @@ networkInterfaces = {
 storageAccounts = {
     "apiVersion": "2015-05-01-preview",
     "type": "Microsoft.Storage/storageAccounts",
-    "name": "[concat('opscenter',resourceGroup().name)]",
-    "location": "[parameters('region')]",
+    "name": "[concat('opscsa',resourceGroup().name)]",
+    "location": "[resourceGroup().location]",
     "properties": {
         "accountType": "Standard_LRS"
     }
 }
 
-virtualMachines = {
-    "apiVersion": "2015-06-15",
-    "type": "Microsoft.Compute/virtualMachines",
-    "name": "opscenter",
-    "location": "[parameters('region')]",
-    "dependsOn": [
-        "Microsoft.Network/networkInterfaces/networkInterface"
-    ],
-    "properties": {
-        "hardwareProfile": {
-            "vmSize": "Standard_A1"
-        },
-        "osProfile": {
-            "computername": "opscenter",
-            "adminUsername": "[parameters('username')]",
-            "adminPassword": "[parameters('password')]"
-        },
-        "storageProfile": {
-            "imageReference": {
-                "publisher": "Canonical",
-                "offer": "UbuntuServer",
-                "sku": "14.04.2-LTS",
-                "version": "latest"
+
+def virtualmachines(username, password):
+    return {
+        "apiVersion": "2015-06-15",
+        "type": "Microsoft.Compute/virtualMachines",
+        "name": "opscenter",
+        "location": "[resourceGroup().location]",
+        "dependsOn": [
+            "Microsoft.Network/networkInterfaces/networkInterface"
+        ],
+        "properties": {
+            "hardwareProfile": {
+                "vmSize": "Standard_A1"
             },
-            "osDisk": {
-                "name": "osdisk",
-                "vhd": {
-                    "uri": "[concat('http://opscenter',resourceGroup().name,'.blob.core.windows.net/vhds/opscentervm-osdisk.vhd')]"
+            "osProfile": {
+                "computername": "opscenter",
+                "adminUsername": username,
+                "adminPassword": password
+            },
+            "storageProfile": {
+                "imageReference": {
+                    "publisher": "Canonical",
+                    "offer": "UbuntuServer",
+                    "sku": "14.04.2-LTS",
+                    "version": "latest"
                 },
-                "caching": "ReadWrite",
-                "createOption": "FromImage"
-            }
-        },
-        "networkProfile": {
-            "networkInterfaces": [
-                {
-                    "id": "[resourceId('Microsoft.Network/networkInterfaces','networkInterface')]"
+                "osDisk": {
+                    "name": "osdisk",
+                    "vhd": {
+                        "uri": "[concat('http://opscsa',resourceGroup().name,'.blob.core.windows.net/vhds/opscentervm-osdisk.vhd')]"
+                    },
+                    "caching": "ReadWrite",
+                    "createOption": "FromImage"
                 }
-            ]
+            },
+            "networkProfile": {
+                "networkInterfaces": [
+                    {
+                        "id": "[resourceId('Microsoft.Network/networkInterfaces','networkInterface')]"
+                    }
+                ]
+            }
         }
     }
-}

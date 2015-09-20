@@ -2,10 +2,8 @@ import json
 import opsCenterNode
 import dseNodes
 import connections
-from pprint import pprint
 
 # This python script generates an ARM template that deploys DSE across regions.
-# Arguments are passed in as a json file.
 
 with open('clusterParameters.json') as inputFile:
     clusterParameters = json.load(inputFile)
@@ -28,18 +26,18 @@ generatedTemplate = {
     ]
 }
 
-# First we create the infrastructure that the OpsCenter node requires:
+# Create the OpsCenter node
 resources = opsCenterNode.generate_template(username, password, datastaxUsername, datastaxPassword)
 for resource in resources:
     generatedTemplate['resources'].append(resource)
 
-# Then we loop through for each region and create nodes in them:
+# Create DSE nodes in each region
 for region in regions:
     resources = dseNodes.generate_template(region, nodeSize, nodesPerRegion, username, password)
     for resource in resources:
         generatedTemplate['resources'].append(resource)
 
-# Then we loop across the Vnets (OpsCenter and the DSE nodes) and connect those all togther.  This requires creating:
+# Connect the regions together
 for region in regions:
     resources = connections.generate_template(region, nodeSize, nodesPerRegion, username, password)
     for resource in resources:
