@@ -1,4 +1,4 @@
-def generate_template(username, password, datastaxUsername, datastaxPassword):
+def generate_template(username, password, dataStaxUsername, dataStaxPassword):
     # We're going to create all these resources in resourceGroup().location
     # The OpsCenter node always has private IP 10.0.1.5
 

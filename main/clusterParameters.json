@@ -8,7 +8,7 @@
     "nodeSize": "Standard_D12",
     "username": "datastax",
     "password": "foo123!",
-    "datastaxUsername": "ben.lackey_datastax.com",
-    "datastaxPassword": "abc123"
+    "dataStaxUsername": "ben.lackey_datastax.com",
+    "dataStaxPassword": "abc123"
 }
 

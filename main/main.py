@@ -15,8 +15,8 @@ username = clusterParameters['username']
 password = clusterParameters['password']
 
 # These parameters are going away as soon as we have a DataStax custom extension for Azure
-datastaxUsername = clusterParameters['datastaxUsername']
-datastaxPassword = clusterParameters['datastaxPassword']
+dataStaxUsername = clusterParameters['dataStaxUsername']
+dataStaxPassword = clusterParameters['dataStaxPassword']
 
 # This is the skeleton of the template that we're going to add resources to
 generatedTemplate = {
@@ -29,7 +29,7 @@ generatedTemplate = {
 }
 
 # Create the OpsCenter node
-resources = opsCenterNode.generate_template(username, password, datastaxUsername, datastaxPassword)
+resources = opsCenterNode.generate_template(username, password, dataStaxUsername, dataStaxPassword)
 for resource in resources:
     generatedTemplate['resources'].append(resource)
 
