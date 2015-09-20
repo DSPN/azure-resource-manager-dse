@@ -18,7 +18,8 @@ def generate_template(region, datacenterIndex, nodeSize, numberOfNodes, username
         if (nodeIndex % 40) == 0:
             resources.append(storageAccounts(region, datacenterIndex, storageAccountIndex))
 
-        vm = virtualmachines(region, nodeSize, username, password, datacenterIndex, nodeIndex, storageAccountIndex, nicName)
+        vm = virtualmachines(region, nodeSize, username, password, datacenterIndex, nodeIndex, storageAccountIndex,
+                             nicName)
         resources.append(vm)
         vmName = vm['name']
 
@@ -92,7 +93,8 @@ def networkInterfaces(region, vnetName, datacenterIndex, nodeIndex):
 
 
 def storageAccounts(region, datacenterIndex, storageAccountIndex):
-    storageAccountName = "[concat(resourceGroup().name," + "'dc" + str(datacenterIndex) + "sa" + str(storageAccountIndex) + "')]"
+    storageAccountName = "[concat(resourceGroup().name," + "'dc" + str(datacenterIndex) + "sa" + str(
+        storageAccountIndex) + "')]"
     resource = {
         "apiVersion": "2015-05-01-preview",
         "type": "Microsoft.Storage/storageAccounts",
@@ -117,7 +119,8 @@ def virtualmachines(region, nodeSize, username, password, datacenterIndex, nodeI
         "location": region,
         "dependsOn": [
             "Microsoft.Network/networkInterfaces/" + nicName,
-            "[concat('Microsoft.Storage/storageAccounts/', resourceGroup().name," + "'dc" + str(datacenterIndex) + "sa" + str(storageAccountIndex) + "')]"
+            "[concat('Microsoft.Storage/storageAccounts/', resourceGroup().name," + "'dc" + str(
+                datacenterIndex) + "sa" + str(storageAccountIndex) + "')]"
         ],
         "properties": {
             "hardwareProfile": {
@@ -138,7 +141,8 @@ def virtualmachines(region, nodeSize, username, password, datacenterIndex, nodeI
                 "osDisk": {
                     "name": "osdisk",
                     "vhd": {
-                        "uri": "[concat('http://', resourceGroup().name, 'dc" + str(datacenterIndex) + "sa" + str(storageAccountIndex) + ".blob.core.windows.net/vhds/" + virtualMachineName + "-osdisk.vhd')]"
+                        "uri": "[concat('http://', resourceGroup().name, 'dc" + str(datacenterIndex) + "sa" + str(
+                            storageAccountIndex) + ".blob.core.windows.net/vhds/" + virtualMachineName + "-osdisk.vhd')]"
                     },
                     "caching": "ReadWrite",
                     "createOption": "FromImage"
@@ -147,7 +151,7 @@ def virtualmachines(region, nodeSize, username, password, datacenterIndex, nodeI
             "networkProfile": {
                 "networkInterfaces": [
                     {
-                        "id": "[resourceId('Microsoft.Network/networkInterfaces','networkInterface')]"
+                        "id": "[resourceId('Microsoft.Network/networkInterfaces','" + nicName + "')]"
                     }
                 ]
             }
