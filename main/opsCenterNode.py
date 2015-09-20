@@ -10,6 +10,9 @@ def generate_template(username, password, datastaxUsername, datastaxPassword):
     resources.append(storageAccounts)
     resources.append(virtualmachines(username, password))
 
+    # something is weird with the name of the extension and that's causing an error.  Going to ignore this for now.
+    # resources.append(extension)
+
     return resources
 
 
@@ -20,7 +23,7 @@ def generate_template(username, password, datastaxUsername, datastaxPassword):
 virtualNetworks = {
     "apiVersion": "2015-06-15",
     "type": "Microsoft.Network/virtualNetworks",
-    "name": "vnet",
+    "name": "opscentervnet",
     "location": "[resourceGroup().location]",
     "properties": {
         "addressSpace": {
@@ -131,7 +134,7 @@ networkInterfaces = {
                     "privateIPAllocationMethod": "Static",
                     "privateIPAddress": "10.0.1.5",
                     "subnet": {
-                        "id": "[concat(resourceId('Microsoft.Network/virtualNetworks', 'vnet'), '/subnets/vmSubnet')]"
+                        "id": "[concat(resourceId('Microsoft.Network/virtualNetworks', 'opscentervnet'), '/subnets/vmSubnet')]"
                     },
                     "networkSecurityGroup": {
                         "id": "[resourceId('Microsoft.Network/networkSecurityGroups','securityGroup')]"
@@ -197,3 +200,27 @@ def virtualmachines(username, password):
             }
         }
     }
+
+
+scripts = [
+    "scripts/node.sh",
+    "scripts/opsCenter.sh",
+    "scripts/turnOnOpsCenterAuth.sh",
+    "scripts/vm-disk-utils-0.1.sh"
+]
+
+extension = {
+    "type": "Microsoft.Compute/virtualMachines/extensions",
+    "name": "extension/installopscenter",
+    "apiVersion": "2015-06-15",
+    "location": "[resourceGroup().location]",
+    "properties": {
+        "publisher": "Microsoft.OSTCExtensions",
+        "type": "CustomScriptForLinux",
+        "typeHandlerVersion": "1.3",
+        "settings": {
+            "fileUris": scripts,
+            "commandToExecute": "bash node.sh"
+        }
+    }
+}
