@@ -51,7 +51,8 @@ def virtualNetworks(region, subnetIndex):
 
 
 def networkInterfaces(region, vnetName, subnetIndex, nodeIndex):
-    nodeIP = '10.' + str(subnetIndex) + '.1.' + str(nodeIndex)
+    # Usable IPs start at 10.x.y.5
+    nodeIP = '10.' + str(subnetIndex) + '.1.' + str(nodeIndex+5)
 
     resource = {
         "apiVersion": "2015-06-15",
