@@ -97,7 +97,7 @@ def storageAccounts(region, datacenterIndex, storageAccountIndex):
     resource = {
         "apiVersion": "2015-05-01-preview",
         "type": "Microsoft.Storage/storageAccounts",
-        "name": "dc" + str(datacenterIndex) + "sa" + str(storageAccountIndex),
+        "name": "[concat(resourceGroup().name," + "dc" + str(datacenterIndex) + "sa" + str(storageAccountIndex) + ")]",
         "location": region,
         "properties": {
             "accountType": "Standard_LRS"
