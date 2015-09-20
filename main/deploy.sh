@@ -3,13 +3,10 @@
 RESOURCE_GROUP=$1
 azure group create $RESOURCE_GROUP "East Asia"
 
-# This writes our generated template to mainTemplate.json
-python buildTemplate.py
+# This writes output to generatedTemplate.json
+python main.py
 
-#azure group deployment create -f ./mainTemplate.json $RESOURCE_GROUP dse
-
-
-
+#azure group deployment create -f ./generatedTemplate.json $RESOURCE_GROUP dse
 
 
 
