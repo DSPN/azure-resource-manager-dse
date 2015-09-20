@@ -3,10 +3,10 @@ import math
 
 def generate_template(region, subnet, nodeSize, numberOfNodes, username, password):
     resources = []
-    resources.append(virtualNetworks(region))
-    resources.append(networkInterfaces(region))
-    resources.append(storageAccounts(region, numberOfNodes))
-    resources.append(virtualmachines(region, nodeSize, numberOfNodes, username, password))
+    #resources.append(virtualNetworks(region))
+    #resources.append(networkInterfaces(region))
+    #resources.append(storageAccounts(region, numberOfNodes))
+    #resources.append(virtualmachines(region, nodeSize, numberOfNodes, username, password))
     return resources
 
 
@@ -45,12 +45,12 @@ def virtualNetworks(region):
 
 
 def networkInterfaces(region):
-    return {}
+    return None
 
 
 def storageAccounts(region, numberOfNodes):
     numberOfStorageAccounts = math.ceil(numberOfNodes / 40.0)
-    return {}
+    return None
 
 
 # nodesPerRegion number of VMs
@@ -58,8 +58,8 @@ def virtualmachines(region, nodeSize, numberOfNodes, username, password):
     resources = []
     for node in range(0, numberOfNodes):
         resources.append(virtualmachine(region, nodeSize, username, password))
-    return resources
+    return None
 
 
 def virtualmachine(region, nodeSize, username, password):
-    return {}
+    return None
