@@ -5,34 +5,6 @@ def generate_template(region, nodeSize, nodesPerRegion, username, password):
 
 resources = [
     {
-        "name": "[parameters('virtualNetworkName1')]",
-        "type": "Microsoft.Network/virtualNetworks",
-        "location": "[parameters('location1')]",
-        "apiVersion": "2015-05-01-preview",
-        "properties": {
-            "addressSpace": {
-                "addressPrefixes": [
-                    "[parameters('virtualNetworkAddressRange1')]"
-                ]
-            },
-            "subnets": "[parameters('subnets1')]"
-        }
-    },
-    {
-        "name": "[parameters('virtualNetworkName2')]",
-        "type": "Microsoft.Network/virtualNetworks",
-        "location": "[parameters('location2')]",
-        "apiVersion": "2015-05-01-preview",
-        "properties": {
-            "addressSpace": {
-                "addressPrefixes": [
-                    "[parameters('virtualNetworkAddressRange2')]"
-                ]
-            },
-            "subnets": "[parameters('subnets2')]"
-        }
-    },
-    {
         "apiVersion": "2015-05-01-preview",
         "type": "Microsoft.Network/publicIPAddresses",
         "name": "GWIPAddress1",
