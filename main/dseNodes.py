@@ -24,7 +24,7 @@ def generate_template(region, datacenterIndex, nodeSize, numberOfNodes, username
         resources.append(vm)
         vmName = vm['name']
 
-        #resources.append(extension(region, vmName))
+        # resources.append(extension(region, vmName))
     return resources
 
 
@@ -155,6 +155,7 @@ def virtualmachines(region, nodeSize, username, password, datacenterIndex, nodeI
         }
     }
     return resources
+
 
 def extension(region, virtualMachineName):
     return {
