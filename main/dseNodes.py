@@ -16,11 +16,9 @@ def generate_template(region, datacenterIndex, nodeSize, numberOfNodes, username
         storageAccountIndex = int(math.floor(nodeIndex / 40.0))
         # Check if we've attached 40 drives to the current storage account.  If so, we'll need to make a new one.
         if (nodeIndex % 40) == 0:
-            sa = storageAccounts(region, datacenterIndex, storageAccountIndex)
-            resources.append(sa)
-            saName = sa['name']
+            resources.append(storageAccounts(region, datacenterIndex, storageAccountIndex))
 
-        vm = virtualmachines(region, nodeSize, username, password, datacenterIndex, nodeIndex, saName, nicName)
+        vm = virtualmachines(region, nodeSize, username, password, datacenterIndex, nodeIndex, storageAccountIndex, nicName)
         resources.append(vm)
         vmName = vm['name']
 
@@ -94,10 +92,11 @@ def networkInterfaces(region, vnetName, datacenterIndex, nodeIndex):
 
 
 def storageAccounts(region, datacenterIndex, storageAccountIndex):
+    storageAccountName = "[concat(resourceGroup().name," + "'dc" + str(datacenterIndex) + "sa" + str(storageAccountIndex) + "')]"
     resource = {
         "apiVersion": "2015-05-01-preview",
         "type": "Microsoft.Storage/storageAccounts",
-        "name": "[concat(resourceGroup().name," + "dc" + str(datacenterIndex) + "sa" + str(storageAccountIndex) + ")]",
+        "name": storageAccountName,
         "location": region,
         "properties": {
             "accountType": "Standard_LRS"
@@ -107,9 +106,12 @@ def storageAccounts(region, datacenterIndex, storageAccountIndex):
     return resource
 
 
-def virtualmachines(region, nodeSize, username, password, datacenterIndex, nodeIndex, storageAccountName, nicName):
+def virtualmachines(region, nodeSize, username, password, datacenterIndex, nodeIndex, storageAccountIndex, nicName):
     computerName = "dc" + str(datacenterIndex) + "vm" + str(nodeIndex)
     virtualMachineName = computerName + "vm"
+
+    #          "uri": "http://" + storageAccountName + ".blob.core.windows.net/vhds/" + virtualMachineName + "-osdisk.vhd"
+
 
     resources = {
         "apiVersion": "2015-06-15",
@@ -118,7 +120,7 @@ def virtualmachines(region, nodeSize, username, password, datacenterIndex, nodeI
         "location": region,
         "dependsOn": [
             "Microsoft.Network/networkInterfaces/" + nicName,
-            "Microsoft.Storage/storageAccounts/" + storageAccountName
+            "[concat('Microsoft.Storage/storageAccounts/', resourceGroup().name," + "'dc" + str(datacenterIndex) + "sa" + str(storageAccountIndex) + "')]"
         ],
         "properties": {
             "hardwareProfile": {
@@ -139,7 +141,7 @@ def virtualmachines(region, nodeSize, username, password, datacenterIndex, nodeI
                 "osDisk": {
                     "name": "osdisk",
                     "vhd": {
-                        "uri": "http://" + storageAccountName + ".blob.core.windows.net/vhds/" + virtualMachineName + "-osdisk.vhd"
+                        "uri": "[concat('http://', 'resourceGroup().name', 'dc" + str(datacenterIndex) + "sa" + str(storageAccountIndex) + ".blob.core.windows.net/vhds/" + virtualMachineName + "-osdisk.vhd')]"
                     },
                     "caching": "ReadWrite",
                     "createOption": "FromImage"
