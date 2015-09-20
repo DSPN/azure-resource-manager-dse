@@ -35,11 +35,11 @@ for resource in resources:
 
 # Create DSE nodes in each region
 for region in regions:
-    # This is the 1 in 10.1.0.0.  Not sure if there is a better name for it.
-    # 10.0.x.y is reserved for the OpsCenter resources
-    subnetIndex = regions.index(region) + 1
+    # This is the 1 in 10.1.0.0 and corresponds to the data center we are deploying to
+    # 10.0.x.y is reserved for the OpsCenter resource.
+    datacenterIndex = regions.index(region) + 1
 
-    resources = dseNodes.generate_template(region, subnetIndex, nodeSize, nodesPerRegion, username, password)
+    resources = dseNodes.generate_template(region, datacenterIndex, nodeSize, nodesPerRegion, username, password)
     for resource in resources:
         generatedTemplate['resources'].append(resource)
 
