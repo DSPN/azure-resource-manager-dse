@@ -1,6 +1,20 @@
 def generate_template(region, nodeSize, nodesPerRegion, username, password):
-    # (1) Vnet and a subnet within that to deploy to.
-    # (2) math.ceil(nodesPerRegion/40.0) number of storage accounts
-    # (3) nodesPerRegion number of VMs
+    resources = []
+    resources.append(virtualNetworks)
+    resources.append(networkInterfaces)
+    resources.append(storageAccounts)
+    resources.append(virtualmachines(username, password))
 
     return []
+
+
+virtualNetworks = {}
+networkInterfaces = {}
+
+# math.ceil(nodesPerRegion/40.0) number of storage accounts
+storageAccounts = {}
+
+
+# nodesPerRegion number of VMs
+def virtualmachines(username, password):
+    return {}

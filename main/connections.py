@@ -75,7 +75,7 @@ resources = [
             ],
             "gatewayType": "Vpn",
             "vpnType": "RouteBased",
-            "enableBgp": false
+            "enableBgp": False
         }
     },
     {
@@ -104,7 +104,7 @@ resources = [
             ],
             "gatewayType": "Vpn",
             "vpnType": "RouteBased",
-            "enableBgp": false
+            "enableBgp": False
         }
     },
     {

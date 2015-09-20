@@ -11,7 +11,7 @@ def generate_template(username, password, dataStaxUsername, dataStaxPassword):
     resources.append(virtualmachines(username, password))
 
     # something is weird with the name of the extension and that's causing an error.  Going to ignore this for now.
-    # resources.append(extension)
+    resources.append(extension(username, password, dataStaxUsername, dataStaxPassword))
 
     return resources
 
@@ -209,18 +209,20 @@ scripts = [
     "https://raw.githubusercontent.com/DSPN/azure-resource-manager-dse/master/main/scripts/vm-disk-utils-0.1.sh"
 ]
 
-extension = {
-    "type": "Microsoft.Compute/virtualMachines/extensions",
-    "name": "opscenter/installopscenter",
-    "apiVersion": "2015-06-15",
-    "location": "[resourceGroup().location]",
-    "properties": {
-        "publisher": "Microsoft.OSTCExtensions",
-        "type": "CustomScriptForLinux",
-        "typeHandlerVersion": "1.3",
-        "settings": {
-            "fileUris": scripts,
-            "commandToExecute": "bash node.sh"
+
+def extension(username, password, dataStaxUsername, dataStaxPassword):
+    return {
+        "type": "Microsoft.Compute/virtualMachines/extensions",
+        "name": "opscenter/installopscenter",
+        "apiVersion": "2015-06-15",
+        "location": "[resourceGroup().location]",
+        "properties": {
+            "publisher": "Microsoft.OSTCExtensions",
+            "type": "CustomScriptForLinux",
+            "typeHandlerVersion": "1.3",
+            "settings": {
+                "fileUris": scripts,
+                "commandToExecute": "bash node.sh"
+            }
         }
     }
-}
