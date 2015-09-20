@@ -30,8 +30,7 @@ generatedTemplate = {
 
 # Create the OpsCenter node
 resources = opsCenterNode.generate_template(username, password, dataStaxUsername, dataStaxPassword)
-for resource in resources:
-    generatedTemplate['resources'].append(resource)
+generatedTemplate['resources'] += resources
 
 # Create DSE nodes in each region
 for region in regions:
@@ -40,14 +39,11 @@ for region in regions:
     datacenterIndex = regions.index(region) + 1
 
     resources = dseNodes.generate_template(region, datacenterIndex, nodeSize, nodesPerRegion, username, password)
-    for resource in resources:
-        generatedTemplate['resources'].append(resource)
+    generatedTemplate['resources'] += resources
 
 # Connect the regions together
-for region in regions:
-    resources = connections.generate_template(region, nodeSize, nodesPerRegion, username, password)
-    for resource in resources:
-        generatedTemplate['resources'].append(resource)
+resources = connections.generate_template(regions, nodeSize, nodesPerRegion, username, password)
+generatedTemplate['resources'] += resources
 
 with open('generatedTemplate.json', 'w') as outputFile:
     json.dump(generatedTemplate, outputFile, sort_keys=True, indent=4, ensure_ascii=False)
