@@ -11,10 +11,12 @@ def generate_template(region, datacenterIndex, nodeSize, numberOfNodes, username
         vnetName = vnets['name']
         resources.append(networkInterfaces(region, vnetName, datacenterIndex, nodeIndex))
 
-        storageAccountIndex=math.ceil(nodeIndex/40.0)
-        resources.append(storageAccounts(region, datacenterIndex, storageAccountIndex))
+        storageAccountIndex = int(math.floor(nodeIndex / 40.0))
+        # Check if we've attached 40 drives to the current storage account.  If so, we'll need to make a new one.
+        if (nodeIndex % 40) == 0:
+            resources.append(storageAccounts(region, datacenterIndex, storageAccountIndex))
 
-        # resources.append(virtualmachine(region, nodeSize, username, password))
+            # resources.append(virtualmachine(region, nodeSize, username, password))
     return resources
 
 
