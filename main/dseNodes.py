@@ -4,19 +4,23 @@ import math
 def generate_template(region, datacenterIndex, nodeSize, numberOfNodes, username, password):
     resources = []
 
-    vnets = virtualNetworks(region, datacenterIndex)
-    resources.append(vnets)
+    vnet = virtualNetworks(region, datacenterIndex)
+    resources.append(vnet)
+    vnetName = vnet['name']
 
     for nodeIndex in range(0, numberOfNodes):
-        vnetName = vnets['name']
-        resources.append(networkInterfaces(region, vnetName, datacenterIndex, nodeIndex))
+        nic = networkInterfaces(region, vnetName, datacenterIndex, nodeIndex)
+        resources.append(nic)
+        nicName = nic['name']
 
         storageAccountIndex = int(math.floor(nodeIndex / 40.0))
         # Check if we've attached 40 drives to the current storage account.  If so, we'll need to make a new one.
         if (nodeIndex % 40) == 0:
-            resources.append(storageAccounts(region, datacenterIndex, storageAccountIndex))
+            sa = storageAccounts(region, datacenterIndex, storageAccountIndex)
+            resources.append(sa)
+            saName = sa['name']
 
-            # resources.append(virtualmachine(region, nodeSize, username, password))
+        resources.append(virtualmachines(region, nodeSize, username, password, datacenterIndex, nodeIndex, saName, nicName))
     return resources
 
 
@@ -99,5 +103,51 @@ def storageAccounts(region, datacenterIndex, storageAccountIndex):
     return resource
 
 
-def virtualmachine(region, nodeSize, username, password):
-    return None
+def virtualmachines(region, nodeSize, username, password, datacenterIndex, nodeIndex, storageAccountName, nicName):
+    computerName = "dc" + str(datacenterIndex) + "vm" + str(nodeIndex)
+    virtualMachineName = computerName + "vm"
+
+    resources = {
+        "apiVersion": "2015-06-15",
+        "type": "Microsoft.Compute/virtualMachines",
+        "name": virtualMachineName,
+        "location": region,
+        "dependsOn": [
+            "Microsoft.Network/networkInterfaces/" + nicName,
+            "Microsoft.Storage/storageAccounts/" + storageAccountName
+        ],
+        "properties": {
+            "hardwareProfile": {
+                "vmSize": nodeSize
+            },
+            "osProfile": {
+                "computername": computerName,
+                "adminUsername": username,
+                "adminPassword": password
+            },
+            "storageProfile": {
+                "imageReference": {
+                    "publisher": "Canonical",
+                    "offer": "UbuntuServer",
+                    "sku": "14.04.2-LTS",
+                    "version": "latest"
+                },
+                "osDisk": {
+                    "name": "osdisk",
+                    "vhd": {
+                        "uri": "http://" + storageAccountName + ".blob.core.windows.net/vhds/" + virtualMachineName + "-osdisk.vhd"
+                    },
+                    "caching": "ReadWrite",
+                    "createOption": "FromImage"
+                }
+            },
+            "networkProfile": {
+                "networkInterfaces": [
+                    {
+                        "id": "[resourceId('Microsoft.Network/networkInterfaces','networkInterface')]"
+                    }
+                ]
+            }
+        }
+    }
+    return resources
