@@ -9,8 +9,6 @@ def generate_template(username, password, dataStaxUsername, dataStaxPassword):
     resources.append(networkInterfaces)
     resources.append(storageAccounts)
     resources.append(virtualmachines(username, password))
-
-    # something is weird with the name of the extension and that's causing an error.  Going to ignore this for now.
     resources.append(extension(username, password, dataStaxUsername, dataStaxPassword))
 
     return resources
@@ -202,14 +200,6 @@ def virtualmachines(username, password):
     }
 
 
-scripts = [
-    "https://raw.githubusercontent.com/DSPN/azure-resource-manager-dse/master/main/scripts/node.sh",
-    "https://raw.githubusercontent.com/DSPN/azure-resource-manager-dse/master/main/scripts/opsCenter.sh",
-    "https://raw.githubusercontent.com/DSPN/azure-resource-manager-dse/master/main/scripts/turnOnOpsCenterAuth.sh",
-    "https://raw.githubusercontent.com/DSPN/azure-resource-manager-dse/master/main/scripts/vm-disk-utils-0.1.sh"
-]
-
-
 def extension(username, password, dataStaxUsername, dataStaxPassword):
     return {
         "type": "Microsoft.Compute/virtualMachines/extensions",
@@ -221,7 +211,12 @@ def extension(username, password, dataStaxUsername, dataStaxPassword):
             "type": "CustomScriptForLinux",
             "typeHandlerVersion": "1.3",
             "settings": {
-                "fileUris": scripts,
+                "fileUris": [
+                    "https://raw.githubusercontent.com/DSPN/azure-resource-manager-dse/master/main/scripts/node.sh",
+                    "https://raw.githubusercontent.com/DSPN/azure-resource-manager-dse/master/main/scripts/opsCenter.sh",
+                    "https://raw.githubusercontent.com/DSPN/azure-resource-manager-dse/master/main/scripts/turnOnOpsCenterAuth.sh",
+                    "https://raw.githubusercontent.com/DSPN/azure-resource-manager-dse/master/main/scripts/vm-disk-utils-0.1.sh"
+                ],
                 "commandToExecute": "bash node.sh"
             }
         }
