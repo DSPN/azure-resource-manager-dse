@@ -158,7 +158,7 @@ def virtualmachines(username, password):
     return {
         "apiVersion": "2015-06-15",
         "type": "Microsoft.Compute/virtualMachines",
-        "name": "opscenter",
+        "name": "opscentervm",
         "location": "[resourceGroup().location]",
         "dependsOn": [
             "Microsoft.Network/networkInterfaces/networkInterface",
@@ -203,9 +203,12 @@ def virtualmachines(username, password):
 def extension(username, password, dataStaxUsername, dataStaxPassword):
     return {
         "type": "Microsoft.Compute/virtualMachines/extensions",
-        "name": "opscenter/installopscenter",
+        "name": "opscentervm/installopscenter",
         "apiVersion": "2015-06-15",
         "location": "[resourceGroup().location]",
+        "dependsOn": [
+            "Microsoft.Compute/virtualMachines/opscentervm"
+        ],
         "properties": {
             "publisher": "Microsoft.OSTCExtensions",
             "type": "CustomScriptForLinux",
