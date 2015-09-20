@@ -4,7 +4,7 @@ RESOURCE_GROUP=$1
 azure group create $RESOURCE_GROUP "East Asia"
 
 # This writes our generated template to mainTemplate.json
-python buildTemplate.py input.json
+python buildTemplate.py
 
 #azure group deployment create -f ./mainTemplate.json $RESOURCE_GROUP dse
 
