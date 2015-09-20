@@ -29,7 +29,9 @@ generatedTemplate = {
 }
 
 # First we create the infrastructure that the OpsCenter node requires:
-opsCenterNode.generate_template(username, password, datastaxUsername, datastaxPassword)
+resources = opsCenterNode.generate_template(username, password, datastaxUsername, datastaxPassword)
+for resource in resources:
+    generatedTemplate['resources'].append(resource)
 
 # Then we loop through for each region and create nodes in them:
 for region in regions:

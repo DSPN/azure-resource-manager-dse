@@ -1,5 +1,6 @@
-# This is the programatically generated template file.
+# This is the programmatically generated template file.
 main/generatedTemplate.json
 
-# built python files (there tend to be a lot of them in main)
+# Compiled Python
 *.pyc
+
