@@ -203,10 +203,10 @@ def virtualmachines(username, password):
 
 
 scripts = [
-    "scripts/node.sh",
-    "scripts/opsCenter.sh",
-    "scripts/turnOnOpsCenterAuth.sh",
-    "scripts/vm-disk-utils-0.1.sh"
+    "https://raw.githubusercontent.com/DSPN/azure-resource-manager-dse/master/main/scripts/node.sh",
+    "https://raw.githubusercontent.com/DSPN/azure-resource-manager-dse/master/main/scripts/opsCenter.sh",
+    "https://raw.githubusercontent.com/DSPN/azure-resource-manager-dse/master/main/scripts/turnOnOpsCenterAuth.sh",
+    "https://raw.githubusercontent.com/DSPN/azure-resource-manager-dse/master/main/scripts/vm-disk-utils-0.1.sh"
 ]
 
 extension = {
