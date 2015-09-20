@@ -211,7 +211,7 @@ scripts = [
 
 extension = {
     "type": "Microsoft.Compute/virtualMachines/extensions",
-    "name": "extension/installopscenter",
+    "name": "opscenter/installopscenter",
     "apiVersion": "2015-06-15",
     "location": "[resourceGroup().location]",
     "properties": {
