@@ -214,26 +214,15 @@ def extension(username, password, dataStaxUsername, dataStaxPassword):
             "typeHandlerVersion": "1.3",
             "settings": {
                 "fileUris": [
-                    "scripts/configureOpsCenter.sh",
-                    "scripts/dseNode.sh",
-                    "scripts/installJava.sh",
-                    "scripts/opsCenter.sh",
-                    "scripts/setupEphemeralDisks.sh",
-                    "scripts/turnOnOpsCenterAuth.sh",
-                    "scripts/vm-disk-utils-0.1.sh"
+                    "https://raw.githubusercontent.com/DSPN/azure-resource-manager-dse/master/main/scripts/configureOpsCenter.sh",
+                    "https://raw.githubusercontent.com/DSPN/azure-resource-manager-dse/master/main/scripts/dseNode.sh",
+                    "https://raw.githubusercontent.com/DSPN/azure-resource-manager-dse/master/main/scripts/installJava.sh",
+                    "https://raw.githubusercontent.com/DSPN/azure-resource-manager-dse/master/main/scripts/opsCenter.sh",
+                    "https://raw.githubusercontent.com/DSPN/azure-resource-manager-dse/master/main/scripts/setupEphemeralDisks.sh",
+                    "https://raw.githubusercontent.com/DSPN/azure-resource-manager-dse/master/main/scripts/turnOnOpsCenterAuth.sh",
+                    "https://raw.githubusercontent.com/DSPN/azure-resource-manager-dse/master/main/scripts/vm-disk-utils-0.1.sh"
                 ],
                 "commandToExecute": "bash opsCenter.sh " + username + " " + password + " " + dataStaxUsername + " " + dataStaxPassword
             }
         }
     }
-
-
-    # "fileUris": [
-    #     "https://raw.githubusercontent.com/DSPN/azure-resource-manager-dse/master/main/scripts/configureOpsCenter.sh",
-    #     "https://raw.githubusercontent.com/DSPN/azure-resource-manager-dse/master/main/scripts/dseNode.sh",
-    #     "https://raw.githubusercontent.com/DSPN/azure-resource-manager-dse/master/main/scripts/installJava.sh",
-    #     "https://raw.githubusercontent.com/DSPN/azure-resource-manager-dse/master/main/scripts/opsCenter.sh",
-    #     "https://raw.githubusercontent.com/DSPN/azure-resource-manager-dse/master/main/scripts/setupEphemeralDisks.sh",
-    #     "https://raw.githubusercontent.com/DSPN/azure-resource-manager-dse/master/main/scripts/turnOnOpsCenterAuth.sh",
-    #     "https://raw.githubusercontent.com/DSPN/azure-resource-manager-dse/master/main/scripts/vm-disk-utils-0.1.sh"
-    # ],
