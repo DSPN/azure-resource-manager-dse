@@ -110,9 +110,6 @@ def virtualmachines(region, nodeSize, username, password, datacenterIndex, nodeI
     computerName = "dc" + str(datacenterIndex) + "vm" + str(nodeIndex)
     virtualMachineName = computerName + "vm"
 
-    #          "uri": "http://" + storageAccountName + ".blob.core.windows.net/vhds/" + virtualMachineName + "-osdisk.vhd"
-
-
     resources = {
         "apiVersion": "2015-06-15",
         "type": "Microsoft.Compute/virtualMachines",
@@ -141,7 +138,7 @@ def virtualmachines(region, nodeSize, username, password, datacenterIndex, nodeI
                 "osDisk": {
                     "name": "osdisk",
                     "vhd": {
-                        "uri": "[concat('http://', 'resourceGroup().name', 'dc" + str(datacenterIndex) + "sa" + str(storageAccountIndex) + ".blob.core.windows.net/vhds/" + virtualMachineName + "-osdisk.vhd')]"
+                        "uri": "[concat('http://', resourceGroup().name, 'dc" + str(datacenterIndex) + "sa" + str(storageAccountIndex) + ".blob.core.windows.net/vhds/" + virtualMachineName + "-osdisk.vhd')]"
                     },
                     "caching": "ReadWrite",
                     "createOption": "FromImage"
