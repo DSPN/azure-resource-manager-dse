@@ -3,10 +3,14 @@ import math
 
 def generate_template(region, subnetIndex, nodeSize, numberOfNodes, username, password):
     resources = []
-    resources.append(virtualNetworks(region, subnetIndex))
 
-    for node in range(0, numberOfNodes):
-        resources.append(networkInterfaces(region))
+    vnets = virtualNetworks(region, subnetIndex)
+    resources.append(vnets)
+
+    for nodeIndex in range(0, numberOfNodes):
+        vnetName = vnets['name']
+        resources.append(networkInterfaces(region, vnetName, subnetIndex, nodeIndex))
+
         # resources.append(storageAccounts(region, numberOfNodes))
         # resources.append(virtualmachine(region, nodeSize, username, password))
     return resources
@@ -46,15 +50,16 @@ def virtualNetworks(region, subnetIndex):
     }
 
 
-def networkInterfaces(region):
-    return  = {
+def networkInterfaces(region, vnetName, subnetIndex, nodeIndex):
+    nodeIP = '10.' + str(subnetIndex) + '.1.' + str(nodeIndex)
+
+    resource = {
         "apiVersion": "2015-06-15",
         "type": "Microsoft.Network/networkInterfaces",
-        "name": "networkInterface",
+        "name": "dc" + str(subnetIndex) + "vm" + str(nodeIndex) + "_nic",
         "location": region,
         "dependsOn": [
-            "Microsoft.Network/publicIPAddresses/publicIP",
-            "Microsoft.Network/networkSecurityGroups/securityGroup"
+            "Microsoft.Network/virtualNetworks/" + vnetName
         ],
         "properties": {
             "ipConfigurations": [
@@ -62,15 +67,16 @@ def networkInterfaces(region):
                     "name": "ipConfig",
                     "properties": {
                         "privateIPAllocationMethod": "Static",
-                        "privateIPAddress": "10.0.1.5",
+                        "privateIPAddress": nodeIP,
                         "subnet": {
-                            "id": "[concat(resourceId('Microsoft.Network/virtualNetworks', 'opscentervnet'), '/subnets/vmSubnet')]"
+                            "id": "[concat(resourceId('Microsoft.Network/virtualNetworks', '" + vnetName + "'), '/subnets/vmSubnet')]"
                         }
                     }
                 }
             ]
         }
     }
+    return resource
 
 
 def storageAccounts(region, numberOfNodes):
