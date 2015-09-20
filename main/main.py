@@ -35,7 +35,9 @@ for resource in resources:
 
 # Create DSE nodes in each region
 for region in regions:
-    resources = dseNodes.generate_template(region, nodeSize, nodesPerRegion, username, password)
+    index = regions.index(region) + 1
+    subnet = '10.' + str(index) + '.0.0'
+    resources = dseNodes.generate_template(region, subnet, nodeSize, nodesPerRegion, username, password)
     for resource in resources:
         generatedTemplate['resources'].append(resource)
 
