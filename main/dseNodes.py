@@ -7,7 +7,8 @@ def generate_template(region, nodeSize, numberOfNodes, username, password):
     resources.append(networkInterfaces(region))
     resources.append(storageAccounts(region, numberOfNodes))
     resources.append(virtualmachines(region, nodeSize, numberOfNodes, username, password))
-    return resources
+    #    return resources
+    return []
 
 
 def virtualNetworks(region):
@@ -19,8 +20,7 @@ def networkInterfaces(region):
 
 
 def storageAccounts(region, numberOfNodes):
-    numberOfStorageAccounts
-    math.ceil(numberOfNodes / 40.0)
+    numberOfStorageAccounts = math.ceil(numberOfNodes / 40.0)
     return {}
 
 
