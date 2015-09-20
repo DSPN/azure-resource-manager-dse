@@ -20,6 +20,14 @@ password = clusterParameters['password']
 datastaxUsername = clusterParameters['datastaxUsername']
 datastaxPassword = clusterParameters['datastaxPassword']
 
+# This is the skeleton of the template that we're going to add resources to
+generatedTemplate = {
+  "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "resources": [
+  ]
+}
+
 # First we create the infrastructure that the OpsCenter node requires:
 opsCenterNode.generate_template(username, password, datastaxUsername, datastaxPassword)
 
@@ -30,3 +38,6 @@ for region in regions:
 # Then we loop across the Vnets (OpsCenter and the DSE nodes) and connect those all togther.  This requires creating:
 for region in regions:
     connections.generate_template(region, nodeSize, nodesPerRegion, username, password)
+
+with open('generatedTemplate.json', 'w') as outputFile:
+    json.dump(generatedTemplate, outputFile, sort_keys = True, indent = 4, ensure_ascii=False)
