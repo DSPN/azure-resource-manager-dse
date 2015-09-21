@@ -65,6 +65,7 @@ def getAcceptedFingerprints(regions, nodesPerRegion):
         for nodeIndex in range(0, nodesPerRegion):
             nodeIP = '10.' + str(datacenterIndex) + '.1.' + str(nodeIndex + 5)
             acceptedFingerprints[nodeIP] = getFingerprint(nodeIP)
+            pass
 
     return acceptedFingerprints
 
