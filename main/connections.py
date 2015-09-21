@@ -30,11 +30,11 @@ def publicIPAddresses(region, name):
     }
 
 
-def virtualNetworkGateways(region, name, publicIPName, vnetName):
+def virtualNetworkGateways(region, gatewayName, publicIPName, vnetName):
     return {
         "apiVersion": "2015-05-01-preview",
         "type": "Microsoft.Network/virtualNetworkGateways",
-        "name": name,
+        "name": gatewayName,
         "location": region,
         "dependsOn": [
             "Microsoft.Network/publicIPAddresses/" + publicIPName,
@@ -62,22 +62,22 @@ def virtualNetworkGateways(region, name, publicIPName, vnetName):
     }
 
 
-def connections():
+def connections(region, gateway1Name, gateway2Name):
     return {
         "apiVersion": "2015-05-01-preview",
         "type": "Microsoft.Network/connections",
-        "name": "connection2",
-        "location": "[parameters('location2')]",
+        "name": "connection_" + gateway1Name + "_" + gateway2Name,
+        "location": region,
         "dependsOn": [
-            "Microsoft.Network/virtualNetworkGateways/gw1",
-            "Microsoft.Network/virtualNetworkGateways/gw2"
+            "Microsoft.Network/virtualNetworkGateways/" + gateway1Name,
+            "Microsoft.Network/virtualNetworkGateways/" + gateway2Name
         ],
         "properties": {
             "virtualNetworkGateway1": {
-                "id": "[variables('vnetGatewayID2')]"
+                "id": "[resourceId('Microsoft.Network/virtualNetworkGateways','" + gateway1Name + "')]"
             },
             "virtualNetworkGateway2": {
-                "id": "[variables('vnetGatewayID1')]"
+                "id": "[resourceId('Microsoft.Network/virtualNetworkGateways','" + gateway2Name + "')]"
             },
             "connectionType": "Vnet2Vnet",
             "routingWeight": 3,
