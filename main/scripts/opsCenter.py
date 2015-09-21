@@ -4,7 +4,7 @@ import os
 
 def run():
     regions = [
-        "Central US",
+        "West US",
         "North Europe",
         "East Asia"
     ]
