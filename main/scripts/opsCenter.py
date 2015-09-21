@@ -1,22 +1,57 @@
 import json
 
+
 def run():
-    numberOfRegions = 3
+    regions = [
+        "Central US",
+        "North Europe",
+        "East Asia"
+    ]
     nodesPerRegion = 4
     username = 'datastax'
     password = 'foo123!'
     dataStaxUsername = 'ben.lackey_datastax.com'
     dataStaxPassword = 'cJgBIKarVugFjy7'
 
-    nodeInformation = []
-    acceptedFingerprints = {}
-
-    document = generateDocument(username, password, dataStaxUsername, dataStaxPassword, nodeInformation, acceptedFingerprints)
+    document = generateDocument(username, password, dataStaxUsername, dataStaxPassword, regions, nodesPerRegion)
 
     with open('generatedOpsCenterParameters.json', 'w') as outputFile:
         json.dump(document, outputFile, sort_keys=True, indent=4, ensure_ascii=False)
 
-def generateDocument(username, password, dataStaxUsername, dataStaxPassword, nodeInformation, acceptedFingerprints):
+def getNodeInformation(datacenterIndex, numberOfNodes):
+    nodeInformation = []
+
+    for nodeIndex in range(0,numberOfNodes):
+        nodeIP = '10.' + str(datacenterIndex) + '.1.' + str(nodeIndex + 5)
+        document = {
+            "public_ip": nodeIP,
+            "private_ip": nodeIP,
+            "node_type": "cassandra"
+        }
+        nodeInformation.append(document)
+    return nodeInformation
+
+def getLocalDataCenters(regions, nodesPerRegion):
+    localDataCenters=[]
+    for region in regions:
+        datacenterIndex = regions.index(region) + 1
+        localDataCenter={
+            "location": region,
+            "node_information": getNodeInformation(datacenterIndex, nodesPerRegion),
+            "dc": region.replace(" ", "_").lower()
+        }
+        localDataCenters.append(localDataCenter)
+    return localDataCenters
+
+
+def getAcceptedFingerprints():
+    return {}
+
+
+def generateDocument(username, password, dataStaxUsername, dataStaxPassword, regions, nodesPerRegion):
+    localDataCenters = getLocalDataCenters(regions, nodesPerRegion)
+    acceptedFingerprints = getAcceptedFingerprints()
+
     return {
         "cassandra_config": {
             "auto_bootstrap": False,
@@ -35,7 +70,7 @@ def generateDocument(username, password, dataStaxUsername, dataStaxPassword, nod
             "cross_node_timeout": False,
             "commit_failure_policy": "stop",
             "counter_write_request_timeout_in_ms": 5000,
-            "endpoint_snitch": "com.datastax.bdp.snitch.DseSimpleSnitch",
+            "endpoint_snitch": "org.apache.cassandra.locator.GossipingPropertyFileSnitch",
             "request_scheduler": "org.apache.cassandra.scheduler.NoScheduler",
             "cas_contention_timeout_in_ms": 1000,
             "memtable_heap_space_in_mb": 2048,
@@ -141,13 +176,7 @@ def generateDocument(username, password, dataStaxUsername, dataStaxPassword, nod
             "repo-password": dataStaxPassword,
             "repo-user": dataStaxUsername
         },
-        "local_datacenters": [
-            {
-                "location": "",
-                "node_information": nodeInformation,
-                "dc": ""
-            }
-        ],
+        "local_datacenters": localDataCenters,
         "accepted_fingerprints": acceptedFingerprints
     }
 
