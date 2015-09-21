@@ -33,7 +33,6 @@ def generate_template(regions):
                 pass
             else:
                 resources.append(connections(regionA, gatewayNameA, gatewayNameB))
-                resources.append(connections(regionB, gatewayNameB, gatewayNameA))
 
     return resources
 
