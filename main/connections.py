@@ -16,12 +16,24 @@ def generate_template(regions):
         gatewayName = "dseNode_gw_dc" + str(datacenterIndex)
         resources.append(virtualNetworkGateways(region, gatewayName, publicIPName, vnetName))
 
-        # Create connections between OpsCenter and the Nodes
+        # Create connections in both directions between OpsCenter and the Nodes
         resources.append(connections("[resourceGroup().location]", "opsc_gateway", gatewayName))
         resources.append(connections(region, gatewayName, "opsc_gateway"))
 
     # Connect the nodes
+    for regionA in regions:
+        datacenterIndexA = regions.index(regionA) + 1
+        gatewayNameA = "dseNode_gw_dc" + str(datacenterIndexA)
 
+        for regionB in regions:
+            datacenterIndexB = regions.index(regionB) + 1
+            gatewayNameB = "dseNode_gw_dc" + str(datacenterIndexB)
+
+            if datacenterIndexA == datacenterIndexB:
+                pass
+            else:
+                resources.append(connections(regionA, gatewayNameA, gatewayNameB))
+                resources.append(connections(regionB, gatewayNameB, gatewayNameA))
 
     return resources
 
