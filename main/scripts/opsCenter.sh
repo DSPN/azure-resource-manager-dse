@@ -1,10 +1,5 @@
 #!/bin/bash
 
-USERNAME=$1
-PASSWORD=$2
-DATASTAX_USERNAME=$3
-DATASTAX_PASSWORD=$4
-
 bash installJava.sh
 
 echo "Installing OpsCenter"
@@ -19,5 +14,9 @@ sudo service opscenterd start
 echo "Waiting for OpsCenter to start..."
 sleep 15
 
-#bash configureOpsCenter.sh $USERNAME $PASSWORD $DATASTAX_USERNAME $DATASTAX_PASSWORD
+echo "Generating a provision.json file"
+python opsCenter.py
+
+echo "Provisioning a new cluster using provision.json"
+curl --insecure -H "Accept: application/json" -X POST http://127.0.0.1:8888/provision -d @provision.json
 

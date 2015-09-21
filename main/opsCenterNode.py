@@ -216,10 +216,10 @@ def extension(username, password, dataStaxUsername, dataStaxPassword):
                 "fileUris": [
                     "https://raw.githubusercontent.com/DSPN/azure-resource-manager-dse/master/main/scripts/opsCenter.sh",
                     "https://raw.githubusercontent.com/DSPN/azure-resource-manager-dse/master/main/scripts/installJava.sh",
-                    "https://raw.githubusercontent.com/DSPN/azure-resource-manager-dse/master/main/scripts/configureOpsCenter.sh",
+                    "https://raw.githubusercontent.com/DSPN/azure-resource-manager-dse/master/main/scripts/opsCenter.py",
                     "https://raw.githubusercontent.com/DSPN/azure-resource-manager-dse/master/main/scripts/turnOnOpsCenterAuth.sh"
                 ],
-                "commandToExecute": "bash opsCenter.sh " + username + " " + password + " " + dataStaxUsername + " " + dataStaxPassword
+                "commandToExecute": "bash opsCenter.sh"
             }
         }
     }
