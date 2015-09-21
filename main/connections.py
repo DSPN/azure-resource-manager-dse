@@ -4,16 +4,16 @@ def generate_template(regions):
     # Create a public IP for each gateway
     publicIPName = "opsc_gateway_ip"
     resources.append(publicIPAddresses("[resourceGroup().location]", publicIPName))
-
-    virtualNetworkGateways("[resourceGroup().location]", "opsc_gateway", publicIPName)
+    vnetName = "opscentervnet"
+    resources.append(virtualNetworkGateways("[resourceGroup().location]", "opsc_gateway", publicIPName, vnetName))
 
     for region in regions:
         datacenterIndex = regions.index(region) + 1
 
         publicIPName = "dsenode_gw_ip_dc" + str(datacenterIndex)
         resources.append(publicIPAddresses(region, publicIPName))
-
-        virtualNetworkGateways(region, "dseNode_gw_dc" + str(datacenterIndex), publicIPName)
+        vnetName = (region + "_dse_node_vnet").replace(" ", "_").lower()
+        resources.append(virtualNetworkGateways(region, "dseNode_gw_dc" + str(datacenterIndex), publicIPName, vnetName))
 
     return resources
 
@@ -30,7 +30,7 @@ def publicIPAddresses(region, name):
     }
 
 
-def virtualNetworkGateways(region, name, publicIPName):
+def virtualNetworkGateways(region, name, publicIPName, vnetName):
     return {
         "apiVersion": "2015-05-01-preview",
         "type": "Microsoft.Network/virtualNetworkGateways",
@@ -38,7 +38,7 @@ def virtualNetworkGateways(region, name, publicIPName):
         "location": region,
         "dependsOn": [
             "Microsoft.Network/publicIPAddresses/" + publicIPName,
-            "Microsoft.Network/virtualNetworks/vnetname"
+            "Microsoft.Network/virtualNetworks/" + vnetName
         ],
         "properties": {
             "ipConfigurations": [

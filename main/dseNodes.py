@@ -23,6 +23,7 @@ def generate_template(region, datacenterIndex, nodeSize, numberOfNodes, username
         resources.append(vm)
         vmName = vm['name']
 
+        #the extension isn't working and there's no real way to test it until the vnets are connected...
         #resources.append(extension(region, vmName))
     return resources
 

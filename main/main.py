@@ -42,8 +42,8 @@ for region in regions:
     generatedTemplate['resources'] += resources
 
 # Connect the regions together
-#resources = connections.generate_template(regions)
-#generatedTemplate['resources'] += resources
+resources = connections.generate_template(regions)
+generatedTemplate['resources'] += resources
 
 with open('generatedTemplate.json', 'w') as outputFile:
     json.dump(generatedTemplate, outputFile, sort_keys=True, indent=4, ensure_ascii=False)
