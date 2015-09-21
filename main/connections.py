@@ -13,7 +13,15 @@ def generate_template(regions):
         publicIPName = "dsenode_gw_ip_dc" + str(datacenterIndex)
         resources.append(publicIPAddresses(region, publicIPName))
         vnetName = (region + "_dse_node_vnet").replace(" ", "_").lower()
-        resources.append(virtualNetworkGateways(region, "dseNode_gw_dc" + str(datacenterIndex), publicIPName, vnetName))
+        gatewayName = "dseNode_gw_dc" + str(datacenterIndex)
+        resources.append(virtualNetworkGateways(region, gatewayName, publicIPName, vnetName))
+
+        # Create connections between OpsCenter and the Nodes
+        resources.append(connections("[resourceGroup.location()]", "opsc_gateway", gatewayName))
+        resources.append(connections(region, gatewayName, "opsc_gateway"))
+
+    # Connect the nodes
+
 
     return resources
 
