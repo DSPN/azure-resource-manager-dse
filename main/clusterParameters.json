@@ -4,7 +4,7 @@
         "North Europe",
         "East Asia"
     ],
-    "nodesPerRegion": 4,
+    "nodesPerRegion": 50,
     "nodeSize": "Standard_D3",
     "username": "datastax",
     "password": "foo123!",

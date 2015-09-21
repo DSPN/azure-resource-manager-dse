@@ -1,10 +1,21 @@
+def run():
+    numberOfRegions = 3
+    nodesPerRegion = 4
+    username = 'datastax'
+    password = 'foo123!'
+    dataStaxUsername = 'ben.lackey_datastax.com'
+    dataStaxPassword = 'cJgBIKarVugFjy7'
 
+    nodeInformation = "asd"
+    acceptedFingerprints = "asd"
+
+    generateDocument(username, password, dataStaxUsername, dataStaxPassword, nodeInformation, acceptedFingerprints)
 
 
 def generateDocument(username, password, dataStaxUsername, dataStaxPassword, nodeInformation, acceptedFingerprints):
     return {
         "cassandra_config": {
-            "auto_bootstrap": false,
+            "auto_bootstrap": False,
             "permissions_validity_in_ms": 2000,
             "memtable_allocation_type": "heap_buffers",
             "column_index_size_in_kb": 64,
@@ -17,7 +28,7 @@ def generateDocument(username, password, dataStaxUsername, dataStaxPassword, nod
             "commitlog_total_space_in_mb": 8192,
             "dynamic_snitch_reset_interval_in_ms": 600000,
             "tombstone_failure_threshold": 100000,
-            "cross_node_timeout": false,
+            "cross_node_timeout": False,
             "commit_failure_policy": "stop",
             "counter_write_request_timeout_in_ms": 5000,
             "endpoint_snitch": "com.datastax.bdp.snitch.DseSimpleSnitch",
@@ -26,9 +37,9 @@ def generateDocument(username, password, dataStaxUsername, dataStaxPassword, nod
             "memtable_heap_space_in_mb": 2048,
             "concurrent_reads": 32,
             "max_hint_window_in_ms": 10800000,
-            "start_native_transport": true,
+            "start_native_transport": True,
             "row_cache_save_period": 0,
-            "auto_snapshot": true,
+            "auto_snapshot": True,
             "counter_cache_save_period": 7200,
             "read_request_timeout_in_ms": 5000,
             "saved_caches_directory": "/mnt/saved_caches",
@@ -38,8 +49,8 @@ def generateDocument(username, password, dataStaxUsername, dataStaxPassword, nod
             ],
             "rpc_port": 9160,
             "native_transport_port": 9042,
-            "start_rpc": true,
-            "incremental_backups": false,
+            "start_rpc": True,
+            "incremental_backups": False,
             "dynamic_snitch_update_interval_in_ms": 100,
             "concurrent_counter_writes": 32,
             "internode_authenticator": "org.apache.cassandra.auth.AllowAllInternodeAuthenticator",
@@ -55,14 +66,14 @@ def generateDocument(username, password, dataStaxUsername, dataStaxPassword, nod
             "authenticator": "AllowAllAuthenticator",
             "key_cache_save_period": 14400,
             "dynamic_snitch_badness_threshold": 0.1,
-            "trickle_fsync": false,
+            "trickle_fsync": False,
             "commitlog_sync": "periodic",
             "concurrent_writes": 32,
             "stream_throughput_outbound_megabits_per_sec": 200,
             "max_hints_delivery_threads": 2,
             "hinted_handoff_enabled": "true",
             "memory_allocator": "NativeAllocator",
-            "rpc_keepalive": true,
+            "rpc_keepalive": True,
             "truncate_request_timeout_in_ms": 60000,
             "client_encryption_options": {
                 "keystore": "resources/dse/conf/.keystore",
@@ -72,8 +83,8 @@ def generateDocument(username, password, dataStaxUsername, dataStaxPassword, nod
                 "store_type": "JKS",
                 "truststore": "resources/dse/conf/.truststore",
                 "truststore_password": "cassandra",
-                "enabled": false,
-                "require_client_auth": false,
+                "enabled": False,
+                "require_client_auth": False,
                 "cipher_suites": [
                     "TLS_RSA_WITH_AES_128_CBC_SHA",
                     "TLS_RSA_WITH_AES_256_CBC_SHA",
@@ -89,8 +100,8 @@ def generateDocument(username, password, dataStaxUsername, dataStaxPassword, nod
             "native_transport_max_frame_size_in_mb": 256,
             "commitlog_directory": "/mnt/commitlog",
             "batch_size_warn_threshold_in_kb": 64,
-            "inter_dc_tcp_nodelay": false,
-            "snapshot_before_compaction": false,
+            "inter_dc_tcp_nodelay": False,
+            "snapshot_before_compaction": False,
             "thrift_framed_transport_size_in_mb": 15,
             "write_request_timeout_in_ms": 2000,
             "range_request_timeout_in_ms": 10000,
@@ -113,10 +124,10 @@ def generateDocument(username, password, dataStaxUsername, dataStaxPassword, nod
                     "TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA",
                     "TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA"
                 ],
-                "require_client_auth": false
+                "require_client_auth": False
             }
         },
-        "is_retry": false,
+        "is_retry": False,
         "install_params": {
             "package": "dse",
             "private_key": "",
@@ -139,3 +150,6 @@ def generateDocument(username, password, dataStaxUsername, dataStaxPassword, nod
             acceptedFingerprints
         }
     }
+
+
+run()
