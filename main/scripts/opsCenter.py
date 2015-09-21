@@ -1,4 +1,5 @@
 import json
+import os
 
 
 def run():
@@ -18,10 +19,11 @@ def run():
     with open('provision.json', 'w') as outputFile:
         json.dump(document, outputFile, sort_keys=True, indent=4, ensure_ascii=False)
 
+
 def getNodeInformation(datacenterIndex, numberOfNodes):
     nodeInformation = []
 
-    for nodeIndex in range(0,numberOfNodes):
+    for nodeIndex in range(0, numberOfNodes):
         nodeIP = '10.' + str(datacenterIndex) + '.1.' + str(nodeIndex + 5)
         document = {
             "public_ip": nodeIP,
@@ -31,11 +33,12 @@ def getNodeInformation(datacenterIndex, numberOfNodes):
         nodeInformation.append(document)
     return nodeInformation
 
+
 def getLocalDataCenters(regions, nodesPerRegion):
-    localDataCenters=[]
+    localDataCenters = []
     for region in regions:
         datacenterIndex = regions.index(region) + 1
-        localDataCenter={
+        localDataCenter = {
             "location": region,
             "node_information": getNodeInformation(datacenterIndex, nodesPerRegion),
             "dc": region.replace(" ", "_").lower()
@@ -44,19 +47,31 @@ def getLocalDataCenters(regions, nodesPerRegion):
     return localDataCenters
 
 
-def getAcceptedFingerprints(localDataCenters):
-    # ssh-keyscan -p 22 -t rsa "$IP" > /tmp/tmpsshkeyhost.pub
-    # HOSTKEY=$(ssh-keygen -lf /tmp/tmpsshkeyhost.pub)
-    # HOSTKEY=`echo ${HOSTKEY} | cut -d" " -f1-2`
-    # HOSTKEY+=" (RSA)"
-    # ACCEPTED_FINGERPRINTS+="\"$IP\": \"$HOSTKEY\","
+def getFingerprint(ip):
+    os.system('ssh-keyscan -p 22 -t rsa ' + ip + ' > /tmp/tmpsshkeyhost.pub')
+    os.system('ssh-keygen -lf /tmp/tmpsshkeyhost.pub > /tmp/tmpgenkey')
 
-    return {}
+    with open("/tmp/tmpgenkey", "r") as inputFile:
+        data = inputFile.read()
+    array = data.split()
+    fingerprint = array[0] + ' ' + array[1] + ' ' + array[3]
+    return fingerprint
+
+
+def getAcceptedFingerprints(regions, nodesPerRegion):
+    acceptedFingerprints = {}
+    for region in regions:
+        datacenterIndex = regions.index(region) + 1
+        for nodeIndex in range(0, nodesPerRegion):
+            nodeIP = '10.' + str(datacenterIndex) + '.1.' + str(nodeIndex + 5)
+            acceptedFingerprints['nodeIP'] = getFingerprint(nodeIP)
+
+    return acceptedFingerprints
 
 
 def generateDocument(username, password, dataStaxUsername, dataStaxPassword, regions, nodesPerRegion):
     localDataCenters = getLocalDataCenters(regions, nodesPerRegion)
-    acceptedFingerprints = getAcceptedFingerprints(localDataCenters)
+    acceptedFingerprints = getAcceptedFingerprints(regions, nodesPerRegion)
 
     return {
         "cassandra_config": {
