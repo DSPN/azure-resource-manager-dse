@@ -17,7 +17,7 @@ def generate_template(regions):
         resources.append(virtualNetworkGateways(region, gatewayName, publicIPName, vnetName))
 
         # Create connections between OpsCenter and the Nodes
-        resources.append(connections("[resourceGroup.location()]", "opsc_gateway", gatewayName))
+        resources.append(connections("[resourceGroup().location]", "opsc_gateway", gatewayName))
         resources.append(connections(region, gatewayName, "opsc_gateway"))
 
     # Connect the nodes
