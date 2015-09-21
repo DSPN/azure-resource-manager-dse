@@ -1,3 +1,5 @@
+import json
+
 def run():
     numberOfRegions = 3
     nodesPerRegion = 4
@@ -6,11 +8,13 @@ def run():
     dataStaxUsername = 'ben.lackey_datastax.com'
     dataStaxPassword = 'cJgBIKarVugFjy7'
 
-    nodeInformation = "asd"
-    acceptedFingerprints = "asd"
+    nodeInformation = []
+    acceptedFingerprints = {}
 
-    generateDocument(username, password, dataStaxUsername, dataStaxPassword, nodeInformation, acceptedFingerprints)
+    document = generateDocument(username, password, dataStaxUsername, dataStaxPassword, nodeInformation, acceptedFingerprints)
 
+    with open('generatedOpsCenterParameters.json', 'w') as outputFile:
+        json.dump(document, outputFile, sort_keys=True, indent=4, ensure_ascii=False)
 
 def generateDocument(username, password, dataStaxUsername, dataStaxPassword, nodeInformation, acceptedFingerprints):
     return {
@@ -140,15 +144,11 @@ def generateDocument(username, password, dataStaxUsername, dataStaxPassword, nod
         "local_datacenters": [
             {
                 "location": "",
-                "node_information": [
-                    nodeInformation
-                ],
+                "node_information": nodeInformation,
                 "dc": ""
             }
         ],
-        "accepted_fingerprints": {
-            acceptedFingerprints
-        }
+        "accepted_fingerprints": acceptedFingerprints
     }
 
 
