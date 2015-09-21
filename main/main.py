@@ -35,7 +35,7 @@ generatedTemplate['resources'] += resources
 # Create DSE nodes in each region
 for region in regions:
     # This is the 1 in 10.1.0.0 and corresponds to the data center we are deploying to
-    # 10.0.x.y is reserved for the OpsCenter resource.
+    # 10.0.x.y is reserved for the OpsCenter resources.
     datacenterIndex = regions.index(region) + 1
 
     resources = dseNodes.generate_template(region, datacenterIndex, nodeSize, nodesPerRegion, username, password)
