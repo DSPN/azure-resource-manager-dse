@@ -1,3 +1,5 @@
+These are Azure Resource Manager (ARM) templates for deploying DataStax Enterprise (DSE).
+
 simple is likely your default template.  It's a bare bones ARM template than we're working to further pare down and make easy to understand and get started.
 
 The main template uses python to generate an ARM template.  This is highly customizable and supports multiple datacenters.  This is the suggested option for advanced users.
