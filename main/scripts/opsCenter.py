@@ -8,7 +8,7 @@ def run():
         "North Europe",
         "East Asia"
     ]
-    nodesPerRegion = 4
+    nodesPerRegion = 10
     username = 'datastax'
     password = 'foo123!'
     dataStaxUsername = 'ben.lackey_datastax.com'
