@@ -15,7 +15,7 @@ def run():
 
     document = generateDocument(username, password, dataStaxUsername, dataStaxPassword, regions, nodesPerRegion)
 
-    with open('generatedOpsCenterParameters.json', 'w') as outputFile:
+    with open('provision.json', 'w') as outputFile:
         json.dump(document, outputFile, sort_keys=True, indent=4, ensure_ascii=False)
 
 def getNodeInformation(datacenterIndex, numberOfNodes):
@@ -44,13 +44,19 @@ def getLocalDataCenters(regions, nodesPerRegion):
     return localDataCenters
 
 
-def getAcceptedFingerprints():
+def getAcceptedFingerprints(localDataCenters):
+    # ssh-keyscan -p 22 -t rsa "$IP" > /tmp/tmpsshkeyhost.pub
+    # HOSTKEY=$(ssh-keygen -lf /tmp/tmpsshkeyhost.pub)
+    # HOSTKEY=`echo ${HOSTKEY} | cut -d" " -f1-2`
+    # HOSTKEY+=" (RSA)"
+    # ACCEPTED_FINGERPRINTS+="\"$IP\": \"$HOSTKEY\","
+
     return {}
 
 
 def generateDocument(username, password, dataStaxUsername, dataStaxPassword, regions, nodesPerRegion):
     localDataCenters = getLocalDataCenters(regions, nodesPerRegion)
-    acceptedFingerprints = getAcceptedFingerprints()
+    acceptedFingerprints = getAcceptedFingerprints(localDataCenters)
 
     return {
         "cassandra_config": {
