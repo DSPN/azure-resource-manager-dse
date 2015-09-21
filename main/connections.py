@@ -46,7 +46,7 @@ def virtualNetworkGateways(region, name, publicIPName, vnetName):
                     "properties": {
                         "privateIPAllocationMethod": "Dynamic",
                         "subnet": {
-                            "id": "gatewaySubnet"
+                            "id": "[concat(resourceId('Microsoft.Network/virtualNetworks', '" + vnetName + "'),'/subnets/gatewaySubnet')]"
                         },
                         "publicIPAddress": {
                             "id": "[resourceId('Microsoft.Network/publicIPAddresses','" + publicIPName + "')]"
