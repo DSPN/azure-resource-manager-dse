@@ -1,5 +1,5 @@
 #!/bin/bash
 
-installJava.sh
-setupEphemeralDisks.sh
+bash installJava.sh
+bash setupEphemeralDisks.sh
 
