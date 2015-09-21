@@ -23,8 +23,7 @@ def generate_template(region, datacenterIndex, nodeSize, numberOfNodes, username
         resources.append(vm)
         vmName = vm['name']
 
-        #the extension isn't working and there's no real way to test it until the vnets are connected...
-        #resources.append(extension(region, vmName))
+        resources.append(extension(region, vmName))
     return resources
 
 
@@ -164,7 +163,7 @@ def virtualmachines(region, nodeSize, username, password, datacenterIndex, nodeI
 def extension(region, virtualMachineName):
     return {
         "type": "Microsoft.Compute/virtualMachines/extensions",
-        "name": virtualMachineName + "/configuredsenode",
+        "name": virtualMachineName + "/installdsenode",
         "apiVersion": "2015-06-15",
         "location": region,
         "dependsOn": [
@@ -178,7 +177,6 @@ def extension(region, virtualMachineName):
                 "fileUris": [
                     "https://raw.githubusercontent.com/DSPN/azure-resource-manager-dse/master/main/scripts/dseNode.sh",
                     "https://raw.githubusercontent.com/DSPN/azure-resource-manager-dse/master/main/scripts/installJava.sh",
-                    "https://raw.githubusercontent.com/DSPN/azure-resource-manager-dse/master/main/scripts/setupEphemeralDisks.sh",
                     "https://raw.githubusercontent.com/DSPN/azure-resource-manager-dse/master/main/scripts/vm-disk-utils-0.1.sh"
                 ],
                 "commandToExecute": "bash dseNode.sh"
