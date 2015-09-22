@@ -3,8 +3,9 @@ import os
 import sys
 import base64
 
+
 def run():
-    if len(sys.argv)!=2:
+    if len(sys.argv) != 2:
         print("I need an argument.")
         exit(1)
 
@@ -80,6 +81,8 @@ def generateDocument(username, password, dataStaxUsername, dataStaxPassword, reg
 
     return {
         "cassandra_config": {
+            "phi_convict_threshold": 12,
+            "num_tokens": 256,
             "auto_bootstrap": False,
             "permissions_validity_in_ms": 2000,
             "memtable_allocation_type": "heap_buffers",
