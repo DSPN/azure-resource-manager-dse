@@ -4,7 +4,7 @@
         "Central US",
         "West US"
     ],
-    "nodesPerRegion": 10,
+    "nodesPerRegion": 4,
     "nodeSize": "Standard_D3",
     "username": "datastax",
     "password": "foo123!",
