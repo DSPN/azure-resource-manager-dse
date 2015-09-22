@@ -1,18 +1,24 @@
 import json
 import os
-
+import sys
+import base64
 
 def run():
-    regions = [
-        "West US",
-        "North Europe",
-        "East Asia"
-    ]
-    nodesPerRegion = 10
-    username = 'datastax'
-    password = 'foo123!'
-    dataStaxUsername = 'ben.lackey_datastax.com'
-    dataStaxPassword = 'cJgBIKarVugFjy7'
+    if len(sys.argv)!=2:
+        print("I need an argument.")
+        exit(1)
+
+    clusterParameters = json.loads(base64.b64decode(sys.argv[1]))
+    regions = clusterParameters['regions']
+    nodesPerRegion = clusterParameters['nodesPerRegion']
+    username = clusterParameters['username']
+    password = clusterParameters['password']
+
+    # These parameters are going away as soon as we have a DataStax custom extension for Azure
+    dataStaxUsername = clusterParameters['dataStaxUsername']
+    dataStaxPassword = clusterParameters['dataStaxPassword']
+
+    exit()
 
     document = generateDocument(username, password, dataStaxUsername, dataStaxPassword, regions, nodesPerRegion)
 

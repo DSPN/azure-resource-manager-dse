@@ -1,4 +1,7 @@
-def generate_template(username, password, dataStaxUsername, dataStaxPassword):
+import base64
+import json
+
+def generate_template(username, password, dataStaxUsername, dataStaxPassword, clusterParameters):
     # We're going to create all these resources in resourceGroup().location
     # The OpsCenter node always has private IP 10.0.1.5
 
@@ -9,7 +12,7 @@ def generate_template(username, password, dataStaxUsername, dataStaxPassword):
     resources.append(networkInterfaces)
     resources.append(storageAccounts)
     resources.append(virtualmachines(username, password))
-    resources.append(extension(username, password, dataStaxUsername, dataStaxPassword))
+    resources.append(extension(username, password, dataStaxUsername, dataStaxPassword, clusterParameters))
     return resources
 
 
@@ -199,7 +202,7 @@ def virtualmachines(username, password):
     }
 
 
-def extension(username, password, dataStaxUsername, dataStaxPassword):
+def extension(username, password, dataStaxUsername, dataStaxPassword, clusterParameters):
     return {
         "type": "Microsoft.Compute/virtualMachines/extensions",
         "name": "opscentervm/installopscenter",
@@ -219,7 +222,7 @@ def extension(username, password, dataStaxUsername, dataStaxPassword):
                     "https://raw.githubusercontent.com/DSPN/azure-resource-manager-dse/master/main/scripts/opsCenter.py",
                     "https://raw.githubusercontent.com/DSPN/azure-resource-manager-dse/master/main/scripts/turnOnOpsCenterAuth.sh"
                 ],
-                "commandToExecute": "bash opsCenter.sh"
+                "commandToExecute": "bash opsCenter.sh " + base64.b64encode(json.dumps(clusterParameters))
             }
         }
     }

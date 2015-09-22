@@ -15,7 +15,7 @@ echo "Waiting for OpsCenter to start..."
 sleep 15
 
 echo "Generating a provision.json file"
-python opsCenter.py
+python opsCenter.py $1
 
 echo "Provisioning a new cluster using provision.json"
 curl --insecure -H "Accept: application/json" -X POST http://127.0.0.1:8888/provision -d @provision.json

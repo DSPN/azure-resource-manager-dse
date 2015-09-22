@@ -29,7 +29,7 @@ generatedTemplate = {
 }
 
 # Create the OpsCenter node
-resources = opsCenterNode.generate_template(username, password, dataStaxUsername, dataStaxPassword)
+resources = opsCenterNode.generate_template(username, password, dataStaxUsername, dataStaxPassword, clusterParameters)
 generatedTemplate['resources'] += resources
 
 # Create DSE nodes in each region
