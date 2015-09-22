@@ -45,5 +45,8 @@ for region in regions:
 resources = connections.generate_template(regions)
 generatedTemplate['resources'] += resources
 
+# We're going to want to wait to run the OpsCenter provision until everything else is done.
+# Not sure if depends or something else is the best way to do that.
+
 with open('generatedTemplate.json', 'w') as outputFile:
     json.dump(generatedTemplate, outputFile, sort_keys=True, indent=4, ensure_ascii=False)
