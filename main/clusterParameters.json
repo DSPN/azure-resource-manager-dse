@@ -1,8 +1,8 @@
 {
     "regions": [
-        "West US",
-        "North Europe",
-        "East Asia"
+        "East US",
+        "Central US",
+        "West US"
     ],
     "nodesPerRegion": 10,
     "nodeSize": "Standard_D3",

@@ -1,7 +1,7 @@
 #/bin/sh
 
 RESOURCE_GROUP=$1
-azure group create $RESOURCE_GROUP "East Asia"
+azure group create $RESOURCE_GROUP "East US"
 
 # This uses clusterParameters.json as input and writes output to generatedTemplate.json 
 python main.py
