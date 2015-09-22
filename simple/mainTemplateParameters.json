@@ -1,6 +1,6 @@
 {
   "nodeCount": {
-    "value": 4
+    "value": 90
   },
   "virtualMachineSize": {
     "value": "Standard_D12"
@@ -15,7 +15,7 @@
     "value":"ben.lackey_datastax.com"
   },
   "datastaxPassword": {
-    "value": ""
+    "value": "cJgBIKarVugFjy7"
   }
 }
 
