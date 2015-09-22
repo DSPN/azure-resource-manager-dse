@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# save our b64 encoded json parameters for later
+echo $1 > b64input
+
 bash installJava.sh
 
 echo "Installing OpsCenter"
