@@ -18,8 +18,6 @@ def run():
     dataStaxUsername = clusterParameters['dataStaxUsername']
     dataStaxPassword = clusterParameters['dataStaxPassword']
 
-    exit()
-
     document = generateDocument(username, password, dataStaxUsername, dataStaxPassword, regions, nodesPerRegion)
 
     with open('provision.json', 'w') as outputFile:
