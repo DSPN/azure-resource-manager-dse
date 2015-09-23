@@ -204,7 +204,7 @@ def virtualmachines(username, password):
 # The OpsCenter extension should depend on:
 #   All connections
 #   All dse nodes
-#   It's host VM
+#   OpsCenter host VM
 
 def extension(username, password, dataStaxUsername, dataStaxPassword, clusterParameters):
     return {
