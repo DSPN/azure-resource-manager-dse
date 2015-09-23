@@ -28,10 +28,6 @@ generatedTemplate = {
     "outputs": {}
 }
 
-# Create the OpsCenter node
-resources = opsCenterNode.generate_template(username, password, dataStaxUsername, dataStaxPassword, clusterParameters)
-generatedTemplate['resources'] += resources
-
 # Create DSE nodes in each region
 for region in regions:
     # This is the 1 in 10.1.0.0 and corresponds to the data center we are deploying to
@@ -45,8 +41,9 @@ for region in regions:
 resources = connections.generate_template(regions)
 generatedTemplate['resources'] += resources
 
-# We're going to want to wait to run the OpsCenter provision until everything else is done.
-# Not sure if depends or something else is the best way to do that.
+# Create the OpsCenter node
+resources = opsCenterNode.generate_template(username, password, dataStaxUsername, dataStaxPassword, clusterParameters)
+generatedTemplate['resources'] += resources
 
 with open('generatedTemplate.json', 'w') as outputFile:
     json.dump(generatedTemplate, outputFile, sort_keys=True, indent=4, ensure_ascii=False)
