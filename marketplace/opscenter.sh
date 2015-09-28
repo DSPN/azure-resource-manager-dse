@@ -235,7 +235,7 @@ sudo tee provision.json > /dev/null <<EOF
     "private_key" : "",
     "password" : "${ADMIN_PASSWORD}",
     "username" : "${ADMIN_USERNAME}",
-    "version" : "4.7.1",
+    "version" : "4.8.0",
     "repo-password" : "${DATASTAX_PASSWORD}",
     "repo-user" : "${DATASTAX_USERNAME}"
    },
