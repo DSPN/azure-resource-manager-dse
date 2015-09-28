@@ -1,4 +1,5 @@
 #!/bin/bash
+
 # This script automates the partitioning and formatting of data disks
 # Data disks can be partitioned and formatted as seperate disks or in a RAID0 configuration
 # The script will scan for unpartitioined and unformatted data disks and partition, format, and add fstab entries

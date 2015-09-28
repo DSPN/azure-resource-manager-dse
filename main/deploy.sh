@@ -1,4 +1,4 @@
-#/bin/sh
+#!/usr/bin/env bash
 
 RESOURCE_GROUP=$1
 azure group create $RESOURCE_GROUP "East US"
