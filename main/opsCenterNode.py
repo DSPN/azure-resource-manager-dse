@@ -1,6 +1,7 @@
 import base64
 import json
 
+
 def generate_template(username, password, dataStaxUsername, dataStaxPassword, clusterParameters):
     # We're going to create all these resources in resourceGroup().location
     # The OpsCenter node always has private IP 10.0.1.5
@@ -201,20 +202,67 @@ def virtualmachines(username, password):
         }
     }
 
+
 # The OpsCenter extension should depend on:
 #   All connections
 #   All dse nodes
 #   OpsCenter host VM
 
+def generate_vm_names(clusterParameters):
+    virtualMachineNames = []
+
+    regions = clusterParameters['regions']
+    nodesPerRegion = clusterParameters['nodesPerRegion']
+
+    for region in regions:
+        datacenterIndex = regions.index(region) + 1
+        for nodeIndex in range(0, nodesPerRegion):
+            computerName = "dc" + str(datacenterIndex) + "vm" + str(nodeIndex)
+            virtualMachineNames.append("Microsoft.Compute/virtualMachines/" + computerName + "vm")
+
+    return virtualMachineNames
+
+
+def generate_connection_names(clusterParameters):
+    connectionNames = []
+
+    regions = clusterParameters['regions']
+
+    gatewayNameA = "opsc_gateway"
+    for region in regions:
+        datacenterIndexB = regions.index(region) + 1
+        gatewayNameB = "dseNode_gw_dc" + str(datacenterIndexB)
+
+        connectionNames.append("Microsoft.Network/connections/" + "connection_" + gatewayNameA + "_" + gatewayNameB)
+        connectionNames.append("Microsoft.Network/connections/" + "connection_" + gatewayNameB + "_" + gatewayNameA)
+
+    for regionA in regions:
+        datacenterIndexA = regions.index(regionA) + 1
+        gatewayNameA = "dseNode_gw_dc" + str(datacenterIndexA)
+
+        for regionB in regions:
+            datacenterIndexB = regions.index(regionB) + 1
+            gatewayNameB = "dseNode_gw_dc" + str(datacenterIndexB)
+
+            if datacenterIndexA == datacenterIndexB:
+                pass
+            else:
+                connectionNames.append("Microsoft.Network/connections/" + "connection_" + gatewayNameA + "_" + gatewayNameB)
+
+    return connectionNames
+
+
 def extension(username, password, dataStaxUsername, dataStaxPassword, clusterParameters):
+    dependsOn = ["Microsoft.Compute/virtualMachines/opscentervm"]
+    dependsOn += generate_vm_names(clusterParameters)
+    dependsOn += generate_connection_names(clusterParameters)
+
     return {
         "type": "Microsoft.Compute/virtualMachines/extensions",
         "name": "opscentervm/installopscenter",
         "apiVersion": "2015-06-15",
         "location": "[resourceGroup().location]",
-        "dependsOn": [
-            "Microsoft.Compute/virtualMachines/opscentervm"
-        ],
+        "dependsOn": dependsOn,
         "properties": {
             "publisher": "Microsoft.OSTCExtensions",
             "type": "CustomScriptForLinux",
