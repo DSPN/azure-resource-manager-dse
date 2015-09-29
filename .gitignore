@@ -7,3 +7,5 @@ main/scripts/provision.json
 # Compiled Python
 *.pyc
 
+# PyCharm files
+*.idea
