@@ -201,7 +201,7 @@ def generateDocument(username, password, dataStaxUsername, dataStaxPassword, reg
             "private_key": "",
             "password": password,
             "username": username,
-            "version": "4.8.0",
+            "version": "4.7.0",
             "repo-password": dataStaxPassword,
             "repo-user": dataStaxUsername
         },
