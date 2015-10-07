@@ -180,7 +180,7 @@ def virtualmachines(username, password):
                 "imageReference": {
                     "publisher": "Canonical",
                     "offer": "UbuntuServer",
-                    "sku": "14.04.2-LTS",
+                    "sku": "14.04.3-LTS",
                     "version": "latest"
                 },
                 "osDisk": {
