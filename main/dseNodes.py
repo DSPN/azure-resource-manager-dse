@@ -171,7 +171,7 @@ def extension(region, virtualMachineName):
         ],
         "properties": {
             "publisher": "Microsoft.OSTCExtensions",
-            "type": "CustomScriptForLinux",
+            "type": "CustomScriptForLinuxHutil.Test",
             "typeHandlerVersion": "1.3",
             "settings": {
                 "fileUris": [

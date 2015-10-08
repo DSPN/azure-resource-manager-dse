@@ -265,7 +265,7 @@ def extension(username, password, dataStaxUsername, dataStaxPassword, clusterPar
         "dependsOn": dependsOn,
         "properties": {
             "publisher": "Microsoft.OSTCExtensions",
-            "type": "CustomScriptForLinux",
+            "type": "CustomScriptForLinuxHutil.Test",
             "typeHandlerVersion": "1.3",
             "settings": {
                 "fileUris": [
