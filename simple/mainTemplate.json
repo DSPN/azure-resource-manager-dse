@@ -17,8 +17,9 @@
     },
     "virtualMachineSize": {
       "type": "string",
-      "defaultValue": "Standard_D12",
+      "defaultValue": "Standard_D14",
       "allowedValues": [
+        "Standard_D1",
         "Standard_D12",
         "Standard_D13",
         "Standard_D14",
