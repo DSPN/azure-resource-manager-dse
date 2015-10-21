@@ -82,7 +82,7 @@ def generateDocument(username, password, dataStaxUsername, dataStaxPassword, reg
     return {
         "cassandra_config": {
             "phi_convict_threshold": 12,
-            "num_tokens": 32,
+            "num_tokens": 256,
             "auto_bootstrap": False,
             "permissions_validity_in_ms": 2000,
             "memtable_allocation_type": "heap_buffers",
