@@ -117,7 +117,7 @@ echo "Writing provision.json"
 sudo tee provision.json > /dev/null <<EOF
 {
   "cassandra_config" : {
-    "num_tokens": 256,    
+    "num_tokens": 64,    
     "auto_bootstrap": false,
     "permissions_validity_in_ms" : 2000,
     "memtable_allocation_type" : "heap_buffers",
