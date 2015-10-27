@@ -121,9 +121,6 @@
           "storageAccountName" : {
             "value" : "[concat(copyindex(), parameters('storageAccountPrefix'))]"
           },
-          "sshKeyData" : {
-            "value" : "[parameters('sshKeyData')]"
-          },
           "nodeListSettings" : {
             "value" : "[parameters('nodeListSettings')]"
           }
