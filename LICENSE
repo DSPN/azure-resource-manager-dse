@@ -25,3 +25,6 @@
 # This template uses the Azul Zulu JVM.  By using this template the user accepts 
 # the licensing terms set forth here: http://www.azulsystems.com/products/zulu/terms-of-use
 #
+# This template uses DataStax Enterprise.  By using this template the user accepts
+# the licesning terms set forth here: http://www.datastax.com/enterprise-terms
+#
