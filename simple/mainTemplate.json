@@ -43,15 +43,12 @@
   "variables": {
     "clusterName": "[concat(resourcegroup().name, 'cluster')]",
     "region": "[resourcegroup().location]",
-
     "templateBaseUrl": "https://raw.githubusercontent.com/DSPN/azure-arm-dse/master/simple/",
     "nodeTemplateUrl": "[concat(variables('templateBaseUrl'), 'node.json')]",
     "opsCenterTemplateUrl": "[concat(variables('templateBaseUrl'), 'opscenter.json')]",
     "opsCenterInstallTemplateUrl": "[concat(variables('templateBaseUrl'), 'opscenterInstall.json')]",
-
     "nodeList": "[concat(variables('networkSettings').subnet.dse0.statics.clusterRange.base, variables('networkSettings').subnet.dse0.statics.clusterRange.start, '-', parameters('clusterNodeCount'))]",
     "storageAccountName": "[concat(variables('clusterName'),'cmn')]",
-
     "networkSettings": {
       "virtualNetworkName": "[variables('clusterName')]",
       "addressPrefix": "10.0.0.0/16",
@@ -122,6 +119,8 @@
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2015-01-01",
       "dependsOn": [
+        "[resourceId('Microsoft.Storage/storageAccounts', variables('storageAccountName')]",
+        "[resourceId('Microsoft.Network/virtualNetworks', variables('networkSettings').virtualNetworkName)]"
       ],
       "properties": {
         "mode": "Incremental",
@@ -152,7 +151,7 @@
             "value": "[variables('osSettings')]"
           },
           "subnet": {
-            "value": "[variables('networkSettings').subnet]"
+            "value": "[variables('networkSettings').subnet.dse0]"
           },
           "nodeCount": {
             "value": "[variables('clusterSpec').vmCount]"
@@ -171,7 +170,8 @@
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2015-01-01",
       "dependsOn": [
-        "[concat('Microsoft.Resources/deployments/', 'shared')]"
+        "[resourceId('Microsoft.Storage/storageAccounts', variables('storageAccountName')]",
+        "[resourceId('Microsoft.Network/virtualNetworks', variables('networkSettings').virtualNetworkName)]"
       ],
       "properties": {
         "mode": "Incremental",
@@ -180,11 +180,11 @@
           "contentVersion": "1.0.0.0"
         },
         "parameters": {
-          "dnsName": {
-            "value": "[variables('clusterName')]"
+          "region": {
+            "value": "[variables('region')]"
           },
           "storageAccountName": {
-            "value": "[variables('sharedStorageAccountName')]"
+            "value": "[variables('storageAccountName')]"
           },
           "adminUsername": {
             "value": "[parameters('adminUsername')]"
@@ -195,20 +195,17 @@
           "namespace": {
             "value": "opc"
           },
-          "staticIp": {
-            "value": "[variables('networkSettings').opsCenterStatics.opsCenter]"
-          },
-          "region": {
-            "value": "[variables('region')]"
+          "osSettings": {
+            "value": "[variables('osSettings')]"
           },
           "subnet": {
             "value": "[variables('networkSettings').subnet.dse0]"
           },
-          "vmSize": {
-            "value": "[variables('opsCenterVmSize')]"
+          "staticIp": {
+            "value": "[variables('networkSettings').opsCenterStatics.opsCenter]"
           },
-          "osSettings": {
-            "value": "[variables('osSettings')]"
+          "dnsName": {
+            "value": "[variables('clusterName')]"
           }
         }
       }
@@ -228,17 +225,14 @@
           "contentVersion": "1.0.0.0"
         },
         "parameters": {
+          "region": {
+            "value": "[variables('region')]"
+          },
           "adminUsername": {
             "value": "[parameters('adminUsername')]"
           },
           "adminPassword": {
             "value": "[parameters('adminPassword')]"
-          },
-          "namespace": {
-            "value": "opc"
-          },
-          "region": {
-            "value": "[variables('region')]"
           },
           "osSettings": {
             "value": "[variables('osSettings')]"

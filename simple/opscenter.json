@@ -20,9 +20,6 @@
     "osSettings": {
       "type": "object"
     },
-    "vmSize": {
-      "type": "string"
-    },
     "subnet": {
       "type": "object"
     },
