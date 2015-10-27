@@ -64,11 +64,11 @@
   },
   "variables": {
     "templateBaseUrl": "[parameters('artifactsBaseUrl')]",
-    "sharedTemplateUrl": "[concat(variables('templateBaseUrl'), 'shared-resources.json')]",
-    "clusterNodesBaseTemplateUrl": "[concat(variables('templateBaseUrl'), 'dse-nodes-base-resources.json')]",
-    "clusterNodesTemplateUrl": "[concat(variables('templateBaseUrl'), 'dse-nodes-specific-resources-',parameters('authenticationType'),'.json')]",
-    "opsCenterTemplateUrl": "[concat(variables('templateBaseUrl'), 'opscenter-resources-',parameters('authenticationType'),'.json')]",
-    "opsCenterInstallTemplateUrl": "[concat(variables('templateBaseUrl'), 'opscenter-install-resources.json')]",
+
+    "sharedTemplateUrl": "[concat(variables('templateBaseUrl'), 'sharedResources.json')]",
+    "clusterNodesTemplateUrl": "[concat(variables('templateBaseUrl'), 'nodeInstall.json')]",
+    "opsCenterTemplateUrl": "[concat(variables('templateBaseUrl'), 'opscenter.json')]",
+    "opsCenterInstallTemplateUrl": "[concat(variables('templateBaseUrl'), 'opscenterInstall.json')]",
     "opsCenterVmSize": "Standard_A1",
     "clusterSpec" : "[variables(concat('clusterSize',parameters('clusterNodeCount')))]",
     "clusterSize4" : {
