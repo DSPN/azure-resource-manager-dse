@@ -10,10 +10,10 @@ The template expects the following parameters:
 
 | Name   | Description |
 |:--- |:---|
-| nodeCount | The number of virtual machines to provision for the cluster |
-| virtualMachineSize | The size of virtual machine to provision for each cluster node |
-| username  | SSH username for the virtual machines |
-| password  | SSH password for the virtual machines |
+| clusterNodeCount | The number of virtual machines to provision for the cluster |
+| clusterVmSize | The size of virtual machine to provision for each cluster node |
+| adminUsername  | SSH username for the virtual machines |
+| adminPassword  | SSH password for the virtual machines |
 
 Once the Azure VMs, virtual network and storage are setup, the template installs prerequisites like Java on the DSE nodes.  These have static IPs starting at 10.0.0.6 which are accessible on the internal virtual network.  
 
