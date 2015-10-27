@@ -1,21 +1,24 @@
 {
-  "nodeCount": {
-    "value": 4
+  "clusterName": {
+    "value": "bencluster3"
   },
-  "virtualMachineSize": {
+  "region": {
+    "value": "eastasia"
+  },
+  "clusterNodeCount": {
+    "value": 90
+  },
+  "clusterVmSize": {
     "value": "Standard_D12"
   },
-  "username": {
+  "adminUsername": {
     "value": "datastax"
   },
-  "password": {
+  "adminPassword": {
     "value": "foo123!"
   },
-  "datastaxUsername": {
-    "value":"ben.lackey_datastax.com"
-  },
-  "datastaxPassword": {
-    "value": "cJgBIKarVugFjy7"
+  "artifactsBaseUrl" : {
+    "value" : "https://raw.githubusercontent.com/DSPN/azure-arm-dse/master/marketplace/"
   }
 }
 

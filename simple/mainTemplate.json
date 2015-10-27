@@ -2,7 +2,19 @@
   "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
-    "nodeCount": {
+    "clusterName": {
+      "type": "string",
+      "metadata": {
+        "description": "The name of the new cluster"
+      }
+    },
+    "region": {
+      "type": "string",
+      "metadata": {
+        "description": "Region where the Azure artifacts will be created"
+      }
+    },
+    "clusterNodeCount": {
       "type": "int",
       "defaultValue": 4,
       "allowedValues": [
@@ -15,11 +27,10 @@
         "description": "The number of virtual machines to provision for the cluster"
       }
     },
-    "virtualMachineSize": {
+    "clusterVmSize": {
       "type": "string",
-      "defaultValue": "Standard_D14",
+      "defaultValue": "Standard_D12",
       "allowedValues": [
-        "Standard_D1",
         "Standard_D12",
         "Standard_D13",
         "Standard_D14",
@@ -32,53 +43,43 @@
         "description": "The size of virtual machine to provision for each cluster node"
       }
     },
-    "username": {
-      "type": "string",
-      "defaultValue": "datastax",
-      "metadata": {
-        "description": "SSH username for the virtual machines"
-      }
-    },
-    "password": {
-      "type": "securestring",
-      "defaultValue" : "foo123!",
-      "metadata": {
-        "description": "SSH password for the virtual machines"
-      }
-    },
-    "dataStaxUsername": {
+    "adminUsername": {
       "type": "string",
       "metadata": {
-        "description": "Your DataStax account username.  You can register at http://datastax.com/download"
+        "description": "Admin user name for the virtual machines"
       }
     },
-    "dataStaxPassword": {
+    "adminPassword": {
       "type": "securestring",
       "metadata": {
-        "description": "Your DataStax account password.  You can register at http://datastax.com/download"
+        "description": "Admin password for the virtual machines"
+      }
+    },
+    "artifactsBaseUrl" : {
+      "type" : "string",
+      "metadata" : {
+        "artifactsBaseUrl" : "Base URL of the DataStax Template gallery package"
       }
     }
   },
   "variables": {
-    "clusterName": "[concat(resourcegroup().name, 'cluster')]",
-    "region": "[resourcegroup().location]",
-    "templateBaseUrl": "https://raw.githubusercontent.com/DSPN/azure-arm-dse/master/simple/",
+    "templateBaseUrl": "[parameters('artifactsBaseUrl')]",
     "sharedTemplateUrl": "[concat(variables('templateBaseUrl'), 'sharedResources.json')]",
     "clusterNodesBaseTemplateUrl": "[concat(variables('templateBaseUrl'), 'node.json')]",
     "clusterNodesTemplateUrl": "[concat(variables('templateBaseUrl'), 'nodeInstall.json')]",
     "opsCenterTemplateUrl": "[concat(variables('templateBaseUrl'), 'opscenter.json')]",
     "opsCenterInstallTemplateUrl": "[concat(variables('templateBaseUrl'), 'opscenterInstall.json')]",
     "opsCenterVmSize": "Standard_A1",
-    "clusterSpec" : "[variables(concat('clusterSize',parameters('nodeCount')))]",
+    "clusterSpec" : "[variables(concat('clusterSize',parameters('clusterNodeCount')))]",
     "clusterSize4" : {
       "storageAccountCount" : 1,
       "vmCount" : 4,
-      "nodeList": "[concat(variables('networkSettings').subnet.dse0.statics.clusterRange.base, variables('networkSettings').subnet.dse0.statics.clusterRange.start, '-', parameters('nodeCount'))]"
+      "nodeList": "[concat(variables('networkSettings').subnet.dse0.statics.clusterRange.base, variables('networkSettings').subnet.dse0.statics.clusterRange.start, '-', parameters('clusterNodeCount'))]"
     },
     "clusterSize12" : {
       "storageAccountCount" : 1,
       "vmCount" : 12,
-      "nodeList": "[concat(variables('networkSettings').subnet.dse0.statics.clusterRange.base, variables('networkSettings').subnet.dse0.statics.clusterRange.start, '-', parameters('nodeCount'))]"
+      "nodeList": "[concat(variables('networkSettings').subnet.dse0.statics.clusterRange.base, variables('networkSettings').subnet.dse0.statics.clusterRange.start, '-', parameters('clusterNodeCount'))]"
     },
     "clusterSize36" : {
       "storageAccountCount" : 2,
@@ -91,13 +92,13 @@
       "nodeList": "[concat(variables('networkSettings').subnet.dse0.statics.clusterRange.base, variables('networkSettings').subnet.dse0.statics.clusterRange.start, '-18', ';', variables('networkSettings').subnet.dse1.statics.clusterRange.base, variables('networkSettings').subnet.dse1.statics.clusterRange.start, '-18',';',variables('networkSettings').subnet.dse2.statics.clusterRange.base, variables('networkSettings').subnet.dse2.statics.clusterRange.start, '-18',';',variables('networkSettings').subnet.dse3.statics.clusterRange.base, variables('networkSettings').subnet.dse3.statics.clusterRange.start, '-18',';',variables('networkSettings').subnet.dse4.statics.clusterRange.base, variables('networkSettings').subnet.dse4.statics.clusterRange.start, '-18')]"
     },
     "networkSettings": {
-      "virtualNetworkName": "[variables('clusterName')]",
+      "virtualNetworkName": "[parameters('clusterName')]",
       "addressPrefix": "10.0.0.0/16",
       "subnet": {
         "dse0": {
           "name": "dse0",
           "prefix": "10.0.0.0/24",
-          "vnet": "[variables('clusterName')]",
+          "vnet": "[parameters('clusterName')]",
           "statics": {
             "clusterRange": {
               "base": "10.0.0.",
@@ -108,7 +109,7 @@
         "dse1": {
           "name": "dse1",
           "prefix": "10.0.1.0/24",
-          "vnet": "[variables('clusterName')]",
+          "vnet": "[parameters('clusterName')]",
           "statics": {
             "clusterRange": {
               "base": "10.0.1.",
@@ -119,7 +120,7 @@
         "dse2": {
           "name": "dse2",
           "prefix": "10.0.2.0/24",
-          "vnet": "[variables('clusterName')]",
+          "vnet": "[parameters('clusterName')]",
           "statics": {
             "clusterRange": {
               "base": "10.0.2.",
@@ -130,7 +131,7 @@
         "dse3": {
           "name": "dse3",
           "prefix": "10.0.3.0/24",
-          "vnet": "[variables('clusterName')]",
+          "vnet": "[parameters('clusterName')]",
           "statics": {
             "clusterRange": {
               "base": "10.0.3.",
@@ -141,7 +142,7 @@
         "dse4": {
           "name": "dse4",
           "prefix": "10.0.4.0/24",
-          "vnet": "[variables('clusterName')]",
+          "vnet": "[parameters('clusterName')]",
           "statics": {
             "clusterRange": {
               "base": "10.0.4.",
@@ -162,12 +163,12 @@
         "version": "latest"
       },
       "scripts": [
-        "[concat(variables('templateBaseUrl'), 'node.sh')]",
-        "[concat(variables('templateBaseUrl'), 'opscenter.sh')]",
-        "[concat(variables('templateBaseUrl'), 'vm-disk-utils-0.1.sh')]"
+        "[concat(variables('templateBaseUrl'), 'extensions/dseNode.sh')]",
+        "[concat(variables('templateBaseUrl'), 'extensions/opscenter.sh')]",
+        "[concat(variables('templateBaseUrl'), 'extensions/vm-disk-utils-0.1.sh')]"
       ]
     },
-    "sharedStorageAccountName": "[concat(variables('clusterName'),'cmn')]"
+    "sharedStorageAccountName": "[concat(parameters('clusterName'),'cmn')]"
   },
   "resources": [
     {
@@ -182,7 +183,7 @@
         },
         "parameters": {
           "region": {
-            "value": "[variables('region')]"
+            "value": "[parameters('region')]"
           },
           "networkSettings": {
             "value": "[variables('networkSettings')]"
@@ -208,19 +209,19 @@
         },
         "parameters": {
           "adminUsername": {
-            "value": "[parameters('username')]"
+            "value": "[parameters('adminUsername')]"
           },
           "adminPassword": {
-            "value": "[parameters('password')]"
+            "value": "[parameters('adminPassword')]"
           },
           "region": {
-            "value": "[variables('region')]"
+            "value": "[parameters('region')]"
           },
           "storageAccountPrefix": {
-            "value": "[variables('clusterName')]"
+            "value": "[parameters('clusterName')]"
           },
           "vmSize": {
-            "value": "[parameters('virtualMachineSize')]"
+            "value": "[parameters('clusterVmSize')]"
           },
           "subnet": {
             "value": "[variables('networkSettings').subnet]"
@@ -264,16 +265,16 @@
         },
         "parameters": {
           "dnsName": {
-            "value": "[variables('clusterName')]"
+            "value": "[parameters('clusterName')]"
           },
           "storageAccountName": {
             "value": "[variables('sharedStorageAccountName')]"
           },
           "adminUsername": {
-            "value": "[parameters('username')]"
+            "value": "[parameters('adminUsername')]"
           },
           "adminPassword": {
-            "value": "[parameters('password')]"
+            "value": "[parameters('adminPassword')]"
           },
           "namespace": {
             "value": "opc"
@@ -282,7 +283,7 @@
             "value": "[variables('networkSettings').opsCenterStatics.opsCenter]"
           },
           "region": {
-            "value": "[variables('region')]"
+            "value": "[parameters('region')]"
           },
           "subnet": {
             "value": "[variables('networkSettings').subnet.dse0]"
@@ -312,16 +313,16 @@
         },
         "parameters": {
           "adminUsername": {
-            "value": "[parameters('username')]"
+            "value": "[parameters('adminUsername')]"
           },
           "adminPassword": {
-            "value": "[parameters('password')]"
+            "value": "[parameters('adminPassword')]"
           },
           "namespace": {
             "value": "opc"
           },
           "region": {
-            "value": "[variables('region')]"
+            "value": "[parameters('region')]"
           },
           "osSettings": {
             "value": "[variables('osSettings')]"
@@ -329,9 +330,7 @@
           "opsCenterSettings": {
             "value": {
               "nodeList": "[variables('clusterSpec').nodeList]",
-              "subnetCount" : "[variables('clusterSpec').storageAccountCount]",
-              "dataStaxUsername": "[parameters('dataStaxUsername')]",
-              "dataStaxPassword": "[parameters('dataStaxPassword')]"
+              "subnetCount" : "[variables('clusterSpec').storageAccountCount]"
             }
           }
         }
@@ -340,4 +339,3 @@
   ],
   "outputs": {}
 }
-
