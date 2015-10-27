@@ -163,9 +163,9 @@
         "version": "latest"
       },
       "scripts": [
-        "[concat(variables('templateBaseUrl'), 'dseNode.sh')]",
-        "[concat(variables('templateBaseUrl'), 'opscenter.sh')]",
-        "[concat(variables('templateBaseUrl'), 'vm-disk-utils-0.1.sh')]"
+        "[concat(variables('templateBaseUrl'), 'extensions/dseNode.sh')]",
+        "[concat(variables('templateBaseUrl'), 'extensions/opscenter.sh')]",
+        "[concat(variables('templateBaseUrl'), 'extensions/vm-disk-utils-0.1.sh')]"
       ]
     },
     "sharedStorageAccountName": "[concat(parameters('clusterName'),'cmn')]"
