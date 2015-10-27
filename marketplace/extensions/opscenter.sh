@@ -222,7 +222,7 @@ sudo tee provision.json > /dev/null <<EOF
     "username" : "${ADMIN_USERNAME}",
     "version" : "4.8.0",
     "repo-password" : "3A7vadPHbNT",
-    "repo-user" : "datastax_microsoft.com"
+    "repo-user" : "datastax%40microsoft.com"
    },
   "local_datacenters" : [
     {
