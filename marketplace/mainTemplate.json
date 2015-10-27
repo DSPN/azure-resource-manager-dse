@@ -65,6 +65,7 @@
   "variables": {
     "templateBaseUrl": "[parameters('artifactsBaseUrl')]",
     "sharedTemplateUrl": "[concat(variables('templateBaseUrl'), 'sharedResources.json')]",
+    "clusterNodesBaseTemplateUrl": "[concat(variables('templateBaseUrl'), 'node.json')]",
     "clusterNodesTemplateUrl": "[concat(variables('templateBaseUrl'), 'nodeInstall.json')]",
     "opsCenterTemplateUrl": "[concat(variables('templateBaseUrl'), 'opscenter.json')]",
     "opsCenterInstallTemplateUrl": "[concat(variables('templateBaseUrl'), 'opscenterInstall.json')]",
