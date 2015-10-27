@@ -126,7 +126,7 @@
       "properties": {
         "mode": "Incremental",
         "templateLink": {
-          "uri": "[variables('nodeTemplateUrl')]",
+          "uri": "[variables('nodesTemplateUrl')]",
           "contentVersion": "1.0.0.0"
         },
         "parameters": {
@@ -142,7 +142,7 @@
           "adminPassword": {
             "value": "[parameters('adminPassword')]"
           },
-          "namePrefix": {
+          "namespace": {
             "value": "dc1"
           },
           "vmSize": {
