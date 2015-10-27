@@ -29,26 +29,18 @@
     "nodeCount": {
       "type": "int"
     },
-    "nodeList": {
-      "type": "string"
+    "availabilitySetName" : {
+      "type" : "string"
+    },
+    "nodeListSettings" : {
+      "type" : "object"
     }
   },
   "variables": {
     "subnetRef": "[concat(resourceId('Microsoft.Network/virtualNetworks', parameters('subnet').vnet), '/subnets/', parameters('subnet').name)]",
-    "vmName": "[concat(parameters('namePrefix'), 'vm')]",
-    "availabilitySetName": "[concat(parameters('namePrefix'), 'set')]"
+    "vmName": "[concat(parameters('namePrefix'), 'vm')]"
   },
   "resources": [
-    {
-      "apiVersion": "2015-06-15",
-      "type": "Microsoft.Compute/availabilitySets",
-      "name": "[variables('availabilitySetName')]",
-      "location": "[parameters('region')]",
-      "properties": {
-        "platformFaultDomainCount": 3,
-        "platformUpdateDomainCount": 18
-      }
-    },
     {
       "apiVersion": "2015-06-15",
       "type": "Microsoft.Network/networkInterfaces",
@@ -87,7 +79,7 @@
       ],
       "properties": {
         "availabilitySet": {
-          "id": "[resourceId('Microsoft.Compute/availabilitySets', variables('availabilitySetName'))]"
+          "id": "[resourceId('Microsoft.Compute/availabilitySets', parameters('availabilitySetName'))]"
         },
         "hardwareProfile": {
           "vmSize": "[parameters('vmSize')]"

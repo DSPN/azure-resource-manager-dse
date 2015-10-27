@@ -44,6 +44,7 @@
     "clusterName": "[concat(resourcegroup().name, 'cluster')]",
     "region": "[resourcegroup().location]",
     "templateBaseUrl": "https://raw.githubusercontent.com/DSPN/azure-arm-dse/master/simple/",
+    "nodesTemplateUrl": "[concat(variables('templateBaseUrl'), 'nodes.json')]",
     "nodeTemplateUrl": "[concat(variables('templateBaseUrl'), 'node.json')]",
     "opsCenterTemplateUrl": "[concat(variables('templateBaseUrl'), 'opscenter.json')]",
     "opsCenterInstallTemplateUrl": "[concat(variables('templateBaseUrl'), 'opscenterInstall.json')]",
