@@ -51,57 +51,19 @@
     },
     "adminPassword": {
       "type": "securestring",
-      "defaultValue" : "",
       "metadata": {
         "description": "Admin password for the virtual machines"
-      }
-    },
-    "sshPublicKey" : {
-      "type" : "string",
-      "defaultValue" : "",
-      "metadata" : {
-        "description" : "SSH Key for the virtual machines"
-      }
-    },
-    "authenticationType" : {
-      "type": "string",
-      "defaultValue" : "password",
-      "allowedValues" : [
-        "password",
-        "sshPublicKey"
-      ],
-      "metadata": {
-        "description": "Authentication Type to chose for the Virtual Machines"
-      }
-    },
-    "opsCenterAdminPassword" : {
-      "type": "securestring",
-      "metadata": {
-        "description": "Password for the OpsCenter Login."
-      }
-    },
-    "dataStaxUsername": {
-      "type": "string",
-      "metadata": {
-        "description": "Your DataStax account username.  You can register at http://datastax.com/"
-      }
-    },
-    "dataStaxPassword": {
-      "type": "securestring",
-      "metadata": {
-        "description": "Your DataStax account password.  You can register at http://datastax.com/"
       }
     },
     "artifactsBaseUrl" : {
       "type" : "string",
       "metadata" : {
         "artifactsBaseUrl" : "Base URL of the DataStax Template gallery package"
-      },
-      "defaultValue" : ""
+      }
     }
   },
   "variables": {
-    "templateBaseUrl": "[concat(parameters('artifactsBaseUrl'),'/')]",
+    "templateBaseUrl": "[parameters('artifactsBaseUrl')]",
     "sharedTemplateUrl": "[concat(variables('templateBaseUrl'), 'shared-resources.json')]",
     "clusterNodesBaseTemplateUrl": "[concat(variables('templateBaseUrl'), 'dse-nodes-base-resources.json')]",
     "clusterNodesTemplateUrl": "[concat(variables('templateBaseUrl'), 'dse-nodes-specific-resources-',parameters('authenticationType'),'.json')]",
@@ -201,7 +163,7 @@
         "version": "latest"
       },
       "scripts": [
-        "[concat(variables('templateBaseUrl'), 'dsenode.sh')]",
+        "[concat(variables('templateBaseUrl'), 'dseNode.sh')]",
         "[concat(variables('templateBaseUrl'), 'opscenter.sh')]",
         "[concat(variables('templateBaseUrl'), 'vm-disk-utils-0.1.sh')]"
       ]
@@ -279,9 +241,6 @@
           "templateUrl" : {
             "value" : "[variables('clusterNodesTemplateUrl')]"
           },
-          "sshkeyData" : {
-            "value" : "[parameters('sshPublicKey')]"
-          },
           "nodeListSettings": {
             "value": {
               "nodeList": "[variables('clusterSpec').nodeList]",
@@ -334,9 +293,6 @@
           },
           "osSettings": {
             "value": "[variables('osSettings')]"
-          },
-          "sshkeyData" : {
-            "value" : "[parameters('sshPublicKey')]"
           }
         }
       }
@@ -360,7 +316,7 @@
             "value": "[parameters('adminUsername')]"
           },
           "adminPassword": {
-            "value": "[parameters('opsCenterAdminPassword')]"
+            "value": "[parameters('adminPassword')]"
           },
           "namespace": {
             "value": "opc"
@@ -374,9 +330,7 @@
           "opsCenterSettings": {
             "value": {
               "nodeList": "[variables('clusterSpec').nodeList]",
-              "subnetCount" : "[variables('clusterSpec').storageAccountCount]",
-              "dataStaxUsername": "[parameters('dataStaxUsername')]",
-              "dataStaxPassword": "[parameters('dataStaxPassword')]"
+              "subnetCount" : "[variables('clusterSpec').storageAccountCount]"
             }
           }
         }
