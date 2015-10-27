@@ -1,12 +1,12 @@
 {
   "clusterName": {
-    "value": "bencluster11"
+    "value": "bencluster3"
   },
   "region": {
     "value": "eastasia"
   },
   "clusterNodeCount": {
-    "value": 4
+    "value": 90
   },
   "clusterVmSize": {
     "value": "Standard_D12"
