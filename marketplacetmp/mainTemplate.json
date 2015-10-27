@@ -51,7 +51,6 @@
     },
     "adminPassword": {
       "type": "securestring",
-      "defaultValue" : "",
       "metadata": {
         "description": "Admin password for the virtual machines"
       }
@@ -60,8 +59,7 @@
       "type" : "string",
       "metadata" : {
         "artifactsBaseUrl" : "Base URL of the DataStax Template gallery package"
-      },
-      "defaultValue" : ""
+      }
     }
   },
   "variables": {
@@ -165,7 +163,7 @@
         "version": "latest"
       },
       "scripts": [
-        "[concat(variables('templateBaseUrl'), 'dsenode.sh')]",
+        "[concat(variables('templateBaseUrl'), 'dseNode.sh')]",
         "[concat(variables('templateBaseUrl'), 'opscenter.sh')]",
         "[concat(variables('templateBaseUrl'), 'vm-disk-utils-0.1.sh')]"
       ]
@@ -243,9 +241,6 @@
           "templateUrl" : {
             "value" : "[variables('clusterNodesTemplateUrl')]"
           },
-          "sshkeyData" : {
-            "value" : "[parameters('sshPublicKey')]"
-          },
           "nodeListSettings": {
             "value": {
               "nodeList": "[variables('clusterSpec').nodeList]",
@@ -298,9 +293,6 @@
           },
           "osSettings": {
             "value": "[variables('osSettings')]"
-          },
-          "sshkeyData" : {
-            "value" : "[parameters('sshPublicKey')]"
           }
         }
       }
@@ -324,7 +316,7 @@
             "value": "[parameters('adminUsername')]"
           },
           "adminPassword": {
-            "value": "[parameters('opsCenterAdminPassword')]"
+            "value": "[parameters('adminPassword')]"
           },
           "namespace": {
             "value": "opc"
@@ -338,9 +330,7 @@
           "opsCenterSettings": {
             "value": {
               "nodeList": "[variables('clusterSpec').nodeList]",
-              "subnetCount" : "[variables('clusterSpec').storageAccountCount]",
-              "dataStaxUsername": "[parameters('dataStaxUsername')]",
-              "dataStaxPassword": "[parameters('dataStaxPassword')]"
+              "subnetCount" : "[variables('clusterSpec').storageAccountCount]"
             }
           }
         }
