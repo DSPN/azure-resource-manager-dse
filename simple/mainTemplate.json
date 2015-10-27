@@ -48,27 +48,7 @@
     "opsCenterTemplateUrl": "[concat(variables('templateBaseUrl'), 'opscenter.json')]",
     "opsCenterInstallTemplateUrl": "[concat(variables('templateBaseUrl'), 'opscenterInstall.json')]",
     "opsCenterVmSize": "Standard_A1",
-    "clusterSpec" : "[variables(concat('clusterSize',parameters('clusterNodeCount')))]",
-    "clusterSize4" : {
-      "storageAccountCount" : 1,
-      "vmCount" : 4,
-      "nodeList": "[concat(variables('networkSettings').subnet.dse0.statics.clusterRange.base, variables('networkSettings').subnet.dse0.statics.clusterRange.start, '-', parameters('clusterNodeCount'))]"
-    },
-    "clusterSize12" : {
-      "storageAccountCount" : 1,
-      "vmCount" : 12,
-      "nodeList": "[concat(variables('networkSettings').subnet.dse0.statics.clusterRange.base, variables('networkSettings').subnet.dse0.statics.clusterRange.start, '-', parameters('clusterNodeCount'))]"
-    },
-    "clusterSize36" : {
-      "storageAccountCount" : 2,
-      "vmCount" : 18,
-      "nodeList": "[concat(variables('networkSettings').subnet.dse0.statics.clusterRange.base, variables('networkSettings').subnet.dse0.statics.clusterRange.start, '-18', ';', variables('networkSettings').subnet.dse1.statics.clusterRange.base, variables('networkSettings').subnet.dse1.statics.clusterRange.start, '-18')]"
-    },
-    "clusterSize90" : {
-      "storageAccountCount" : 5,
-      "vmCount" : 18,
-      "nodeList": "[concat(variables('networkSettings').subnet.dse0.statics.clusterRange.base, variables('networkSettings').subnet.dse0.statics.clusterRange.start, '-18', ';', variables('networkSettings').subnet.dse1.statics.clusterRange.base, variables('networkSettings').subnet.dse1.statics.clusterRange.start, '-18',';',variables('networkSettings').subnet.dse2.statics.clusterRange.base, variables('networkSettings').subnet.dse2.statics.clusterRange.start, '-18',';',variables('networkSettings').subnet.dse3.statics.clusterRange.base, variables('networkSettings').subnet.dse3.statics.clusterRange.start, '-18',';',variables('networkSettings').subnet.dse4.statics.clusterRange.base, variables('networkSettings').subnet.dse4.statics.clusterRange.start, '-18')]"
-    },
+    "nodeList": "[concat(variables('networkSettings').subnet.dse0.statics.clusterRange.base, variables('networkSettings').subnet.dse0.statics.clusterRange.start, '-', parameters('clusterNodeCount'))]",
     "networkSettings": {
       "virtualNetworkName": "[variables('clusterName')]",
       "addressPrefix": "10.0.0.0/16",
@@ -80,50 +60,6 @@
           "statics": {
             "clusterRange": {
               "base": "10.0.0.",
-              "start": 6
-            }
-          }
-        },
-        "dse1": {
-          "name": "dse1",
-          "prefix": "10.0.1.0/24",
-          "vnet": "[variables('clusterName')]",
-          "statics": {
-            "clusterRange": {
-              "base": "10.0.1.",
-              "start": 6
-            }
-          }
-        },
-        "dse2": {
-          "name": "dse2",
-          "prefix": "10.0.2.0/24",
-          "vnet": "[variables('clusterName')]",
-          "statics": {
-            "clusterRange": {
-              "base": "10.0.2.",
-              "start": 6
-            }
-          }
-        },
-        "dse3": {
-          "name": "dse3",
-          "prefix": "10.0.3.0/24",
-          "vnet": "[variables('clusterName')]",
-          "statics": {
-            "clusterRange": {
-              "base": "10.0.3.",
-              "start": 6
-            }
-          }
-        },
-        "dse4": {
-          "name": "dse4",
-          "prefix": "10.0.4.0/24",
-          "vnet": "[variables('clusterName')]",
-          "statics": {
-            "clusterRange": {
-              "base": "10.0.4.",
               "start": 6
             }
           }
