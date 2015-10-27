@@ -14,7 +14,7 @@
     "adminPassword": {
       "type": "securestring"
     },
-    "namespace": {
+    "namePrefix": {
       "type": "string"
     },
     "vmSize": {
@@ -29,81 +29,103 @@
     "nodeCount": {
       "type": "int"
     },
-    "templateUrl" : {
-      "type" : "string"
-    },
     "nodeList" : {
       "type" : "string"
     }
   },
   "variables": {
-    "storageAccountName": "[concat(parameters('storageAccountPrefix'), parameters('namespace'))]",
-    "vmName": "[concat(parameters('namespace'), 'vm')]",
-    "subnet0" : "[parameters('subnet').dse0]"
+    "subnetRef": "[concat(resourceId('Microsoft.Network/virtualNetworks', parameters('subnet').vnet), '/subnets/', parameters('subnet').name)]",
+    "vmName": "[concat(parameters('namePrefix'), 'vm')]"
   },
   "resources": [
     {
       "apiVersion": "2015-06-15",
-      "type": "Microsoft.Compute/availabilitySets",
-      "name": "[concat(parameters('namespace'), 'set')]",
+      "type": "Microsoft.Network/networkInterfaces",
+      "name": "[concat(parameters('namePrefix'), 'nic', copyindex())]",
       "location": "[parameters('region')]",
+      "copy": {
+        "name": "[concat(parameters('namePrefix'), 'nicLoop')]",
+        "count": "[parameters('nodeCount')]"
+      },
       "properties": {
-        "platformFaultDomainCount": 3,
-        "platformUpdateDomainCount": 18
+        "ipConfigurations": [
+          {
+            "name": "ipconfig1",
+            "properties": {
+              "privateIPAllocationMethod": "Static",
+              "privateIPAddress": "[concat(parameters('subnet').statics.clusterRange.base, copyindex(parameters('subnet').statics.clusterRange.start))]",
+              "subnet": {
+                "id": "[variables('subnetRef')]"
+              }
+            }
+          }
+        ]
       }
     },
     {
-      "name": "[concat('cluster-nodes-alone',copyindex())]",
-      "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2015-01-01",
+      "apiVersion": "2015-06-15",
+      "type": "Microsoft.Compute/virtualMachines",
+      "name": "[concat(parameters('namePrefix'), 'vm', copyindex())]",
+      "location": "[parameters('region')]",
       "copy": {
-        "name": "[concat(parameters('namespace'), 'clusternodeLoop')]",
-        "count": "[parameters('storageCount')]"
+        "name": "[concat(parameters('namePrefix'), 'vmLoop')]",
+        "count": "[parameters('nodeCount')]"
       },
       "dependsOn": [
-        "[concat('Microsoft.Storage/storageAccounts/', copyindex(), parameters('storageAccountPrefix'))]",
-        "[concat('Microsoft.Compute/availabilitySets/', parameters('namespace'), 'set')]"
+        "[concat('Microsoft.Network/networkInterfaces/', parameters('namePrefix'), 'nic', copyindex())]"
       ],
       "properties": {
-        "mode": "Incremental",
-        "templateLink": {
-          "uri": "[parameters('templateUrl')]",
-          "contentVersion": "1.0.0.0"
+        "availabilitySet": {
+          "id": "[resourceId('Microsoft.Compute/availabilitySets', parameters('availabilitySetName'))]"
         },
-        "parameters": {
-          "adminUsername": {
-            "value": "[parameters('adminUsername')]"
-          },
-          "adminPassword": {
-            "value": "[parameters('adminPassword')]"
-          },
-          "region": {
-            "value": "[parameters('region')]"
-          },
-          "vmSize": {
-            "value": "[parameters('vmSize')]"
-          },
-          "subnet": {
-            "value": "[variables(concat('subnet',copyindex()))]"
-          },
-          "osSettings": {
-            "value": "[parameters('osSettings')]"
-          },
-          "nodeCount": {
-            "value": "[parameters('nodeCount')]"
-          },
-          "namePrefix": {
-            "value": "[concat('dc',copyindex())]"
-          },
-          "availabilitySetName": {
-            "value": "[concat(parameters('namespace'), 'set')]"
-          },
-          "storageAccountName" : {
-            "value" : "[concat(copyindex(), parameters('storageAccountPrefix'))]"
-          },
-          "nodeListSettings" : {
-            "value" : "[parameters('nodeListSettings')]"
+        "hardwareProfile": {
+          "vmSize": "[parameters('vmSize')]"
+        },
+        "osProfile": {
+          "computername": "[concat(parameters('namePrefix'), 'vm', copyIndex())]",
+          "adminUsername": "[parameters('adminUsername')]",
+          "adminPassword": "[parameters('adminPassword')]"
+        },
+        "storageProfile": {
+          "imageReference": "[parameters('osSettings').imageReference]",
+          "osDisk": {
+            "name": "osdisk",
+            "vhd": {
+              "uri": "[concat('http://',parameters('storageAccountName'),'.blob.core.windows.net/vhds/', variables('vmName'), copyindex(), '-osdisk.vhd')]"
+            },
+            "caching": "ReadWrite",
+            "createOption": "FromImage"
           }
+        },
+        "networkProfile": {
+          "networkInterfaces": [
+            {
+              "id": "[resourceId('Microsoft.Network/networkInterfaces',concat(parameters('namePrefix'), 'nic', copyindex()))]"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "type": "Microsoft.Compute/virtualMachines/extensions",
+      "name": "[concat(parameters('namePrefix'), 'vm', copyindex(), '/installdsenode')]",
+      "apiVersion": "2015-06-15",
+      "location": "[parameters('region')]",
+      "copy": {
+        "name": "[concat(parameters('namePrefix'), 'vmLoop')]",
+        "count": "[parameters('nodeCount')]"
+      },
+      "dependsOn": [
+        "[concat('Microsoft.Compute/virtualMachines/', parameters('namePrefix'), 'vm', copyindex())]",
+        "[concat('Microsoft.Network/networkInterfaces/', parameters('namePrefix'), 'nic', copyindex())]"
+      ],
+      "properties": {
+        "publisher": "Microsoft.OSTCExtensions",
+        "type": "CustomScriptForLinux",
+        "typeHandlerVersion": "1.3",
+        "settings": {
+          "fileUris": "[parameters('osSettings').scripts]",
+          "commandToExecute": "bash dseNode.sh"
         }
       }
     }

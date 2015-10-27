@@ -46,7 +46,6 @@
 
     "templateBaseUrl": "https://raw.githubusercontent.com/DSPN/azure-arm-dse/master/simple/",
     "nodeTemplateUrl": "[concat(variables('templateBaseUrl'), 'node.json')]",
-    "nodeInstallTemplateUrl": "[concat(variables('templateBaseUrl'), 'nodeInstall.json')]",
     "opsCenterTemplateUrl": "[concat(variables('templateBaseUrl'), 'opscenter.json')]",
     "opsCenterInstallTemplateUrl": "[concat(variables('templateBaseUrl'), 'opscenterInstall.json')]",
 
@@ -131,35 +130,32 @@
           "contentVersion": "1.0.0.0"
         },
         "parameters": {
-          "adminUsername": {
-            "value": "[parameters('adminUsername')]"
-          },
-          "adminPassword": {
-            "value": "[parameters('adminPassword')]"
-          },
           "region": {
             "value": "[variables('region')]"
           },
           "storageAccountName": {
             "value": "[variables('sharedStorageAccountName')]"
           },
+          "adminUsername": {
+            "value": "[parameters('adminUsername')]"
+          },
+          "adminPassword": {
+            "value": "[parameters('adminPassword')]"
+          },
+          "namePrefix": {
+            "value": "dc1"
+          },
           "vmSize": {
             "value": "[parameters('clusterVmSize')]"
-          },
-          "subnet": {
-            "value": "[variables('networkSettings').subnet]"
           },
           "osSettings": {
             "value": "[variables('osSettings')]"
           },
+          "subnet": {
+            "value": "[variables('networkSettings').subnet]"
+          },
           "nodeCount": {
             "value": "[variables('clusterSpec').vmCount]"
-          },
-          "namespace": {
-            "value": "dc1"
-          },
-          "storageCount": {
-            "value": "[variables('clusterSpec').storageAccountCount]"
           },
           "templateUrl": {
             "value": "[variables('clusterNodesTemplateUrl')]"
@@ -169,10 +165,9 @@
           }
         }
       }
-    }
     },
     {
-      "name": "ops-center-nodes",
+      "name": "opscenter",
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2015-01-01",
       "dependsOn": [
@@ -219,12 +214,12 @@
       }
     },
     {
-      "name": "ops-center-install-nodes",
+      "name": "opscenter-install",
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2015-01-01",
       "dependsOn": [
-        "[concat('Microsoft.Resources/deployments/', 'cluster-nodes')]",
-        "[concat('Microsoft.Resources/deployments/', 'ops-center-nodes')]"
+        "[concat('Microsoft.Resources/deployments/', 'nodes')]",
+        "[concat('Microsoft.Resources/deployments/', 'opscenter-nodes')]"
       ],
       "properties": {
         "mode": "Incremental",
