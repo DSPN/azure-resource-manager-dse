@@ -32,9 +32,6 @@
     "availabilitySetName" : {
       "type" : "string"
     },
-    "sshKeyData" : {
-      "type" : "string"
-    },
     "nodeListSettings" : {
       "type" : "object"
     }
@@ -131,7 +128,7 @@
         "typeHandlerVersion": "1.3",
         "settings": {
           "fileUris": "[parameters('osSettings').scripts]",
-          "commandToExecute": "[concat('bash dsenode.sh', ' -e ', parameters('nodeListSettings').nodeList, ' -c ', parameters('nodeListSettings').subnetCount)]"
+          "commandToExecute": "bash dsenode.sh"
         }
       }
     }
