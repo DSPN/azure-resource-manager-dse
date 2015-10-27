@@ -31,9 +31,6 @@
     },
     "dnsName": {
       "type": "string"
-    },
-    "sshKeyData" : {
-      "type" : "string"
     }
   },
   "variables": {
