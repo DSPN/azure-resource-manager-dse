@@ -5,6 +5,8 @@
     "clusterNodeCount": {
       "type": "int",
       "defaultValue": 4,
+      "minValue": 1,
+      "maxValue": 39,
       "metadata": {
         "description": "The number of virtual machines to provision for the cluster"
       }
@@ -42,13 +44,12 @@
     "clusterName": "[concat(resourcegroup().name, 'cluster')]",
     "region": "[resourcegroup().location]",
 
-    "templateBaseUrl": "https://raw.githubusercontent.com/DSPN/azure-arm-dse/master/simple/"
+    "templateBaseUrl": "https://raw.githubusercontent.com/DSPN/azure-arm-dse/master/simple/",
     "nodeTemplateUrl": "[concat(variables('templateBaseUrl'), 'node.json')]",
     "nodeInstallTemplateUrl": "[concat(variables('templateBaseUrl'), 'nodeInstall.json')]",
     "opsCenterTemplateUrl": "[concat(variables('templateBaseUrl'), 'opscenter.json')]",
     "opsCenterInstallTemplateUrl": "[concat(variables('templateBaseUrl'), 'opscenterInstall.json')]",
 
-    "opsCenterVmSize": "Standard_A1",
     "nodeList": "[concat(variables('networkSettings').subnet.dse0.statics.clusterRange.base, variables('networkSettings').subnet.dse0.statics.clusterRange.start, '-', parameters('clusterNodeCount'))]",
     "storageAccountName": "[concat(variables('clusterName'),'cmn')]",
 

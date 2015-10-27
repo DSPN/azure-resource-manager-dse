@@ -11,9 +11,6 @@
     "adminPassword": {
       "type": "securestring"
     },
-    "namespace": {
-      "type": "string"
-    },
     "osSettings": {
       "type": "object"
     },
