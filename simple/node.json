@@ -5,7 +5,7 @@
     "region": {
       "type": "string"
     },
-    "storageAccountPrefix": {
+    "storageAccountName": {
       "type": "string"
     },
     "adminUsername": {
@@ -29,24 +29,17 @@
     "nodeCount": {
       "type": "int"
     },
-    "storageCount" : {
-      "type" : "int"
-    },
     "templateUrl" : {
       "type" : "string"
     },
-    "nodeListSettings" : {
-      "type" : "object"
+    "nodeList" : {
+      "type" : "string"
     }
   },
   "variables": {
     "storageAccountName": "[concat(parameters('storageAccountPrefix'), parameters('namespace'))]",
     "vmName": "[concat(parameters('namespace'), 'vm')]",
-    "subnet0" : "[parameters('subnet').dse0]",
-    "subnet1" : "[parameters('subnet').dse1]",
-    "subnet2" : "[parameters('subnet').dse2]",
-    "subnet3" : "[parameters('subnet').dse3]",
-    "subnet4" : "[parameters('subnet').dse4]"
+    "subnet0" : "[parameters('subnet').dse0]"
   },
   "resources": [
     {
@@ -57,19 +50,6 @@
       "properties": {
         "platformFaultDomainCount": 3,
         "platformUpdateDomainCount": 18
-      }
-    },
-    {
-      "type": "Microsoft.Storage/storageAccounts",
-      "name": "[concat(copyindex(), parameters('storageAccountPrefix'))]",
-      "apiVersion": "2015-05-01-preview",
-      "location": "[parameters('region')]",
-      "copy": {
-        "name": "[concat(parameters('namespace'), 'storageLoop')]",
-        "count": "[parameters('storageCount')]"
-      },
-      "properties": {
-        "accountType": "Standard_LRS"
       }
     },
     {

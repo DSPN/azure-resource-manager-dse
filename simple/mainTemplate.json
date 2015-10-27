@@ -41,14 +41,17 @@
   "variables": {
     "clusterName": "[concat(resourcegroup().name, 'cluster')]",
     "region": "[resourcegroup().location]",
-    "templateBaseUrl": "https://raw.githubusercontent.com/DSPN/azure-arm-dse/master/simple/",
-    "sharedTemplateUrl": "[concat(variables('templateBaseUrl'), 'sharedResources.json')]",
-    "clusterNodesBaseTemplateUrl": "[concat(variables('templateBaseUrl'), 'node.json')]",
-    "clusterNodesTemplateUrl": "[concat(variables('templateBaseUrl'), 'nodeInstall.json')]",
+
+    "templateBaseUrl": "https://raw.githubusercontent.com/DSPN/azure-arm-dse/master/simple/"
+    "nodeTemplateUrl": "[concat(variables('templateBaseUrl'), 'node.json')]",
+    "nodeInstallTemplateUrl": "[concat(variables('templateBaseUrl'), 'nodeInstall.json')]",
     "opsCenterTemplateUrl": "[concat(variables('templateBaseUrl'), 'opscenter.json')]",
     "opsCenterInstallTemplateUrl": "[concat(variables('templateBaseUrl'), 'opscenterInstall.json')]",
+
     "opsCenterVmSize": "Standard_A1",
     "nodeList": "[concat(variables('networkSettings').subnet.dse0.statics.clusterRange.base, variables('networkSettings').subnet.dse0.statics.clusterRange.start, '-', parameters('clusterNodeCount'))]",
+    "storageAccountName": "[concat(variables('clusterName'),'cmn')]",
+
     "networkSettings": {
       "virtualNetworkName": "[variables('clusterName')]",
       "addressPrefix": "10.0.0.0/16",
@@ -81,44 +84,49 @@
         "[concat(variables('templateBaseUrl'), 'extensions/opscenter.sh')]",
         "[concat(variables('templateBaseUrl'), 'extensions/vm-disk-utils-0.1.sh')]"
       ]
-    },
-    "sharedStorageAccountName": "[concat(variables('clusterName'),'cmn')]"
+    }
   },
   "resources": [
     {
-      "name": "shared",
-      "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2015-01-01",
+      "type": "Microsoft.Storage/storageAccounts",
+      "name": "[variables('storageAccountName')]",
+      "apiVersion": "2015-05-01-preview",
+      "location": "[variables('region')]",
       "properties": {
-        "mode": "Incremental",
-        "templateLink": {
-          "uri": "[variables('sharedTemplateUrl')]",
-          "contentVersion": "1.0.0.0"
-        },
-        "parameters": {
-          "region": {
-            "value": "[variables('region')]"
-          },
-          "networkSettings": {
-            "value": "[variables('networkSettings')]"
-          },
-          "storageAccountName": {
-            "value": "[variables('sharedStorageAccountName')]"
-          }
-        }
+        "accountType": "Standard_LRS"
       }
     },
     {
-      "name": "cluster-nodes",
+      "apiVersion": "2015-06-15",
+      "type": "Microsoft.Network/virtualNetworks",
+      "name": "[variables('networkSettings').virtualNetworkName]",
+      "location": "[variables('region')]",
+      "properties": {
+        "addressSpace": {
+          "addressPrefixes": [
+            "[variables('networkSettings').addressPrefix]"
+          ]
+        },
+        "subnets": [
+          {
+            "name": "[variables('networkSettings').subnet.dse0.name]",
+            "properties": {
+              "addressPrefix": "[variables('networkSettings').subnet.dse0.prefix]"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "name": "nodes",
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2015-01-01",
       "dependsOn": [
-        "[concat('Microsoft.Resources/deployments/', 'shared')]"
       ],
       "properties": {
         "mode": "Incremental",
         "templateLink": {
-          "uri": "[variables('clusterNodesBaseTemplateUrl')]",
+          "uri": "[variables('nodeTemplateUrl')]",
           "contentVersion": "1.0.0.0"
         },
         "parameters": {
@@ -131,8 +139,8 @@
           "region": {
             "value": "[variables('region')]"
           },
-          "storageAccountPrefix": {
-            "value": "[variables('clusterName')]"
+          "storageAccountName": {
+            "value": "[variables('sharedStorageAccountName')]"
           },
           "vmSize": {
             "value": "[parameters('clusterVmSize')]"
@@ -149,20 +157,18 @@
           "namespace": {
             "value": "dc1"
           },
-          "storageCount" : {
-            "value" : "[variables('clusterSpec').storageAccountCount]"
+          "storageCount": {
+            "value": "[variables('clusterSpec').storageAccountCount]"
           },
-          "templateUrl" : {
-            "value" : "[variables('clusterNodesTemplateUrl')]"
+          "templateUrl": {
+            "value": "[variables('clusterNodesTemplateUrl')]"
           },
-          "nodeListSettings": {
-            "value": {
-              "nodeList": "[variables('clusterSpec').nodeList]",
-              "subnetCount" : "[variables('clusterSpec').storageAccountCount]"
-            }
+          "nodeList": {
+            "value": "[variables('clusterSpec').nodeList]"
           }
         }
       }
+    }
     },
     {
       "name": "ops-center-nodes",
@@ -244,7 +250,7 @@
           "opsCenterSettings": {
             "value": {
               "nodeList": "[variables('clusterSpec').nodeList]",
-              "subnetCount" : "[variables('clusterSpec').storageAccountCount]"
+              "subnetCount": "[variables('clusterSpec').storageAccountCount]"
             }
           }
         }
