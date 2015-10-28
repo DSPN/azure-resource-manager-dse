@@ -95,8 +95,7 @@
           "publisher": "Canonical",
           "offer": "UbuntuServer",
           "sku": "14.04.2-LTS"
-        },
-        "count": "[basics('clusterNodeCount')]"
+        }
       }
     ],
     "outputs": {
