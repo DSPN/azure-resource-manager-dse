@@ -155,13 +155,13 @@
             "value": "[variables('networkSettings').subnet.dse0]"
           },
           "nodeCount": {
-            "value": "[variables('clusterSpec').vmCount]"
+            "value": "[parameters('clusterNodeCount')]"
           },
           "templateUrl": {
             "value": "[variables('clusterNodeLoopTemplateUrl')]"
           },
           "nodeList": {
-            "value": "[variables('clusterSpec').nodeList]"
+            "value": "[variables('nodeList')]"
           }
         }
       }
@@ -238,11 +238,8 @@
           "osSettings": {
             "value": "[variables('osSettings')]"
           },
-          "opsCenterSettings": {
-            "value": {
-              "nodeList": "[variables('clusterSpec').nodeList]",
-              "subnetCount": "[variables('clusterSpec').storageAccountCount]"
-            }
+          "nodeList": {
+            "value": "[variables('nodeList')]"
           }
         }
       }

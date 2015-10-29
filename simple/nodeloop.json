@@ -101,11 +101,11 @@
           "vmSize": {
             "value": "[parameters('vmSize')]"
           },
-          "subnet": {
-            "value": "[variables(concat('subnet',copyindex()))]"
-          },
           "osSettings": {
             "value": "[parameters('osSettings')]"
+          },
+          "subnet": {
+            "value": "[variables(concat('subnet',copyindex()))]"
           },
           "nodeCount": {
             "value": "[parameters('nodeCount')]"
