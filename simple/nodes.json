@@ -23,9 +23,6 @@
     "osSettings": {
       "type": "object"
     },
-    "subnet": {
-      "type": "object"
-    },
     "nodeCount": {
       "type": "int"
     },
@@ -34,7 +31,7 @@
     }
   },
   "variables": {
-    "subnetRef": "[concat(resourceId('Microsoft.Network/virtualNetworks', parameters('subnet').vnet), '/subnets/', parameters('subnet').name)]",
+    "subnetRef": "[concat(resourceId('Microsoft.Network/virtualNetworks', 'dsevnet'), '/subnets/', 'dsesubnet')]",
     "vmName": "[concat(parameters('namespace'), 'vm')]"
   },
   "resources": [

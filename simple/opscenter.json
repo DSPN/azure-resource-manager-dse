@@ -20,9 +20,6 @@
     "osSettings": {
       "type": "object"
     },
-    "subnet": {
-      "type": "object"
-    },
     "staticIp": {
       "type": "string"
     },
@@ -31,7 +28,7 @@
     }
   },
   "variables": {
-    "subnetRef": "[concat(resourceId('Microsoft.Network/virtualNetworks', parameters('subnet').vnet), '/subnets/', parameters('subnet').name)]",
+    "subnetRef": "[concat(resourceId('Microsoft.Network/virtualNetworks', 'dsevnet'), '/subnets/', 'dsesubnet')]",
     "publicIpName": "[concat(parameters('namespace'), 'PublicIp')]",
     "publicIpRef": "[concat('Microsoft.Network/publicIPAddresses/', variables('publicIpName'))]",
     "securityGroupName": "[concat(parameters('namespace'), 'nsg')]"
