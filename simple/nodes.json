@@ -5,7 +5,7 @@
     "region": {
       "type": "string"
     },
-    "storageName": {
+    "storageAccountName": {
       "type": "string"
     },
     "adminUsername": {
@@ -45,7 +45,7 @@
       "location": "[parameters('region')]",
       "properties": {
         "platformFaultDomainCount": 3,
-        "platformUpdateDomainCount": 20
+        "platformUpdateDomainCount": 18
       }
     },
     {
@@ -116,19 +116,7 @@
             },
             "caching": "ReadWrite",
             "createOption": "FromImage"
-          },
-          "dataDisks": [
-            {
-              "name": "datadisk1",
-              "diskSizeGB": 1023,
-              "lun": 0,
-              "vhd": {
-                "Uri": "[concat('http://', variables('storageAccountName'),'.blob.core.windows.net/','vhds/', variables('vmName'), copyindex(), 'DataDisk1.vhd')]"
-              },
-              "caching": "None",
-              "createOption": "Empty"
-            }
-          ]
+          }
         },
         "networkProfile": {
           "networkInterfaces": [
