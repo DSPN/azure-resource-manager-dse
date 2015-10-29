@@ -7,8 +7,6 @@
     "nodesPerRegion": 10,
     "nodeSize": "Standard_D3",
     "username": "datastax",
-    "password": "foo123!",
-    "dataStaxUsername": "ben.lackey_datastax.com",
-    "dataStaxPassword": "cJgBIKarVugFjy7"
+    "password": "foo123!"
 }
 
