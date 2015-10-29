@@ -14,10 +14,6 @@ nodesPerRegion = clusterParameters['nodesPerRegion']
 username = clusterParameters['username']
 password = clusterParameters['password']
 
-# These parameters are going away as soon as we have a DataStax custom extension for Azure
-dataStaxUsername = clusterParameters['dataStaxUsername']
-dataStaxPassword = clusterParameters['dataStaxPassword']
-
 # This is the skeleton of the template that we're going to add resources to
 generatedTemplate = {
     "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
@@ -42,7 +38,7 @@ resources = connections.generate_template(regions)
 generatedTemplate['resources'] += resources
 
 # Create the OpsCenter node
-resources = opsCenterNode.generate_template(username, password, dataStaxUsername, dataStaxPassword, clusterParameters)
+resources = opsCenterNode.generate_template(username, password, clusterParameters)
 generatedTemplate['resources'] += resources
 
 with open('generatedTemplate.json', 'w') as outputFile:

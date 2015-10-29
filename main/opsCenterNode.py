@@ -2,7 +2,7 @@ import base64
 import json
 
 
-def generate_template(username, password, dataStaxUsername, dataStaxPassword, clusterParameters):
+def generate_template(clusterParameters):
     # We're going to create all these resources in resourceGroup().location
     # The OpsCenter node always has private IP 10.0.1.5
 
@@ -12,8 +12,8 @@ def generate_template(username, password, dataStaxUsername, dataStaxPassword, cl
     resources.append(publicIPAddresses)
     resources.append(networkInterfaces)
     resources.append(storageAccounts)
-    resources.append(virtualmachines(username, password))
-    resources.append(extension(username, password, dataStaxUsername, dataStaxPassword, clusterParameters))
+    resources.append(virtualmachines(clusterParameters['username'], clusterParameters['password']))
+    resources.append(extension(clusterParameters))
     return resources
 
 
@@ -252,7 +252,7 @@ def generate_connection_names(clusterParameters):
     return connectionNames
 
 
-def extension(username, password, dataStaxUsername, dataStaxPassword, clusterParameters):
+def extension(clusterParameters):
     dependsOn = ["Microsoft.Compute/virtualMachines/opscentervm"]
     dependsOn += generate_vm_names(clusterParameters)
     dependsOn += generate_connection_names(clusterParameters)

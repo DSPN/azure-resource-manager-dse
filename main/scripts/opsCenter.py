@@ -15,11 +15,7 @@ def run():
     username = clusterParameters['username']
     password = clusterParameters['password']
 
-    # These parameters are going away as soon as we have a DataStax custom extension for Azure
-    dataStaxUsername = clusterParameters['dataStaxUsername']
-    dataStaxPassword = clusterParameters['dataStaxPassword']
-
-    document = generateDocument(username, password, dataStaxUsername, dataStaxPassword, regions, nodesPerRegion)
+    document = generateDocument(username, password, regions, nodesPerRegion)
 
     with open('provision.json', 'w') as outputFile:
         json.dump(document, outputFile, sort_keys=True, indent=4, ensure_ascii=False)
@@ -75,7 +71,7 @@ def getAcceptedFingerprints(regions, nodesPerRegion):
     return acceptedFingerprints
 
 
-def generateDocument(username, password, dataStaxUsername, dataStaxPassword, regions, nodesPerRegion):
+def generateDocument(username, password, regions, nodesPerRegion):
     localDataCenters = getLocalDataCenters(regions, nodesPerRegion)
     acceptedFingerprints = getAcceptedFingerprints(regions, nodesPerRegion)
 
@@ -202,8 +198,8 @@ def generateDocument(username, password, dataStaxUsername, dataStaxPassword, reg
             "password": password,
             "username": username,
             "version": "4.8.0",
-            "repo-password": dataStaxPassword,
-            "repo-user": dataStaxUsername
+            "repo-password": "3A7vadPHbNT",
+            "repo-user": "datastax%40microsoft.com"
         },
         "local_datacenters": localDataCenters,
         "accepted_fingerprints": acceptedFingerprints
