@@ -175,9 +175,9 @@ def extension(region, virtualMachineName):
             "typeHandlerVersion": "1.3",
             "settings": {
                 "fileUris": [
-                    "https://raw.githubusercontent.com/DSPN/azure-resource-manager-dse/master/main/scripts/dseNode.sh",
-                    "https://raw.githubusercontent.com/DSPN/azure-resource-manager-dse/master/main/scripts/installJava.sh",
-                    "https://raw.githubusercontent.com/DSPN/azure-resource-manager-dse/master/main/scripts/vm-disk-utils-0.1.sh"
+                    "https://raw.githubusercontent.com/DSPN/azure-resource-manager-dse/master/main/extensions/dseNode.sh",
+                    "https://raw.githubusercontent.com/DSPN/azure-resource-manager-dse/master/main/extensions/installJava.sh",
+                    "https://raw.githubusercontent.com/DSPN/azure-resource-manager-dse/master/main/extensions/vm-disk-utils-0.1.sh"
                 ],
                 "commandToExecute": "bash dseNode.sh"
             }

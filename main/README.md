@@ -20,4 +20,4 @@ The script opsCenter.sh installs OpsCenter and creates a cluster using the OpsCe
 
 On completion, OpsCenter will be accessible at `http://{resourceGroup}cluster.{region}.cloudapp.azure.com:8888` For instance, if you created a deployment with in a resourceGroup named datastax and located in the West US region, you could access OpsCenter for the deployment at `http://datastaxcluster.westus.cloudapp.azure.com:8888`
 
-By default, OpsCenter authentication and SSL are disabled.  You can enable them by running scripts/turnOnOpsCenterAuth.sh
+By default, OpsCenter authentication and SSL are disabled.  You can enable them by running extensions/turnOnOpsCenterAuth.sh

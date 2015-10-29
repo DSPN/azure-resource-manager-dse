@@ -269,10 +269,10 @@ def extension(clusterParameters):
             "typeHandlerVersion": "1.3",
             "settings": {
                 "fileUris": [
-                    "https://raw.githubusercontent.com/DSPN/azure-resource-manager-dse/master/main/scripts/opsCenter.sh",
-                    "https://raw.githubusercontent.com/DSPN/azure-resource-manager-dse/master/main/scripts/installJava.sh",
-                    "https://raw.githubusercontent.com/DSPN/azure-resource-manager-dse/master/main/scripts/opsCenter.py",
-                    "https://raw.githubusercontent.com/DSPN/azure-resource-manager-dse/master/main/scripts/turnOnOpsCenterAuth.sh"
+                    "https://raw.githubusercontent.com/DSPN/azure-resource-manager-dse/master/main/extensions/opsCenter.sh",
+                    "https://raw.githubusercontent.com/DSPN/azure-resource-manager-dse/master/main/extensions/installJava.sh",
+                    "https://raw.githubusercontent.com/DSPN/azure-resource-manager-dse/master/main/extensions/opsCenter.py",
+                    "https://raw.githubusercontent.com/DSPN/azure-resource-manager-dse/master/main/extensions/turnOnOpsCenterAuth.sh"
                 ],
                 "commandToExecute": "bash opsCenter.sh " + base64.b64encode(json.dumps(clusterParameters))
             }
