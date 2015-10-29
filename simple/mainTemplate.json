@@ -158,7 +158,7 @@
             "value": "[parameters('clusterNodeCount')]"
           },
           "templateUrl": {
-            "value": "[variables('clusterNodeLoopTemplateUrl')]"
+            "value": "[variables('nodeLoopTemplateUrl')]"
           },
           "nodeList": {
             "value": "[variables('nodeList')]"
