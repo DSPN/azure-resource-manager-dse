@@ -11,8 +11,6 @@ main.py reads from the following parameters from ./clusterParameter.json:
 | nodeSize | The size of virtual machine to provision for each cluster node |
 | username  | SSH username for the virtual machines |
 | password  | SSH password for the virtual machines |
-| datastaxUsername | Your DataStax account username.  You can register at http://www.datastax.com/download |
-| datastaxPassword | Your DataStax account password.  You can register at http://www.datastax.com/download |
 
 Once the Azure VMs, virtual networks, gateways, storage, etc are setup, the template installs prerequisites like Java on the DSE nodes.  These have static IPs starting at 10.x.1.5 which are accessible on the internal virtual network where x is 1 for the first region in the parameters passed in, 2 for the second and so on.  VPN gateways are configured to route traffic between regions.
 
@@ -23,4 +21,3 @@ The script opsCenter.sh installs OpsCenter and creates a cluster using the OpsCe
 On completion, OpsCenter will be accessible at `http://{resourceGroup}cluster.{region}.cloudapp.azure.com:8888` For instance, if you created a deployment with in a resourceGroup named datastax and located in the West US region, you could access OpsCenter for the deployment at `http://datastaxcluster.westus.cloudapp.azure.com:8888`
 
 By default, OpsCenter authentication and SSL are disabled.  You can enable them by running scripts/turnOnOpsCenterAuth.sh
-
