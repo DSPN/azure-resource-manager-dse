@@ -44,7 +44,7 @@
     "clusterName": "[concat(resourcegroup().name, 'cluster')]",
     "region": "[resourcegroup().location]",
     "templateBaseUrl": "https://raw.githubusercontent.com/DSPN/azure-arm-dse/master/simple/",
-    "nodesTemplateUrl": "[concat(variables('templateBaseUrl'), 'nodes.json')]",
+    "nodeLoopTemplateUrl": "[concat(variables('templateBaseUrl'), 'nodeLoop.json')]",
     "nodeTemplateUrl": "[concat(variables('templateBaseUrl'), 'node.json')]",
     "opsCenterTemplateUrl": "[concat(variables('templateBaseUrl'), 'opscenter.json')]",
     "opsCenterInstallTemplateUrl": "[concat(variables('templateBaseUrl'), 'opscenterInstall.json')]",
@@ -116,17 +116,17 @@
       }
     },
     {
-      "name": "nodes",
+      "name": "nodeloop",
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2015-01-01",
       "dependsOn": [
-        "[resourceId('Microsoft.Storage/storageAccounts', variables('storageAccountName')]",
-        "[resourceId('Microsoft.Network/virtualNetworks', variables('networkSettings').virtualNetworkName)]"
+        "[concat('Microsoft.Storage/storageAccounts/', variables('storageAccountName'))]",
+        "[concat('Microsoft.Network/virtualNetworks/', variables('networkSettings').virtualNetworkName))]"
       ],
       "properties": {
         "mode": "Incremental",
         "templateLink": {
-          "uri": "[variables('nodesTemplateUrl')]",
+          "uri": "[variables('nodeLoopTemplateUrl')]",
           "contentVersion": "1.0.0.0"
         },
         "parameters": {
@@ -158,7 +158,7 @@
             "value": "[variables('clusterSpec').vmCount]"
           },
           "templateUrl": {
-            "value": "[variables('clusterNodesTemplateUrl')]"
+            "value": "[variables('clusterNodeLoopTemplateUrl')]"
           },
           "nodeList": {
             "value": "[variables('clusterSpec').nodeList]"
@@ -171,8 +171,8 @@
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2015-01-01",
       "dependsOn": [
-        "[resourceId('Microsoft.Storage/storageAccounts', variables('storageAccountName')]",
-        "[resourceId('Microsoft.Network/virtualNetworks', variables('networkSettings').virtualNetworkName)]"
+        "[concat('Microsoft.Storage/storageAccounts/', variables('storageAccountName'))]",
+        "[concat('Microsoft.Network/virtualNetworks/', variables('networkSettings').virtualNetworkName))]"
       ],
       "properties": {
         "mode": "Incremental",
@@ -216,8 +216,8 @@
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2015-01-01",
       "dependsOn": [
-        "[concat('Microsoft.Resources/deployments/', 'nodes')]",
-        "[concat('Microsoft.Resources/deployments/', 'opscenter-nodes')]"
+        "[concat('Microsoft.Resources/deployments/', 'nodeloop')]",
+        "[concat('Microsoft.Resources/deployments/', 'opscenter')]"
       ],
       "properties": {
         "mode": "Incremental",
