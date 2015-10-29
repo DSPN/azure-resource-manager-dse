@@ -47,28 +47,13 @@
     "nodesTemplateUrl": "[concat(variables('templateBaseUrl'), 'nodes.json')]",
     "opsCenterTemplateUrl": "[concat(variables('templateBaseUrl'), 'opscenter.json')]",
     "opsCenterInstallTemplateUrl": "[concat(variables('templateBaseUrl'), 'opscenterInstall.json')]",
-    "nodeList": "[concat(variables('networkSettings').subnet.dse0.statics.clusterRange.base, variables('networkSettings').subnet.dse0.statics.clusterRange.start, '-', parameters('clusterNodeCount'))]",
+    "nodeList": "[concat(variables('clusterRange').base, variables('clusterRange').start, '-', parameters('clusterNodeCount'))]",
     "storageAccountName": "[variables('clusterName')]",
-    "networkSettings": {
-      "virtualNetworkName": "[variables('clusterName')]",
-      "addressPrefix": "10.0.0.0/16",
-      "subnet": {
-        "dse0": {
-          "name": "dse0",
-          "prefix": "10.0.0.0/24",
-          "vnet": "[variables('clusterName')]",
-          "statics": {
-            "clusterRange": {
-              "base": "10.0.0.",
-              "start": 6
-            }
-          }
-        }
-      },
-      "opsCenterStatics": {
-        "opsCenter": "10.0.0.5"
-      }
+    "clusterRange": {
+      "base": "10.0.0.",
+      "start": 6
     },
+    "opsCenterIP": "10.0.0.5",
     "osSettings": {
       "imageReference": {
         "publisher": "Canonical",
@@ -96,19 +81,19 @@
     {
       "apiVersion": "2015-06-15",
       "type": "Microsoft.Network/virtualNetworks",
-      "name": "[variables('networkSettings').virtualNetworkName]",
+      "name": "dsevnet",
       "location": "[variables('region')]",
       "properties": {
         "addressSpace": {
           "addressPrefixes": [
-            "[variables('networkSettings').addressPrefix]"
+            "10.0.0.0/16"
           ]
         },
         "subnets": [
           {
-            "name": "[variables('networkSettings').subnet.dse0.name]",
+            "name": "dsesubnet",
             "properties": {
-              "addressPrefix": "[variables('networkSettings').subnet.dse0.prefix]"
+              "addressPrefix": "10.0.0.0/24"
             }
           }
         ]
@@ -150,14 +135,11 @@
           "osSettings": {
             "value": "[variables('osSettings')]"
           },
-          "subnet": {
-            "value": "[variables('networkSettings').subnet.dse0]"
-          },
           "nodeCount": {
             "value": "[parameters('clusterNodeCount')]"
           },
           "staticIps": {
-            "value": "[variables('networkSettings').subnet.dse0.statics.clusterRange]"
+            "value": "[variables('clusterRange')]"
           }
         }
       }
@@ -195,11 +177,8 @@
           "osSettings": {
             "value": "[variables('osSettings')]"
           },
-          "subnet": {
-            "value": "[variables('networkSettings').subnet.dse0]"
-          },
           "staticIp": {
-            "value": "[variables('networkSettings').opsCenterStatics.opsCenter]"
+            "value": "[variables('opsCenterIP')]"
           },
           "dnsName": {
             "value": "[variables('clusterName')]"

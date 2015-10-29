@@ -1,6 +1,6 @@
 {
   "clusterNodeCount": {
-    "value": 5
+    "value": 3
   },
   "clusterVmSize": {
     "value": "Standard_D12"
