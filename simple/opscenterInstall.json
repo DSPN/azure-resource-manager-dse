@@ -22,7 +22,7 @@
   "resources": [
     {
       "type": "Microsoft.Compute/virtualMachines/extensions",
-      "name": "[concat(parameters('namespace'), 'vm', '/installopscenter')]",
+      "name": "opc/installopscenter",
       "apiVersion": "2015-06-15",
       "location": "[parameters('region')]",
       "properties": {
