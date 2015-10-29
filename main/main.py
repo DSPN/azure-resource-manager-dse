@@ -38,7 +38,7 @@ resources = connections.generate_template(regions)
 generatedTemplate['resources'] += resources
 
 # Create the OpsCenter node
-resources = opsCenterNode.generate_template(username, password, clusterParameters)
+resources = opsCenterNode.generate_template(clusterParameters)
 generatedTemplate['resources'] += resources
 
 with open('generatedTemplate.json', 'w') as outputFile:
