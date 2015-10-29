@@ -105,7 +105,7 @@
       "apiVersion": "2015-01-01",
       "dependsOn": [
         "[concat('Microsoft.Storage/storageAccounts/', variables('storageAccountName'))]",
-        "[concat('Microsoft.Network/virtualNetworks/', variables('networkSettings').virtualNetworkName)]"
+        "Microsoft.Network/virtualNetworks/dsevnet"
       ],
       "properties": {
         "mode": "Incremental",
@@ -150,7 +150,7 @@
       "apiVersion": "2015-01-01",
       "dependsOn": [
         "[concat('Microsoft.Storage/storageAccounts/', variables('storageAccountName'))]",
-        "[concat('Microsoft.Network/virtualNetworks/', variables('networkSettings').virtualNetworkName)]"
+        "Microsoft.Network/virtualNetworks/dsevnet"
       ],
       "properties": {
         "mode": "Incremental",
@@ -191,8 +191,8 @@
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2015-01-01",
       "dependsOn": [
-        "[concat('Microsoft.Resources/deployments/', 'nodes')]",
-        "[concat('Microsoft.Resources/deployments/', 'opscenter')]"
+        "Microsoft.Resources/deployments/nodes",
+        "Microsoft.Resources/deployments/opscenter"
       ],
       "properties": {
         "mode": "Incremental",
