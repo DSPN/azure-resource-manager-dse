@@ -44,12 +44,11 @@
     "clusterName": "[concat(resourcegroup().name, 'cluster')]",
     "region": "[resourcegroup().location]",
     "templateBaseUrl": "https://raw.githubusercontent.com/DSPN/azure-arm-dse/master/simple/",
-    "nodeLoopTemplateUrl": "[concat(variables('templateBaseUrl'), 'nodeLoop.json')]",
-    "nodeTemplateUrl": "[concat(variables('templateBaseUrl'), 'node.json')]",
+    "nodesTemplateUrl": "[concat(variables('templateBaseUrl'), 'nodes.json')]",
     "opsCenterTemplateUrl": "[concat(variables('templateBaseUrl'), 'opscenter.json')]",
     "opsCenterInstallTemplateUrl": "[concat(variables('templateBaseUrl'), 'opscenterInstall.json')]",
     "nodeList": "[concat(variables('networkSettings').subnet.dse0.statics.clusterRange.base, variables('networkSettings').subnet.dse0.statics.clusterRange.start, '-', parameters('clusterNodeCount'))]",
-    "storageAccountName": "[concat(variables('clusterName'),'cmn')]",
+    "storageAccountName": "[variables('clusterName')]",
     "networkSettings": {
       "virtualNetworkName": "[variables('clusterName')]",
       "addressPrefix": "10.0.0.0/16",
@@ -116,7 +115,7 @@
       }
     },
     {
-      "name": "nodeloop",
+      "name": "nodes",
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2015-01-01",
       "dependsOn": [
@@ -126,7 +125,7 @@
       "properties": {
         "mode": "Incremental",
         "templateLink": {
-          "uri": "[variables('nodeLoopTemplateUrl')]",
+          "uri": "[variables('nodesTemplateUrl')]",
           "contentVersion": "1.0.0.0"
         },
         "parameters": {
