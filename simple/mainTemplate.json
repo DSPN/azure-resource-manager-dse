@@ -48,7 +48,7 @@
     "opsCenterTemplateUrl": "[concat(variables('templateBaseUrl'), 'opscenter.json')]",
     "opsCenterInstallTemplateUrl": "[concat(variables('templateBaseUrl'), 'opscenterInstall.json')]",
     "nodeList": "[concat(variables('networkSettings').subnet.dse0.statics.clusterRange.base, variables('networkSettings').subnet.dse0.statics.clusterRange.start, '-', parameters('clusterNodeCount'))]",
-    "storageAccountName": "[variables('clusterName')]",
+    "storageAccountName": "[variables('clusterName'), 'cmn']",
     "networkSettings": {
       "virtualNetworkName": "[variables('clusterName')]",
       "addressPrefix": "10.0.0.0/16",
