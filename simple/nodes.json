@@ -28,10 +28,16 @@
     },
     "staticIps": {
       "type": "object"
+    },
+    "vnetName": {
+      "type": "string"
+    },
+    "subnetName": {
+      "type": "string"
     }
   },
   "variables": {
-    "subnetRef": "[concat(resourceId('Microsoft.Network/virtualNetworks', 'dsevnet'), '/subnets/', 'dsesubnet')]",
+    "subnetRef": "[concat(resourceId('Microsoft.Network/virtualNetworks', parameters('vnetName')), '/subnets/', parameters('subnetName'))]",
     "vmName": "[concat(parameters('namespace'), 'vm')]"
   },
   "resources": [

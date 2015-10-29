@@ -25,10 +25,16 @@
     },
     "dnsName": {
       "type": "string"
+    },
+    "vnetName": {
+      "type": "string"
+    },
+    "subnetName": {
+      "type": "string"
     }
   },
   "variables": {
-    "subnetRef": "[concat(resourceId('Microsoft.Network/virtualNetworks', 'dsevnet'), '/subnets/', 'dsesubnet')]",
+    "subnetRef": "[concat(resourceId('Microsoft.Network/virtualNetworks', parameters('vnetName')), '/subnets/', parameters('subnetName'))]",
     "publicIpName": "[concat(parameters('namespace'), 'PublicIp')]",
     "publicIpRef": "[concat('Microsoft.Network/publicIPAddresses/', variables('publicIpName'))]",
     "securityGroupName": "[concat(parameters('namespace'), 'nsg')]"

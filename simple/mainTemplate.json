@@ -49,6 +49,8 @@
     "opsCenterInstallTemplateUrl": "[concat(variables('templateBaseUrl'), 'opscenterInstall.json')]",
     "nodeList": "[concat(variables('clusterRange').base, variables('clusterRange').start, '-', parameters('clusterNodeCount'))]",
     "storageAccountName": "[variables('clusterName')]",
+    "vnetName": "vnet",
+    "subnetName": "subnet",
     "clusterRange": {
       "base": "10.0.0.",
       "start": 6
@@ -81,7 +83,7 @@
     {
       "apiVersion": "2015-06-15",
       "type": "Microsoft.Network/virtualNetworks",
-      "name": "dsevnet",
+      "name": "[variables('vnetName')]",
       "location": "[variables('region')]",
       "properties": {
         "addressSpace": {
@@ -91,7 +93,7 @@
         },
         "subnets": [
           {
-            "name": "dsesubnet",
+            "name": "[variables('subnetName')]",
             "properties": {
               "addressPrefix": "10.0.0.0/24"
             }
@@ -140,6 +142,12 @@
           },
           "staticIps": {
             "value": "[variables('clusterRange')]"
+          },
+          "vnetName": {
+            "value": "[variables('vnetName')]"
+          },
+          "subnetName": {
+            "value": "[variables('subnetName')]"
           }
         }
       }
@@ -182,6 +190,12 @@
           },
           "dnsName": {
             "value": "[variables('clusterName')]"
+          },
+          "vnetName": {
+            "value": "[variables('vnetName')]"
+          },
+          "subnetName": {
+            "value": "[variables('subnetName')]"
           }
         }
       }
