@@ -134,7 +134,7 @@
             "value": "[variables('region')]"
           },
           "storageAccountName": {
-            "value": "[variables('sharedStorageAccountName')]"
+            "value": "[variables('storageAccountName')]"
           },
           "adminUsername": {
             "value": "[parameters('adminUsername')]"
