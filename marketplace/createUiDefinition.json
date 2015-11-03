@@ -108,33 +108,6 @@
               "sku": "14.04.2-LTS"
             },
             "count": "[steps('dataStaxConfig').clusterNodeCount]"
-          },
-          {
-            "name": "dataStaxUsername",
-            "type": "Microsoft.Common.TextBox",
-            "label": "DataStax username",
-            "toolTip": "Your DataStax account username. If you don't have an account, you can create one at [http://datastax.com/download](http://datastax.com/download).",
-            "constraints": {
-              "required": true,
-              "validationMessage": "Not a valid DataStax account username. If you don't have an account, you can create one at (http://datastax.com/download)."
-            }
-          },
-          {
-            "name": "dataStaxPassword",
-            "type": "Microsoft.Common.PasswordBox",
-            "label": {
-              "password": "DataStax password",
-              "confirmPassword": "Confirm password"
-            },
-            "toolTip": "Your DataStax account password.",
-            "constraints": {
-              "required": true,
-              "regex": "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z]).{8,}$",
-              "validationMessage": "Password must contain at least one digit, one uppercase character, and one lowercase character.  Password must be at least 8 characters in length."
-            },
-            "options": {
-              "hideConfirmation": true
-            }
           }
         ]
       }
@@ -145,9 +118,6 @@
       "adminPassword": "[basics('adminPassword')]",
       "clusterNodeCount": "[steps('dataStaxConfig').clusterNodeCount]",
       "clusterVmSize": "[steps('dataStaxConfig').clusterVmSize]",
-      "opsCenterAdminPassword" : "[basics('adminPassword')]",
-      "dataStaxUsername": "[steps('dataStaxConfig').dataStaxUsername]",
-      "dataStaxPassword": "[steps('dataStaxConfig').dataStaxPassword]",
       "region": "[location()]"
     }
   }
