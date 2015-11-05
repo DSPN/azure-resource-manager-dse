@@ -8,10 +8,10 @@
         "description": "The name of the new cluster"
       }
     },
-    "region": {
+    "location": {
       "type": "string",
       "metadata": {
-        "description": "Region where the Azure artifacts will be created"
+        "description": "Location where the Azure artifacts will be created"
       }
     },
     "clusterNodeCount": {
@@ -183,7 +183,7 @@
         },
         "parameters": {
           "region": {
-            "value": "[parameters('region')]"
+            "value": "[parameters('location')]"
           },
           "networkSettings": {
             "value": "[variables('networkSettings')]"
@@ -215,7 +215,7 @@
             "value": "[parameters('adminPassword')]"
           },
           "region": {
-            "value": "[parameters('region')]"
+            "value": "[parameters('location')]"
           },
           "storageAccountPrefix": {
             "value": "[parameters('clusterName')]"
@@ -283,7 +283,7 @@
             "value": "[variables('networkSettings').opsCenterStatics.opsCenter]"
           },
           "region": {
-            "value": "[parameters('region')]"
+            "value": "[parameters('location')]"
           },
           "subnet": {
             "value": "[variables('networkSettings').subnet.dse0]"
@@ -322,7 +322,7 @@
             "value": "opc"
           },
           "region": {
-            "value": "[parameters('region')]"
+            "value": "[parameters('location')]"
           },
           "osSettings": {
             "value": "[variables('osSettings')]"

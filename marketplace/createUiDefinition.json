@@ -118,7 +118,8 @@
       "adminPassword": "[basics('adminPassword')]",
       "clusterNodeCount": "[steps('dataStaxConfig').clusterNodeCount]",
       "clusterVmSize": "[steps('dataStaxConfig').clusterVmSize]",
-      "region": "[location()]"
+      "location": "[location()]"
     }
   }
 }
+
