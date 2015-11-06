@@ -42,7 +42,7 @@
   },
   "variables": {
     "clusterName": "[concat(resourcegroup().name, 'cluster')]",
-    "region": "[resourcegroup().location]",
+    "location": "[resourcegroup().location]",
     "templateBaseUrl": "https://raw.githubusercontent.com/DSPN/azure-arm-dse/master/simple/",
     "nodesTemplateUrl": "[concat(variables('templateBaseUrl'), 'nodes.json')]",
     "opsCenterTemplateUrl": "[concat(variables('templateBaseUrl'), 'opscenter.json')]",
@@ -75,7 +75,7 @@
       "type": "Microsoft.Storage/storageAccounts",
       "name": "[variables('storageAccountName')]",
       "apiVersion": "2015-05-01-preview",
-      "location": "[variables('region')]",
+      "location": "[variables('location')]",
       "properties": {
         "accountType": "Standard_LRS"
       }
@@ -84,7 +84,7 @@
       "apiVersion": "2015-06-15",
       "type": "Microsoft.Network/virtualNetworks",
       "name": "[variables('vnetName')]",
-      "location": "[variables('region')]",
+      "location": "[variables('location')]",
       "properties": {
         "addressSpace": {
           "addressPrefixes": [
@@ -116,8 +116,8 @@
           "contentVersion": "1.0.0.0"
         },
         "parameters": {
-          "region": {
-            "value": "[variables('region')]"
+          "location": {
+            "value": "[variables('location')]"
           },
           "storageAccountName": {
             "value": "[variables('storageAccountName')]"
@@ -167,8 +167,8 @@
           "contentVersion": "1.0.0.0"
         },
         "parameters": {
-          "region": {
-            "value": "[variables('region')]"
+          "location": {
+            "value": "[variables('location')]"
           },
           "storageAccountName": {
             "value": "[variables('storageAccountName')]"
@@ -215,8 +215,8 @@
           "contentVersion": "1.0.0.0"
         },
         "parameters": {
-          "region": {
-            "value": "[variables('region')]"
+          "location": {
+            "value": "[variables('location')]"
           },
           "adminUsername": {
             "value": "[parameters('adminUsername')]"

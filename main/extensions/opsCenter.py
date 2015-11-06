@@ -10,12 +10,12 @@ def run():
         exit(1)
 
     clusterParameters = json.loads(base64.b64decode(sys.argv[1]))
-    regions = clusterParameters['regions']
-    nodesPerRegion = clusterParameters['nodesPerRegion']
+    locations = clusterParameters['locations']
+    nodesPerLocation = clusterParameters['nodesPerLocation']
     username = clusterParameters['username']
     password = clusterParameters['password']
 
-    document = generateDocument(username, password, regions, nodesPerRegion)
+    document = generateDocument(username, password, locations, nodesPerLocation)
 
     with open('provision.json', 'w') as outputFile:
         json.dump(document, outputFile, sort_keys=True, indent=4, ensure_ascii=False)
@@ -36,14 +36,14 @@ def getNodeInformation(datacenterIndex, numberOfNodes):
     return nodeInformation
 
 
-def getLocalDataCenters(regions, nodesPerRegion):
+def getLocalDataCenters(locations, nodesPerLocations):
     localDataCenters = []
-    for region in regions:
-        datacenterIndex = regions.index(region) + 1
+    for location in locations:
+        datacenterIndex = locations.index(location) + 1
         localDataCenter = {
-            "location": region,
-            "node_information": getNodeInformation(datacenterIndex, nodesPerRegion),
-            "dc": region.replace(" ", "_").lower()
+            "location": location,
+            "node_information": getNodeInformation(datacenterIndex, nodesPerLocation),
+            "dc": location.replace(" ", "_").lower()
         }
         localDataCenters.append(localDataCenter)
     return localDataCenters
@@ -60,20 +60,20 @@ def getFingerprint(ip):
     return fingerprint
 
 
-def getAcceptedFingerprints(regions, nodesPerRegion):
+def getAcceptedFingerprints(locations, nodesPerLocation):
     acceptedFingerprints = {}
-    for region in regions:
-        datacenterIndex = regions.index(region) + 1
-        for nodeIndex in range(0, nodesPerRegion):
+    for location in locations:
+        datacenterIndex = locations.index(location) + 1
+        for nodeIndex in range(0, nodesPerLocation):
             nodeIP = '10.' + str(datacenterIndex) + '.1.' + str(nodeIndex + 5)
             acceptedFingerprints[nodeIP] = getFingerprint(nodeIP)
 
     return acceptedFingerprints
 
 
-def generateDocument(username, password, regions, nodesPerRegion):
-    localDataCenters = getLocalDataCenters(regions, nodesPerRegion)
-    acceptedFingerprints = getAcceptedFingerprints(regions, nodesPerRegion)
+def generateDocument(username, password, locations, nodesPerLocation):
+    localDataCenters = getLocalDataCenters(locations, nodesPerLocation)
+    acceptedFingerprints = getAcceptedFingerprints(locations, nodesPerLocation)
 
     return {
         "cassandra_config": {

@@ -2,7 +2,7 @@
   "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
-    "region": {
+    "location": {
       "type": "string"
     },
     "storageAccountName": {
@@ -45,7 +45,7 @@
       "apiVersion": "2015-06-15",
       "type": "Microsoft.Compute/availabilitySets",
       "name": "[concat(parameters('namespace'), 'set')]",
-      "location": "[parameters('region')]",
+      "location": "[parameters('location')]",
       "properties": {
         "platformFaultDomainCount": 3,
         "platformUpdateDomainCount": 18
@@ -55,7 +55,7 @@
       "type": "Microsoft.Storage/storageAccounts",
       "name": "[parameters('storageAccountName')]",
       "apiVersion": "2015-05-01-preview",
-      "location": "[parameters('region')]",
+      "location": "[parameters('location')]",
       "properties": {
         "accountType": "Standard_LRS"
       }
@@ -64,7 +64,7 @@
       "apiVersion": "2015-06-15",
       "type": "Microsoft.Network/networkInterfaces",
       "name": "[concat(parameters('namespace'), 'nic', copyindex())]",
-      "location": "[parameters('region')]",
+      "location": "[parameters('location')]",
       "copy": {
         "name": "[concat(parameters('namespace'), 'nicLoop')]",
         "count": "[parameters('nodeCount')]"
@@ -88,7 +88,7 @@
       "apiVersion": "2015-06-15",
       "type": "Microsoft.Compute/virtualMachines",
       "name": "[concat(parameters('namespace'), 'vm', copyindex())]",
-      "location": "[parameters('region')]",
+      "location": "[parameters('location')]",
       "copy": {
         "name": "[concat(parameters('namespace'), 'vmLoop')]",
         "count": "[parameters('nodeCount')]"
@@ -134,7 +134,7 @@
       "type": "Microsoft.Compute/virtualMachines/extensions",
       "name": "[concat(parameters('namespace'), 'vm', copyindex(), '/installdsenode')]",
       "apiVersion": "2015-06-15",
-      "location": "[parameters('region')]",
+      "location": "[parameters('location')]",
       "copy": {
         "name": "[concat(parameters('namespace'), 'vmLoop')]",
         "count": "[parameters('nodeCount')]"

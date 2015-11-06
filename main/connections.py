@@ -1,4 +1,4 @@
-def generate_template(regions):
+def generate_template(locations):
     resources = []
 
     # Create a public IP for each gateway
@@ -7,54 +7,54 @@ def generate_template(regions):
     vnetName = "opscentervnet"
     resources.append(virtualNetworkGateways("[resourceGroup().location]", "opsc_gateway", publicIPName, vnetName))
 
-    for region in regions:
-        datacenterIndex = regions.index(region) + 1
+    for location in locations:
+        datacenterIndex = locations.index(location) + 1
 
         publicIPName = "dsenode_gw_ip_dc" + str(datacenterIndex)
-        resources.append(publicIPAddresses(region, publicIPName))
-        vnetName = (region + "_dse_node_vnet").replace(" ", "_").lower()
+        resources.append(publicIPAddresses(location, publicIPName))
+        vnetName = (location + "_dse_node_vnet").replace(" ", "_").lower()
         gatewayName = "dseNode_gw_dc" + str(datacenterIndex)
-        resources.append(virtualNetworkGateways(region, gatewayName, publicIPName, vnetName))
+        resources.append(virtualNetworkGateways(location, gatewayName, publicIPName, vnetName))
 
         # Create connections in both directions between OpsCenter and the Nodes
         resources.append(connections("[resourceGroup().location]", "opsc_gateway", gatewayName))
-        resources.append(connections(region, gatewayName, "opsc_gateway"))
+        resources.append(connections(location, gatewayName, "opsc_gateway"))
 
     # Connect the nodes
-    for regionA in regions:
-        datacenterIndexA = regions.index(regionA) + 1
+    for locationA in locations:
+        datacenterIndexA = locations.index(locationA) + 1
         gatewayNameA = "dseNode_gw_dc" + str(datacenterIndexA)
 
-        for regionB in regions:
-            datacenterIndexB = regions.index(regionB) + 1
+        for locationB in locations:
+            datacenterIndexB = locations.index(locationB) + 1
             gatewayNameB = "dseNode_gw_dc" + str(datacenterIndexB)
 
             if datacenterIndexA == datacenterIndexB:
                 pass
             else:
-                resources.append(connections(regionA, gatewayNameA, gatewayNameB))
+                resources.append(connections(locationA, gatewayNameA, gatewayNameB))
 
     return resources
 
 
-def publicIPAddresses(region, name):
+def publicIPAddresses(location, name):
     return {
         "apiVersion": "2015-05-01-preview",
         "type": "Microsoft.Network/publicIPAddresses",
         "name": name,
-        "location": region,
+        "location": location,
         "properties": {
             "publicIPAllocationMethod": "Dynamic"
         }
     }
 
 
-def virtualNetworkGateways(region, gatewayName, publicIPName, vnetName):
+def virtualNetworkGateways(location, gatewayName, publicIPName, vnetName):
     return {
         "apiVersion": "2015-05-01-preview",
         "type": "Microsoft.Network/virtualNetworkGateways",
         "name": gatewayName,
-        "location": region,
+        "location": location,
         "dependsOn": [
             "Microsoft.Network/publicIPAddresses/" + publicIPName,
             "Microsoft.Network/virtualNetworks/" + vnetName
@@ -81,12 +81,12 @@ def virtualNetworkGateways(region, gatewayName, publicIPName, vnetName):
     }
 
 
-def connections(region, gateway1Name, gateway2Name):
+def connections(location, gateway1Name, gateway2Name):
     return {
         "apiVersion": "2015-05-01-preview",
         "type": "Microsoft.Network/connections",
         "name": "connection_" + gateway1Name + "_" + gateway2Name,
-        "location": region,
+        "location": location,
         "dependsOn": [
             "Microsoft.Network/virtualNetworkGateways/" + gateway1Name,
             "Microsoft.Network/virtualNetworkGateways/" + gateway2Name

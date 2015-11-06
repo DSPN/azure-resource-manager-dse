@@ -3,14 +3,14 @@ import opsCenterNode
 import dseNodes
 import connections
 
-# This python script generates an ARM template that deploys DSE across regions.
+# This python script generates an ARM template that deploys DSE across locations.
 
 with open('clusterParameters.json') as inputFile:
     clusterParameters = json.load(inputFile)
 
-regions = clusterParameters['regions']
+locations = clusterParameters['locations']
 nodeSize = clusterParameters['nodeSize']
-nodesPerRegion = clusterParameters['nodesPerRegion']
+nodesPerLocation = clusterParameters['nodesPerLocation']
 username = clusterParameters['username']
 password = clusterParameters['password']
 
@@ -24,17 +24,17 @@ generatedTemplate = {
     "outputs": {}
 }
 
-# Create DSE nodes in each region
-for region in regions:
+# Create DSE nodes in each location
+for location in locations:
     # This is the 1 in 10.1.0.0 and corresponds to the data center we are deploying to
     # 10.0.x.y is reserved for the OpsCenter resources.
-    datacenterIndex = regions.index(region) + 1
+    datacenterIndex = locations.index(location) + 1
 
-    resources = dseNodes.generate_template(region, datacenterIndex, nodeSize, nodesPerRegion, username, password)
+    resources = dseNodes.generate_template(location, datacenterIndex, nodeSize, nodesPerLocation, username, password)
     generatedTemplate['resources'] += resources
 
-# Connect the regions together
-resources = connections.generate_template(regions)
+# Connect the location together
+resources = connections.generate_template(locations)
 generatedTemplate['resources'] += resources
 
 # Create the OpsCenter node

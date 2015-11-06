@@ -20,7 +20,7 @@ def generate_template(clusterParameters):
 # We want a subnet for the gateways to go in as well as one for any virtual machines.
 # 10.x.y.5-255 are usable.
 # This gives us 251 usable IPs.
-# That will be our maximum number of virtual machines in a region for now as well.
+# That will be our maximum number of virtual machines in a location for now as well.
 virtualNetworks = {
     "apiVersion": "2015-06-15",
     "type": "Microsoft.Network/virtualNetworks",
@@ -211,12 +211,12 @@ def virtualmachines(username, password):
 def generate_vm_names(clusterParameters):
     virtualMachineNames = []
 
-    regions = clusterParameters['regions']
-    nodesPerRegion = clusterParameters['nodesPerRegion']
+    locations = clusterParameters['locations']
+    nodesPerLocation = clusterParameters['nodesPerLocation']
 
-    for region in regions:
-        datacenterIndex = regions.index(region) + 1
-        for nodeIndex in range(0, nodesPerRegion):
+    for location in locations:
+        datacenterIndex = locations.index(location) + 1
+        for nodeIndex in range(0, nodesPerLocation):
             computerName = "dc" + str(datacenterIndex) + "vm" + str(nodeIndex)
             virtualMachineNames.append("Microsoft.Compute/virtualMachines/" + computerName + "vm")
 
@@ -226,22 +226,22 @@ def generate_vm_names(clusterParameters):
 def generate_connection_names(clusterParameters):
     connectionNames = []
 
-    regions = clusterParameters['regions']
+    locations = clusterParameters['locations']
 
     gatewayNameA = "opsc_gateway"
-    for region in regions:
-        datacenterIndexB = regions.index(region) + 1
+    for location in locations:
+        datacenterIndexB = locations.index(location) + 1
         gatewayNameB = "dseNode_gw_dc" + str(datacenterIndexB)
 
         connectionNames.append("Microsoft.Network/connections/" + "connection_" + gatewayNameA + "_" + gatewayNameB)
         connectionNames.append("Microsoft.Network/connections/" + "connection_" + gatewayNameB + "_" + gatewayNameA)
 
-    for regionA in regions:
-        datacenterIndexA = regions.index(regionA) + 1
+    for locationA in locations:
+        datacenterIndexA = locations.index(locationA) + 1
         gatewayNameA = "dseNode_gw_dc" + str(datacenterIndexA)
 
-        for regionB in regions:
-            datacenterIndexB = regions.index(regionB) + 1
+        for locationB in locations:
+            datacenterIndexB = locations.index(locationB) + 1
             gatewayNameB = "dseNode_gw_dc" + str(datacenterIndexB)
 
             if datacenterIndexA == datacenterIndexB:
