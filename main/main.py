@@ -33,7 +33,7 @@ for location in locations:
     resources = dseNodes.generate_template(location, datacenterIndex, nodeSize, nodesPerLocation, username, password)
     generatedTemplate['resources'] += resources
 
-# Connect the location together
+# Connect the locations together
 resources = connections.generate_template(locations)
 generatedTemplate['resources'] += resources
 

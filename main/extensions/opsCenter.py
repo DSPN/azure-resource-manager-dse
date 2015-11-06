@@ -36,7 +36,7 @@ def getNodeInformation(datacenterIndex, numberOfNodes):
     return nodeInformation
 
 
-def getLocalDataCenters(locations, nodesPerLocations):
+def getLocalDataCenters(locations, nodesPerLocation):
     localDataCenters = []
     for location in locations:
         datacenterIndex = locations.index(location) + 1
