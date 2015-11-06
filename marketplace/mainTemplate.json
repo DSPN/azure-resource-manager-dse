@@ -182,7 +182,7 @@
           "contentVersion": "1.0.0.0"
         },
         "parameters": {
-          "region": {
+          "location": {
             "value": "[parameters('location')]"
           },
           "networkSettings": {
@@ -214,7 +214,7 @@
           "adminPassword": {
             "value": "[parameters('adminPassword')]"
           },
-          "region": {
+          "location": {
             "value": "[parameters('location')]"
           },
           "storageAccountPrefix": {
@@ -282,7 +282,7 @@
           "staticIp": {
             "value": "[variables('networkSettings').opsCenterStatics.opsCenter]"
           },
-          "region": {
+          "location": {
             "value": "[parameters('location')]"
           },
           "subnet": {
@@ -321,7 +321,7 @@
           "namespace": {
             "value": "opc"
           },
-          "region": {
+          "location": {
             "value": "[parameters('location')]"
           },
           "osSettings": {
