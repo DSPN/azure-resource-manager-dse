@@ -4,8 +4,8 @@
         "Central US",
         "West US"
     ],
-    "nodesPerLocation": 3,
-    "nodeSize": "Standard_D3",
+    "nodesPerLocation": 30,
+    "nodeSize": "Standard_D1",
     "username": "datastax",
     "password": "foo123!"
 }
