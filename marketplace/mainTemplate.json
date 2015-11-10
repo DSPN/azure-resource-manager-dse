@@ -63,7 +63,7 @@
     }
   },
   "variables": {
-    "templateBaseUrl": "[parameters('artifactsBaseUrl')]",
+    "templateBaseUrl": "[concat(parameters('artifactsBaseUrl'),'/')]",
     "sharedTemplateUrl": "[concat(variables('templateBaseUrl'), 'sharedResources.json')]",
     "clusterNodesBaseTemplateUrl": "[concat(variables('templateBaseUrl'), 'node.json')]",
     "clusterNodesTemplateUrl": "[concat(variables('templateBaseUrl'), 'nodeInstall.json')]",

@@ -1,6 +1,6 @@
 {
   "clusterName": {
-    "value": "bencluster3"
+    "value": "bencluster1"
   },
   "location": {
     "value": "eastasia"
@@ -18,7 +18,7 @@
     "value": "foo123!"
   },
   "artifactsBaseUrl" : {
-    "value" : "https://raw.githubusercontent.com/DSPN/azure-arm-dse/master/marketplace/"
+    "value" : "https://raw.githubusercontent.com/DSPN/azure-arm-dse/master/marketplace"
   }
 }
 
