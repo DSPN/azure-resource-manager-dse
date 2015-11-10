@@ -5,15 +5,15 @@ sudo -s
  
 # Download and unzip the Ubuntu image
 wget http://cloud-images.ubuntu.com/releases/14.04.3/release/ubuntu-14.04-server-cloudimg-amd64-disk1.vhd.zip
-apt-get install unzip
+apt-get -y install unzip
 unzip ubuntu-14.04-server-cloudimg-amd64-disk1.vhd.zip
  
 # Convert the VHD to raw
-apt-get install qemu-utils
+apt-get -y install qemu-utils
 qemu-img convert -f vpc -O raw trusty-server-cloudimg-amd64-disk1.vhd trusty-server-cloudimg-amd64-disk1.raw
  
 # Mount the first partition in the raw disk
-apt-get install kpartx
+apt-get -y install kpartx
 kpartx -a ./trusty-server-cloudimg-amd64-disk1.raw
 mkdir /mnt2
 mount /dev/mapper/loop0p1 /mnt2
