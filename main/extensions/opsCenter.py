@@ -78,7 +78,7 @@ def generateDocument(username, password, locations, nodesPerLocation):
     return {
         "cassandra_config": {
             "phi_convict_threshold": 12,
-            "num_tokens": 64,
+            "initial_token": 4611686018427387901,
             "auto_bootstrap": False,
             "permissions_validity_in_ms": 2000,
             "memtable_allocation_type": "heap_buffers",

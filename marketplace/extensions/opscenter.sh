@@ -38,8 +38,6 @@ curl -L http://debian.datastax.com/debian/repo_key | sudo apt-key add -
 apt-get update
 apt-get -y install opscenter=5.2.2
 
-printf "\n[provisioning]\nagent_install_timeout: 3600\n\n" >> /etc/opscenter/opscenterd.conf
-
 echo "Starting OpsCenter"
 sudo service opscenterd start
 
@@ -103,7 +101,7 @@ echo "Writing provision.json"
 sudo tee provision.json > /dev/null <<EOF
 {
   "cassandra_config" : {
-    "num_tokens": 64,    
+    "initial_token": 4611686018427387901,
     "auto_bootstrap": false,
     "permissions_validity_in_ms" : 2000,
     "memtable_allocation_type" : "heap_buffers",
