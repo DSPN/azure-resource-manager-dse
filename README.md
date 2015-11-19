@@ -4,7 +4,7 @@ These are Azure Resource Manager (ARM) templates for deploying DataStax Enterpri
 
 simple is likely your default template.  It's a bare bones ARM template than we're working to further pare down and make easy to understand and get started.
 
-main uses Python to generate an ARM template.  This is highly customizable and supports multiple datacenters.  This is the suggested option for advanced users.
+multi-datacenter uses Python to generate a multi-datacenter ARM template.
 
 marketplace is used by the DataStax Azure Marketplace offer.  This is not intended for deployment outside of the Azure Marketplace.
 

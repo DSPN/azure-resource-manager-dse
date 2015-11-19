@@ -1,4 +1,4 @@
-main is a set of Python scripts that generate an ARM template.  This supports multiple data centers and is highly customizable.
+multi-dc is a set of Python scripts that generate an ARM template.  This supports multiple data centers and is highly customizable.
 
 A script called deploy.sh is the main entry point.  This takes the name of a resource group as a parameter.  deploy.sh creates that resource group, generates an ARM template by invoking main.py and submits that template to Azure.  The template created is written to ./generatedTemplate.json
 
