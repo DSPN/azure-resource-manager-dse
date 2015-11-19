@@ -175,9 +175,9 @@ def extension(location, virtualMachineName):
             "typeHandlerVersion": "1.3",
             "settings": {
                 "fileUris": [
-                    "https://raw.githubusercontent.com/DSPN/azure-resource-manager-dse/master/multi-dc/extensions/dseNode.sh",
-                    "https://raw.githubusercontent.com/DSPN/azure-resource-manager-dse/master/multi-dc/extensions/installJava.sh",
-                    "https://raw.githubusercontent.com/DSPN/azure-resource-manager-dse/master/multi-dc/extensions/vm-disk-utils-0.1.sh"
+                    "https://raw.githubusercontent.com/DSPN/azure-resource-manager-dse/master/multi-datacenter/extensions/dseNode.sh",
+                    "https://raw.githubusercontent.com/DSPN/azure-resource-manager-dse/master/multi-datacenter/extensions/installJava.sh",
+                    "https://raw.githubusercontent.com/DSPN/azure-resource-manager-dse/master/multi-datacenter/extensions/vm-disk-utils-0.1.sh"
                 ],
                 "commandToExecute": "bash dseNode.sh"
             }
