@@ -59,7 +59,7 @@ get_node_information() {
       NODE_INFORMATION+="            {
                \"public_ip\" : \"$IP\",
                \"private_ip\" : \"$IP\",
-               \"node_type\" : \"cassandra\"
+               \"node_type\" : \"spark\"
             },"
     done
   done

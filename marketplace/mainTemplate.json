@@ -69,7 +69,7 @@
     "clusterNodesTemplateUrl": "[concat(variables('templateBaseUrl'), 'nodeInstall.json')]",
     "opsCenterTemplateUrl": "[concat(variables('templateBaseUrl'), 'opscenter.json')]",
     "opsCenterInstallTemplateUrl": "[concat(variables('templateBaseUrl'), 'opscenterInstall.json')]",
-    "opsCenterVmSize": "Standard_A1",
+    "opsCenterVmSize": "Standard_D14",
     "clusterSpec" : "[variables(concat('clusterSize',parameters('clusterNodeCount')))]",
     "clusterSize4" : {
       "storageAccountCount" : 1,

@@ -9,7 +9,7 @@
     "value": 90
   },
   "clusterVmSize": {
-    "value": "Standard_D12"
+    "value": "Standard_D14"
   },
   "adminUsername": {
     "value": "datastax"
