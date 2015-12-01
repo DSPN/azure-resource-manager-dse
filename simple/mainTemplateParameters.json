@@ -1,9 +1,9 @@
 {
   "clusterNodeCount": {
-    "value": 30
+    "value": 5
   },
   "clusterVmSize": {
-    "value": "Standard_D12"
+    "value": "Standard_D1"
   },
   "adminUsername": {
     "value": "datastax"
