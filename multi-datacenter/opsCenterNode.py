@@ -169,7 +169,7 @@ def virtualmachines(username, password):
         ],
         "properties": {
             "hardwareProfile": {
-                "vmSize": "Standard_A1"
+                "vmSize": "Standard_D12"
             },
             "osProfile": {
                 "computername": "opscenter",

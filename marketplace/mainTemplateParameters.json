@@ -1,6 +1,6 @@
 {
   "clusterName": {
-    "value": "bencluster156"
+    "value": "bencluster3"
   },
   "location": {
     "value": "eastasia"
@@ -9,7 +9,7 @@
     "value": 90
   },
   "clusterVmSize": {
-    "value": "Standard_D14"
+    "value": "Standard_D12"
   },
   "adminUsername": {
     "value": "datastax"
