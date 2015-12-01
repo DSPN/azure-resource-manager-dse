@@ -4,7 +4,7 @@
         "Central US",
         "West US"
     ],
-    "nodesPerLocation": 33,
+    "nodesPerLocation": 10,
     "nodeSize": "Standard_D12",
     "username": "datastax",
     "password": "foo123!"
