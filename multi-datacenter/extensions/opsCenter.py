@@ -29,7 +29,7 @@ def getNodeInformation(datacenterIndex, numberOfNodes):
         document = {
             "public_ip": nodeIP,
             "private_ip": nodeIP,
-            "node_type": "spark",
+            "node_type": "cassandra",
             "rack": "rack1"
         }
         nodeInformation.append(document)
