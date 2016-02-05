@@ -1,10 +1,10 @@
 # azure-resource-manager-dse
 
-These are Azure Resource Manager (ARM) templates for deploying DataStax Enterprise (DSE).
+These are Azure Resource Manager (ARM) templates for deploying DataStax Enterprise (DSE).  The [DataStax Enterprise Deployment Guide for Microsoft Azure](https://academy.datastax.com/demos/enterprise-deployment-microsoft-azure-cloud) is a good place to start learning about these templates.
 
-simple is likely your default template.  It's a bare bones ARM template than we're working to further pare down and make easy to understand and get started.
-
-multi-datacenter uses Python to generate a multi-datacenter ARM template.
-
-marketplace is used by the DataStax Azure Marketplace offer.  This is not intended for deployment outside of the Azure Marketplace.
-
+Directory | Description
+--- | ---
+[singledc](./singledc) | Bare bones template that deploys 1-40 nodes in a single datacenter.
+[multidc](./multidc) | Python to generate an ARM template across multiple data centers and then deploy that.
+[marketplace](./marketplace) | Used by the DataStax Azure Marketplace offer.  This template is very similar to singledc, but includes a few things required by the Azure Marketplace.  It is not intended for deployment outside of the Azure Marketplace.
+[extensions](./extensions) | Common bash scripts that are used by all the templates.  In ARM terminology these are referred to as Linux extensions.
