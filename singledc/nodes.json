@@ -2,10 +2,10 @@
   "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
-    "uniqueString": {
+    "location": {
       "type": "string"
     },
-    "location": {
+    "uniqueString": {
       "type": "string"
     },
     "adminUsername": {
@@ -14,19 +14,13 @@
     "adminPassword": {
       "type": "securestring"
     },
-    "namespace": {
-      "type": "string"
+    "nodeCount": {
+      "type": "int"
     },
     "vmSize": {
       "type": "string"
     },
     "osSettings": {
-      "type": "object"
-    },
-    "nodeCount": {
-      "type": "int"
-    },
-    "staticIps": {
       "type": "object"
     },
     "vnetName": {
@@ -35,8 +29,8 @@
     "subnetName": {
       "type": "string"
     },
-    "opscenterAddress": {
-        "type": "string"
+    "namespace": {
+      "type": "string"
     }
   },
   "variables": {
@@ -47,7 +41,7 @@
     {
       "apiVersion": "2015-06-15",
       "type": "Microsoft.Compute/availabilitySets",
-      "name": "[concat(parameters('namespace'), 'set')]",
+      "name": "[parameters('namespace')]",
       "location": "[parameters('location')]",
       "properties": {
         "platformFaultDomainCount": 3,
@@ -99,8 +93,7 @@
               "publicIPAddress": {
                 "id": "[resourceId('Microsoft.Network/publicIPAddresses', concat(parameters('namespace'), 'publicIP', copyindex()))]"
               },
-              "privateIPAllocationMethod": "Static",
-              "privateIPAddress": "[concat(parameters('staticIps').base, copyindex(parameters('staticIps').start))]",
+              "privateIPAllocationMethod": "Dynamic",
               "subnet": {
                 "id": "[parameters('subnetName')]"
               }
@@ -174,7 +167,7 @@
         "typeHandlerVersion": "1.2",
         "settings": {
           "fileUris": "[parameters('osSettings').scripts]",
-          "commandToExecute": "[concat('bash dseNode.sh', ' ', parameters('namespace'), ' ', concat(parameters('staticIps').base, parameters('staticIps').start), ' ', parameters('opscenterAddress'), ' ', copyIndex() )]"
+          "commandToExecute": "bash dseNode.sh"
         }
       }
     }
