@@ -197,7 +197,7 @@ def generateDocument(username, password, locations, nodesPerLocation):
             "private_key": "",
             "password": password,
             "username": username,
-            "version": "4.8.0",
+            "version": "4.8.1",
             "repo-password": "3A7vadPHbNT",
             "repo-user": "datastax%40microsoft.com"
         },
