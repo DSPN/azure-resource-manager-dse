@@ -12,15 +12,13 @@ The template expects the following parameters:
 
 | Name   | Description |
 |:--- |:---|
-| clusterNodeCount | The number of virtual machines to provision for the cluster |
-| clusterVmSize | The size of virtual machine to provision for each cluster node |
-| adminUsername  | SSH username for the virtual machines |
-| adminPassword  | SSH password for the virtual machines |
+| nodeCount | Number of virtual machines to provision for the cluster |
+| vmSize | Size of virtual machine to provision for the cluster |
+| adminUsername  | Admin user name for the virtual machines |
+| adminPassword  | Admin password for the virtual machines |
 
-Once the Azure VMs, virtual network and storage are setup, the template installs prerequisites like Java on the DSE nodes.  These have static IPs starting at 10.0.0.6 which are accessible on the internal virtual network.  These nodes are also assigned public IP addresses.  
+Once the Azure VMs, virtual network and storage are setup, the template installs prerequisites like Java on the DSE nodes.  These nodes are assigned both private and public dynamic IP addresses.
 
-The template also sets up a node to run DataStax OpsCenter.  This node has the internal IP 10.0.0.5 as well as a public IP.  Ports 22 (SSH), 8888 (HTTP), and 8443 (HTTPS) are enabled.
-
-The script opscenter.sh installs OpsCenter and creates a cluster using the OpsCenter REST API.  When the API call is made, OpsCenter installs DSE on all the cluster nodes and starts it up.  
+The template also sets up a node to run DataStax OpsCenter.  The script opscenter.sh installs OpsCenter and creates a cluster using the OpsCenter REST API.  When the API call is made, OpsCenter installs DSE on all the cluster nodes and starts it up.  
 
 On completion, OpsCenter will be accessible on port 8888 of the public IP address of the OpsCenter node.
