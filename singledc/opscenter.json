@@ -25,7 +25,9 @@
     }
   },
   "variables": {
-        "storageAccountName": "[concat('opsc', parameters('uniqueString'))]"
+    "storageAccountName": "[concat('opsc', parameters('uniqueString'))]",
+    "vnetId": "[resourceId('Microsoft.Network/virtualNetworks', parameters('vnetName')]",
+    "subnetId": "[concat(variables('vnetId'), '/subnets/', parameters('subnetName')]"
   },
   "resources": [
     {
@@ -58,7 +60,7 @@
               },
               "privateIPAllocationMethod": "Dynamic",
               "subnet": {
-                "id": "[parameters('subnetName')]"
+                "id": "[variables('subnetId')]"
               }
             }
           }
@@ -88,7 +90,7 @@
           "vmSize": "Standard_A1"
         },
         "osProfile": {
-          "computerName": "ProdOpsCenter",
+          "computerName": "opscenter",
           "adminUsername": "[parameters('adminUsername')]",
           "adminPassword": "[parameters('adminPassword')]"
         },

@@ -35,7 +35,9 @@
   },
   "variables": {
     "vmName": "[concat(parameters('namespace'), 'vm')]",
-    "storageAccountName": "[concat(parameters('namespace'), parameters('uniqueString'))]"
+    "storageAccountName": "[concat(parameters('namespace'), parameters('uniqueString'))]",
+    "vnetId": "[resourceId('Microsoft.Network/virtualNetworks', parameters('vnetName')]",
+    "subnetId": "[concat(variables('vnetId'), '/subnets/', parameters('subnetName')]"
   },
   "resources": [
     {
@@ -95,7 +97,7 @@
               },
               "privateIPAllocationMethod": "Dynamic",
               "subnet": {
-                "id": "[parameters('subnetName')]"
+                "id": "[variables('subnetId')]"
               }
             }
           }
