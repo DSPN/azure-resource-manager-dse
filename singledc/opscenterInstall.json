@@ -5,17 +5,20 @@
     "location": {
       "type": "string"
     },
+    "uniqueString": {
+      "type": "string"
+    },
     "adminUsername": {
       "type": "string"
     },
     "adminPassword": {
       "type": "securestring"
     },
+    "nodeCount": {
+      "type": "int"
+    },
     "osSettings": {
       "type": "object"
-    },
-    "nodeList": {
-      "type": "string"
     }
   },
   "variables": {},
@@ -31,11 +34,10 @@
         "typeHandlerVersion": "1.3",
         "settings": {
           "fileUris": "[parameters('osSettings').scripts]",
-          "commandToExecute": "[concat('bash opscenter.sh -u ', parameters('adminUsername'), ' -p ', parameters('adminPassword'), ' -e ', parameters('nodeList'), ' -c 1')]"
+          "commandToExecute": "[concat('bash opscenter.sh ', parameters('location'), ' ', parameters('uniqueString'), ' ', parameters('adminUsername'), ' ', parameters('adminPassword'), ' ', parameters('nodeCount')]"
         }
       }
     }
   ],
   "outputs": {}
 }
-

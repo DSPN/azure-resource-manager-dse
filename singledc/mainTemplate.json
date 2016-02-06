@@ -191,11 +191,17 @@
           "location": {
             "value": "[variables('location')]"
           },
+          "uniqueString": {
+            "value": "[variables('uniqueString')]"
+          },
           "adminUsername": {
             "value": "[parameters('adminUsername')]"
           },
           "adminPassword": {
             "value": "[parameters('adminPassword')]"
+          },
+          "nodeCount": {
+            "value": "[parameters('nodeCount')]"
           },
           "osSettings": {
             "value": "[variables('osSettings')]"
