@@ -42,7 +42,7 @@
   },
   "variables": {
     "location": "[resourcegroup().location]",
-    "templateBaseUrl": "https://raw.githubusercontent.com/DSPN/azure-arm-dse/master/singledc/",
+    "templateBaseUrl": "https://raw.githubusercontent.com/DSPN/azure-resource-manager-dse/master/singledc/",
     "nodesTemplateUrl": "[concat(variables('templateBaseUrl'), 'nodes.json')]",
     "opsCenterTemplateUrl": "[concat(variables('templateBaseUrl'), 'opscenter.json')]",
     "opsCenterInstallTemplateUrl": "[concat(variables('templateBaseUrl'), 'opscenterInstall.json')]",
