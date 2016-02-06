@@ -5,7 +5,7 @@
     "location": {
       "type": "string"
     },
-    "storageAccountName": {
+    "uniqueString": {
       "type": "string"
     },
     "adminUsername": {
@@ -14,8 +14,8 @@
     "adminPassword": {
       "type": "securestring"
     },
-    "namespace": {
-      "type": "string"
+    "nodeCount": {
+      "type": "int"
     },
     "vmSize": {
       "type": "string"
@@ -23,20 +23,18 @@
     "osSettings": {
       "type": "object"
     },
-    "nodeCount": {
-      "type": "int"
-    },
-    "staticIps": {
-      "type": "object"
-    },
     "vnetName": {
       "type": "string"
     },
     "subnetName": {
       "type": "string"
+    },
+    "namespace": {
+      "type": "string"
     }
   },
   "variables": {
+    "storageAccountName": "[concat(parameters('namespace'),parameters('uniqueString'))]",
     "subnetRef": "[concat(resourceId('Microsoft.Network/virtualNetworks', parameters('vnetName')), '/subnets/', parameters('subnetName'))]",
     "vmName": "[concat(parameters('namespace'), 'vm')]"
   },
@@ -44,7 +42,7 @@
     {
       "apiVersion": "2015-06-15",
       "type": "Microsoft.Compute/availabilitySets",
-      "name": "[concat(parameters('namespace'), 'set')]",
+      "name": "[parameters('namespace')]",
       "location": "[parameters('location')]",
       "properties": {
         "platformFaultDomainCount": 3,
@@ -53,7 +51,7 @@
     },
     {
       "type": "Microsoft.Storage/storageAccounts",
-      "name": "[parameters('storageAccountName')]",
+      "name": "variables('storageAccountName')",
       "apiVersion": "2015-05-01-preview",
       "location": "[parameters('location')]",
       "properties": {

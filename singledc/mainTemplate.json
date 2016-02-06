@@ -105,6 +105,9 @@
           "location": {
             "value": "[variables('location')]"
           },
+          "uniqueString": {
+            "value": "[variables('uniqueString')]"
+          },
           "adminUsername": {
             "value": "[parameters('adminUsername')]"
           },
