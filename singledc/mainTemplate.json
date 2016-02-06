@@ -220,5 +220,10 @@
       }
     }
   ],
-  "outputs": {}
+  "outputs": {
+    "opsCenterURL": {
+      "type": "string",
+      "value": "[concat('http://',variables('uniqueString'),'.',variables('location'),'.cloudapp.azure.com:8888]"
+    }
+  }
 }
