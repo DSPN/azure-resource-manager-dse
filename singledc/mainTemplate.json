@@ -41,12 +41,13 @@
     }
   },
   "variables": {
+    "baseUrl": "https://raw.githubusercontent.com/DSPN/azure-resource-manager-dse/master/",
+    "templateUrl": "[concat(variables('baseUrl'), 'singledc/')"],
+    "extensionUrl": "[concat(variables('baseUrl), 'extensions/')",
+    "nodesTemplateUrl": "[concat(variables('templateUrl'), 'nodes.json')]",
+    "opsCenterTemplateUrl": "[concat(variables('templateUrl'), 'opscenter.json')]",
+    "opsCenterInstallTemplateUrl": "[concat(variables('templateUrl'), 'opscenterInstall.json')]",
     "location": "[resourcegroup().location]",
-    "templateBaseUrl": "https://raw.githubusercontent.com/DSPN/azure-resource-manager-dse/master/singledc/",
-    "nodesTemplateUrl": "[concat(variables('templateBaseUrl'), 'nodes.json')]",
-    "opsCenterTemplateUrl": "[concat(variables('templateBaseUrl'), 'opscenter.json')]",
-    "opsCenterInstallTemplateUrl": "[concat(variables('templateBaseUrl'), 'opscenterInstall.json')]",
-    "extensionBaseUrl": "https://raw.githubusercontent.com/DSPN/azure-arm-dse/master/extensions/",
     "uniqueString": "[uniqueString(resourceGroup().id, deployment().name)]",
     "vnetName": "vnet",
     "subnetName": "subnet",
@@ -58,10 +59,10 @@
         "version": "latest"
       },
       "scripts": [
-        "[concat(variables('extensionBaseUrl'), 'extensions/dseNode.sh')]",
-        "[concat(variables('extensionBaseUrl'), 'extensions/installJava.sh')]",
-        "[concat(variables('extensionBaseUrl'), 'extensions/opscenter.sh')]",
-        "[concat(variables('extensionBaseUrl'), 'extensions/opscenter.py')]"
+        "[concat(variables('extensionUrl'), 'dseNode.sh')]",
+        "[concat(variables('extensionUrl'), 'installJava.sh')]",
+        "[concat(variables('extensionUrl'), 'opscenter.sh')]",
+        "[concat(variables('extensionUrl'), 'opscenter.py')]"
       ]
     }
   },
@@ -92,7 +93,6 @@
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2015-01-01",
       "dependsOn": [
-        "[concat('Microsoft.Storage/storageAccounts/', variables('storageAccountName'))]",
         "[concat('Microsoft.Network/virtualNetworks/', variables('vnetName'))]"
       ],
       "properties": {
@@ -105,35 +105,29 @@
           "location": {
             "value": "[variables('location')]"
           },
-          "storageAccountName": {
-            "value": "[variables('storageAccountName')]"
-          },
           "adminUsername": {
             "value": "[parameters('adminUsername')]"
           },
           "adminPassword": {
             "value": "[parameters('adminPassword')]"
           },
-          "namespace": {
-            "value": "dc1"
+          "nodeCount": {
+            "value": "[parameters('nodeCount')]"
           },
           "vmSize": {
-            "value": "[parameters('clusterVmSize')]"
+            "value": "[parameters('vmSize')]"
           },
           "osSettings": {
             "value": "[variables('osSettings')]"
-          },
-          "nodeCount": {
-            "value": "[parameters('clusterNodeCount')]"
-          },
-          "staticIps": {
-            "value": "[variables('clusterRange')]"
           },
           "vnetName": {
             "value": "[variables('vnetName')]"
           },
           "subnetName": {
             "value": "[variables('subnetName')]"
+          },
+          "namespace": {
+            "value": "dc1"
           }
         }
       }
@@ -143,7 +137,6 @@
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2015-01-01",
       "dependsOn": [
-        "[concat('Microsoft.Storage/storageAccounts/', variables('storageAccountName'))]",
         "[concat('Microsoft.Network/virtualNetworks/', variables('vnetName'))]"
       ],
       "properties": {
@@ -156,32 +149,23 @@
           "location": {
             "value": "[variables('location')]"
           },
-          "storageAccountName": {
-            "value": "[variables('storageAccountName')]"
-          },
           "adminUsername": {
             "value": "[parameters('adminUsername')]"
           },
           "adminPassword": {
             "value": "[parameters('adminPassword')]"
           },
-          "namespace": {
-            "value": "opc"
-          },
           "osSettings": {
             "value": "[variables('osSettings')]"
-          },
-          "staticIp": {
-            "value": "[variables('opsCenterIP')]"
-          },
-          "dnsName": {
-            "value": "[variables('clusterName')]"
           },
           "vnetName": {
             "value": "[variables('vnetName')]"
           },
           "subnetName": {
             "value": "[variables('subnetName')]"
+          },
+          "namespace": {
+            "value": "opsc"
           }
         }
       }
@@ -212,9 +196,6 @@
           },
           "osSettings": {
             "value": "[variables('osSettings')]"
-          },
-          "nodeList": {
-            "value": "[variables('nodeList')]"
           }
         }
       }
@@ -223,7 +204,7 @@
   "outputs": {
     "opsCenterURL": {
       "type": "string",
-      "value": "[concat('http://',variables('uniqueString'),'.',variables('location'),'.cloudapp.azure.com:8888]"
+      "value": "[concat('http://opsc',variables('uniqueString'),'.',variables('location'),'.cloudapp.azure.com:8888]"
     }
   }
 }
