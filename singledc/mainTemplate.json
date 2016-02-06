@@ -204,7 +204,7 @@
   "outputs": {
     "opsCenterURL": {
       "type": "string",
-      "value": "[concat('http://opsc',variables('uniqueString'),'.',variables('location'),'.cloudapp.azure.com:8888]"
+      "value": "[concat('http://opsc',variables('uniqueString'),'.',variables('location'),'.cloudapp.azure.com:8888']"
     }
   }
 }
