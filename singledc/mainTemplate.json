@@ -2,30 +2,29 @@
   "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
-    "clusterNodeCount": {
+    "nodeCount": {
       "type": "int",
       "defaultValue": 4,
       "minValue": 1,
-      "maxValue": 39,
+      "maxValue": 40,
       "metadata": {
-        "description": "The number of virtual machines to provision for the cluster"
+        "description": "Number of virtual machines to provision for the cluster"
       }
     },
-    "clusterVmSize": {
+    "vmSize": {
       "type": "string",
       "defaultValue": "Standard_D1",
       "allowedValues": [
         "Standard_D1",
+        "Standard_D4",
         "Standard_D12",
         "Standard_D13",
         "Standard_D14",
-        "Standard_G2",
-        "Standard_G3",
         "Standard_G4",
         "Standard_G5"
       ],
       "metadata": {
-        "description": "The size of virtual machine to provision for each cluster node"
+        "description": "Size of virtual machine to provision for the cluster"
       }
     },
     "adminUsername": {
@@ -42,21 +41,15 @@
     }
   },
   "variables": {
-    "clusterName": "[concat(resourcegroup().name, 'cluster')]",
     "location": "[resourcegroup().location]",
-    "templateBaseUrl": "https://raw.githubusercontent.com/DSPN/azure-arm-dse/master/simple/",
+    "templateBaseUrl": "https://raw.githubusercontent.com/DSPN/azure-arm-dse/master/singledc/",
     "nodesTemplateUrl": "[concat(variables('templateBaseUrl'), 'nodes.json')]",
     "opsCenterTemplateUrl": "[concat(variables('templateBaseUrl'), 'opscenter.json')]",
     "opsCenterInstallTemplateUrl": "[concat(variables('templateBaseUrl'), 'opscenterInstall.json')]",
-    "nodeList": "[concat(variables('clusterRange').base, variables('clusterRange').start, '-', parameters('clusterNodeCount'))]",
-    "storageAccountName": "[variables('clusterName')]",
+    "extensionBaseUrl": "https://raw.githubusercontent.com/DSPN/azure-arm-dse/master/extensions/",
+    "uniqueString": "[uniqueString(resourceGroup().id, deployment().name)]",
     "vnetName": "vnet",
     "subnetName": "subnet",
-    "clusterRange": {
-      "base": "10.0.0.",
-      "start": 6
-    },
-    "opsCenterIP": "10.0.0.5",
     "osSettings": {
       "imageReference": {
         "publisher": "Canonical",
@@ -65,22 +58,14 @@
         "version": "latest"
       },
       "scripts": [
-        "[concat(variables('templateBaseUrl'), 'extensions/dseNode.sh')]",
-        "[concat(variables('templateBaseUrl'), 'extensions/opscenter.sh')]",
-        "[concat(variables('templateBaseUrl'), 'extensions/vm-disk-utils-0.1.sh')]"
+        "[concat(variables('extensionBaseUrl'), 'extensions/dseNode.sh')]",
+        "[concat(variables('extensionBaseUrl'), 'extensions/installJava.sh')]",
+        "[concat(variables('extensionBaseUrl'), 'extensions/opscenter.sh')]",
+        "[concat(variables('extensionBaseUrl'), 'extensions/opscenter.py')]"
       ]
     }
   },
   "resources": [
-    {
-      "type": "Microsoft.Storage/storageAccounts",
-      "name": "[variables('storageAccountName')]",
-      "apiVersion": "2015-05-01-preview",
-      "location": "[variables('location')]",
-      "properties": {
-        "accountType": "Standard_LRS"
-      }
-    },
     {
       "apiVersion": "2015-06-15",
       "type": "Microsoft.Network/virtualNetworks",

@@ -1,8 +1,8 @@
 {
-  "clusterNodeCount": {
+  "nodeCount": {
     "value": 5
   },
-  "clusterVmSize": {
+  "vmSize": {
     "value": "Standard_D1"
   },
   "adminUsername": {
