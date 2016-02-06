@@ -1,8 +1,5 @@
 #!/bin/bash
 
-# save our b64 encoded json parameters for later
-echo $1 > b64input
-
 bash installJava.sh
 
 echo "Installing OpsCenter"
@@ -16,6 +13,9 @@ sudo service opscenterd start
 
 echo "Waiting for OpsCenter to start..."
 sleep 15
+
+# save our b64 encoded json parameters for later
+echo $1 > b64input
 
 echo "Generating a provision.json file"
 python opsCenter.py $1
