@@ -25,7 +25,7 @@
   "resources": [
     {
       "type": "Microsoft.Compute/virtualMachines/extensions",
-      "name": "opcvm/installopscenter",
+      "name": "opscentervm/installopscenter",
       "apiVersion": "2015-06-15",
       "location": "[parameters('location')]",
       "properties": {
