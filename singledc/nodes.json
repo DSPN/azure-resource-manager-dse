@@ -36,8 +36,8 @@
   "variables": {
     "vmName": "[concat(parameters('namespace'), 'vm')]",
     "storageAccountName": "[concat(parameters('namespace'), parameters('uniqueString'))]",
-    "vnetId": "[resourceId('Microsoft.Network/virtualNetworks', parameters('vnetName')]",
-    "subnetId": "[concat(variables('vnetId'), '/subnets/', parameters('subnetName')]"
+    "vnetId": "[resourceId('Microsoft.Network/virtualNetworks', parameters('vnetName'))]",
+    "subnetId": "[concat(variables('vnetId'), '/subnets/', parameters('subnetName'))]"
   },
   "resources": [
     {
