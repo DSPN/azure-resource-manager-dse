@@ -26,6 +26,7 @@ def run():
 
 
 def getPrivateIP(publicIP):
+    # need to call hostname -I from the node
     return publicIP
 
 def getNodeInformation(datacenter):

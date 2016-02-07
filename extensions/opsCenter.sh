@@ -21,6 +21,9 @@ sudo service opscenterd start
 echo "Waiting for OpsCenter to start..."
 sleep 15
 
+echo "Python script needs sshpass to determine local IPs."
+apt-get -y install sshpass
+
 echo "Generating a provision.json file"
 python opsCenter.py $1 $2 $3 $4 $5
 
