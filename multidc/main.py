@@ -37,9 +37,7 @@ for location in locations:
 resources = opsCenterNode.generate_template(clusterParameters)
 generatedTemplate['resources'] += resources
 
-with open('generatedTemplate.json', 'w') as outputFile:
-    json.dump(generatedTemplate, outputFile, sort_keys=True, indent=4, ensure_ascii=False)
-
+# Add the opsCenterURL
 def opsCenterURL():
     return {
         "opsCenterURL": {
@@ -49,3 +47,6 @@ def opsCenterURL():
     }
 
 generatedTemplate['outputs'] += opsCenterURL()
+
+with open('generatedTemplate.json', 'w') as outputFile:
+    json.dump(generatedTemplate, outputFile, sort_keys=True, indent=4, ensure_ascii=False)
