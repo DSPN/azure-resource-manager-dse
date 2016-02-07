@@ -30,7 +30,7 @@ def getPrivateIP(publicIP):
     command = 'sshpass -p ' + adminPassword + ' ssh -oStrictHostKeyChecking=no ' + adminUsername+'@'+publicIP+ ' hostname -I > /tmp/privateip'
     os.system(command)
 
-    with open("/tmp/publicip", "r") as inputFile:
+    with open("/tmp/privateip", "r") as inputFile:
         data = inputFile.read()
 
     return data
