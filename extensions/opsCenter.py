@@ -182,7 +182,7 @@ def generateDocument():
             "write_request_timeout_in_ms": 2000,
             "range_request_timeout_in_ms": 10000,
             "memtable_offheap_space_in_mb": 2048,
-            "cluster_name": "Test Cluster",
+            "cluster_name": "Cluster",
             "server_encryption_options": {
                 "keystore_password": "cassandra",
                 "algorithm": "SunX509",
