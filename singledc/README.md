@@ -16,6 +16,7 @@ The template expects the following parameters:
 | vmSize | Size of virtual machine to provision for the cluster |
 | adminUsername  | Admin user name for the virtual machines |
 | adminPassword  | Admin password for the virtual machines |
+| nodeType  | Type of node to provision for the cluster |
 
 Once the Azure VMs, virtual network and storage are setup, the template installs prerequisites like Java on the DSE nodes.  These nodes are assigned both private and public dynamic IP addresses.
 
