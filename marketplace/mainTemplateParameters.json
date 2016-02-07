@@ -1,24 +1,14 @@
 {
-  "clusterName": {
-    "value": "bencluster5"
+  "nodeCount": {
+    "value": 5
   },
-  "location": {
-    "value": "eastasia"
-  },
-  "clusterNodeCount": {
-    "value": 90
-  },
-  "clusterVmSize": {
-    "value": "Standard_D12"
+  "vmSize": {
+    "value": "Standard_D1"
   },
   "adminUsername": {
     "value": "datastax"
   },
   "adminPassword": {
     "value": "foo123!"
-  },
-  "artifactsBaseUrl" : {
-    "value" : "https://raw.githubusercontent.com/DSPN/azure-arm-dse/master/marketplace"
   }
 }
-

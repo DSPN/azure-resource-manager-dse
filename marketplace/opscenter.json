@@ -5,7 +5,7 @@
     "location": {
       "type": "string"
     },
-    "storageAccountName": {
+    "uniqueString": {
       "type": "string"
     },
     "adminUsername": {
@@ -14,111 +14,41 @@
     "adminPassword": {
       "type": "securestring"
     },
-    "namespace": {
-      "type": "string"
-    },
     "osSettings": {
       "type": "object"
     },
-    "vmSize": {
+    "vnetName": {
       "type": "string"
     },
-    "subnet": {
-      "type": "object"
-    },
-    "staticIp": {
-      "type": "string"
-    },
-    "dnsName": {
+    "subnetName": {
       "type": "string"
     }
   },
   "variables": {
-    "subnetRef": "[concat(resourceId('Microsoft.Network/virtualNetworks', parameters('subnet').vnet), '/subnets/', parameters('subnet').name)]",
-    "publicIpName": "[concat(parameters('namespace'), 'PublicIp')]",
-    "publicIpRef": "[concat('Microsoft.Network/publicIPAddresses/', variables('publicIpName'))]",
-    "securityGroupName": "[concat(parameters('namespace'), 'nsg')]"
+    "storageAccountName": "[concat('opsc', parameters('uniqueString'))]",
+    "vnetId": "[resourceId('Microsoft.Network/virtualNetworks', parameters('vnetName'))]",
+    "subnetId": "[concat(variables('vnetId'), '/subnets/', parameters('subnetName'))]"
   },
   "resources": [
     {
       "apiVersion": "2015-06-15",
-      "type": "Microsoft.Network/networkSecurityGroups",
-      "name": "[variables('securityGroupName')]",
-      "location": "[parameters('location')]",
-      "properties": {
-        "securityRules": [
-          {
-            "name": "SSH",
-            "properties": {
-              "description": "Allows SSH traffic",
-              "protocol": "Tcp",
-              "sourcePortRange": "22",
-              "destinationPortRange": "22",
-              "sourceAddressPrefix": "*",
-              "destinationAddressPrefix": "*",
-              "access": "Allow",
-              "priority": 100,
-              "direction": "Inbound"
-            }
-          },
-          {
-            "name": "HTTP",
-            "properties": {
-              "description": "Allows HTTP traffic",
-              "protocol": "Tcp",
-              "sourcePortRange": "8888",
-              "destinationPortRange": "8888",
-              "sourceAddressPrefix": "*",
-              "destinationAddressPrefix": "*",
-              "access": "Allow",
-              "priority": 110,
-              "direction": "Inbound"
-            }
-          },
-          {
-            "name": "HTTPS",
-            "properties": {
-              "description": "Allows HTTPS traffic",
-              "protocol": "Tcp",
-              "sourcePortRange": "8443",
-              "destinationPortRange": "8443",
-              "sourceAddressPrefix": "*",
-              "destinationAddressPrefix": "*",
-              "access": "Allow",
-              "priority": 120,
-              "direction": "Inbound"
-            }
-          }
-        ]
-      }
-    },
-    {
-      "apiVersion": "2015-06-15",
       "type": "Microsoft.Network/publicIPAddresses",
-      "name": "[variables('publicIpName')]",
+      "name": "opsCenterPublicIP",
       "location": "[parameters('location')]",
       "properties": {
         "publicIPAllocationMethod": "Dynamic",
         "dnsSettings": {
-          "domainNameLabel": "[parameters('dnsName')]"
+          "domainNameLabel": "[concat('opsc', parameters('uniqueString'))]"
         }
       }
     },
     {
       "apiVersion": "2015-06-15",
-      "type": "Microsoft.Compute/availabilitySets",
-      "name": "[concat(parameters('namespace'), 'set')]",
-      "location": "[parameters('location')]",
-      "properties": {}
-    },
-    {
-      "apiVersion": "2015-06-15",
       "type": "Microsoft.Network/networkInterfaces",
-      "name": "[concat(parameters('namespace'), 'nic')]",
+      "name": "opsCenterNIC",
       "location": "[parameters('location')]",
       "dependsOn": [
-        "[concat('Microsoft.Network/publicIPAddresses/', variables('publicIpName'))]",
-        "[concat('Microsoft.Network/networkSecurityGroups/', variables('securityGroupName'))]"
+        "[concat('Microsoft.Network/publicIPAddresses/', 'opsCenterPublicIP')]"
       ],
       "properties": {
         "ipConfigurations": [
@@ -126,15 +56,11 @@
             "name": "ipconfig1",
             "properties": {
               "publicIPAddress": {
-                "id": "[resourceId('Microsoft.Network/publicIPAddresses', variables('publicIpName'))]"
+                "id": "[resourceId('Microsoft.Network/publicIPAddresses', 'opsCenterPublicIP')]"
               },
-              "privateIPAllocationMethod": "Static",
-              "privateIPAddress": "[parameters('staticIp')]",
+              "privateIPAllocationMethod": "Dynamic",
               "subnet": {
-                "id": "[variables('subnetRef')]"
-              },
-              "networkSecurityGroup": {
-                "id": "[resourceId('Microsoft.Network/networkSecurityGroups', variables('securityGroupName'))]"
+                "id": "[variables('subnetId')]"
               }
             }
           }
@@ -142,19 +68,29 @@
       }
     },
     {
+      "type": "Microsoft.Storage/storageAccounts",
+      "name": "[variables('storageAccountName')]",
+      "apiVersion": "2015-05-01-preview",
+      "location": "[parameters('location')]",
+      "properties": {
+        "accountType": "Standard_LRS"
+      }
+    },
+    {
       "apiVersion": "2015-06-15",
       "type": "Microsoft.Compute/virtualMachines",
-      "name": "[concat(parameters('namespace'), 'vm')]",
+      "name": "opscentervm",
       "location": "[parameters('location')]",
       "dependsOn": [
-        "[concat('Microsoft.Network/networkInterfaces/', parameters('namespace'), 'nic')]"
+        "[concat('Microsoft.Network/networkInterfaces/', 'opsCenterNIC')]",
+        "[concat('Microsoft.Storage/storageAccounts/', variables('storageAccountName'))]"
       ],
       "properties": {
         "hardwareProfile": {
-          "vmSize": "[parameters('vmSize')]"
+          "vmSize": "Standard_A1"
         },
         "osProfile": {
-          "computername": "[concat(parameters('namespace'), 'vm')]",
+          "computerName": "opscenter",
           "adminUsername": "[parameters('adminUsername')]",
           "adminPassword": "[parameters('adminPassword')]"
         },
@@ -163,7 +99,7 @@
           "osDisk": {
             "name": "osdisk",
             "vhd": {
-              "uri": "[concat('http://',parameters('storageAccountName'),'.blob.core.windows.net/vhds/', parameters('namespace'), 'vm-osdisk.vhd')]"
+              "uri": "[concat('http://', variables('storageAccountName'),'.blob.core.windows.net/vhds/', 'opsCenter', 'vm-osdisk.vhd')]"
             },
             "caching": "ReadWrite",
             "createOption": "FromImage"
@@ -172,7 +108,7 @@
         "networkProfile": {
           "networkInterfaces": [
             {
-              "id": "[resourceId('Microsoft.Network/networkInterfaces',concat(parameters('namespace'), 'nic'))]"
+              "id": "[resourceId('Microsoft.Network/networkInterfaces', 'opsCenterNIC')]"
             }
           ]
         }
@@ -181,4 +117,3 @@
   ],
   "outputs": {}
 }
-
