@@ -40,4 +40,12 @@ generatedTemplate['resources'] += resources
 with open('generatedTemplate.json', 'w') as outputFile:
     json.dump(generatedTemplate, outputFile, sort_keys=True, indent=4, ensure_ascii=False)
 
-# Populate the opsCenterURL in outputs
+def opsCenterURL():
+    return {
+        "opsCenterURL": {
+            "type": "string",
+            "value": "[concat('http://opsc', variables('uniqueString'), '.', " + locations[0] + ", '.cloudapp.azure.com:8888')]"
+        }
+    }
+
+generatedTemplate['outputs'] += opsCenterURL()
