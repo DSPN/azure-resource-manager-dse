@@ -31,12 +31,12 @@
     "steps": [
       {
         "name": "dataStaxConfig",
-        "label": "DataStax cluster settings",
+        "label": "DataStax Cluster Settings",
         "subLabel": {
-          "preValidation": "Configure the cluster",
+          "preValidation": "Configure the Cluster",
           "postValidation": "Done"
         },
-        "bladeTitle": "DataStax cluster settings",
+        "bladeTitle": "DataStax Cluster Settings",
         "elements": [
           {
             "name": "nodeCount",
@@ -69,14 +69,7 @@
               "Standard_G4",
               "Standard_G5"
               ]
-            },
-            "osPlatform": "Linux",
-            "imageReference": {
-              "publisher": "Canonical",
-              "offer": "UbuntuServer",
-              "sku": "14.04.3-LTS"
-            },
-            "count": "[steps('dataStaxConfig').nodeCount]"
+            }
           }
         ]
       }
