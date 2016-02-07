@@ -175,8 +175,8 @@ def extension(location, virtualMachineName):
             "typeHandlerVersion": "1.3",
             "settings": {
                 "fileUris": [
-                    "https://raw.githubusercontent.com/DSPN/azure-resource-manager-dse/master/multidc/extensions/dseNode.sh",
-                    "https://raw.githubusercontent.com/DSPN/azure-resource-manager-dse/master/multidc/extensions/installJava.sh"
+                    "https://raw.githubusercontent.com/DSPN/azure-resource-manager-dse/master/extensions/dseNode.sh",
+                    "https://raw.githubusercontent.com/DSPN/azure-resource-manager-dse/master/extensions/installJava.sh"
                 ],
                 "commandToExecute": "bash dseNode.sh"
             }

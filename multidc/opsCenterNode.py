@@ -269,9 +269,9 @@ def extension(clusterParameters):
             "typeHandlerVersion": "1.3",
             "settings": {
                 "fileUris": [
-                    "https://raw.githubusercontent.com/DSPN/azure-resource-manager-dse/master/multidc/extensions/opsCenter.sh",
-                    "https://raw.githubusercontent.com/DSPN/azure-resource-manager-dse/master/multidc/extensions/installJava.sh",
-                    "https://raw.githubusercontent.com/DSPN/azure-resource-manager-dse/master/multidc/extensions/opsCenter.py"
+                    "https://raw.githubusercontent.com/DSPN/azure-resource-manager-dse/master/extensions/opsCenter.sh",
+                    "https://raw.githubusercontent.com/DSPN/azure-resource-manager-dse/master/extensions/installJava.sh",
+                    "https://raw.githubusercontent.com/DSPN/azure-resource-manager-dse/master/extensions/opsCenter.py"
                 ],
                 "commandToExecute": "bash opsCenter.sh " + base64.b64encode(json.dumps(clusterParameters))
             }
