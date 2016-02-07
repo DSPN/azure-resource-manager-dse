@@ -10,5 +10,8 @@
   },
   "adminPassword": {
     "value": "foo123!"
+  },
+  "nodeType": {
+    "value": "cassandra"
   }
 }

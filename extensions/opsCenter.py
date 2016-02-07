@@ -8,8 +8,8 @@ uniqueString = sys.argv[2]
 adminUsername = sys.argv[3]
 adminPassword = sys.argv[4]
 nodeCount = int(sys.argv[5])
-nodeType = 'cassandra'
-namespace = 'dc1'
+nodeType = sys.argv[6]
+namespace = sys.argv[7]
 
 # namespace is hardcoded.  Need to fix that.
 # only supports 1 dc right now

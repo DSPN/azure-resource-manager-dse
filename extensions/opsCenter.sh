@@ -18,7 +18,7 @@ echo "Python script needs sshpass to determine local IPs."
 apt-get -y install sshpass
 
 echo "Generating a provision.json file"
-python opsCenter.py $1 $2 $3 $4 $5
+python opsCenter.py $1 $2 $3 $4 $5 $6 $7
 
 echo "Provisioning a new cluster using provision.json"
 curl --insecure -H "Accept: application/json" -X POST http://127.0.0.1:8888/provision -d @provision.json

@@ -17,6 +17,12 @@
     "nodeCount": {
       "type": "int"
     },
+    "nodeType": {
+      "type": "string"
+    },
+    "namespace": {
+      "type": "string"
+    },
     "osSettings": {
       "type": "object"
     }
@@ -34,7 +40,7 @@
         "typeHandlerVersion": "1.3",
         "settings": {
           "fileUris": "[parameters('osSettings').scripts]",
-          "commandToExecute": "[concat('bash opsCenter.sh ', parameters('location'), ' ', parameters('uniqueString'), ' ', parameters('adminUsername'), ' ', parameters('adminPassword'), ' ', parameters('nodeCount'))]"
+          "commandToExecute": "[concat('bash opsCenter.sh ', parameters('location'), ' ', parameters('uniqueString'), ' ', parameters('adminUsername'), ' ', parameters('adminPassword'), ' ', parameters('nodeCount'), ' ', parameters('nodeType'), ' ', parameters('namespace'))]"
         }
       }
     }

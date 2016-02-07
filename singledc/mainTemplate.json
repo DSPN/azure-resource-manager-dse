@@ -38,6 +38,19 @@
       "metadata": {
         "description": "Admin password for the virtual machines"
       }
+    },
+    "nodeType": {
+      "type": "string",
+      "defaultValue": "cassandra",
+      "allowedValues": [
+        "cassandra",
+        "solr",
+        "spark",
+        "hadoop"
+      ],
+      "metadata": {
+        "description": "Type of node to provision for the cluster"
+      }
     }
   },
   "variables": {
@@ -202,6 +215,12 @@
           },
           "nodeCount": {
             "value": "[parameters('nodeCount')]"
+          },
+          "nodeType": {
+            "value": "[parameters('nodeType')]"
+          },
+          "namespace": {
+            "value": "dc1"
           },
           "osSettings": {
             "value": "[variables('osSettings')]"
