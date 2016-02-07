@@ -7,7 +7,7 @@ location = sys.argv[1]
 uniqueString = sys.argv[2]
 adminUsername = sys.argv[3]
 adminPassword = sys.argv[4]
-nodeCount = sys.argv[5]
+nodeCount = int(sys.argv[5])
 nodeType = 'cassandra'
 namespace = 'dc1'
 
