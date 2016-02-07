@@ -19,4 +19,4 @@ The template also sets up a node to run DataStax OpsCenter.  The script opscente
 
 On completion, OpsCenter will be accessible on port 8888 of the public IP address of the OpsCenter node.
 
-OpsCenter 5.x can provision a maximum of 100 nodes.  Given that you need number_of_locations * nodeCount <= 100.
+OpsCenter 5.x can provision a maximum of 100 nodes.  Given that, you need number_of_locations * nodeCount <= 100.
