@@ -25,16 +25,20 @@ def run():
         json.dump(document, outputFile, sort_keys=True, indent=4, ensure_ascii=False)
 
 
+def getPrivateIP(publicIP):
+    return publicIP
+
 def getNodeInformation(datacenter):
     nodeInformation = []
 
     for nodeIndex in range(0, datacenter['numberOfNodes']):
         nodeName = datacenter['namespace'] + 'vm' + str(nodeIndex) + uniqueString + '.' + datacenter[
             'location'] + '.cloudapp.azure.com'
-        nodeIP = socket.gethostbyname_ex(nodeName)[2][0]
+        publicIP = socket.gethostbyname_ex(nodeName)[2][0]
+        privateIP = getPrivateIP(publicIP)
         document = {
-            "public_ip": nodeIP,
-            "private_ip": nodeIP,
+            "public_ip": publicIP,
+            "private_ip": privateIP,
             "node_type": nodeType,
             "rack": "rack1"
         }
