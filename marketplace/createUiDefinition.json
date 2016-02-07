@@ -85,8 +85,7 @@
       "adminUsername": "[basics('adminUsername')]",
       "adminPassword": "[basics('adminPassword')]",
       "nodeCount": "[steps('dataStaxConfig').nodeCount]",
-      "vmSize": "[steps('dataStaxConfig').vmSize]",
-      "location": "[location()]"
+      "vmSize": "[steps('dataStaxConfig').vmSize]"
     }
   }
 }
