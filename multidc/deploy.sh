@@ -7,4 +7,3 @@ azure group create $RESOURCE_GROUP "East US"
 python main.py
 
 azure group deployment create -f ./generatedTemplate.json $RESOURCE_GROUP dse
-
