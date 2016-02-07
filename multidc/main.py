@@ -8,10 +8,10 @@ with open('clusterParameters.json') as inputFile:
     clusterParameters = json.load(inputFile)
 
 locations = clusterParameters['locations']
-nodeSize = clusterParameters['nodeSize']
-nodesPerLocation = clusterParameters['nodesPerLocation']
-username = clusterParameters['username']
-password = clusterParameters['password']
+vmSize = clusterParameters['vmSize']
+nodeCount = clusterParameters['nodeCount']
+adminUsername = clusterParameters['adminUsername']
+adminPassword = clusterParameters['adminPassword']
 nodeType = clusterParameters['nodeType']
 
 # This is the skeleton of the template that we're going to add resources to
@@ -30,7 +30,7 @@ for location in locations:
     # 10.0.x.y is reserved for the OpsCenter resources.
     datacenterIndex = locations.index(location) + 1
 
-    resources = dseNodes.generate_template(location, datacenterIndex, nodeSize, nodesPerLocation, username, password)
+    resources = dseNodes.generate_template(location, datacenterIndex, vmSize, nodeCount, adminUsername, adminPassword)
     generatedTemplate['resources'] += resources
 
 # Create the OpsCenter node
