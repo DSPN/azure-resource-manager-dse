@@ -1,49 +1,54 @@
 import json
 import os
 import sys
-import base64
+import socket
+
+location = sys.argv[1]
+uniqueString = sys.argv[2]
+adminUsername = sys.argv[3]
+adminPassword = sys.argv[4]
+nodeCount = sys.argv[5]
+nodeType = 'cassandra'
+namespace = 'dc1'
+
+# namespace is hardcoded.  Need to fix that.
+# only supports 1 dc right now
+# nodetype is hard coded
+
+datacenters = [{'namespace': namespace, 'numberOfNodes': nodeCount, 'location': location, 'nodeType': nodeType}]
 
 
 def run():
-    if len(sys.argv) != 2:
-        print("I need an argument.")
-        exit(1)
-
-    clusterParameters = json.loads(base64.b64decode(sys.argv[1]))
-    locations = clusterParameters['locations']
-    nodesPerLocation = clusterParameters['nodesPerLocation']
-    username = clusterParameters['username']
-    password = clusterParameters['password']
-
-    document = generateDocument(username, password, locations, nodesPerLocation)
+    document = generateDocument()
 
     with open('provision.json', 'w') as outputFile:
         json.dump(document, outputFile, sort_keys=True, indent=4, ensure_ascii=False)
 
 
-def getNodeInformation(datacenterIndex, numberOfNodes):
+def getNodeInformation(datacenter):
     nodeInformation = []
 
-    for nodeIndex in range(0, numberOfNodes):
-        nodeIP = '10.' + str(datacenterIndex) + '.1.' + str(nodeIndex + 5)
+    for nodeIndex in range(0, datacenter['numberOfNodes']):
+        nodeName = datacenter['namespace'] + 'vm' + str(nodeIndex) + uniqueString + '.' + datacenter[
+            'location'] + '.cloudapp.azure.com'
+        nodeIP = socket.gethostbyname_ex(nodeName)[2][0]
         document = {
             "public_ip": nodeIP,
             "private_ip": nodeIP,
-            "node_type": "cassandra",
+            "node_type": nodeType,
             "rack": "rack1"
         }
         nodeInformation.append(document)
     return nodeInformation
 
 
-def getLocalDataCenters(locations, nodesPerLocation):
+def getLocalDataCenters():
     localDataCenters = []
-    for location in locations:
-        datacenterIndex = locations.index(location) + 1
+    for datacenter in datacenters:
         localDataCenter = {
-            "location": location,
-            "node_information": getNodeInformation(datacenterIndex, nodesPerLocation),
-            "dc": location.replace(" ", "_").lower()
+            "location": datacenter['location'],
+            "node_information": getNodeInformation(datacenter),
+            "dc": datacenter['location']
         }
         localDataCenters.append(localDataCenter)
     return localDataCenters
@@ -56,29 +61,36 @@ def getFingerprint(ip):
     with open("/tmp/tmpgenkey", "r") as inputFile:
         data = inputFile.read()
     array = data.split()
-    fingerprint = array[0] + ' ' + array[1] + ' ' + array[3]
+
+    # This works on Google
+    # fingerprint = array[0] + ' ' + array[1] + ' ' + array[3]
+
+    # But this works on Azure.  I wish I knew why.
+    fingerprint = array[1]
+
     return fingerprint
 
 
-def getAcceptedFingerprints(locations, nodesPerLocation):
+def getAcceptedFingerprints():
     acceptedFingerprints = {}
-    for location in locations:
-        datacenterIndex = locations.index(location) + 1
-        for nodeIndex in range(0, nodesPerLocation):
-            nodeIP = '10.' + str(datacenterIndex) + '.1.' + str(nodeIndex + 5)
+    for datacenter in datacenters:
+        for nodeIndex in range(0, datacenter['numberOfNodes']):
+            nodeName = datacenter['namespace'] + 'vm' + str(nodeIndex) + uniqueString + '.' + datacenter[
+                'location'] + '.cloudapp.azure.com'
+            nodeIP = socket.gethostbyname_ex(nodeName)[2][0]
             acceptedFingerprints[nodeIP] = getFingerprint(nodeIP)
 
     return acceptedFingerprints
 
 
-def generateDocument(username, password, locations, nodesPerLocation):
-    localDataCenters = getLocalDataCenters(locations, nodesPerLocation)
-    acceptedFingerprints = getAcceptedFingerprints(locations, nodesPerLocation)
+def generateDocument():
+    localDataCenters = getLocalDataCenters()
+    acceptedFingerprints = getAcceptedFingerprints()
 
     return {
         "cassandra_config": {
+            "num_tokens": 64,
             "phi_convict_threshold": 12,
-            "initial_token": 4611686018427387901,
             "auto_bootstrap": False,
             "permissions_validity_in_ms": 2000,
             "memtable_allocation_type": "heap_buffers",
@@ -194,12 +206,11 @@ def generateDocument(username, password, locations, nodesPerLocation):
         "is_retry": False,
         "install_params": {
             "package": "dse",
-            "private_key": "",
-            "password": password,
-            "username": username,
             "version": "4.8.1",
-            "repo-password": "3A7vadPHbNT",
-            "repo-user": "datastax%40microsoft.com"
+            "username": adminUsername,
+            "password": adminPassword,
+            "repo-user": "datastax%40microsoft.com",
+            "repo-password": "3A7vadPHbNT"
         },
         "local_datacenters": localDataCenters,
         "accepted_fingerprints": acceptedFingerprints
