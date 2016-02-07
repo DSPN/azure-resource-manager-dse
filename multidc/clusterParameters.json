@@ -4,8 +4,8 @@
         "Central US",
         "West US"
     ],
-    "nodeCount": 10,
-    "vmSize": "Standard_D12",
+    "nodeCount": 5,
+    "vmSize": "Standard_D1",
     "adminUsername": "datastax",
     "adminPassword": "foo123!"
 }
