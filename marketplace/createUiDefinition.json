@@ -4,10 +4,21 @@
   "parameters": {
     "basics": [
       {
+        "name": "clusterName",
+        "type": "Microsoft.Common.TextBox",
+        "label": "Cluster name",
+        "toolTip": "The name of the new DataStax cluster.",
+        "constraints": {
+          "required": true,
+          "regex": "^[a-z0-9]{3,24}$",
+          "validationMessage": "Cluster names must be between 3 and 24 characters long, and can contain only numbers and lowercase letters."
+        }
+      },
+      {
         "name": "adminUsername",
         "type": "Microsoft.Compute.UserNameTextBox",
         "label": "Username",
-        "toolTip": "Admin username for the virtual machines",
+        "toolTip": "Admin username for the virtual machines. The OpsCenter username is 'admin'.",
         "osPlatform": "Linux"
       },
       {
@@ -17,7 +28,7 @@
           "password": "Password",
           "confirmPassword": "Confirm password"
         },
-        "toolTip": "Admin password for the virtual machines",
+        "toolTip": "Admin password for the virtual machines and the OpsCenter admin account.",
         "constraints": {
           "required": true,
           "regex": "^(?:(?=.*[a-z])(?:(?=.*[A-Z])(?=.*[\\d\\W])|(?=.*\\W)(?=.*\\d))|(?=.*\\W)(?=.*[A-Z])(?=.*\\d)).{6,72}$",
@@ -31,54 +42,83 @@
     "steps": [
       {
         "name": "dataStaxConfig",
-        "label": "DataStax Cluster Settings",
+        "label": "DataStax cluster settings",
         "subLabel": {
-          "preValidation": "Configure the Cluster",
+          "preValidation": "Configure the cluster",
           "postValidation": "Done"
         },
-        "bladeTitle": "DataStax Cluster Settings",
+        "bladeTitle": "DataStax cluster settings",
         "elements": [
           {
-            "name": "nodeCount",
+            "name": "clusterNodeCount",
             "type": "Microsoft.Common.DropDown",
-            "label": "Node Count",
-            "defaultValue": "5",
-            "toolTip": "Number of virtual machines to provision for the cluster"
+            "label": "Cluster size",
+            "defaultValue": "4",
+            "toolTip": "The number of virtual machines (nodes) to provision for the cluster.",
+            "constraints": {
+              "allowedValues": [
+                {
+                  "label": "4",
+                  "value": 4
+                },
+                {
+                  "label": "12",
+                  "value": 12
+                },
+                {
+                  "label": "36",
+                  "value": 36
+                },
+                {
+                  "label": "90",
+                  "value": 90
+                }
+              ]
+            }
           },
           {
-            "name": "vmSize",
+            "name": "clusterVmSize",
             "type": "Microsoft.Compute.SizeSelector",
-            "label": "Virtual Machine Size",
+            "label": "Virtual machine size",
             "toolTip": "The size of virtual machine to provision for each cluster node.",
             "recommendedSizes": [
-              "Standard_D1",
-              "Standard_D4",
               "Standard_D12",
               "Standard_D13",
               "Standard_D14",
+              "Standard_G2",
+              "Standard_G3",
               "Standard_G4",
               "Standard_G5"
             ],
             "constraints": {
               "allowedSizes": [
-              "Standard_D1",
-              "Standard_D4",
-              "Standard_D12",
-              "Standard_D13",
-              "Standard_D14",
-              "Standard_G4",
-              "Standard_G5"
+                "Standard_D12",
+                "Standard_D13",
+                "Standard_D14",
+                "Standard_G2",
+                "Standard_G3",
+                "Standard_G4",
+                "Standard_G5"
               ]
-            }
+            },
+            "osPlatform": "Linux",
+            "imageReference": {
+              "publisher": "Canonical",
+              "offer": "UbuntuServer",
+              "sku": "14.04.3-LTS"
+            },
+            "count": "[steps('dataStaxConfig').clusterNodeCount]"
           }
         ]
       }
     ],
     "outputs": {
+      "clusterName": "[basics('clusterName')]",
       "adminUsername": "[basics('adminUsername')]",
       "adminPassword": "[basics('adminPassword')]",
-      "nodeCount": "[steps('dataStaxConfig').nodeCount]",
-      "vmSize": "[steps('dataStaxConfig').vmSize]"
+      "clusterNodeCount": "[steps('dataStaxConfig').clusterNodeCount]",
+      "clusterVmSize": "[steps('dataStaxConfig').clusterVmSize]",
+      "location": "[location()]"
     }
   }
 }
