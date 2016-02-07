@@ -3,19 +3,20 @@ import os
 import sys
 import socket
 
-location = sys.argv[1]
+locations = sys.argv[1]
 uniqueString = sys.argv[2]
 adminUsername = sys.argv[3]
 adminPassword = sys.argv[4]
 nodeCount = int(sys.argv[5])
 nodeType = sys.argv[6]
-namespace = sys.argv[7]
+namespaces = sys.argv[7]
 
-# namespace is hardcoded.  Need to fix that.
-# only supports 1 dc right now
-# nodetype is hard coded
+locationsArray = locations.split(',')
+namespacesArray = namespaces.split(',')
 
-datacenters = [{'namespace': namespace, 'numberOfNodes': nodeCount, 'location': location, 'nodeType': nodeType}]
+datacenters=[]
+for i in range(0,len(locationsArray)):
+    datacenters.append({'namespace': namespacesArray[i], 'numberOfNodes': nodeCount, 'location': locationsArray[i], 'nodeType': nodeType})
 
 
 def run():
