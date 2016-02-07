@@ -4,21 +4,10 @@
   "parameters": {
     "basics": [
       {
-        "name": "clusterName",
-        "type": "Microsoft.Common.TextBox",
-        "label": "Cluster name",
-        "toolTip": "The name of the new DataStax cluster.",
-        "constraints": {
-          "required": true,
-          "regex": "^[a-z0-9]{3,24}$",
-          "validationMessage": "Cluster names must be between 3 and 24 characters long, and can contain only numbers and lowercase letters."
-        }
-      },
-      {
         "name": "adminUsername",
         "type": "Microsoft.Compute.UserNameTextBox",
         "label": "Username",
-        "toolTip": "Admin username for the virtual machines. The OpsCenter username is 'admin'.",
+        "toolTip": "Admin username for the virtual machines",
         "osPlatform": "Linux"
       },
       {
@@ -28,7 +17,7 @@
           "password": "Password",
           "confirmPassword": "Confirm password"
         },
-        "toolTip": "Admin password for the virtual machines and the OpsCenter admin account.",
+        "toolTip": "Admin password for the virtual machines",
         "constraints": {
           "required": true,
           "regex": "^(?:(?=.*[a-z])(?:(?=.*[A-Z])(?=.*[\\d\\W])|(?=.*\\W)(?=.*\\d))|(?=.*\\W)(?=.*[A-Z])(?=.*\\d)).{6,72}$",
@@ -50,7 +39,7 @@
         "bladeTitle": "DataStax cluster settings",
         "elements": [
           {
-            "name": "clusterNodeCount",
+            "name": "nodeCount",
             "type": "Microsoft.Common.DropDown",
             "label": "Cluster size",
             "defaultValue": "4",
