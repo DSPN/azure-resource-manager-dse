@@ -37,6 +37,7 @@ for location in locations:
 resources = opsCenterNode.generate_template(clusterParameters)
 generatedTemplate['resources'] += resources
 
+
 # Add the opsCenterURL
 def opsCenterURL():
     return {
