@@ -41,14 +41,14 @@
           {
             "name": "nodeCount",
             "type": "Microsoft.Common.DropDown",
-            "label": "Cluster size",
-            "defaultValue": "4",
-            "toolTip": "Number of virtual machines to provision for the cluster",
+            "label": "Node Count",
+            "defaultValue": "5",
+            "toolTip": "Number of virtual machines to provision for the cluster"
           },
           {
             "name": "vmSize",
             "type": "Microsoft.Compute.SizeSelector",
-            "label": "Virtual machine size",
+            "label": "Virtual Machine Size",
             "toolTip": "The size of virtual machine to provision for each cluster node.",
             "recommendedSizes": [
               "Standard_D1",
@@ -76,7 +76,7 @@
               "offer": "UbuntuServer",
               "sku": "14.04.3-LTS"
             },
-            "count": "[steps('dataStaxConfig').clusterNodeCount]"
+            "count": "[steps('dataStaxConfig').nodeCount]"
           }
         ]
       }
@@ -84,8 +84,8 @@
     "outputs": {
       "adminUsername": "[basics('adminUsername')]",
       "adminPassword": "[basics('adminPassword')]",
-      "clusterNodeCount": "[steps('dataStaxConfig').nodeCount]",
-      "clusterVmSize": "[steps('dataStaxConfig').vmSize]",
+      "nodeCount": "[steps('dataStaxConfig').nodeCount]",
+      "vmSize": "[steps('dataStaxConfig').vmSize]",
       "location": "[location()]"
     }
   }
