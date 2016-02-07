@@ -31,9 +31,9 @@ def getPrivateIP(publicIP):
     os.system(command)
 
     with open("/tmp/privateip", "r") as inputFile:
-        data = inputFile.read()
+        privateip = inputFile.read().strip()
 
-    return data
+    return privateip
 
 def getNodeInformation(datacenter):
     nodeInformation = []
