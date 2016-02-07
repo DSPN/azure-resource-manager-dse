@@ -271,8 +271,7 @@ def extension(clusterParameters):
                 "fileUris": [
                     "https://raw.githubusercontent.com/DSPN/azure-resource-manager-dse/master/multidc/extensions/opsCenter.sh",
                     "https://raw.githubusercontent.com/DSPN/azure-resource-manager-dse/master/multidc/extensions/installJava.sh",
-                    "https://raw.githubusercontent.com/DSPN/azure-resource-manager-dse/master/multidc/extensions/opsCenter.py",
-                    "https://raw.githubusercontent.com/DSPN/azure-resource-manager-dse/master/multidc/extensions/turnOnOpsCenterAuth.sh"
+                    "https://raw.githubusercontent.com/DSPN/azure-resource-manager-dse/master/multidc/extensions/opsCenter.py"
                 ],
                 "commandToExecute": "bash opsCenter.sh " + base64.b64encode(json.dumps(clusterParameters))
             }
