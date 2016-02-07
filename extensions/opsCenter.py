@@ -26,8 +26,14 @@ def run():
 
 
 def getPrivateIP(publicIP):
-    # need to call hostname -I from the node
-    return publicIP
+    # We need to call hostname -I from the node
+    command = 'sshpass -p ' + adminPassword + ' ssh -oStrictHostKeyChecking=no ' + adminUsername+'@'+publicIP+ ' hostname -I > /tmp/privateip'
+    os.system(command)
+
+    with open("/tmp/publicip", "r") as inputFile:
+        data = inputFile.read()
+
+    return data
 
 def getNodeInformation(datacenter):
     nodeInformation = []
