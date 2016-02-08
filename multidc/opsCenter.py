@@ -159,11 +159,10 @@ def extension(locations, nodeCount, adminUsername, adminPassword, nodeType):
     namespaces = ""
     for location in locations:
         datacenterIndex = locations.index(location)
-        namespaces += 'dc' + datacenterIndex + ','
+        namespaces += 'dc' + str(datacenterIndex) + ','
     namespaces = namespaces[:-1]
 
-    arguments = locationsArgument + " " + uniqueString + " " + adminUsername + " " + adminPassword + " " + nodeCount + " " + nodeType + " " + namespaces
-    commandToExecute = "bash opsCenter.sh" + arguments
+    commandToExecute = "[concat('bash opsCenter.sh " + locationsArgument + " ', variables('uniqueString'), '" + adminUsername + " " + adminPassword + " " + str(nodeCount) + " " + nodeType + " " + namespaces + "')]"
 
     resource = {
         "type": "Microsoft.Compute/virtualMachines/extensions",
