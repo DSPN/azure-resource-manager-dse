@@ -168,7 +168,7 @@ def virtualmachine(location, datacenterIndex, nodeIndex, storageAccountIndex, vm
                 "osDisk": {
                     "name": "osdisk",
                     "vhd": {
-                        "uri": "[concat('http://, " + storageAccountName + "', variables('uniqueString'), '.blob.core.windows.net/vhds/" + name + "-osdisk.vhd')]"
+                        "uri": "[concat('http://" + storageAccountName + "', variables('uniqueString'), '.blob.core.windows.net/vhds/" + name + "-osdisk.vhd')]"
                     },
                     "caching": "ReadWrite",
                     "createOption": "FromImage"
