@@ -49,14 +49,14 @@ def virtualNetwork(location, datacenterIndex):
         "properties": {
             "addressSpace": {
                 "addressPrefixes": [
-                    "10.0.0.0/16"
+                    "10." + str(datacenterIndex) + ".0.0/16"
                 ]
             },
             "subnets": [
                 {
                     "name": "subnet",
                     "properties": {
-                        "addressPrefix": "10.0.0.0/24"
+                        "addressPrefix": "10." + str(datacenterIndex) + ".0.0/24"
                     }
                 }
             ]
