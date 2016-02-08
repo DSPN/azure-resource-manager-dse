@@ -1,88 +1,91 @@
 import math
 
 
-def generate_template(location, datacenterIndex, nodeSize, numberOfNodes, username, password):
+def generate_template(location, datacenterIndex, vmSize, nodeCount, adminUsername, adminPassword):
     resources = []
 
-    vnet = virtualNetworks(location, datacenterIndex)
-    resources.append(vnet)
-    vnetName = vnet['name']
+    resources.append(virtualNetwork(location, datacenterIndex))
 
-    for nodeIndex in range(0, numberOfNodes):
-        nic = networkInterfaces(location, vnetName, datacenterIndex, nodeIndex)
-        resources.append(nic)
-        nicName = nic['name']
+    for nodeIndex in range(0, nodeCount):
+        resources.append(publicIPAddress(location, datacenterIndex, nodeIndex))
+        resources.append(networkInterface(location, datacenterIndex, nodeIndex))
 
         storageAccountIndex = int(math.floor(nodeIndex / 40.0))
         # Check if we've attached 40 drives to the current storage account.  If so, we'll need to make a new one.
         if (nodeIndex % 40) == 0:
-            resources.append(storageAccounts(location, datacenterIndex, storageAccountIndex))
+            resources.append(storageAccount(location, datacenterIndex, storageAccountIndex))
 
-        vm = virtualmachines(location, nodeSize, username, password, datacenterIndex, nodeIndex, storageAccountIndex,
-                             nicName)
-        resources.append(vm)
-        vmName = vm['name']
+        resources.append(virtualmachine(location, datacenterIndex, nodeIndex, storageAccountIndex, vmSize, adminUsername, adminPassword))
+        resources.append(extension(location, datacenterIndex, nodeIndex))
 
-        resources.append(extension(location, vmName))
     return resources
 
 
-# We want a subnet for the gateways to go in as well as one for any virtual machines.
-# 10.x.y.5-255 are usable.
-# This gives us 251 usable IPs.
-# That will be our maximum number of virtual machines in a location for now as well.
-def virtualNetworks(location, datacenterIndex):
-    return {
+def virtualNetwork(location, datacenterIndex):
+    name = "dc" + str(datacenterIndex)
+    resource = {
         "apiVersion": "2015-06-15",
         "type": "Microsoft.Network/virtualNetworks",
-        "name": (location + "_dse_node_vnet").replace(" ", "_").lower(),
+        "name": name,
         "location": location,
         "properties": {
             "addressSpace": {
                 "addressPrefixes": [
-                    "10." + str(datacenterIndex) + ".0.0/16"
+                    "10.0.0.0/16"
                 ]
             },
             "subnets": [
                 {
-                    "name": "gatewaySubnet",
+                    "name": "subnet",
                     "properties": {
-                        "addressPrefix": "10." + str(datacenterIndex) + ".0.0/24"
-                    }
-                },
-                {
-                    "name": "vmSubnet",
-                    "properties": {
-                        "addressPrefix": "10." + str(datacenterIndex) + ".1.0/24"
+                        "addressPrefix": "10.0.0.0/24"
                     }
                 }
             ]
         }
     }
+    return resource
 
 
-def networkInterfaces(location, vnetName, datacenterIndex, nodeIndex):
-    # Usable IPs start at 10.x.y.5
-    # At some point we're going to want some logic to deal with more than 255 nodes in a location
-    nodeIP = '10.' + str(datacenterIndex) + '.1.' + str(nodeIndex + 5)
+def publicIPAddress(location, datacenterIndex, nodeIndex):
+    name = "dc" + str(datacenterIndex) + "vm" + str(nodeIndex)
+    resource = {
+        "apiVersion": "2015-06-15",
+        "type": "Microsoft.Network/publicIPAddresses",
+        "name": name,
+        "location": location,
+        "properties": {
+            "publicIPAllocationMethod": "Dynamic",
+            "dnsSettings": {
+                "domainNameLabel": "[concat('" + name + "', parameters('uniqueString'))]"
+            }
+        }
+    }
+    return resource
 
+
+def networkInterface(location, datacenterIndex, nodeIndex):
+    name = "dc" + str(datacenterIndex) + "vm" + str(nodeIndex)
     resource = {
         "apiVersion": "2015-06-15",
         "type": "Microsoft.Network/networkInterfaces",
-        "name": "dc" + str(datacenterIndex) + "vm" + str(nodeIndex) + "_nic",
+        "name": name,
         "location": location,
         "dependsOn": [
-            "Microsoft.Network/virtualNetworks/" + vnetName
+            "Microsoft.Network/virtualNetworks/" + name,
+            "Microsoft.Network/publicIPAddresses/" + name
         ],
         "properties": {
             "ipConfigurations": [
                 {
                     "name": "ipConfig",
                     "properties": {
-                        "privateIPAllocationMethod": "Static",
-                        "privateIPAddress": nodeIP,
+                        "publicIPAddress": {
+                            "id": "[resourceId('Microsoft.Network/publicIPAddresses','" + name + "')]"
+                        },
+                        "privateIPAllocationMethod": "Dynamic",
                         "subnet": {
-                            "id": "[concat(resourceId('Microsoft.Network/virtualNetworks', '" + vnetName + "'), '/subnets/vmSubnet')]"
+                            "id": "[concat(resourceId('Microsoft.Network/virtualNetworks', '" + name + "'), '/subnets/subnet')]"
                         }
                     }
                 }
@@ -92,44 +95,40 @@ def networkInterfaces(location, vnetName, datacenterIndex, nodeIndex):
     return resource
 
 
-def storageAccounts(location, datacenterIndex, storageAccountIndex):
-    storageAccountName = "[concat(resourceGroup().name," + "'dc" + str(datacenterIndex) + "sa" + str(
-        storageAccountIndex) + "')]"
+def storageAccount(location, datacenterIndex, storageAccountIndex):
+    name = "dc" + str(datacenterIndex) + "sa" + str(storageAccountIndex)
     resource = {
         "apiVersion": "2015-05-01-preview",
         "type": "Microsoft.Storage/storageAccounts",
-        "name": storageAccountName,
+        "name": "[concat('" + name + "', parameters('uniqueString'))]",
         "location": location,
         "properties": {
             "accountType": "Standard_LRS"
         }
     }
-
     return resource
 
 
-def virtualmachines(location, nodeSize, username, password, datacenterIndex, nodeIndex, storageAccountIndex, nicName):
-    computerName = "dc" + str(datacenterIndex) + "vm" + str(nodeIndex)
-    virtualMachineName = computerName + "vm"
-
-    resources = {
+def virtualmachine(location, datacenterIndex, nodeIndex, storageAccountIndex, vmSize, adminUsername, adminPassword):
+    name = "dc" + str(datacenterIndex) + "vm" + str(nodeIndex)
+    storageAccountName = "dc" + str(datacenterIndex) + "sa" + str(storageAccountIndex)
+    resource = {
         "apiVersion": "2015-06-15",
         "type": "Microsoft.Compute/virtualMachines",
-        "name": virtualMachineName,
+        "name": name,
         "location": location,
         "dependsOn": [
-            "Microsoft.Network/networkInterfaces/" + nicName,
-            "[concat('Microsoft.Storage/storageAccounts/', resourceGroup().name," + "'dc" + str(
-                datacenterIndex) + "sa" + str(storageAccountIndex) + "')]"
+            "Microsoft.Network/networkInterfaces/" + name,
+            "[concat('Microsoft.Storage/storageAccounts/" + storageAccountName + "', parameters('uniqueString'))]"
         ],
         "properties": {
             "hardwareProfile": {
-                "vmSize": nodeSize
+                "vmSize": vmSize
             },
             "osProfile": {
-                "computername": computerName,
-                "adminUsername": username,
-                "adminPassword": password
+                "computername": name,
+                "adminUsername": adminUsername,
+                "adminPassword": adminPassword
             },
             "storageProfile": {
                 "imageReference": {
@@ -141,8 +140,7 @@ def virtualmachines(location, nodeSize, username, password, datacenterIndex, nod
                 "osDisk": {
                     "name": "osdisk",
                     "vhd": {
-                        "uri": "[concat('http://', resourceGroup().name, 'dc" + str(datacenterIndex) + "sa" + str(
-                            storageAccountIndex) + ".blob.core.windows.net/vhds/" + virtualMachineName + "-osdisk.vhd')]"
+                        "uri": "[concat('http://, " + storageAccountName + "', parameters('uniqueString'), '.blob.core.windows.net/vhds/" + name + "-osdisk.vhd')]"
                     },
                     "caching": "ReadWrite",
                     "createOption": "FromImage"
@@ -151,23 +149,24 @@ def virtualmachines(location, nodeSize, username, password, datacenterIndex, nod
             "networkProfile": {
                 "networkInterfaces": [
                     {
-                        "id": "[resourceId('Microsoft.Network/networkInterfaces','" + nicName + "')]"
+                        "id": "[resourceId('Microsoft.Network/networkInterfaces','" + name + "')]"
                     }
                 ]
             }
         }
     }
-    return resources
+    return resource
 
 
-def extension(location, virtualMachineName):
-    return {
+def extension(location, datacenterIndex, nodeIndex):
+    name = "dc" + str(datacenterIndex) + "vm" + str(nodeIndex)
+    resource = {
         "type": "Microsoft.Compute/virtualMachines/extensions",
-        "name": virtualMachineName + "/installdsenode",
+        "name": name + "/installdsenode",
         "apiVersion": "2015-06-15",
         "location": location,
         "dependsOn": [
-            "Microsoft.Compute/virtualMachines/" + virtualMachineName
+            "Microsoft.Compute/virtualMachines/" + name
         ],
         "properties": {
             "publisher": "Microsoft.OSTCExtensions",
@@ -182,3 +181,4 @@ def extension(location, virtualMachineName):
             }
         }
     }
+    return resource

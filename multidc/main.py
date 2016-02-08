@@ -26,16 +26,13 @@ generatedTemplate = {
 
 # Create DSE nodes in each location
 for location in locations:
-    # This is the 1 in 10.1.0.0 and corresponds to the data center we are deploying to
-    # 10.0.x.y is reserved for the OpsCenter resources.
     datacenterIndex = locations.index(location) + 1
-
     resources = dseNodes.generate_template(location, datacenterIndex, vmSize, nodeCount, adminUsername, adminPassword)
     generatedTemplate['resources'] += resources
 
 # Create the OpsCenter node
-resources = opsCenterNode.generate_template(clusterParameters)
-generatedTemplate['resources'] += resources
+#resources = opsCenterNode.generate_template(clusterParameters)
+#generatedTemplate['resources'] += resources
 
 
 # Add the opsCenterURL
