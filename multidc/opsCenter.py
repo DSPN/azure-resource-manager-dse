@@ -11,7 +11,7 @@ def generate_template(locations, nodeCount, adminUsername, adminPassword, nodeTy
     resources.append(networkInterface)
     resources.append(storageAccount)
     resources.append(virtualmachine(adminUsername, adminPassword))
-    resources.append(extension(locations, nodeCount))
+    resources.append(extension(locations, nodeCount, adminUsername, adminPassword, nodeType))
     return resources
 
 
@@ -147,11 +147,25 @@ def generate_vm_names(locations, nodeCount):
     return names
 
 
-def extension(locations, nodeCount):
+def extension(locations, nodeCount, adminUsername, adminPassword, nodeType):
     dependsOn = ["Microsoft.Compute/virtualMachines/opscenter"]
     dependsOn += generate_vm_names(locations, nodeCount)
 
-    return {
+    locationsArgument = ""
+    for location in locations:
+        locationsArgument += location + ','
+    locationsArgument = locationsArgument[:-1]
+
+    namespaces = ""
+    for location in locations:
+        datacenterIndex = locations.index(location)
+        namespaces += 'dc' + datacenterIndex + ','
+    namespaces = namespaces[:-1]
+
+    arguments = locationsArgument + " " + uniqueString + " " + adminUsername + " " + adminPassword + " " + nodeCount + " " + nodeType + " " + namespaces
+    commandToExecute = "bash opsCenter.sh" + arguments
+
+    resource = {
         "type": "Microsoft.Compute/virtualMachines/extensions",
         "name": "opscenter/installopscenter",
         "apiVersion": "2015-06-15",
@@ -167,7 +181,8 @@ def extension(locations, nodeCount):
                     "https://raw.githubusercontent.com/DSPN/azure-resource-manager-dse/master/extensions/opsCenter.py",
                     "https://raw.githubusercontent.com/DSPN/azure-resource-manager-dse/master/extensions/opsCenter.sh"
                 ],
-                "commandToExecute": "bash opsCenter.sh"
+                "commandToExecute": commandToExecute
             }
         }
     }
+    return resource
