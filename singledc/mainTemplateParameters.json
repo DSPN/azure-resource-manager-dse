@@ -12,6 +12,6 @@
     "value": "foo123!"
   },
   "nodeType": {
-    "value": "spark"
+    "value": "cassandra"
   }
 }
