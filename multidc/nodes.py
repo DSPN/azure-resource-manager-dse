@@ -4,6 +4,7 @@ import math
 def generate_template(location, datacenterIndex, vmSize, nodeCount, adminUsername, adminPassword):
     resources = []
 
+    resources.append(availabilitySet(location, datacenterIndex))
     resources.append(virtualNetwork(location, datacenterIndex))
 
     for nodeIndex in range(0, nodeCount):
@@ -19,6 +20,21 @@ def generate_template(location, datacenterIndex, vmSize, nodeCount, adminUsernam
         resources.append(extension(location, datacenterIndex, nodeIndex))
 
     return resources
+
+
+def availabilitySet(location, datacenterIndex):
+    name = "dc" + str(datacenterIndex)
+    resource = {
+        "apiVersion": "2015-06-15",
+        "type": "Microsoft.Compute/availabilitySets",
+        "name": name,
+        "location": location,
+        "properties": {
+            "platformFaultDomainCount": 3,
+            "platformUpdateDomainCount": 18
+        }
+    }
+    return resource
 
 
 def virtualNetwork(location, datacenterIndex):
@@ -110,6 +126,7 @@ def storageAccount(location, datacenterIndex, storageAccountIndex):
 
 
 def virtualmachine(location, datacenterIndex, nodeIndex, storageAccountIndex, vmSize, adminUsername, adminPassword):
+    availabilitySetName = "dc" + str(datacenterIndex)
     name = "dc" + str(datacenterIndex) + "vm" + str(nodeIndex)
     storageAccountName = "dc" + str(datacenterIndex) + "sa" + str(storageAccountIndex)
     resource = {
@@ -118,10 +135,14 @@ def virtualmachine(location, datacenterIndex, nodeIndex, storageAccountIndex, vm
         "name": name,
         "location": location,
         "dependsOn": [
+            "Microsoft.Compute/availabilitySets/" + availabilitySetName,
             "Microsoft.Network/networkInterfaces/" + name,
             "[concat('Microsoft.Storage/storageAccounts/" + storageAccountName + "', variables('uniqueString'))]"
         ],
         "properties": {
+            "availabilitySet": {
+                "id": "[resourceId('Microsoft.Compute/availabilitySets', '" + availabilitySetName +"')]"
+            },
             "hardwareProfile": {
                 "vmSize": vmSize
             },
