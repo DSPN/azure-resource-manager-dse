@@ -46,7 +46,7 @@ publicIPAddress = {
     "properties": {
         "publicIPAllocationMethod": "Dynamic",
         "dnsSettings": {
-            "domainNameLabel": "[concat('opscenter', parameters('uniqueString'))]"
+            "domainNameLabel": "[concat('opscenter', variable('uniqueString'))]"
         }
     }
 }
@@ -81,7 +81,7 @@ networkInterface = {
 storageAccount = {
     "apiVersion": "2015-05-01-preview",
     "type": "Microsoft.Storage/storageAccounts",
-    "name": "[concat('opscenter', parameters('uniqueString'))]",
+    "name": "[concat('opscenter', variable('uniqueString'))]",
     "location": "[resourceGroup().location]",
     "properties": {
         "accountType": "Standard_LRS"
@@ -97,7 +97,7 @@ def virtualmachine(username, password):
         "location": "[resourceGroup().location]",
         "dependsOn": [
             "Microsoft.Network/networkInterfaces/opscenter",
-            "[concat('Microsoft.Storage/storageAccounts/opscenter', parameters('uniqueString'))]"
+            "[concat('Microsoft.Storage/storageAccounts/opscenter', varibale('uniqueString'))]"
         ],
         "properties": {
             "hardwareProfile": {
@@ -118,7 +118,7 @@ def virtualmachine(username, password):
                 "osDisk": {
                     "name": "osdisk",
                     "vhd": {
-                        "uri": "[concat('http://opscenter', parameters('uniqueString'), '.blob.core.windows.net/vhds/opscenter-osdisk.vhd')]"
+                        "uri": "[concat('http://opscenter', variable('uniqueString'), '.blob.core.windows.net/vhds/opscenter-osdisk.vhd')]"
                     },
                     "caching": "ReadWrite",
                     "createOption": "FromImage"
