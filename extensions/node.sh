@@ -12,4 +12,6 @@ PUBLICIP=`curl --max-time 50000 --retry 12 --retry-delay 50000 -s 'http://checki
 echo 'My public IP address is '$PUBLICIP
 
 echo "We need to tell the datastax-agent to bind to its publicip."
+mkdir /var/lib/datastax-agent
+mkdir /var/lib/datastax-agent/conf
 echo 'agent_rpc_broadcast_address: '$PUBLICIP >> /var/lib/datastax-agent/conf/address.yaml
