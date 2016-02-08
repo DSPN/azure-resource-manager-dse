@@ -26,7 +26,7 @@ generatedTemplate = {
     "outputs": {
         "opsCenterURL": {
             "type": "string",
-            "value": "[concat('http://opsc', variables('uniqueString'), '." + locations[0] + ".cloudapp.azure.com:8888')]"
+            "value": "[concat('http://opsc', variables('uniqueString'), '.', resourceGroup().location, '.cloudapp.azure.com:8888')]"
         }
     }
 }
@@ -38,8 +38,8 @@ for location in locations:
     generatedTemplate['resources'] += resources
 
 # Create the OpsCenter node
-# resources = opsCenter.generate_template(clusterParameters)
-# generatedTemplate['resources'] += resources
+resources = opsCenter.generate_template(locations, nodeCount, adminUsername, adminPassword, nodeType)
+generatedTemplate['resources'] += resources
 
 with open('generatedTemplate.json', 'w') as outputFile:
     json.dump(generatedTemplate, outputFile, sort_keys=True, indent=4, ensure_ascii=False)

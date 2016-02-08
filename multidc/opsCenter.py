@@ -2,7 +2,7 @@ import base64
 import json
 
 
-def generate_template(clusterParameters):
+def generate_template(locations, nodeCount, adminUsername, adminPassword, nodeType):
     # We're going to create all these resources in resourceGroup().location
     # The OpsCenter node always has private IP 10.0.1.5
 
