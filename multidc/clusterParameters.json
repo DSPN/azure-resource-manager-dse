@@ -1,8 +1,8 @@
 {
     "locations": [
-        "East US",
-        "Central US",
-        "West US"
+        "eastus",
+        "centralus",
+        "westus"
     ],
     "nodeCount": 5,
     "vmSize": "Standard_D1",
