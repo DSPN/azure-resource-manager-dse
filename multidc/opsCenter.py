@@ -147,9 +147,9 @@ def generate_vm_names(locations, nodeCount):
     return names
 
 
-def extension(clusterParameters):
+def extension(locations, nodeCount):
     dependsOn = ["Microsoft.Compute/virtualMachines/opscenter"]
-    dependsOn += generate_vm_names(clusterParameters)
+    dependsOn += generate_vm_names(locations, nodeCount)
 
     return {
         "type": "Microsoft.Compute/virtualMachines/extensions",
