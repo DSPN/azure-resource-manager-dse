@@ -143,7 +143,7 @@
             "value": "[variables('subnetName')]"
           },
           "namespace": {
-            "value": "dc1"
+            "value": "dc0"
           }
         }
       }
@@ -220,7 +220,7 @@
             "value": "[parameters('nodeType')]"
           },
           "namespace": {
-            "value": "dc1"
+            "value": "dc0"
           },
           "osSettings": {
             "value": "[variables('osSettings')]"
