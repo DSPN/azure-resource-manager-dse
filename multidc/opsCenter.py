@@ -11,7 +11,7 @@ def generate_template(locations, nodeCount, adminUsername, adminPassword, nodeTy
     resources.append(networkInterface)
     resources.append(storageAccount)
     resources.append(virtualmachine(adminUsername, adminPassword))
-    resources.append(extension(clusterParameters))
+    resources.append(extension(locations, nodeCount))
     return resources
 
 
