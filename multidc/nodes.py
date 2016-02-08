@@ -57,7 +57,7 @@ def publicIPAddress(location, datacenterIndex, nodeIndex):
         "properties": {
             "publicIPAllocationMethod": "Dynamic",
             "dnsSettings": {
-                "domainNameLabel": "[concat('" + name + "', parameters('uniqueString'))]"
+                "domainNameLabel": "[concat('" + name + "', variables('uniqueString'))]"
             }
         }
     }
@@ -100,7 +100,7 @@ def storageAccount(location, datacenterIndex, storageAccountIndex):
     resource = {
         "apiVersion": "2015-05-01-preview",
         "type": "Microsoft.Storage/storageAccounts",
-        "name": "[concat('" + name + "', parameters('uniqueString'))]",
+        "name": "[concat('" + name + "', variables('uniqueString'))]",
         "location": location,
         "properties": {
             "accountType": "Standard_LRS"
@@ -119,7 +119,7 @@ def virtualmachine(location, datacenterIndex, nodeIndex, storageAccountIndex, vm
         "location": location,
         "dependsOn": [
             "Microsoft.Network/networkInterfaces/" + name,
-            "[concat('Microsoft.Storage/storageAccounts/" + storageAccountName + "', parameters('uniqueString'))]"
+            "[concat('Microsoft.Storage/storageAccounts/" + storageAccountName + "', variables('uniqueString'))]"
         ],
         "properties": {
             "hardwareProfile": {
@@ -140,7 +140,7 @@ def virtualmachine(location, datacenterIndex, nodeIndex, storageAccountIndex, vm
                 "osDisk": {
                     "name": "osdisk",
                     "vhd": {
-                        "uri": "[concat('http://, " + storageAccountName + "', parameters('uniqueString'), '.blob.core.windows.net/vhds/" + name + "-osdisk.vhd')]"
+                        "uri": "[concat('http://, " + storageAccountName + "', variables('uniqueString'), '.blob.core.windows.net/vhds/" + name + "-osdisk.vhd')]"
                     },
                     "caching": "ReadWrite",
                     "createOption": "FromImage"
