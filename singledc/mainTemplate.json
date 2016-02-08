@@ -149,7 +149,7 @@
       }
     },
     {
-      "name": "opscenter",
+      "name": "opsCenter",
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2015-01-01",
       "dependsOn": [
@@ -187,12 +187,12 @@
       }
     },
     {
-      "name": "opscenter-install",
+      "name": "opsCenterInstall",
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2015-01-01",
       "dependsOn": [
         "Microsoft.Resources/deployments/nodes",
-        "Microsoft.Resources/deployments/opscenter"
+        "Microsoft.Resources/deployments/opsCenter"
       ],
       "properties": {
         "mode": "Incremental",
