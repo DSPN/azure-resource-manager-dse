@@ -97,7 +97,7 @@ def virtualmachine(username, password):
         "location": "[resourceGroup().location]",
         "dependsOn": [
             "Microsoft.Network/networkInterfaces/opscenter",
-            "[concat('Microsoft.Storage/storageAccounts/opscenter', varibale('uniqueString'))]"
+            "[concat('Microsoft.Storage/storageAccounts/opscenter', variable('uniqueString'))]"
         ],
         "properties": {
             "hardwareProfile": {
