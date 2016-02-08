@@ -24,6 +24,7 @@ def generate_template(location, datacenterIndex, vmSize, nodeCount, adminUsernam
 
 def availabilitySet(location, datacenterIndex):
     name = "dc" + str(datacenterIndex)
+
     resource = {
         "apiVersion": "2015-06-15",
         "type": "Microsoft.Compute/availabilitySets",
@@ -39,6 +40,7 @@ def availabilitySet(location, datacenterIndex):
 
 def virtualNetwork(location, datacenterIndex):
     name = "dc" + str(datacenterIndex)
+
     resource = {
         "apiVersion": "2015-06-15",
         "type": "Microsoft.Network/virtualNetworks",
@@ -65,6 +67,7 @@ def virtualNetwork(location, datacenterIndex):
 
 def publicIPAddress(location, datacenterIndex, nodeIndex):
     name = "dc" + str(datacenterIndex) + "vm" + str(nodeIndex)
+
     resource = {
         "apiVersion": "2015-06-15",
         "type": "Microsoft.Network/publicIPAddresses",
@@ -81,14 +84,16 @@ def publicIPAddress(location, datacenterIndex, nodeIndex):
 
 
 def networkInterface(location, datacenterIndex, nodeIndex):
+    virtualNetworkName = "dc" + str(datacenterIndex)
     name = "dc" + str(datacenterIndex) + "vm" + str(nodeIndex)
+
     resource = {
         "apiVersion": "2015-06-15",
         "type": "Microsoft.Network/networkInterfaces",
         "name": name,
         "location": location,
         "dependsOn": [
-            "Microsoft.Network/virtualNetworks/" + name,
+            "Microsoft.Network/virtualNetworks/" + virtualNetworkName,
             "Microsoft.Network/publicIPAddresses/" + name
         ],
         "properties": {
@@ -113,6 +118,7 @@ def networkInterface(location, datacenterIndex, nodeIndex):
 
 def storageAccount(location, datacenterIndex, storageAccountIndex):
     name = "dc" + str(datacenterIndex) + "sa" + str(storageAccountIndex)
+
     resource = {
         "apiVersion": "2015-05-01-preview",
         "type": "Microsoft.Storage/storageAccounts",
@@ -129,6 +135,7 @@ def virtualmachine(location, datacenterIndex, nodeIndex, storageAccountIndex, vm
     availabilitySetName = "dc" + str(datacenterIndex)
     name = "dc" + str(datacenterIndex) + "vm" + str(nodeIndex)
     storageAccountName = "dc" + str(datacenterIndex) + "sa" + str(storageAccountIndex)
+
     resource = {
         "apiVersion": "2015-06-15",
         "type": "Microsoft.Compute/virtualMachines",
@@ -181,6 +188,7 @@ def virtualmachine(location, datacenterIndex, nodeIndex, storageAccountIndex, vm
 
 def extension(location, datacenterIndex, nodeIndex):
     name = "dc" + str(datacenterIndex) + "vm" + str(nodeIndex)
+    
     resource = {
         "type": "Microsoft.Compute/virtualMachines/extensions",
         "name": name + "/installdsenode",
