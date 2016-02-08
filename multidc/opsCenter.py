@@ -4,27 +4,21 @@ import json
 
 def generate_template(locations, nodeCount, adminUsername, adminPassword, nodeType):
     # We're going to create all these resources in resourceGroup().location
-    # The OpsCenter node always has private IP 10.0.1.5
 
     resources = []
-    resources.append(virtualNetworks)
-    resources.append(networkSecurityGroups)
-    resources.append(publicIPAddresses)
-    resources.append(networkInterfaces)
-    resources.append(storageAccounts)
-    resources.append(virtualmachines(clusterParameters['username'], clusterParameters['password']))
+    resources.append(virtualNetwork)
+    resources.append(publicIPAddress)
+    resources.append(networkInterface)
+    resources.append(storageAccount)
+    resources.append(virtualmachine(adminUsername, adminPassword))
     resources.append(extension(clusterParameters))
     return resources
 
 
-# We want a subnet for the gateways to go in as well as one for any virtual machines.
-# 10.x.y.5-255 are usable.
-# This gives us 251 usable IPs.
-# That will be our maximum number of virtual machines in a location for now as well.
-virtualNetworks = {
+virtualNetwork = {
     "apiVersion": "2015-06-15",
     "type": "Microsoft.Network/virtualNetworks",
-    "name": "opscentervnet",
+    "name": "opscenter",
     "location": "[resourceGroup().location]",
     "properties": {
         "addressSpace": {
@@ -34,13 +28,7 @@ virtualNetworks = {
         },
         "subnets": [
             {
-                "name": "gatewaySubnet",
-                "properties": {
-                    "addressPrefix": "10.0.0.0/24"
-                }
-            },
-            {
-                "name": "vmSubnet",
+                "name": "subnet",
                 "properties": {
                     "addressPrefix": "10.0.1.0/24"
                 }
@@ -49,80 +37,28 @@ virtualNetworks = {
     }
 }
 
-networkSecurityGroups = {
-    "apiVersion": "2015-06-15",
-    "type": "Microsoft.Network/networkSecurityGroups",
-    "name": "securityGroup",
-    "location": "[resourceGroup().location]",
-    "properties": {
-        "securityRules": [
-            {
-                "name": "SSH",
-                "properties": {
-                    "description": "Allows SSH traffic",
-                    "protocol": "Tcp",
-                    "sourcePortRange": "22",
-                    "destinationPortRange": "22",
-                    "sourceAddressPrefix": "*",
-                    "destinationAddressPrefix": "*",
-                    "access": "Allow",
-                    "priority": 100,
-                    "direction": "Inbound"
-                }
-            },
-            {
-                "name": "HTTP",
-                "properties": {
-                    "description": "Allows HTTP traffic",
-                    "protocol": "Tcp",
-                    "sourcePortRange": "8888",
-                    "destinationPortRange": "8888",
-                    "sourceAddressPrefix": "*",
-                    "destinationAddressPrefix": "*",
-                    "access": "Allow",
-                    "priority": 110,
-                    "direction": "Inbound"
-                }
-            },
-            {
-                "name": "HTTPS",
-                "properties": {
-                    "description": "Allows HTTPS traffic",
-                    "protocol": "Tcp",
-                    "sourcePortRange": "8443",
-                    "destinationPortRange": "8443",
-                    "sourceAddressPrefix": "*",
-                    "destinationAddressPrefix": "*",
-                    "access": "Allow",
-                    "priority": 120,
-                    "direction": "Inbound"
-                }
-            }
-        ]
-    }
-}
 
-publicIPAddresses = {
+publicIPAddress = {
     "apiVersion": "2015-06-15",
     "type": "Microsoft.Network/publicIPAddresses",
-    "name": "publicIP",
+    "name": "opscenter",
     "location": "[resourceGroup().location]",
     "properties": {
         "publicIPAllocationMethod": "Dynamic",
         "dnsSettings": {
-            "domainNameLabel": "[resourceGroup().name]"
+            "domainNameLabel": "[concat('opscenter', parameters('uniqueString'))]"
         }
     }
 }
 
-networkInterfaces = {
+networkInterface = {
     "apiVersion": "2015-06-15",
     "type": "Microsoft.Network/networkInterfaces",
-    "name": "networkInterface",
+    "name": "opscenter",
     "location": "[resourceGroup().location]",
     "dependsOn": [
-        "Microsoft.Network/publicIPAddresses/publicIP",
-        "Microsoft.Network/networkSecurityGroups/securityGroup"
+        "Microsoft.Network/virtualNetworks/opscenter",
+        "Microsoft.Network/publicIPAddresses/opscenter"
     ],
     "properties": {
         "ipConfigurations": [
@@ -130,15 +66,11 @@ networkInterfaces = {
                 "name": "ipConfig",
                 "properties": {
                     "publicIPAddress": {
-                        "id": "[resourceId('Microsoft.Network/publicIPAddresses','publicIP')]"
+                        "id": "[resourceId('Microsoft.Network/publicIPAddresses','opscenter')]"
                     },
-                    "privateIPAllocationMethod": "Static",
-                    "privateIPAddress": "10.0.1.5",
+                    "privateIPAllocationMethod": "Dynamic",
                     "subnet": {
-                        "id": "[concat(resourceId('Microsoft.Network/virtualNetworks', 'opscentervnet'), '/subnets/vmSubnet')]"
-                    },
-                    "networkSecurityGroup": {
-                        "id": "[resourceId('Microsoft.Network/networkSecurityGroups','securityGroup')]"
+                        "id": "[concat(resourceId('Microsoft.Network/virtualNetworks', 'opscenter'), '/subnets/subnet')]"
                     }
                 }
             }
@@ -146,10 +78,10 @@ networkInterfaces = {
     }
 }
 
-storageAccounts = {
+storageAccount = {
     "apiVersion": "2015-05-01-preview",
     "type": "Microsoft.Storage/storageAccounts",
-    "name": "[concat('opscsa',resourceGroup().name)]",
+    "name": "[concat('opscenter', parameters('uniqueString'))]",
     "location": "[resourceGroup().location]",
     "properties": {
         "accountType": "Standard_LRS"
@@ -157,19 +89,19 @@ storageAccounts = {
 }
 
 
-def virtualmachines(username, password):
+def virtualmachine(username, password):
     return {
         "apiVersion": "2015-06-15",
         "type": "Microsoft.Compute/virtualMachines",
-        "name": "opscentervm",
+        "name": "opscenter",
         "location": "[resourceGroup().location]",
         "dependsOn": [
-            "Microsoft.Network/networkInterfaces/networkInterface",
-            "[concat('Microsoft.Storage/storageAccounts/opscsa',resourceGroup().name)]"
+            "Microsoft.Network/networkInterfaces/opscenter",
+            "[concat('Microsoft.Storage/storageAccounts/opscenter', parameters('uniqueString'))]"
         ],
         "properties": {
             "hardwareProfile": {
-                "vmSize": "Standard_D12"
+                "vmSize": "Standard_A1"
             },
             "osProfile": {
                 "computername": "opscenter",
@@ -186,7 +118,7 @@ def virtualmachines(username, password):
                 "osDisk": {
                     "name": "osdisk",
                     "vhd": {
-                        "uri": "[concat('http://opscsa',resourceGroup().name,'.blob.core.windows.net/vhds/opscentervm-osdisk.vhd')]"
+                        "uri": "[concat('http://opscenter', parameters('uniqueString'), '.blob.core.windows.net/vhds/opscenter-osdisk.vhd')]"
                     },
                     "caching": "ReadWrite",
                     "createOption": "FromImage"
@@ -195,7 +127,7 @@ def virtualmachines(username, password):
             "networkProfile": {
                 "networkInterfaces": [
                     {
-                        "id": "[resourceId('Microsoft.Network/networkInterfaces','networkInterface')]"
+                        "id": "[resourceId('Microsoft.Network/networkInterfaces','opscenter')]"
                     }
                 ]
             }
@@ -203,63 +135,25 @@ def virtualmachines(username, password):
     }
 
 
-# The OpsCenter extension should depend on:
-#   All connections
-#   All dse nodes
-#   OpsCenter host VM
-
-def generate_vm_names(clusterParameters):
-    virtualMachineNames = []
-
-    locations = clusterParameters['locations']
-    nodesPerLocation = clusterParameters['nodesPerLocation']
+def generate_vm_names(locations, nodeCount):
+    names = []
 
     for location in locations:
-        datacenterIndex = locations.index(location) + 1
-        for nodeIndex in range(0, nodesPerLocation):
-            computerName = "dc" + str(datacenterIndex) + "vm" + str(nodeIndex)
-            virtualMachineNames.append("Microsoft.Compute/virtualMachines/" + computerName + "vm")
+        datacenterIndex = locations.index(location)
+        for nodeIndex in range(0, nodeCount):
+            name = "dc" + str(datacenterIndex) + "vm" + str(nodeIndex)
+            names.append("Microsoft.Compute/virtualMachines/" + name)
 
-    return virtualMachineNames
-
-
-def generate_connection_names(clusterParameters):
-    connectionNames = []
-
-    locations = clusterParameters['locations']
-
-    gatewayNameA = "opsc_gateway"
-    for location in locations:
-        datacenterIndexB = locations.index(location) + 1
-        gatewayNameB = "dseNode_gw_dc" + str(datacenterIndexB)
-
-        connectionNames.append("Microsoft.Network/connections/" + "connection_" + gatewayNameA + "_" + gatewayNameB)
-        connectionNames.append("Microsoft.Network/connections/" + "connection_" + gatewayNameB + "_" + gatewayNameA)
-
-    for locationA in locations:
-        datacenterIndexA = locations.index(locationA) + 1
-        gatewayNameA = "dseNode_gw_dc" + str(datacenterIndexA)
-
-        for locationB in locations:
-            datacenterIndexB = locations.index(locationB) + 1
-            gatewayNameB = "dseNode_gw_dc" + str(datacenterIndexB)
-
-            if datacenterIndexA == datacenterIndexB:
-                pass
-            else:
-                connectionNames.append("Microsoft.Network/connections/" + "connection_" + gatewayNameA + "_" + gatewayNameB)
-
-    return connectionNames
+    return names
 
 
 def extension(clusterParameters):
-    dependsOn = ["Microsoft.Compute/virtualMachines/opscentervm"]
+    dependsOn = ["Microsoft.Compute/virtualMachines/opscenter"]
     dependsOn += generate_vm_names(clusterParameters)
-    dependsOn += generate_connection_names(clusterParameters)
 
     return {
         "type": "Microsoft.Compute/virtualMachines/extensions",
-        "name": "opscentervm/installopscenter",
+        "name": "opscenter/installopscenter",
         "apiVersion": "2015-06-15",
         "location": "[resourceGroup().location]",
         "dependsOn": dependsOn,
@@ -269,11 +163,11 @@ def extension(clusterParameters):
             "typeHandlerVersion": "1.3",
             "settings": {
                 "fileUris": [
-                    "https://raw.githubusercontent.com/DSPN/azure-resource-manager-dse/master/extensions/opsCenter.sh",
                     "https://raw.githubusercontent.com/DSPN/azure-resource-manager-dse/master/extensions/installJava.sh",
-                    "https://raw.githubusercontent.com/DSPN/azure-resource-manager-dse/master/extensions/opsCenter.py"
+                    "https://raw.githubusercontent.com/DSPN/azure-resource-manager-dse/master/extensions/opsCenter.py",
+                    "https://raw.githubusercontent.com/DSPN/azure-resource-manager-dse/master/extensions/opsCenter.sh"
                 ],
-                "commandToExecute": "bash opsCenter.sh " + base64.b64encode(json.dumps(clusterParameters))
+                "commandToExecute": "bash opsCenter.sh"
             }
         }
     }

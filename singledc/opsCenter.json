@@ -25,7 +25,7 @@
     }
   },
   "variables": {
-    "storageAccountName": "[concat('opsc', parameters('uniqueString'))]",
+    "storageAccountName": "[concat('opscenter', parameters('uniqueString'))]",
     "vnetId": "[resourceId('Microsoft.Network/virtualNetworks', parameters('vnetName'))]",
     "subnetId": "[concat(variables('vnetId'), '/subnets/', parameters('subnetName'))]"
   },
@@ -38,7 +38,7 @@
       "properties": {
         "publicIPAllocationMethod": "Dynamic",
         "dnsSettings": {
-          "domainNameLabel": "[concat('opsc', parameters('uniqueString'))]"
+          "domainNameLabel": "[concat('opscenter', parameters('uniqueString'))]"
         }
       }
     },
@@ -99,7 +99,7 @@
           "osDisk": {
             "name": "osdisk",
             "vhd": {
-              "uri": "[concat('http://', variables('storageAccountName'),'.blob.core.windows.net/vhds/', 'opsCenter', 'vm-osdisk.vhd')]"
+              "uri": "[concat('http://', variables('storageAccountName'),'.blob.core.windows.net/vhds/', 'opscenter', 'vm-osdisk.vhd')]"
             },
             "caching": "ReadWrite",
             "createOption": "FromImage"

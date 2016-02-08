@@ -26,7 +26,7 @@ generatedTemplate = {
     "outputs": {
         "opsCenterURL": {
             "type": "string",
-            "value": "[concat('http://opsc', variables('uniqueString'), '.', resourceGroup().location, '.cloudapp.azure.com:8888')]"
+            "value": "[concat('http://opscenter', variables('uniqueString'), '.', resourceGroup().location, '.cloudapp.azure.com:8888')]"
         }
     }
 }
