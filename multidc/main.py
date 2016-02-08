@@ -1,5 +1,5 @@
 import json
-import opsCenterNode
+import opsCenter
 import nodes
 
 # This python script generates an ARM template that deploys DSE across multiple datacenters.
@@ -38,7 +38,7 @@ for location in locations:
     generatedTemplate['resources'] += resources
 
 # Create the OpsCenter node
-# resources = opsCenterNode.generate_template(clusterParameters)
+# resources = opsCenter.generate_template(clusterParameters)
 # generatedTemplate['resources'] += resources
 
 with open('generatedTemplate.json', 'w') as outputFile:
