@@ -106,7 +106,7 @@ def networkInterface(location, datacenterIndex, nodeIndex):
                         },
                         "privateIPAllocationMethod": "Dynamic",
                         "subnet": {
-                            "id": "[concat(resourceId('Microsoft.Network/virtualNetworks', '" + name + "'), '/subnets/subnet')]"
+                            "id": "[concat(resourceId('Microsoft.Network/virtualNetworks', '" + virtualNetworkName + "'), '/subnets/subnet')]"
                         }
                     }
                 }
@@ -188,7 +188,7 @@ def virtualmachine(location, datacenterIndex, nodeIndex, storageAccountIndex, vm
 
 def extension(location, datacenterIndex, nodeIndex):
     name = "dc" + str(datacenterIndex) + "vm" + str(nodeIndex)
-    
+
     resource = {
         "type": "Microsoft.Compute/virtualMachines/extensions",
         "name": name + "/installdsenode",
