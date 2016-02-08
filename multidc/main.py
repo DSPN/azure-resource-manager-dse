@@ -1,6 +1,6 @@
 import json
 import opsCenterNode
-import dseNodes
+import nodes
 
 # This python script generates an ARM template that deploys DSE across multiple datacenters.
 
@@ -19,32 +19,27 @@ generatedTemplate = {
     "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
     "contentVersion": "1.0.0.0",
     "parameters": {},
-    "variables": {},
+    "variables": {
+        "uniqueString": "[uniqueString(resourceGroup().id, deployment().name)]"
+    },
     "resources": [],
-    "outputs": {}
-}
-
-# Create DSE nodes in each location
-for location in locations:
-    datacenterIndex = locations.index(location) + 1
-    resources = dseNodes.generate_template(location, datacenterIndex, vmSize, nodeCount, adminUsername, adminPassword)
-    generatedTemplate['resources'] += resources
-
-# Create the OpsCenter node
-#resources = opsCenterNode.generate_template(clusterParameters)
-#generatedTemplate['resources'] += resources
-
-
-# Add the opsCenterURL
-def opsCenterURL():
-    return {
+    "outputs": {
         "opsCenterURL": {
             "type": "string",
             "value": "[concat('http://opsc', variables('uniqueString'), '.', " + locations[0] + ", '.cloudapp.azure.com:8888')]"
         }
     }
+}
 
-generatedTemplate['outputs'] += opsCenterURL()
+# Create DSE nodes in each location
+for location in locations:
+    datacenterIndex = locations.index(location) + 1
+    resources = nodes.generate_template(location, datacenterIndex, vmSize, nodeCount, adminUsername, adminPassword)
+    generatedTemplate['resources'] += resources
+
+# Create the OpsCenter node
+# resources = opsCenterNode.generate_template(clusterParameters)
+# generatedTemplate['resources'] += resources
 
 with open('generatedTemplate.json', 'w') as outputFile:
     json.dump(generatedTemplate, outputFile, sort_keys=True, indent=4, ensure_ascii=False)

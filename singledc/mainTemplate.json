@@ -72,7 +72,7 @@
         "version": "latest"
       },
       "scripts": [
-        "[concat(variables('extensionUrl'), 'dseNode.sh')]",
+        "[concat(variables('extensionUrl'), 'node.sh')]",
         "[concat(variables('extensionUrl'), 'installJava.sh')]",
         "[concat(variables('extensionUrl'), 'opsCenter.sh')]",
         "[concat(variables('extensionUrl'), 'opsCenter.py')]"

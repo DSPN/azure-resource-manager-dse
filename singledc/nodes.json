@@ -169,7 +169,7 @@
         "typeHandlerVersion": "1.2",
         "settings": {
           "fileUris": "[parameters('osSettings').scripts]",
-          "commandToExecute": "bash dseNode.sh"
+          "commandToExecute": "bash node.sh"
         }
       }
     }
