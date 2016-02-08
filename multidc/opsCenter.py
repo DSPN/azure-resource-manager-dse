@@ -177,6 +177,7 @@ def extension(locations, nodeCount, adminUsername, adminPassword, nodeType):
             "settings": {
                 "fileUris": [
                     "https://raw.githubusercontent.com/DSPN/azure-resource-manager-dse/master/extensions/installJava.sh",
+                    "https://raw.githubusercontent.com/DSPN/azure-resource-manager-dse/master/extensions/modifyopscenterdconf.sh",
                     "https://raw.githubusercontent.com/DSPN/azure-resource-manager-dse/master/extensions/opsCenter.py",
                     "https://raw.githubusercontent.com/DSPN/azure-resource-manager-dse/master/extensions/opsCenter.sh"
                 ],
