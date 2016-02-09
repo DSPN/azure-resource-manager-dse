@@ -43,10 +43,10 @@ def getNodeInformation(datacenter):
         nodeName = datacenter['namespace'] + 'vm' + str(nodeIndex) + uniqueString + '.' + datacenter[
             'location'] + '.cloudapp.azure.com'
         publicIP = socket.gethostbyname_ex(nodeName)[2][0]
-        #privateIP = getPrivateIP(publicIP)
+        privateIP = getPrivateIP(publicIP)
         document = {
             "public_ip": publicIP,
-            "private_ip": publicIP,
+            "private_ip": privateIP,
             "node_type": nodeType,
             "rack": "rack1"
         }
