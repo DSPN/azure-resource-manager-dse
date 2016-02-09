@@ -8,7 +8,7 @@ curl -L http://debian.datastax.com/debian/repo_key | sudo apt-key add -
 apt-get update
 apt-get -y install opscenter=5.2.4
 
-bash modifyopscenterdconf.sh
+bash set_reported_interface.sh
 
 echo "Starting OpsCenter"
 sudo service opscenterd start
