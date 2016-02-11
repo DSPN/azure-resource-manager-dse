@@ -45,47 +45,31 @@
             "defaultValue": "5",
             "toolTip": "Number of virtual machines to provision for the cluster",
             "constraints": {
-              "allowedValues": [
-                {
-                  "label": "4",
-                  "value": 4
-                },
-                {
-                  "label": "12",
-                  "value": 12
-                },
-                {
-                  "label": "36",
-                  "value": 36
-                },
-                {
-                  "label": "90",
-                  "value": 90
-                }
-              ]
+              "minValue": 1,
+              "maxValue": 40
             }
           },
           {
-            "name": "clusterVmSize",
+            "name": "vmSize",
             "type": "Microsoft.Compute.SizeSelector",
             "label": "Virtual machine size",
             "toolTip": "Size of virtual machine to provision for the cluster",
             "recommendedSizes": [
+              "Standard_D1",
+              "Standard_D4",
               "Standard_D12",
               "Standard_D13",
               "Standard_D14",
-              "Standard_G2",
-              "Standard_G3",
               "Standard_G4",
               "Standard_G5"
             ],
             "constraints": {
               "allowedSizes": [
+                "Standard_D1",
+                "Standard_D4",
                 "Standard_D12",
                 "Standard_D13",
                 "Standard_D14",
-                "Standard_G2",
-                "Standard_G3",
                 "Standard_G4",
                 "Standard_G5"
               ]
@@ -102,11 +86,10 @@
       }
     ],
     "outputs": {
-      "clusterName": "[basics('clusterName')]",
       "adminUsername": "[basics('adminUsername')]",
       "adminPassword": "[basics('adminPassword')]",
-      "clusterNodeCount": "[steps('dataStaxConfig').clusterNodeCount]",
-      "clusterVmSize": "[steps('dataStaxConfig').clusterVmSize]",
+      "nodeCount": "[steps('dataStaxConfig').nodeCount]",
+      "vmSize": "[steps('dataStaxConfig').vmSize]",
       "location": "[location()]"
     }
   }
