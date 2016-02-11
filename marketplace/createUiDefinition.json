@@ -44,10 +44,6 @@
             "label": "Cluster size",
             "defaultValue": "5",
             "toolTip": "Number of virtual machines to provision for the cluster",
-            "constraints": {
-              "minValue": 1,
-              "maxValue": 40
-            }
           },
           {
             "name": "vmSize",
