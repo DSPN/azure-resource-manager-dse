@@ -40,10 +40,42 @@
         "elements": [
           {
             "name": "nodeCount",
-            "type": "Microsoft.Common.DropDown",
+            "type": "Microsoft.Common.TextBox",
             "label": "Cluster size",
             "defaultValue": "5",
             "toolTip": "Number of virtual machines to provision for the cluster",
+            "constraints": {
+              "required": true,
+              "regex": "[1-40]",
+              "validationMessage": "Only numbers 1-40 are allowed."
+            }
+          },
+          {
+            "name": "nodeType",
+            "type": "Microsoft.Common.DropDown",
+            "label": "Node Type",
+            "defaultValue": "cassandra",
+            "toolTip": "Type of node to provision for the cluster",
+            "constraints": {
+              "allowedValues": [
+                {
+                  "label": "cassandra",
+                  "value": "cassandra"
+                },
+                {
+                  "label": "solr",
+                  "value": "solr"
+                },
+                {
+                  "label": "spark",
+                  "value": "spark"
+                },
+                {
+                  "label": "hadoop",
+                  "value": "hadoop"
+                }
+              ]
+            }
           },
           {
             "name": "vmSize",
@@ -76,7 +108,7 @@
               "offer": "UbuntuServer",
               "sku": "14.04.3-LTS"
             },
-            "count": "[steps('dataStaxConfig').clusterNodeCount]"
+            "count": "[steps('dataStaxConfig').nodeCount]"
           }
         ]
       }
