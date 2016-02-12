@@ -10,7 +10,8 @@ node_private_ip=$5
 cloud_type=azure # azure or aws
 default_seed_node_public_ip=104.40.22.205
 default_opscenter_public_ip=40.112.212.167
-#Make sure file systems was built
+
+#Make sure file systems were built
 data_file_directories="/mnt/cassandra/data"
 commitlog_directory="/mnt/cassandra/commitlog"
 saved_caches_directory="/mnt/cassandra/saved_caches"
@@ -56,22 +57,6 @@ echo ""
 
 set -x
 
-#
-# Install Azul Zulu
-#
-#echo "Installing Azul Zulu JDK"
-#apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys 0x219BD9C9
-#apt-add-repository -y "deb http://repos.azulsystems.com/ubuntu stable main"
-#apt-get -y update
-#apt-get -y install zulu-8
-
-#apt-get -y remove zulu-8
-
-#
-# rpm install
-# wget --no-cookies --no-check-certificate --header "Cookie: gpw_e24=http%3A%2F%2Fwww.oracle.com%2F; oraclelicense=accept-securebackup-cookie" "http://download.oracle.com/otn-pub/java/jdk/8u65-b17/jdk-8u65-linux-x64.rpm"
-# sudo yum install -y
-
 #--- download and Install Java ---#
 echo | add-apt-repository ppa:webupd8team/java
 apt-get -y  update
@@ -89,10 +74,8 @@ apt-get -y install tree
 apt-get -y install telnet
 
 #---download and Install dse
-if [ x"$dse_download_user" == x ]; echo "Error: Missing environment variable dse_download_user needed for downloading DSE". ; exit 99; fi
-if [ x"$dse_download_pass" == x ]; echo "Error: Missing environment variable dse_download_pass needed for downloading DSE". ; exit 99; fi
 echo Installing DSE
-echo "deb https://$dse_download_user:$dse_download_pass@debian.datastax.com/enterprise stable main" | sudo tee -a /etc/apt/sources.list.d/datastax.sources.list
+echo "deb https://datastax%40microsoft.com:3A7vadPHbNT@debian.datastax.com/enterprise stable main" | sudo tee -a /etc/apt/sources.list.d/datastax.sources.list
 curl -L https://debian.datastax.com/debian/repo_key | sudo apt-key add -
 apt-get -y update
 apt-get -y install dse-full
@@ -163,20 +146,6 @@ if [ ! -f "$limitsconf_backup" ] ; then
 		chown cassandra:cassandra "$limitsconf_backup"
 	)
 fi
-
-#
-# Not needed as limits.d is installed with the DSE package
-#
-#cd "$limitd_dir"
-#
-#if [ ! -f "$limitd_backup" ] ; then
-#	( set -x
-#		cp cassandra.conf "$limitd_backup"
-#		chown cassandra:cassandra "$limitd_backup"
-#	)
-#fi
-
-
 
 cd "$cassandra_conf_dir"
 #
@@ -318,27 +287,6 @@ cassandra        -      as               unlimited
 (set -x; chown cassandra:cassandra limits.conf.new)
 (set -x; diff limits.conf limits.conf.new)
 (set -x; mv -f limits.conf.new limits.conf)
-
-
-#
-# Not needed as limits.d is installed with the DSE package
-#
-#cd "$limitd_dir"
-#cat cassandra.conf \
-#| grep -v 'cassandra.*memlock.*' \
-#| grep -v 'cassandra.*nofile.*' \
-#| grep -v 'cassandra.*nproc.*' \
-#| grep -v 'cassandra.*as.*' \
-#> cassandra.conf.new
-#cat <</EOF >> cassandra.conf.new
-#cassandra        -      memlock          unlimited
-#cassandra        -      nofile           100000
-#cassandra        -      nproc            32768
-#cassandra        -      as               unlimited
-#/EOF
-#(set -x; chown cassandra:cassandra cassandra.conf.new)
-#(set -x; diff cassandra.conf cassandra.conf.new)
-#(set -x; mv -f cassandra.conf.new cassandra.conf)
 
 mkdir $HOME/.cassandra
 set -x; chown cassandra:cassandra $HOME/.cassandra
