@@ -199,7 +199,7 @@ set -x
 #
 # Generate cassandra.yaml
 #
-cluster_name='J4U Prod Cluster'
+cluster_name='Cluster'
 seeds="$seed_node_public_ip"
 listen_address=$node_private_ip
 broadcast_address=$node_public_ip
