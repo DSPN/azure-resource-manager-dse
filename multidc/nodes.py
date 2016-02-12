@@ -204,8 +204,7 @@ def extension(location, datacenterIndex, nodeIndex):
             "settings": {
                 "fileUris": [
                     "https://raw.githubusercontent.com/DSPN/azure-resource-manager-dse/master/extensions/node.sh",
-                    "https://raw.githubusercontent.com/DSPN/azure-resource-manager-dse/master/extensions/installJava.sh",
-                    "https://raw.githubusercontent.com/DSPN/azure-resource-manager-dse/master/extensions/set_agent_rpc_broadcast_address.sh"
+                    "https://raw.githubusercontent.com/DSPN/azure-resource-manager-dse/master/extensions/installJava.sh"
                 ],
                 "commandToExecute": "bash node.sh"
             }

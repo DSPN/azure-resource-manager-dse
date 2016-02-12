@@ -151,19 +151,6 @@ def extension(locations, nodeCount, adminUsername, adminPassword, nodeType):
     dependsOn = ["Microsoft.Compute/virtualMachines/opscenter"]
     dependsOn += generate_vm_names(locations, nodeCount)
 
-    locationsArgument = ""
-    for location in locations:
-        locationsArgument += location + ','
-    locationsArgument = locationsArgument[:-1]
-
-    namespaces = ""
-    for location in locations:
-        datacenterIndex = locations.index(location)
-        namespaces += 'dc' + str(datacenterIndex) + ','
-    namespaces = namespaces[:-1]
-
-    commandToExecute = "[concat('bash opsCenter.sh " + locationsArgument + " ', variables('uniqueString'), ' " + adminUsername + " " + adminPassword + " " + str(nodeCount) + " " + nodeType + " " + namespaces + "')]"
-
     resource = {
         "type": "Microsoft.Compute/virtualMachines/extensions",
         "name": "opscenter/installopscenter",
@@ -177,11 +164,9 @@ def extension(locations, nodeCount, adminUsername, adminPassword, nodeType):
             "settings": {
                 "fileUris": [
                     "https://raw.githubusercontent.com/DSPN/azure-resource-manager-dse/master/extensions/installJava.sh",
-                    "https://raw.githubusercontent.com/DSPN/azure-resource-manager-dse/master/extensions/opsCenter.py",
-                    "https://raw.githubusercontent.com/DSPN/azure-resource-manager-dse/master/extensions/opsCenter.sh",
-                    "https://raw.githubusercontent.com/DSPN/azure-resource-manager-dse/master/extensions/set_reported_interface.sh"
+                    "https://raw.githubusercontent.com/DSPN/azure-resource-manager-dse/master/extensions/opsCenter.sh"
                 ],
-                "commandToExecute": commandToExecute
+                "commandToExecute": "bash opsCenter.sh"
             }
         }
     }
