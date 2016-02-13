@@ -3,6 +3,6 @@
 wget https://github.com/DSPN/install-datastax/archive/master.zip
 apt-get -y install unzip
 unzip master.zip
-cd master/bin
+cd install-datastax-master/bin
 
 ./dse.sh
