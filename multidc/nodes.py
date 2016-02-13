@@ -203,7 +203,7 @@ def extension(location, datacenterIndex, nodeIndex):
             "typeHandlerVersion": "1.3",
             "settings": {
                 "fileUris": [
-                    "https://raw.githubusercontent.com/DSPN/azure-resource-manager-dse/master/extensions/node.sh"
+                    "https://raw.githubusercontent.com/benofben/azure-resource-manager-dse/master/extensions/node.sh"
                 ],
                 "commandToExecute": "bash node.sh"
             }
