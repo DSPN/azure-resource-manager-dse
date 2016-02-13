@@ -46,7 +46,7 @@
             "toolTip": "Number of virtual machines to provision for the cluster",
             "constraints": {
               "required": true,
-              "regex": "[1-40]",
+              "regex": "^(40|[1-3][0-9]|[1-9])$",
               "validationMessage": "Only numbers 1-40 are allowed."
             }
           },
