@@ -1,3 +1,3 @@
 #!/usr/bin/env bash
 
-bash install_java.sh
+#bash install_java.sh

@@ -73,7 +73,6 @@
       },
       "scripts": [
         "[concat(variables('extensionUrl'), 'node.sh')]",
-        "[concat(variables('extensionUrl'), 'installJava.sh')]",
         "[concat(variables('extensionUrl'), 'opsCenter.sh')]"
       ]
     }

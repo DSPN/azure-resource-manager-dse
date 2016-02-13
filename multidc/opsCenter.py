@@ -163,7 +163,6 @@ def extension(locations, nodeCount, adminUsername, adminPassword, nodeType):
             "typeHandlerVersion": "1.3",
             "settings": {
                 "fileUris": [
-                    "https://raw.githubusercontent.com/DSPN/azure-resource-manager-dse/master/extensions/installJava.sh",
                     "https://raw.githubusercontent.com/DSPN/azure-resource-manager-dse/master/extensions/opsCenter.sh"
                 ],
                 "commandToExecute": "bash opsCenter.sh"
