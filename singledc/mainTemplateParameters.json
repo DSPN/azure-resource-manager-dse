@@ -1,9 +1,9 @@
 {
   "nodeCount": {
-    "value": 5
+    "value": 40
   },
   "vmSize": {
-    "value": "Standard_D1"
+    "value": "Standard_D14"
   },
   "adminUsername": {
     "value": "datastax"
@@ -15,3 +15,4 @@
     "value": "cassandra"
   }
 }
+
