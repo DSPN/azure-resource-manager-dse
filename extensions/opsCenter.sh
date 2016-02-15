@@ -4,7 +4,7 @@ location=$1
 uniqueString=$2
 
 seed_node_dns_name="dc0vm0$uniqueString.$location.cloudapp.azure.com"
-seed_node_public_ip=$seed_node_dns_name
+seed_node_public_ip=`dig +short $seed_node_dns_name | awk '{ print ; exit }'`
 
 wget https://github.com/DSPN/install-datastax/archive/master.zip
 apt-get -y install unzip
