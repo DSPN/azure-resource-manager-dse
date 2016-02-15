@@ -9,7 +9,7 @@ seed_node_dns_name="dc0vm0$uniqueString.$location.cloudapp.azure.com"
 seed_node_public_ip=`dig +short $seed_node_dns_name | awk '{ print ; exit }'`
 
 opscenter_dns_name="opscenter$uniqueString.$location.cloudapp.azure.com"
-opscenter_public_ip=seed_node_public_ip=`dig +short $opscenter_dns_name | awk '{ print ; exit }'`
+opscenter_public_ip=`dig +short $opscenter_dns_name | awk '{ print ; exit }'`
 
 wget https://github.com/DSPN/install-datastax/archive/master.zip
 apt-get -y install unzip
