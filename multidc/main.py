@@ -26,7 +26,7 @@ generatedTemplate = {
     "outputs": {
         "opsCenterURL": {
             "type": "string",
-            "value": "[concat('http://opscenter', variables('uniqueString'), '.', resourceGroup().location, '.cloudapp.azure.com:8888')]"
+            "value": "[concat('http://opscenter', variables('uniqueString'), '." + locations[0] + ".cloudapp.azure.com:8888')]"
         }
     }
 }
@@ -34,7 +34,7 @@ generatedTemplate = {
 # Create DSE nodes in each location
 for location in locations:
     datacenterIndex = locations.index(location)
-    resources = nodes.generate_template(location, datacenterIndex, vmSize, nodeCount, adminUsername, adminPassword)
+    resources = nodes.generate_template(location, datacenterIndex, vmSize, nodeCount, adminUsername, adminPassword, locations)
     generatedTemplate['resources'] += resources
 
 # Create the OpsCenter node

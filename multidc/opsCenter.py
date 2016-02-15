@@ -155,7 +155,7 @@ def extension(locations, nodeCount, adminUsername, adminPassword, nodeType):
         "type": "Microsoft.Compute/virtualMachines/extensions",
         "name": "opscenter/installopscenter",
         "apiVersion": "2015-06-15",
-        "location": "[resourceGroup().location]",
+        "location": locations[0],
         "dependsOn": dependsOn,
         "properties": {
             "publisher": "Microsoft.OSTCExtensions",
@@ -165,7 +165,7 @@ def extension(locations, nodeCount, adminUsername, adminPassword, nodeType):
                 "fileUris": [
                     "https://raw.githubusercontent.com/benofben/azure-resource-manager-dse/master/extensions/opsCenter.sh"
                 ],
-                "commandToExecute": "bash opsCenter.sh"
+                "commandToExecute": "[concat('bash opsCenter.sh " + locations[0] + " ', variables('uniqueString'))]"
             }
         }
     }

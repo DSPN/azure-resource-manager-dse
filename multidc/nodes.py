@@ -1,7 +1,7 @@
 import math
 
 
-def generate_template(location, datacenterIndex, vmSize, nodeCount, adminUsername, adminPassword):
+def generate_template(location, datacenterIndex, vmSize, nodeCount, adminUsername, adminPassword, locations):
     resources = []
 
     resources.append(availabilitySet(location, datacenterIndex))
@@ -17,7 +17,7 @@ def generate_template(location, datacenterIndex, vmSize, nodeCount, adminUsernam
             resources.append(storageAccount(location, datacenterIndex, storageAccountIndex))
 
         resources.append(virtualmachine(location, datacenterIndex, nodeIndex, storageAccountIndex, vmSize, adminUsername, adminPassword))
-        resources.append(extension(location, datacenterIndex, nodeIndex))
+        resources.append(extension(location, datacenterIndex, nodeIndex, locations))
 
     return resources
 
@@ -186,7 +186,8 @@ def virtualmachine(location, datacenterIndex, nodeIndex, storageAccountIndex, vm
     return resource
 
 
-def extension(location, datacenterIndex, nodeIndex):
+def extension(location, datacenterIndex, nodeIndex, locations):
+    data_center_name = "dc" + str(datacenterIndex)
     name = "dc" + str(datacenterIndex) + "vm" + str(nodeIndex)
 
     resource = {
@@ -205,7 +206,7 @@ def extension(location, datacenterIndex, nodeIndex):
                 "fileUris": [
                     "https://raw.githubusercontent.com/benofben/azure-resource-manager-dse/master/extensions/node.sh"
                 ],
-                "commandToExecute": "bash node.sh"
+                "commandToExecute": "[concat('bash node.sh " + data_center_name + " " + locations[0] + " ', variables('uniqueString'))]"
             }
         }
     }
