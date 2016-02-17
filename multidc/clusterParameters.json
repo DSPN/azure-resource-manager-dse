@@ -1,12 +1,13 @@
 {
-    "locations": [
-        "eastus",
-        "centralus",
-        "westus"
-    ],
-    "nodeCount": 5,
-    "vmSize": "Standard_D1",
-    "adminUsername": "datastax",
-    "adminPassword": "foo123!",
-    "nodeType": "cassandra"
+  "locations": [
+    "eastus",
+    "centralus",
+    "westus"
+  ],
+  "nodeCount": 10,
+  "vmSize": "Standard_D1",
+  "adminUsername": "datastax",
+  "adminPassword": "foo123!",
+  "nodeType": "cassandra"
 }
+
