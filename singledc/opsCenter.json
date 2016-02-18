@@ -33,7 +33,7 @@
     {
       "apiVersion": "2015-06-15",
       "type": "Microsoft.Network/publicIPAddresses",
-      "name": "opsCenterPublicIP",
+      "name": "opscenter",
       "location": "[parameters('location')]",
       "properties": {
         "publicIPAllocationMethod": "Dynamic",
@@ -45,10 +45,10 @@
     {
       "apiVersion": "2015-06-15",
       "type": "Microsoft.Network/networkInterfaces",
-      "name": "opsCenterNIC",
+      "name": "opscenter",
       "location": "[parameters('location')]",
       "dependsOn": [
-        "[concat('Microsoft.Network/publicIPAddresses/', 'opsCenterPublicIP')]"
+        "[concat('Microsoft.Network/publicIPAddresses/', 'opscenter')]"
       ],
       "properties": {
         "ipConfigurations": [
@@ -56,7 +56,7 @@
             "name": "ipconfig1",
             "properties": {
               "publicIPAddress": {
-                "id": "[resourceId('Microsoft.Network/publicIPAddresses', 'opsCenterPublicIP')]"
+                "id": "[resourceId('Microsoft.Network/publicIPAddresses', 'opscenter')]"
               },
               "privateIPAllocationMethod": "Dynamic",
               "subnet": {
@@ -79,10 +79,10 @@
     {
       "apiVersion": "2015-06-15",
       "type": "Microsoft.Compute/virtualMachines",
-      "name": "opscentervm",
+      "name": "opscenter",
       "location": "[parameters('location')]",
       "dependsOn": [
-        "[concat('Microsoft.Network/networkInterfaces/', 'opsCenterNIC')]",
+        "[concat('Microsoft.Network/networkInterfaces/', 'opscenter')]",
         "[concat('Microsoft.Storage/storageAccounts/', variables('storageAccountName'))]"
       ],
       "properties": {
@@ -108,7 +108,7 @@
         "networkProfile": {
           "networkInterfaces": [
             {
-              "id": "[resourceId('Microsoft.Network/networkInterfaces', 'opsCenterNIC')]"
+              "id": "[resourceId('Microsoft.Network/networkInterfaces', 'opscenter')]"
             }
           ]
         }

@@ -200,7 +200,7 @@
           },
           "nodeCount": {
             "value": "[parameters('nodeCount')]"
-          }
+          },
           "namespace": {
             "value": "dc0"
           },
