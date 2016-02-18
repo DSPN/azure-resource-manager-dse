@@ -12,7 +12,6 @@ vmSize = clusterParameters['vmSize']
 nodeCount = clusterParameters['nodeCount']
 adminUsername = clusterParameters['adminUsername']
 adminPassword = clusterParameters['adminPassword']
-nodeType = clusterParameters['nodeType']
 
 # This is the skeleton of the template that we're going to add resources to
 generatedTemplate = {
