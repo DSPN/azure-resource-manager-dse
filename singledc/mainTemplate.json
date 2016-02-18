@@ -62,8 +62,8 @@
     }
   },
   "variables": {
-    "templateUrl": "[concat(variables('baseUrl'), '/singledc/')]",
-    "extensionUrl": "[concat(variables('baseUrl'), '/extensions/')]",
+    "templateUrl": "[concat(parameters('baseUrl'), '/singledc/')]",
+    "extensionUrl": "[concat(parameters('baseUrl'), '/extensions/')]",
     "nodesTemplateUrl": "[concat(variables('templateUrl'), 'nodes.json')]",
     "opsCenterTemplateUrl": "[concat(variables('templateUrl'), 'opsCenter.json')]",
     "opsCenterInstallTemplateUrl": "[concat(variables('templateUrl'), 'opsCenterInstall.json')]",
