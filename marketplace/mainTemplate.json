@@ -53,12 +53,11 @@
       }
     },
     "baseUrl": {
-       "type": "string",
-       "metadata": {
-            "description": "The base URL for dependent assets",
-            "artifactsBaseUrl": ""
-        },
-       "defaultValue": "https://raw.githubusercontent.com/DSPN/azure-resource-manager-dse/master"
+      "type": "string",
+      "metadata": {
+        "description": "The base URL for dependent assets",
+        "artifactsBaseUrl": ""
+      }
     }
   },
   "variables": {
