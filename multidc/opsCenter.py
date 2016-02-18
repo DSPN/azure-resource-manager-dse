@@ -2,7 +2,7 @@ import base64
 import json
 
 
-def generate_template(locations, nodeCount, adminUsername, adminPassword, nodeType):
+def generate_template(locations, nodeCount, adminUsername, adminPassword):
     # We're going to create all these resources in resourceGroup().location
 
     resources = []
@@ -11,7 +11,7 @@ def generate_template(locations, nodeCount, adminUsername, adminPassword, nodeTy
     resources.append(networkInterface)
     resources.append(storageAccount)
     resources.append(virtualmachine(adminUsername, adminPassword))
-    resources.append(extension(locations, nodeCount, adminUsername, adminPassword, nodeType))
+    resources.append(extension(locations, nodeCount, adminUsername, adminPassword))
     return resources
 
 
@@ -79,7 +79,7 @@ networkInterface = {
 }
 
 storageAccount = {
-    "apiVersion": "2015-05-01-preview",
+    "apiVersion": "2015-06-15",
     "type": "Microsoft.Storage/storageAccounts",
     "name": "[concat('opscenter', variables('uniqueString'))]",
     "location": "[resourceGroup().location]",
@@ -147,7 +147,7 @@ def generate_vm_names(locations, nodeCount):
     return names
 
 
-def extension(locations, nodeCount, adminUsername, adminPassword, nodeType):
+def extension(locations, nodeCount, adminUsername, adminPassword):
     dependsOn = ["Microsoft.Compute/virtualMachines/opscenter"]
     dependsOn += generate_vm_names(locations, nodeCount)
 
@@ -161,6 +161,7 @@ def extension(locations, nodeCount, adminUsername, adminPassword, nodeType):
             "publisher": "Microsoft.OSTCExtensions",
             "type": "CustomScriptForLinux",
             "typeHandlerVersion": "1.3",
+            "autoUpgradeMinorVersion": True,
             "settings": {
                 "fileUris": [
                     "https://raw.githubusercontent.com/benofben/azure-resource-manager-dse/master/extensions/opsCenter.sh"

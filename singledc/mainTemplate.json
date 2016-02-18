@@ -38,25 +38,12 @@
       "metadata": {
         "description": "Admin password for the virtual machines"
       }
-    },
-    "nodeType": {
-      "type": "string",
-      "defaultValue": "cassandra",
-      "allowedValues": [
-        "cassandra",
-        "solr",
-        "spark",
-        "hadoop"
-      ],
-      "metadata": {
-        "description": "Type of node to provision for the cluster"
-      }
     }
   },
   "variables": {
-    "baseUrl": "https://raw.githubusercontent.com/benofben/azure-resource-manager-dse/master/",
-    "templateUrl": "[concat(variables('baseUrl'), 'singledc/')]",
-    "extensionUrl": "[concat(variables('baseUrl'), 'extensions/')]",
+    "baseUrl": "https://raw.githubusercontent.com/benofben/azure-resource-manager-dse/master",
+    "templateUrl": "[concat(variables('baseUrl'), '/singledc/')]",
+    "extensionUrl": "[concat(variables('baseUrl'), '/extensions/')]",
     "nodesTemplateUrl": "[concat(variables('templateUrl'), 'nodes.json')]",
     "opsCenterTemplateUrl": "[concat(variables('templateUrl'), 'opsCenter.json')]",
     "opsCenterInstallTemplateUrl": "[concat(variables('templateUrl'), 'opsCenterInstall.json')]",
@@ -213,10 +200,7 @@
           },
           "nodeCount": {
             "value": "[parameters('nodeCount')]"
-          },
-          "nodeType": {
-            "value": "[parameters('nodeType')]"
-          },
+          }
           "namespace": {
             "value": "dc0"
           },

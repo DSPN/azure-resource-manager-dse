@@ -51,33 +51,6 @@
             }
           },
           {
-            "name": "nodeType",
-            "type": "Microsoft.Common.DropDown",
-            "label": "Node Type",
-            "defaultValue": "cassandra",
-            "toolTip": "Type of node to provision for the cluster",
-            "constraints": {
-              "allowedValues": [
-                {
-                  "label": "cassandra",
-                  "value": "cassandra"
-                },
-                {
-                  "label": "solr",
-                  "value": "solr"
-                },
-                {
-                  "label": "spark",
-                  "value": "spark"
-                },
-                {
-                  "label": "hadoop",
-                  "value": "hadoop"
-                }
-              ]
-            }
-          },
-          {
             "name": "vmSize",
             "type": "Microsoft.Compute.SizeSelector",
             "label": "Virtual machine size",

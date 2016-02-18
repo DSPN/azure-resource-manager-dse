@@ -120,7 +120,7 @@ def storageAccount(location, datacenterIndex, storageAccountIndex):
     name = "dc" + str(datacenterIndex) + "sa" + str(storageAccountIndex)
 
     resource = {
-        "apiVersion": "2015-05-01-preview",
+        "apiVersion": "2015-06-15",
         "type": "Microsoft.Storage/storageAccounts",
         "name": "[concat('" + name + "', variables('uniqueString'))]",
         "location": location,
@@ -201,7 +201,8 @@ def extension(location, datacenterIndex, nodeIndex, locations):
         "properties": {
             "publisher": "Microsoft.OSTCExtensions",
             "type": "CustomScriptForLinux",
-            "typeHandlerVersion": "1.3",
+            "typeHandlerVersion": "1.4",
+            "autoUpgradeMinorVersion": True,
             "settings": {
                 "fileUris": [
                     "https://raw.githubusercontent.com/benofben/azure-resource-manager-dse/master/extensions/node.sh"

@@ -38,7 +38,7 @@ for location in locations:
     generatedTemplate['resources'] += resources
 
 # Create the OpsCenter node
-resources = opsCenter.generate_template(locations, nodeCount, adminUsername, adminPassword, nodeType)
+resources = opsCenter.generate_template(locations, nodeCount, adminUsername, adminPassword)
 generatedTemplate['resources'] += resources
 
 with open('generatedTemplate.json', 'w') as outputFile:
