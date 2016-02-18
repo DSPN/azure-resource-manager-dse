@@ -40,7 +40,9 @@
         "typeHandlerVersion": "1.4",
         "autoUpgradeMinorVersion": true,
         "settings": {
-          "fileUris": "[parameters('osSettings').scripts]",
+          "fileUris": "[parameters('osSettings').scripts]"
+        },
+        "protectedSettings": {
           "commandToExecute": "[concat('bash opsCenter.sh ', parameters('location'), ' ', parameters('uniqueString'), ' ', parameters('adminUsername'), ' ', parameters('adminPassword'), ' ', parameters('nodeCount'), ' ', parameters('nodeType'), ' ', parameters('namespace'))]"
         }
       }
