@@ -51,7 +51,8 @@
       "metadata": {
         "description": "Type of node to provision for the cluster"
       }
-    },
+    }
+  },
   "variables": {
     "baseUrl": "https://raw.githubusercontent.com/DSPN/azure-resource-manager-dse/master",
     "templateUrl": "[concat(variables('baseUrl'), '/singledc/')]",
