@@ -3,7 +3,7 @@
     "value": 5
   },
   "vmSize": {
-    "value": "Standard_D1"
+    "value": "Standard_D14"
   },
   "adminUsername": {
     "value": "datastax"
