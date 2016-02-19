@@ -55,14 +55,14 @@
     "baseUrl": {
       "type": "string",
       "metadata": {
-        "description": "Not User Configureable -- The base URL for dependent assets",
+        "description": "Not User Configurable -- The base URL for dependent assets",
         "artifactsBaseUrl": ""
       }
     },
     "location": {
       "type": "string",
       "metadata": {
-        "description": "Not User Configureable -- Dummy parameter required by portal"
+        "description": "Not User Configurable -- Dummy parameter required by portal"
       }
     }
   },
