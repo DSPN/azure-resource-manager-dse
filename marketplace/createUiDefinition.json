@@ -6,7 +6,7 @@
       {
         "name": "adminUsername",
         "type": "Microsoft.Compute.UserNameTextBox",
-        "label": "Username",
+        "label": "Admin Username",
         "toolTip": "Admin user name for the virtual machines",
         "osPlatform": "Linux"
       },
@@ -14,7 +14,7 @@
         "name": "adminPassword",
         "type": "Microsoft.Common.PasswordBox",
         "label": {
-          "password": "Password",
+          "password": "Admin Password",
           "confirmPassword": "Confirm password"
         },
         "toolTip": "Admin password for the virtual machines",
@@ -31,7 +31,7 @@
     "steps": [
       {
         "name": "dataStaxConfig",
-        "label": "DataStax Settings",
+        "label": "DataStax Config",
         "subLabel": {
           "preValidation": "Configure the Cluster",
           "postValidation": "Done"
@@ -41,7 +41,7 @@
           {
             "name": "nodeCount",
             "type": "Microsoft.Common.TextBox",
-            "label": "Cluster size",
+            "label": "Node Count",
             "defaultValue": "5",
             "toolTip": "Number of virtual machines to provision for the cluster",
             "constraints": {
@@ -80,7 +80,7 @@
           {
             "name": "vmSize",
             "type": "Microsoft.Compute.SizeSelector",
-            "label": "Virtual machine size",
+            "label": "Virtual Machine Size",
             "toolTip": "Size of virtual machine to provision for the cluster",
             "recommendedSizes": [
               "Standard_D1",
