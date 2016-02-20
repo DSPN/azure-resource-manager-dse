@@ -42,7 +42,7 @@
             "name": "nodeCount",
             "type": "Microsoft.Common.TextBox",
             "label": "Node Count",
-            "defaultValue": "5",
+            "defaultValue": 5,
             "toolTip": "Number of virtual machines to provision for the cluster",
             "constraints": {
               "required": true,
