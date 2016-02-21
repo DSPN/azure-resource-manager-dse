@@ -4,7 +4,7 @@
   "parameters": {
     "nodeCount": {
       "type": "int",
-      "defaultValue": 5,
+      "defaultValue": 6,
       "minValue": 1,
       "maxValue": 40,
       "metadata": {
