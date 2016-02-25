@@ -42,7 +42,7 @@
             "name": "nodeCount",
             "type": "Microsoft.Common.DropDown",
             "label": "Node Count",
-            "defaultValue": 6,
+            "defaultValue": "6",
             "toolTip": "Number of virtual machines to provision for the cluster",
             "constraints": {
               "allowedValues": [
