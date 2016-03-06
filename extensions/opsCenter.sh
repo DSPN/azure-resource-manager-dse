@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-location=$1
+location=$1 #this is the location of the seed and OpsCenter
 uniqueString=$2
 
 seed_node_dns_name="dc0vm0$uniqueString.$location.cloudapp.azure.com"
@@ -11,3 +11,4 @@ unzip master.zip
 cd install-datastax-master/bin
 
 ./opscenter.sh $seed_node_dns_name
+

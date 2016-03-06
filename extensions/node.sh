@@ -13,3 +13,4 @@ unzip master.zip
 cd install-datastax-master/bin
 
 ./dse.sh $cloud_type $data_center_name $seed_node_dns_name
+
