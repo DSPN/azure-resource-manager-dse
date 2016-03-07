@@ -11,12 +11,9 @@ main.py reads from the following parameters from ./clusterParameters.json:
 | vmSize | The size of virtual machine to provision for each cluster node |
 | adminUsername  | Admin user name for the virtual machines |
 | adminPassword  | Admin password for the virtual machines |
-| nodeType  | Type of node to provision for the cluster |
 
 Once the Azure VMs, virtual network and storage are setup, the template installs prerequisites like Java on the DSE nodes.  These nodes are assigned both private and public dynamic IP addresses.
 
 The template also sets up a node to run DataStax OpsCenter.  The script opscenter.sh installs OpsCenter and creates a cluster using the OpsCenter REST API.  When the API call is made, OpsCenter installs DSE on all the cluster nodes and starts it up.  
 
 On completion, OpsCenter will be accessible on port 8888 of the public IP address of the OpsCenter node.
-
-OpsCenter 5.x can provision a maximum of 100 nodes.  Given that, you need number_of_locations * nodeCount <= 100.

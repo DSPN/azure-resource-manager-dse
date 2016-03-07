@@ -4,7 +4,7 @@ The template also provisions a storage account, virtual network and public IP ad
 
 The button below will deploy this template to Azure.  The template will be dynamically linked directly from this github repository.  Given that, if you want to make changes to subtemplates or extensions, be sure to fork the repo and adjust the baseUrl.
 
-<a href="https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2FDSPN%2Fazure-resource-manager-dse%2Fmaster%2Fsingledc%2FmainTemplate.json" target="_blank">
+<a href="https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Fbenofben%2Fazure-resource-manager-dse%2Fmaster%2Fsingledc%2FmainTemplate.json" target="_blank">
     <img src="http://azuredeploy.net/deploybutton.png"/>
 </a>
 
@@ -16,7 +16,6 @@ The template expects the following parameters:
 | vmSize | Size of virtual machine to provision for the cluster |
 | adminUsername  | Admin user name for the virtual machines |
 | adminPassword  | Admin password for the virtual machines |
-| nodeType  | Type of node to provision for the cluster |
 
 Once the Azure VMs, virtual network and storage are setup, the template installs prerequisites like Java on the DSE nodes.  These nodes are assigned both private and public dynamic IP addresses.
 
