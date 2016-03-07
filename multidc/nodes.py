@@ -187,7 +187,7 @@ def virtualmachine(location, datacenterIndex, nodeIndex, storageAccountIndex, vm
 
 
 def extension(location, datacenterIndex, nodeIndex, locations):
-    data_center_name = "dc" + str(datacenterIndex)
+    data_center_name = "dc" + str(datacenterIndex) + '-' + location
     name = "dc" + str(datacenterIndex) + "vm" + str(nodeIndex)
 
     resource = {
