@@ -31,8 +31,8 @@ generatedTemplate = {
 }
 
 # Create DSE nodes in each location
-for location in locations:
-    datacenterIndex = locations.index(location)
+for datacenterIndex in range(0, len(locations)):
+    location = locations[datacenterIndex]
     resources = nodes.generate_template(location, datacenterIndex, vmSize, nodeCount, adminUsername, adminPassword, locations)
     generatedTemplate['resources'] += resources
 

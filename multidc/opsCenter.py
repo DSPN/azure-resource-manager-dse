@@ -138,8 +138,7 @@ def virtualmachine(username, password):
 def generate_vm_names(locations, nodeCount):
     names = []
 
-    for location in locations:
-        datacenterIndex = locations.index(location)
+    for datacenterIndex in range(0, len(locations)):
         for nodeIndex in range(0, nodeCount):
             name = "dc" + str(datacenterIndex) + "vm" + str(nodeIndex)
             names.append("Microsoft.Compute/virtualMachines/" + name)

@@ -1,11 +1,11 @@
 {
   "locations": [
-    "eastus",
-    "centralus",
-    "westus"
+    "eastasia",
+    "eastasia",
+    "eastasia"
   ],
   "nodeCount": 5,
-  "vmSize": "Standard_D1",
+  "vmSize": "Standard_D14",
   "adminUsername": "datastax",
   "adminPassword": "foo123!"
 }
