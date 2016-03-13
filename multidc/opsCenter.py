@@ -154,7 +154,7 @@ def extension(locations, nodeCount, adminUsername, adminPassword):
         "type": "Microsoft.Compute/virtualMachines/extensions",
         "name": "opscenter/installopscenter",
         "apiVersion": "2015-06-15",
-        "location": locations[0],
+        "location": "[resourceGroup().location]",
         "dependsOn": dependsOn,
         "properties": {
             "publisher": "Microsoft.OSTCExtensions",
