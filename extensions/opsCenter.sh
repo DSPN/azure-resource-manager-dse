@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 
+cloud_type="azure"
 location=$1 #this is the location of the seed and OpsCenter
 uniqueString=$2
 
@@ -10,5 +11,4 @@ apt-get -y install unzip
 unzip master.zip
 cd install-datastax-master/bin
 
-./opscenter.sh $seed_node_dns_name
-
+./opscenter.sh $cloud_type $seed_node_dns_name

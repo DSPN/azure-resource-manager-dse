@@ -1,8 +1,8 @@
 {
   "locations": [
-    "eastasia",
-    "eastasia",
-    "eastasia"
+    "eastus",
+    "centralus",
+    "westus"
   ],
   "nodeCount": 5,
   "vmSize": "Standard_D14",
