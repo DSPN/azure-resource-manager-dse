@@ -6,6 +6,12 @@ unique_string=$2
 
 seed_node_dns_name="dc0vm0$unique_string.$location.cloudapp.azure.com"
 
+echo "Configuring nodes with the settings:"
+echo cloud_type $cloud_type
+echo location $location
+echo unique_string $unique_string
+echo seed_node_dns_name $seed_node_dns_name
+
 wget https://github.com/DSPN/install-datastax/archive/master.zip
 apt-get -y install unzip
 unzip master.zip
