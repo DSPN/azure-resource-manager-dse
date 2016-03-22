@@ -170,7 +170,7 @@
         "autoUpgradeMinorVersion": true,
         "settings": {
           "fileUris": "[parameters('osSettings').scripts]",
-          "commandToExecute": "[concat('bash node.sh ', parameters('namespace'), ' ', parameters('location'), ' ', parameters('uniqueString'))]"
+          "commandToExecute": "[concat('bash node.sh ', parameters('location'), ' ', parameters('uniqueString'), ' ', parameters('namespace'))]"
         }
       }
     }
