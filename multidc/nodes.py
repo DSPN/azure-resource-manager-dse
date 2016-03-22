@@ -207,7 +207,7 @@ def extension(location, datacenterIndex, nodeIndex, locations):
                 "fileUris": [
                     "https://raw.githubusercontent.com/benofben/azure-resource-manager-dse/master/extensions/node.sh"
                 ],
-                "commandToExecute": "[concat('bash node.sh " + data_center_name + " " + locations[0] + " ', variables('uniqueString'))]"
+                "commandToExecute": "[concat('bash node.sh " + locations[0] + " ', variables('uniqueString'), ' " + data_center_name + "')]"
             }
         }
     }
