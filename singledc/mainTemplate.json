@@ -4,7 +4,7 @@
   "parameters": {
     "nodeCount": {
       "type": "int",
-      "defaultValue": 5,
+      "defaultValue": 6,
       "minValue": 1,
       "maxValue": 40,
       "metadata": {
@@ -13,15 +13,19 @@
     },
     "vmSize": {
       "type": "string",
-      "defaultValue": "Standard_D1",
+      "defaultValue": "Standard_D14_v2",
       "allowedValues": [
-        "Standard_D1",
-        "Standard_D4",
-        "Standard_D12",
-        "Standard_D13",
-        "Standard_D14",
+        "Standard_D1_v2",
+        "Standard_D4_v2",
+        "Standard_D5_v2",
+        "Standard_D13_v2",
+        "Standard_D14_v2",
+        "Standard_G3",
         "Standard_G4",
-        "Standard_G5"
+        "Standard_G5",
+        "Standard_D4",
+        "Standard_D13",
+        "Standard_D14"
       ],
       "metadata": {
         "description": "Size of virtual machine to provision for the cluster"
@@ -41,7 +45,7 @@
     }
   },
   "variables": {
-    "baseUrl": "https://raw.githubusercontent.com/benofben/azure-resource-manager-dse/master",
+    "baseUrl": "https://raw.githubusercontent.com/DSPN/azure-resource-manager-dse/master",
     "templateUrl": "[concat(variables('baseUrl'), '/singledc/')]",
     "extensionUrl": "[concat(variables('baseUrl'), '/extensions/')]",
     "nodesTemplateUrl": "[concat(variables('templateUrl'), 'nodes.json')]",
