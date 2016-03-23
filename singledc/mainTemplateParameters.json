@@ -10,5 +10,11 @@
   },
   "adminPassword": {
     "value": "foo123!"
+<<<<<<< HEAD
+=======
+  },
+  "nodeType": {
+    "value": "spark"
+>>>>>>> DSPN/master
   }
 }
