@@ -1,11 +1,3 @@
-# This template uses the Oracle JDK.  By using this template the user accepts
-# the licensing terms set forth here: http://java.com/license
-#
-# This template uses DataStax Enterprise.  By using this template the user accepts
-# the licensing terms set forth here: http://www.datastax.com/enterprise-terms
-#
-
-
 The MIT License (MIT)
 
 Copyright (c) 2015-2016 Microsoft Azure
