@@ -1,24 +1,20 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
-bash installJava.sh
+cloud_type="azure"
+location=$1 #this is the location of the seed, not necessarily of this node
+unique_string=$2
 
-echo "Installing OpsCenter"
-echo "deb http://debian.datastax.com/community stable main" | sudo tee -a /etc/apt/sources.list.d/datastax.community.list
-curl -L http://debian.datastax.com/debian/repo_key | sudo apt-key add -
-apt-get update
-apt-get -y install opscenter=5.2.4
+seed_node_dns_name="dc0vm0$unique_string.$location.cloudapp.azure.com"
 
-echo "Starting OpsCenter"
-sudo service opscenterd start
+echo "Configuring nodes with the settings:"
+echo cloud_type $cloud_type
+echo location $location
+echo unique_string $unique_string
+echo seed_node_dns_name $seed_node_dns_name
 
-echo "Waiting for OpsCenter to start..."
-sleep 15
+wget https://github.com/DSPN/install-datastax/archive/master.zip
+apt-get -y install unzip
+unzip master.zip
+cd install-datastax-master/bin
 
-echo "Python script needs sshpass to determine local IPs."
-apt-get -y install sshpass
-
-echo "Generating a provision.json file"
-python opsCenter.py $1 $2 $3 $4 $5 $6 $7
-
-echo "Provisioning a new cluster using provision.json"
-curl --insecure -H "Accept: application/json" -X POST http://127.0.0.1:8888/provision -d @provision.json
+./opscenter.sh $cloud_type $seed_node_dns_name

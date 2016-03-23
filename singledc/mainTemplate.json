@@ -42,19 +42,6 @@
       "metadata": {
         "description": "Admin password for the virtual machines"
       }
-    },
-    "nodeType": {
-      "type": "string",
-      "defaultValue": "cassandra",
-      "allowedValues": [
-        "cassandra",
-        "solr",
-        "spark",
-        "hadoop"
-      ],
-      "metadata": {
-        "description": "Type of node to provision for the cluster"
-      }
     }
   },
   "variables": {
@@ -77,9 +64,7 @@
       },
       "scripts": [
         "[concat(variables('extensionUrl'), 'node.sh')]",
-        "[concat(variables('extensionUrl'), 'installJava.sh')]",
-        "[concat(variables('extensionUrl'), 'opsCenter.sh')]",
-        "[concat(variables('extensionUrl'), 'opsCenter.py')]"
+        "[concat(variables('extensionUrl'), 'opsCenter.sh')]"
       ]
     }
   },
@@ -219,9 +204,6 @@
           },
           "nodeCount": {
             "value": "[parameters('nodeCount')]"
-          },
-          "nodeType": {
-            "value": "[parameters('nodeType')]"
           },
           "namespace": {
             "value": "dc0"
