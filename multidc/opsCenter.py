@@ -141,7 +141,9 @@ def extension(locations, nodeCount, adminUsername, adminPassword):
         "name": "opscenter/installopscenter",
         "apiVersion": "2015-06-15",
         "location": "[resourceGroup().location]",
-        "dependsOn": "Microsoft.Compute/virtualMachines/opscenter",
+        "dependsOn": [
+            "Microsoft.Compute/virtualMachines/opscenter"
+        ],
         "properties": {
             "publisher": "Microsoft.OSTCExtensions",
             "type": "CustomScriptForLinux",
