@@ -50,7 +50,6 @@
     "extensionUrl": "[concat(variables('baseUrl'), '/extensions/')]",
     "nodesTemplateUrl": "[concat(variables('templateUrl'), 'nodes.json')]",
     "opsCenterTemplateUrl": "[concat(variables('templateUrl'), 'opsCenter.json')]",
-    "opsCenterInstallTemplateUrl": "[concat(variables('templateUrl'), 'opsCenterInstall.json')]",
     "location": "[resourcegroup().location]",
     "uniqueString": "[uniqueString(resourceGroup().id, deployment().name)]",
     "vnetName": "vnet",
@@ -171,45 +170,6 @@
           },
           "subnetName": {
             "value": "[variables('subnetName')]"
-          }
-        }
-      }
-    },
-    {
-      "name": "opsCenterInstall",
-      "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2015-01-01",
-      "dependsOn": [
-        "Microsoft.Resources/deployments/nodes",
-        "Microsoft.Resources/deployments/opsCenter"
-      ],
-      "properties": {
-        "mode": "Incremental",
-        "templateLink": {
-          "uri": "[variables('opsCenterInstallTemplateUrl')]",
-          "contentVersion": "1.0.0.0"
-        },
-        "parameters": {
-          "location": {
-            "value": "[variables('location')]"
-          },
-          "uniqueString": {
-            "value": "[variables('uniqueString')]"
-          },
-          "adminUsername": {
-            "value": "[parameters('adminUsername')]"
-          },
-          "adminPassword": {
-            "value": "[parameters('adminPassword')]"
-          },
-          "nodeCount": {
-            "value": "[parameters('nodeCount')]"
-          },
-          "namespace": {
-            "value": "dc0"
-          },
-          "osSettings": {
-            "value": "[variables('osSettings')]"
           }
         }
       }
