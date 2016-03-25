@@ -162,7 +162,7 @@ def virtualmachine(location, datacenterIndex, nodeIndex, storageAccountIndex, vm
                 "imageReference": {
                     "publisher": "Canonical",
                     "offer": "UbuntuServer",
-                    "sku": "14.04.3-LTS",
+                    "sku": "14.04.4-LTS",
                     "version": "latest"
                 },
                 "osDisk": {
