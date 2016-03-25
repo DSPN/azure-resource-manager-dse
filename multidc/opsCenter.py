@@ -135,27 +135,13 @@ def virtualmachine(username, password):
     }
 
 
-def generate_vm_names(locations, nodeCount):
-    names = []
-
-    for datacenterIndex in range(0, len(locations)):
-        for nodeIndex in range(0, nodeCount):
-            name = "dc" + str(datacenterIndex) + "vm" + str(nodeIndex)
-            names.append("Microsoft.Compute/virtualMachines/" + name)
-
-    return names
-
-
 def extension(locations, nodeCount, adminUsername, adminPassword):
-    dependsOn = ["Microsoft.Compute/virtualMachines/opscenter"]
-    dependsOn += generate_vm_names(locations, nodeCount)
-
     resource = {
         "type": "Microsoft.Compute/virtualMachines/extensions",
         "name": "opscenter/installopscenter",
         "apiVersion": "2015-06-15",
         "location": "[resourceGroup().location]",
-        "dependsOn": dependsOn,
+        "dependsOn": "Microsoft.Compute/virtualMachines/opscenter",
         "properties": {
             "publisher": "Microsoft.OSTCExtensions",
             "type": "CustomScriptForLinux",
