@@ -92,7 +92,7 @@
     {
       "name": "nodes",
       "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2015-06-15",
+      "apiVersion": "2016-02-01",
       "dependsOn": [
         "[concat('Microsoft.Network/virtualNetworks/', variables('vnetName'))]"
       ],
@@ -139,7 +139,7 @@
     {
       "name": "opsCenter",
       "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2015-06-15",
+      "apiVersion": "2016-02-01",
       "dependsOn": [
         "[concat('Microsoft.Network/virtualNetworks/', variables('vnetName'))]"
       ],
