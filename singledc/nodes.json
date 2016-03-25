@@ -160,8 +160,7 @@
         "count": "[parameters('nodeCount')]"
       },
       "dependsOn": [
-        "[concat('Microsoft.Compute/virtualMachines/', parameters('namespace'), 'vm', copyindex())]",
-        "[concat('Microsoft.Network/networkInterfaces/', parameters('namespace'), 'vm', copyindex())]"
+        "[concat('Microsoft.Compute/virtualMachines/', parameters('namespace'), 'vm', copyindex())]"
       ],
       "properties": {
         "publisher": "Microsoft.OSTCExtensions",

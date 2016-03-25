@@ -48,7 +48,7 @@
       "name": "opscenter",
       "location": "[parameters('location')]",
       "dependsOn": [
-        "[concat('Microsoft.Network/publicIPAddresses/', 'opscenter')]"
+        "Microsoft.Network/publicIPAddresses/opscenter"
       ],
       "properties": {
         "ipConfigurations": [
@@ -82,7 +82,7 @@
       "name": "opscenter",
       "location": "[parameters('location')]",
       "dependsOn": [
-        "[concat('Microsoft.Network/networkInterfaces/', 'opscenter')]",
+        "Microsoft.Network/networkInterfaces/opscenter",
         "[concat('Microsoft.Storage/storageAccounts/', variables('storageAccountName'))]"
       ],
       "properties": {
@@ -119,6 +119,7 @@
       "name": "opscenter/installopscenter",
       "apiVersion": "2015-06-15",
       "location": "[parameters('location')]",
+      "dependOn":"Microsoft.Compute/virtualMachines/opscenter",
       "properties": {
         "publisher": "Microsoft.OSTCExtensions",
         "type": "CustomScriptForLinux",
