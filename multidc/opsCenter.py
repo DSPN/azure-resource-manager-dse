@@ -163,7 +163,7 @@ def extension(locations, nodeCount, adminUsername, adminPassword):
             "autoUpgradeMinorVersion": True,
             "settings": {
                 "fileUris": [
-                    "https://raw.githubusercontent.com/benofben/azure-resource-manager-dse/master/extensions/opsCenter.sh"
+                    "https://raw.githubusercontent.com/DSPN/azure-resource-manager-dse/master/extensions/opsCenter.sh"
                 ],
                 "commandToExecute": "[concat('bash opsCenter.sh " + locations[0] + " ', variables('uniqueString'))]"
             }
