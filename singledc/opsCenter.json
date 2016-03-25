@@ -119,7 +119,7 @@
       "name": "opscenter/installopscenter",
       "apiVersion": "2015-06-15",
       "location": "[parameters('location')]",
-      "dependOn":"Microsoft.Compute/virtualMachines/opscenter",
+      "dependsOn":"Microsoft.Compute/virtualMachines/opscenter",
       "properties": {
         "publisher": "Microsoft.OSTCExtensions",
         "type": "CustomScriptForLinux",
