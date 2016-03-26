@@ -148,7 +148,7 @@ def virtualmachine(location, datacenterIndex, nodeIndex, storageAccountIndex, vm
         ],
         "properties": {
             "availabilitySet": {
-                "id": "[resourceId('Microsoft.Compute/availabilitySets', '" + availabilitySetName +"')]"
+                "id": "[resourceId('Microsoft.Compute/availabilitySets', '" + availabilitySetName + "')]"
             },
             "hardwareProfile": {
                 "vmSize": vmSize
