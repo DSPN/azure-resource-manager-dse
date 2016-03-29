@@ -19,4 +19,7 @@ apt-get -y install unzip
 unzip master.zip
 cd install-datastax-master/bin
 
-./dse.sh $cloud_type $seed_node_dns_name $data_center_name
+dse_username=datastax%40microsoft.com
+dse_password=3A7vadPHbNT
+
+./dse.sh $cloud_type $seed_node_dns_name $data_center_name $dse_username $dse_password
