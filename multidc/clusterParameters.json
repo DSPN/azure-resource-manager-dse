@@ -1,18 +1,8 @@
 {
   "locations": [
-    "EastUS",
-    "EastUS 2",
-    "WestUS",
-    "CentralUS",
-    "SouthCentralUS",
-    "NorthEurope",
-    "WestEurope",
-    "EastAsia",
-    "SoutheastAsia",
-    "JapanEast",
-    "JapanWest",
-    "NorthCentralUS",
-    "BrazilSouth"
+    "eastus",
+    "centralus",
+    "westus"
   ],
   "nodeCount": 10,
   "vmSize": "Standard_D1_v2",
