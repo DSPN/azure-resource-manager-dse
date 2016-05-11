@@ -18,3 +18,4 @@ unzip master.zip
 cd install-datastax-master/bin
 
 ./opscenter.sh $cloud_type $seed_node_dns_name
+
