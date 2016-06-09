@@ -14,10 +14,9 @@ echo unique_string $unique_string
 echo data_center_name $data_center_name
 echo seed_node_dns_name $seed_node_dns_name
 
-wget https://github.com/DSPN/install-datastax/archive/master.zip
+wget https://github.com/DSPN/install-datastax/archive/1.0.zip
 apt-get -y install unzip
-unzip master.zip
-cd install-datastax-master/bin
+unzip 1.0.zip
+cd install-datastax-1.0/bin
 
 ./dse.sh $cloud_type $seed_node_dns_name $data_center_name
-
