@@ -12,8 +12,8 @@ main.py reads from the following parameters from ./clusterParameters.json:
 | adminUsername  | Admin user name for the virtual machines |
 | adminPassword  | Admin password for the virtual machines |
 
-Once the Azure VMs, virtual network and storage are setup, the template installs prerequisites like Java on the DSE nodes.  These nodes are assigned both private and public dynamic IP addresses.
+Once the Azure VMs, virtual network and storage are setup, the template installs Java and DSE on the nodes.  It also configures them.  These nodes are assigned both private and public dynamic IP addresses.
 
-The template also sets up a node to run DataStax OpsCenter.  The script opscenter.sh installs OpsCenter and creates a cluster using the OpsCenter REST API.  When the API call is made, OpsCenter installs DSE on all the cluster nodes and starts it up.  
+The template also sets up a node to run DataStax OpsCenter.  The script opscenter.sh installs OpsCenter and connects to the cluster by calling the OpsCenter REST API.
 
 On completion, OpsCenter will be accessible on port 8888 of the public IP address of the OpsCenter node.
