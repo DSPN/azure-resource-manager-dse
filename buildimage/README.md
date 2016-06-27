@@ -31,5 +31,13 @@ This README describes how we build the VM that the templates use.  As a user of 
  
 ## Get the SAS URL
 
-    azure storage account connectionstring show cli23088123813475934758
-    azure storage blob sas create vhds clie878418583e01667-os-1466625355650.vhd r 06/30/2016 -c "DefaultEndpointsProtocol=https;AccountName=cli23088123813475934758;AccountKey=WBXTCcfvsVynCLfLRL8cSL74tvz9MzJd4JOKVsbSQbVULQuY9Kb96nJFHSapAQlDFmH6g9MGxtBh/wxWrWvZQQ=="
+    azure storage account connectionstring show ben13709
+    azure storage container sas create img rl 06/30/2016 -c "DefaultEndpointsProtocol=https;AccountName=ben13709;AccountKey=dhGblqecj7v4GWYxjIJbOxq+Olo01GW3ykQWIEzyxsPS7h1RoM9xHQkrSHb7e1817WUDLa9LA7K3wltemU/riA=="
+
+This creates a URL for the img:
+
+    https://ben13709.blob.core.windows.net/img?se=2016-06-30T07%3A00%3A00Z&sp=rl&sv=2015-02-21&sr=c&sig=7XZ%2FZwWfW0utvr3fgnFvqytj9JxliN9DrzQ6iUh7wZs%3D
+
+From this you'll have to infer the URL for the VHD.  In this case it is:
+
+    https://ben13709.blob.core.windows.net/datastax2016522133331?se=2016-06-30T07%3A00%3A00Z&sp=rl&sv=2015-02-21&sr=c&sig=7XZ%2FZwWfW0utvr3fgnFvqytj9JxliN9DrzQ6iUh7wZs%3D
