@@ -32,7 +32,7 @@ This README describes how we build the VM that the templates use.  As a user of 
 ## Get the SAS URL
 
     azure storage account connectionstring show ben13709
-    azure storage container sas create img rl 06/30/2016 -c "DefaultEndpointsProtocol=https;AccountName=ben13709;AccountKey=dhGblqecj7v4GWYxjIJbOxq+Olo01GW3ykQWIEzyxsPS7h1RoM9xHQkrSHb7e1817WUDLa9LA7K3wltemU/riA=="
+    azure storage container sas create img rl 06/30/2016 -c "DefaultEndpointsProtocol=https;AccountName=ben13709;AccountKey=dhGblqecj7vrSHb7e1817WUDLa9LA7K3wltemU/riA=="
 
 This creates a URL for the img:
 
