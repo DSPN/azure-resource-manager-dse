@@ -12,10 +12,10 @@ echo location $location
 echo unique_string $unique_string
 echo seed_node_dns_name $seed_node_dns_name
 
-wget https://github.com/DSPN/install-datastax/archive/1.2.zip
+wget https://github.com/DSPN/install-datastax/archive/1.1.zip
 apt-get -y install unzip
-unzip 1.2.zip
-cd install-datastax-1.2/bin
+unzip 1.1.zip
+cd install-datastax-1.1/bin
 
 ./opscenter.sh $cloud_type $seed_node_dns_name
 
