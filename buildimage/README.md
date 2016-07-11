@@ -6,7 +6,8 @@ This README describes how we build the VM that the templates use.  As a user of 
  
     azure group create DSE-Image-RG SouthCentralUS
     azure vm quick-create --vm-size Standard_DS14_v2 DSE-Image-RG dse-image SouthCentralUS Linux Canonical:UbuntuServer:14.04.4-LTS:latest image-160622
-    ssh image-160622@104.214.108.221
+
+Then ssh into the image.  If the command above was used, the username will be image-160622.
 
 ## Install Java on the VM
 
@@ -25,6 +26,10 @@ This README describes how we build the VM that the templates use.  As a user of 
     apt-get -y update
     apt-get -y -d install dse-full=$dse_version dse=$dse_version dse-hive=$dse_version dse-pig=$dse_version dse-demos=$dse_version dse-libsolr=$dse_version dse-libtomcat=$dse_version dse-libsqoop=$dse_version dse-liblog4j=$dse_version dse-libmahout=$dse_version dse-libhadoop-native=$dse_version dse-libcassandra=$dse_version dse-libhive=$dse_version dse-libpig=$dse_version dse-libhadoop=$dse_version dse-libspark=$dse_version
  
+## Clear the history
+
+    foo
+
 ## From the local Azure CLI 
     azure vm stop DSE-Image-RG dse-image
     azure vm generalize DSE-Image-RG dse-image
