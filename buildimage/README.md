@@ -5,7 +5,7 @@ This README describes how we build the VM that the templates use.  As a user of 
 ## Create a VM
  
     azure group create DSE-Image-RG SouthCentralUS
-    azure vm quick-create --vm-size Standard_DS14_v2 DSE-Image-RG dse-image SouthCentralUS Linux Canonical:UbuntuServer:14.04.4-LTS:latest image-160622
+    azure vm quick-create --vm-size Standard_DS14_v2 DSE-Image-RG dseimage SouthCentralUS Linux Canonical:UbuntuServer:14.04.4-LTS:latest image-160622
 
 Then ssh into the image.  If the command above was used, the username will be image-160622.
 
