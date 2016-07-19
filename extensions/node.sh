@@ -10,6 +10,7 @@ echo "Input to node.sh is:"
 echo cloud_type $cloud_type
 echo seed_node_location $seed_node_location
 echo unique_string $unique_string
+echo opscenter_location $opscenter_location
 
 seed_node_dns_name="dc0vm0$unique_string.$seed_node_location.cloudapp.azure.com"
 opscenter_dns_name="opscenter$unique_string.$opscenter_location.cloudapp.azure.com"
