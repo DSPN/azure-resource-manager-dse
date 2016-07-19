@@ -4,7 +4,7 @@
     "centralus",
     "westus"
   ],
-  "nodeCount": 5,
+  "nodeCount": 10,
   "vmSize": "Standard_D1_v2",
   "adminUsername": "datastax",
   "adminPassword": "foo123!"
