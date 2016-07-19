@@ -1,23 +1,23 @@
 #!/usr/bin/env bash
 
 cloud_type="azure"
-location=$1 #this is the location of the seed, not necessarily of this node
+seed_node_location=$1
 unique_string=$2
 
-seed_node_dns_name="dc0vm0$unique_string.$location.cloudapp.azure.com"
-opscenter_dns_name="opscenter$unique_string.$location.cloudapp.azure.com"
-
-echo "Configuring nodes with the settings:"
+echo "Input to node.sh is:"
 echo cloud_type $cloud_type
-echo location $location
+echo seed_node_location $seed_node_location
 echo unique_string $unique_string
+
+seed_node_dns_name="dc0vm0$unique_string.$seed_node_location.cloudapp.azure.com"
+
+echo "Calling opscenter.sh with the settings:"
+echo cloud_type $cloud_type
 echo seed_node_dns_name $seed_node_dns_name
-echo opscenter_dns_name $opscenter_dns_name
 
 wget https://github.com/DSPN/install-datastax/archive/1.1.zip
 apt-get -y install unzip
 unzip 1.1.zip
 cd install-datastax-1.1/bin
 
-./opscenter.sh $cloud_type $seed_node_dns_name $opscenter_dns_name
-
+./opscenter.sh $cloud_type $seed_node_dns_name
