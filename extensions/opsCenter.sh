@@ -15,9 +15,15 @@ echo "Calling opscenter.sh with the settings:"
 echo cloud_type $cloud_type
 echo seed_node_dns_name $seed_node_dns_name
 
-wget https://github.com/DSPN/install-datastax/archive/1.1.zip
+#wget https://github.com/DSPN/install-datastax/archive/1.1.zip
+wget https://github.com/DSPN/install-datastax/archive/master.zip
+
 apt-get -y install unzip
-unzip 1.1.zip
-cd install-datastax-1.1/bin
+
+#unzip 1.1.zip
+unzip master.zip
+
+#cd install-datastax-1.1/bin
+cd master/bin
 
 ./opscenter.sh $cloud_type $seed_node_dns_name
