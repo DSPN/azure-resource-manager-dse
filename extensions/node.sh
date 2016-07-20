@@ -30,6 +30,6 @@ apt-get -y install unzip
 unzip master.zip
 
 #cd install-datastax-1.1/bin
-cd master/bin
+cd install-datastax-master/bin
 
 ./dse.sh $cloud_type $seed_node_dns_name $data_center_name $opscenter_dns_name
