@@ -2,6 +2,10 @@
 
 This README describes how we build the VM that the templates use.  As a user of these templates, you should not need to do this.
 
+General documentation on this process is here:
+https://azure.microsoft.com/en-us/documentation/articles/marketplace-publishing-vm-image-creation/
+https://azure.microsoft.com/en-us/documentation/articles/virtual-machines-linux-classic-create-upload-vhd/
+
 ## Create a VM
  
     azure group create DSE-Image-RG SouthCentralUS
