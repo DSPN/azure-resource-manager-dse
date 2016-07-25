@@ -49,13 +49,13 @@ You'll want to run this command twice.  The first time will clear root's history
  
 ## Get the SAS URL
 
-Run this command to get a URL for the storage account.  You can lookup the name in the portal.  In my case it was 
+Run this command to get a URL for the storage account.  You can lookup the name in the portal.  In my case it was clisto2811037585dseimage.
 
     azure storage account connectionstring show <name of your storage account>
 
 You'll be prompted for the resource group name.  Enter DSE-Image-RG.
 
-    azure storage container sas create img rl 06/30/2016 -c "DefaultEndpointsProtocol=https;AccountName=ben13709;AccountKey=<some long string here>"
+    azure storage container sas create img rl 09/30/2016 -c "DefaultEndpointsProtocol=https;AccountName=<name of your storage account>;AccountKey=<some long string here>"
 
 This creates a URL for the img:
 
