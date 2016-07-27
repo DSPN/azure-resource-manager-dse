@@ -5,7 +5,7 @@
     "westus"
   ],
   "nodeCount": 10,
-  "vmSize": "Standard_D3_v2",
+  "vmSize": "Standard_D1_v2",
   "adminUsername": "datastax",
   "adminPassword": "foo123!"
 }
