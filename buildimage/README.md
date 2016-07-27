@@ -55,21 +55,22 @@ Run this command to get a URL for the storage account.  You can lookup the name 
 
     azure storage account connectionstring show <name of your storage account>
 
-con="DefaultEndpointsProtocol=https;AccountName=cli15207440163475934758;AccountKey=<your key>"
-azure storage container list -c $con
-make sure is vhd
-azure storage blob list vhds -c $con
+    con="DefaultEndpointsProtocol=https;AccountName=cli15207440163475934758;AccountKey=<your key>"
+    azure storage container list -c $con
 
+Make sure the image is a VHD.
+
+    azure storage blob list vhds -c $con
 
 You'll be prompted for the resource group name.  Enter DSE-Image-RG.
 
-azure storage container sas create vhds rl 09/30/2016 -c $con --start 07/23/2016
+    azure storage container sas create vhds rl 09/30/2016 -c $con --start 07/23/2016
 
 This creates a URL for the img:
 
 https://cli15207440163475934758.blob.core.windows.net/vhds?st=2016-07-23T07%3A00%3A00Z&se=2016-09-30T07%3A00%3A00Z&sp=rl&sv=2015-04-05&sr=c&sig=%2BEHZBhu%2FHkZeGTbL3jhKD%2Br1%2F72SvL3btNMHlgD5ERk%3D
 
-to get the sas url
+to get the sas url, add cli etc after vhds as follows:
 
 https://cli15207440163475934758.blob.core.windows.net/vhds/cli6368b7095406bb59-os-1469464726649.vhd?st=2016-07-23T07%3A00%3A00Z&se=2016-09-30T07%3A00%3A00Z&sp=rl&sv=2015-04-05&sr=c&sig=%2BEHZBhu%2FHkZeGTbL3jhKD%2Br1%2F72SvL3btNMHlgD5ERk%3D
 
