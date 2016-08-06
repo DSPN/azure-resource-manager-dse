@@ -80,9 +80,9 @@
     "subnetName": "subnet",
     "osSettings": {
       "imageReference": {
-        "publisher": "Canonical",
-        "offer": "UbuntuServer",
-        "sku": "14.04.4-LTS",
+        "publisher": "datastax",
+        "offer": "datastax-enterprise-virtual-machine",
+        "sku": "DATASTAXENTERPRISE",
         "version": "latest"
       },
       "scripts": [
