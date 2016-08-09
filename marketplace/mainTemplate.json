@@ -81,8 +81,8 @@
     "osSettings": {
       "imageReference": {
         "publisher": "datastax",
-        "offer": "datastax-enterprise-virtual-machine",
-        "sku": "DATASTAXENTERPRISE",
+        "offer": "datastax-enterprise",
+        "sku": "datastaxenterprise",
         "version": "latest"
       },
       "scripts": [
