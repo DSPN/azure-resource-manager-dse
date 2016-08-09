@@ -118,6 +118,11 @@
         "[concat('Microsoft.Compute/availabilitySets/', parameters('namespace'))]",
         "[concat('Microsoft.Storage/storageAccounts/', variables('storageAccountName'))]"
       ],
+      "plan": {
+        "name": "[parameters('osSettings').imageReference.sku]",
+        "publisher": "[parameters('osSettings').imageReference.publisher]",
+        "product": "[parameters('osSettings').imageReference.offer]"
+      },
       "properties": {
         "availabilitySet": {
           "id": "[resourceId('Microsoft.Compute/availabilitySets', concat(parameters('namespace')))]"
