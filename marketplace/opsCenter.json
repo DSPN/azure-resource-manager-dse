@@ -86,9 +86,9 @@
         "[concat('Microsoft.Storage/storageAccounts/', variables('storageAccountName'))]"
       ],
       "plan": {
-        "name": "datastaxenterprise",
-        "publisher": "datastax",
-        "product": "datastax-enterprise"
+        "name": "[parameters('osSettings').imageReference.sku]",
+        "publisher": "[parameters('osSettings').imageReference.publisher]",
+        "product": "[parameters('osSettings').imageReference.offer]"
       },
       "properties": {
         "hardwareProfile": {
