@@ -118,6 +118,11 @@
         "[concat('Microsoft.Compute/availabilitySets/', parameters('namespace'))]",
         "[concat('Microsoft.Storage/storageAccounts/', variables('storageAccountName'))]"
       ],
+      "plan": {
+        "name": "datastaxenterprise",
+        "publisher": "datastax",
+        "product": "datastax-enterprise"
+      },
       "properties": {
         "availabilitySet": {
           "id": "[resourceId('Microsoft.Compute/availabilitySets', concat(parameters('namespace')))]"

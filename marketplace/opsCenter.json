@@ -85,6 +85,11 @@
         "Microsoft.Network/networkInterfaces/opscenter",
         "[concat('Microsoft.Storage/storageAccounts/', variables('storageAccountName'))]"
       ],
+      "plan": {
+        "name": "datastaxenterprise",
+        "publisher": "datastax",
+        "product": "datastax-enterprise"
+      },
       "properties": {
         "hardwareProfile": {
           "vmSize": "Standard_A1"
