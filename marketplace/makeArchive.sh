@@ -7,7 +7,6 @@ cd tmp
 
 cp ../../extensions/* ./
 
-# Do this after since we're going to overwrite mainTemplate.json
 cp ../mainTemplate.json ./
 cp ../nodes.json ./
 cp ../opsCenter.json ./
