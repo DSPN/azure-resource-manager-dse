@@ -22,3 +22,43 @@ Once the Azure VMs, virtual network and storage are setup, the template installs
 The template also sets up a node to run DataStax OpsCenter.  The script opscenter.sh installs OpsCenter and connects to the cluster by calling the OpsCenter REST API.
 
 On completion, OpsCenter will be accessible on port 8888 of the public IP address of the OpsCenter node.
+
+# How To
+
+This document describes how to use templates to deploy DataStax Enterprise (DSE) on Microsoft Azure.
+
+2 Deploy
+
+Deploying to Azure will require an Azure account.  New users can sign up for a free trial that includes a $200 credit.  Note that the quotas on a free trial are significantly lower than those of an Azure Enterprise Agreement (EA) or even a normal credit card based account.
+
+2.1 Deploy Using the Azure Marketplace
+
+DataStax has an Azure Marketplace offer.  This is a bring your own license (BYOL) offer that supports deployment of a single datacenter. The youtube video below gives a detailed walkthrough showing how to deploy a DataStax Enterprise cluster using the Azure Marketplace offers.  The Azure Marketplace offer is available here.
+
+
+
+2.2 Deploy Using the Azure CLI
+
+Command line deployments can be accomplished using the Azure CLI or Azure PowerShell.  We typically recommend the CLI as it is cross platform and can be used on Windows, Linux and the Mac.  Detailed instructions on installing the Azure CLI are available at https://azure.microsoft.com/en-us/documentation/articles/xplat-cli-install/
+
+DataStax has built a GitHub repo that has a number of Azure Resource Manager (ARM) templates, including a template that uses VPN Gateways to create a multi datacenter deployment. Those are available here.
+
+The youtube video below gives a detailed walkthrough showing how to deploy a DataStax Enterprise cluster using the Azure CLI.
+
+
+
+2.3 Debugging Deployments
+
+In the event a deployment doesn't complete successfully, there are a number of steps you can take to understand the problem.  This video describes where various logs can be found.
+
+
+
+2.4 Next Steps
+
+Once you've deployed a cluster on Azure, there are a number of places you can go.  This video covers what to do next.  If you're not yet familiar with DataStax Enterprise and Cassandra, the courses at https://academy.datastax.com/ may be helpful.
+
+
+
+3 Conclusion
+
+This document covers tha basics of getting up and running with DataStax Enterprise in Azure.  We look forward to hearing about your experiences using DataStax Enterprise on Azure.  Feel free to contact me at @benofben or ben.lackey@datastax.com with questions or comments.
