@@ -56,9 +56,3 @@ In the event a deployment doesn't complete successfully, there are a number of s
 2.4 Next Steps
 
 Once you've deployed a cluster on Azure, there are a number of places you can go.  This video covers what to do next.  If you're not yet familiar with DataStax Enterprise and Cassandra, the courses at https://academy.datastax.com/ may be helpful.
-
-
-
-3 Conclusion
-
-This document covers tha basics of getting up and running with DataStax Enterprise in Azure.  We look forward to hearing about your experiences using DataStax Enterprise on Azure.  Feel free to contact me at @benofben or ben.lackey@datastax.com with questions or comments.
