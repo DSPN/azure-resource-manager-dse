@@ -32,6 +32,6 @@ apt-get -y install unzip
 
 wget https://github.com/DSPN/install-datastax-ubuntu/archive/master.zip
 unzip master.zip
-cd install-datastax-ubuntu/bin
+cd install-datastax-ubuntu-master/bin
 
 ./dse.sh $cloud_type $seed_node_dns_name $data_center_name $opscenter_dns_name $dse_version
