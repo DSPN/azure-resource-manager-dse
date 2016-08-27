@@ -1,6 +1,6 @@
 # azure-resource-manager-dse
 
-These are Azure Resource Manager (ARM) templates for deploying DataStax Enterprise (DSE).  The [DataStax Enterprise Deployment Guide for Azure](https://academy.datastax.com/resources/deployment-guide-azure) is a good place to start learning about these templates.
+These are Azure Resource Manager (ARM) templates for deploying DataStax Enterprise (DSE).  The [DataStax Deployment Guide for Azure](https://github.com/DSPN/azure-deployment-guide) is a good place to start.
 
 Directory | Description
 --- | ---
