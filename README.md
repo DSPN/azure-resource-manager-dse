@@ -11,9 +11,7 @@ Directory | Description
 
 ## Deploying DataStax with the Azure CLI
 
-Command line deployments can be accomplished using the Azure CLI or Azure PowerShell.  We typically recommend the CLI as it is cross platform and can be used on Windows, Linux and the Mac.  Detailed instructions on installing the Azure CLI are available at https://azure.microsoft.com/en-us/documentation/articles/xplat-cli-install/
-
-DataStax has built a GitHub repo that has a number of Azure Resource Manager (ARM) templates, including a template that uses VPN Gateways to create a multi datacenter deployment. Those are available here.
+Command line deployments can be accomplished using the Azure CLI or Azure PowerShell.  We typically recommend the CLI as it is cross platform and can be used on Windows, Linux and the Mac.  This repo also provides shell scripts that works with the Azure CLI.  Detailed instructions on installing the Azure CLI are available [here](https://azure.microsoft.com/en-us/documentation/articles/xplat-cli-install/).
 
 The youtube video below gives a detailed walkthrough showing how to deploy a DataStax Enterprise cluster using the Azure CLI.
 
