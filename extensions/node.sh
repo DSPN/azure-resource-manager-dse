@@ -6,6 +6,7 @@ unique_string=$2
 data_center_name=$3
 opscenter_location=$4
 dse_version=4.8.9-1
+#dse_version=5.0.2-1
 
 echo "Input to node.sh is:"
 echo cloud_type $cloud_type
