@@ -101,7 +101,7 @@ def virtualmachine(username, password):
         ],
         "properties": {
             "hardwareProfile": {
-                "vmSize": "Standard_A1"
+                "vmSize": "Standard_D1_v2"
             },
             "osProfile": {
                 "computername": "opscenter",
