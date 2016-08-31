@@ -24,12 +24,12 @@ echo dse_version $dse_version
 
 apt-get -y install unzip
 
-#wget https://github.com/DSPN/install-datastax-ubuntu/archive/5.0.1-4.zip
-#unzip 5.0.1-4.zip
-#cd install-datastax-ubuntu-5.0.1-4/bin
+wget https://github.com/DSPN/install-datastax-ubuntu/archive/5.0.1-5.zip
+unzip 5.0.1-5.zip
+cd install-datastax-ubuntu-5.0.1-5/bin
 
-wget https://github.com/DSPN/install-datastax-ubuntu/archive/master.zip
-unzip master.zip
-cd install-datastax-ubuntu-master/bin
+#wget https://github.com/DSPN/install-datastax-ubuntu/archive/master.zip
+#unzip master.zip
+#cd install-datastax-ubuntu-master/bin
 
 ./dse.sh $cloud_type $seed_node_dns_name $data_center_name $opscenter_dns_name
