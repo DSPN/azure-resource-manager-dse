@@ -11,6 +11,8 @@ Directory | Description
 
 ## Deploying DataStax with the Azure CLI
 
+Important Note: To use these deployments scripts, you must first deploy a cluster through Azure Marketplace [here](https://azure.microsoft.com/en-us/marketplace/partners/datastax/datastax-enterprisesingledc/).  This is because these templates use a VM image and the only way to accept the EULA for the image is through the marketplace.  By accepting the EULA once, your Azure subscription becomes enabled to deploy this VM through other methods like the CLI.
+
 Command line deployments can be accomplished using the Azure CLI or Azure PowerShell.  We typically recommend the CLI as it is cross platform and can be used on Windows, Linux and the Mac.  This repo also provides shell scripts that works with the Azure CLI.  Detailed instructions on installing the Azure CLI are available [here](https://azure.microsoft.com/en-us/documentation/articles/xplat-cli-install/).
 
 The youtube video below gives a detailed walkthrough showing how to deploy a DataStax Enterprise cluster using the Azure CLI.
