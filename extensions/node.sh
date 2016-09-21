@@ -24,9 +24,9 @@ echo dse_version $dse_version
 
 apt-get -y install unzip
 
-wget https://github.com/DSPN/install-datastax-ubuntu/archive/5.0.1-5.zip
-unzip 5.0.1-5.zip
-cd install-datastax-ubuntu-5.0.1-5/bin
+wget https://github.com/DSPN/install-datastax-ubuntu/archive/5.0.2-1.zip
+unzip 5.0.2-1.zip
+cd install-datastax-ubuntu-5.0.2-1/bin
 
 #wget https://github.com/DSPN/install-datastax-ubuntu/archive/master.zip
 #unzip master.zip
