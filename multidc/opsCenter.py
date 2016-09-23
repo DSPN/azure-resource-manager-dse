@@ -100,9 +100,9 @@ def virtualmachine(username, password):
             "[concat('Microsoft.Storage/storageAccounts/opscenter', variables('uniqueString'))]"
         ],
         "plan": {
-            "name": "[parameters('osSettings').imageReference.sku]",
-            "publisher": "[parameters('osSettings').imageReference.publisher]",
-            "product": "[parameters('osSettings').imageReference.offer]"
+            "name": "datastaxenterprise",
+            "publisher": "datastax",
+            "product": "datastax-enterprise"
         },
         "properties": {
             "hardwareProfile": {
