@@ -99,6 +99,11 @@ def virtualmachine(username, password):
             "Microsoft.Network/networkInterfaces/opscenter",
             "[concat('Microsoft.Storage/storageAccounts/opscenter', variables('uniqueString'))]"
         ],
+        "plan": {
+            "name": "[parameters('osSettings').imageReference.sku]",
+            "publisher": "[parameters('osSettings').imageReference.publisher]",
+            "product": "[parameters('osSettings').imageReference.offer]"
+        },
         "properties": {
             "hardwareProfile": {
                 "vmSize": "Standard_D1_v2"
@@ -110,9 +115,9 @@ def virtualmachine(username, password):
             },
             "storageProfile": {
                 "imageReference": {
-                    "publisher": "Canonical",
-                    "offer": "UbuntuServer",
-                    "sku": "14.04.4-LTS",
+                    "publisher": "datastax",
+                    "offer": "datastax-enterprise",
+                    "sku": "datastaxenterprise",
                     "version": "latest"
                 },
                 "osDisk": {

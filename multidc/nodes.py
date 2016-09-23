@@ -146,6 +146,11 @@ def virtualmachine(location, datacenterIndex, nodeIndex, storageAccountIndex, vm
             "Microsoft.Network/networkInterfaces/" + name,
             "[concat('Microsoft.Storage/storageAccounts/" + storageAccountName + "', variables('uniqueString'))]"
         ],
+        "plan": {
+            "name": "[parameters('osSettings').imageReference.sku]",
+            "publisher": "[parameters('osSettings').imageReference.publisher]",
+            "product": "[parameters('osSettings').imageReference.offer]"
+        },
         "properties": {
             "availabilitySet": {
                 "id": "[resourceId('Microsoft.Compute/availabilitySets', '" + availabilitySetName + "')]"
@@ -160,9 +165,9 @@ def virtualmachine(location, datacenterIndex, nodeIndex, storageAccountIndex, vm
             },
             "storageProfile": {
                 "imageReference": {
-                    "publisher": "Canonical",
-                    "offer": "UbuntuServer",
-                    "sku": "14.04.4-LTS",
+                    "publisher": "datastax",
+                    "offer": "datastax-enterprise",
+                    "sku": "datastaxenterprise",
                     "version": "latest"
                 },
                 "osDisk": {
