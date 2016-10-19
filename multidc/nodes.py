@@ -32,7 +32,7 @@ def availabilitySet(location, datacenterIndex):
         "location": location,
         "properties": {
             "platformFaultDomainCount": 3,
-            "platformUpdateDomainCount": 20
+            "platformUpdateDomainCount": 18
         }
     }
     return resource
