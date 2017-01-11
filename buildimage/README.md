@@ -3,11 +3,11 @@
 This README describes how we build the VM that the templates use.  As a user of these templates, you should not need to do this.
 
 General documentation on this process is here:
-https://azure.microsoft.com/en-us/documentation/articles/marketplace-publishing-vm-image-creation/
-https://azure.microsoft.com/en-us/documentation/articles/virtual-machines-linux-classic-create-upload-vhd/
+* https://azure.microsoft.com/en-us/documentation/articles/marketplace-publishing-vm-image-creation/
+* https://azure.microsoft.com/en-us/documentation/articles/virtual-machines-linux-classic-create-upload-vhd/
 
 ## Create a VM
- 
+
     azure group create DSE-Image-RG SouthCentralUS
     azure vm quick-create --vm-size Standard_DS14_v2 DSE-Image-RG dseimage SouthCentralUS Linux Canonical:UbuntuServer:14.04.4-LTS:latest image-160622
 
@@ -28,10 +28,10 @@ SSH into the image.  If the command above was used, the username will be image-1
 
     dse_version=5.0.1-1
     opscenter_version=6.0.1
-    
+
     echo "deb http://datastax%40microsoft.com:3A7vadPHbNT@debian.datastax.com/enterprise stable main" | sudo tee -a /etc/apt/sources.list.d/datastax.sources.list
     curl -L http://debian.datastax.com/debian/repo_key | sudo apt-key add -
-    
+
     apt-get -y update
     apt-get -y -d install dse-full=$dse_version dse=$dse_version dse-hive=$dse_version dse-pig=$dse_version dse-demos=$dse_version dse-libsolr=$dse_version dse-libtomcat=$dse_version dse-libsqoop=$dse_version dse-liblog4j=$dse_version dse-libmahout=$dse_version dse-libhadoop-native=$dse_version dse-libcassandra=$dse_version dse-libhive=$dse_version dse-libpig=$dse_version dse-libhadoop=$dse_version dse-libspark=$dse_version
     apt-get -y -d install opscenter=$opscenter_version datastax-agent=$opscenter_version
@@ -45,10 +45,10 @@ You'll want to run this command twice.  The first time will clear root's history
 
 be sure to stop and deallocate the vm
 
-## From the local Azure CLI 
+## From the local Azure CLI
     azure vm stop DSE-Image-RG dseimage
     azure vm generalize DSE-Image-RG dseimage
- 
+
 ## Get the SAS URL
 
 Run this command to get a URL for the storage account.  You can lookup the name in the portal.  In my case it was clisto2811037585dseimage.
