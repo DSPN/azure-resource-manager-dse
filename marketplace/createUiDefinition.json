@@ -220,12 +220,7 @@
             "toolTip": "Size of virtual machine to provision for the cluster",
             "recommendedSizes": [
               "Standard_D2_v2",
-              "Standard_D3_v2",
-              "Standard_D4_v2",
               "Standard_D5_v2",
-              "Standard_D11_v2",
-              "Standard_D12_v2",
-              "Standard_D13_v2",
               "Standard_D14_v2"
             ],
             "constraints": {
