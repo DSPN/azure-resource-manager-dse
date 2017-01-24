@@ -71,9 +71,11 @@ Make sure the image is a vhd.
 
     azure storage blob list vhds -c $con
 
-Now we need to create a URL for the image:
+Now we need to create a URL for the image.  
 
-    azure storage container sas create vhds rl 02/24/2017 -c $con --start 01/24/2017
+The Publish Portal could potentially print an error: "The SAS URL start date (st) for the SAS URL should be one day before the current date in UTC, please ensure that the start date for SAS link is on or before 1/23/2017. Please ensure that the SAS URL is generated following the instructions available in the help link."  Here is the [help link](https://docs.microsoft.com/en-us/azure/marketplace-publishing/marketplace-publishing-vm-image-creation)
+
+    azure storage container sas create vhds rl 02/24/2017 -c $con --start 01/23/2017
 
 The "Shared Access URL" should look something like this:
 
