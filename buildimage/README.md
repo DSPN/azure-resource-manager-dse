@@ -53,7 +53,7 @@ You'll want to run this command twice.  The first time will clear root's history
     cat /dev/null > ~/.bash_history && history -c && exit
     cat /dev/null > ~/.bash_history && history -c && exit
 
-## Stop and Generalize the VM
+## Stop, Deallocate and Generalize the VM
 
     azure vm stop DSE-Image-RG dseimage
     azure vm deallocate DSE-Image-RG dseimage
@@ -88,4 +88,4 @@ Make sure it works by running:
     url="https://stosnrc0v8cyb40.blob.core.windows.net/vhds/cli4ba15cd2b2977623-os-1485296531848.vhd?st=2017-01-24T08%3A00%3A00Z&se=2017-02-24T08%3A00%3A00Z&sp=rl&sv=2015-04-05&sr=c&sig=RKLPIiSSWDsMaZABJysrS6W31tEhCJ%2BLhYrnzSbGphI%3D"
     wget -O tmp.vhd $url
 
-If you complete these steps quickly and get a 409, you may need to wait.  Once you can successfully get the image, proceed to the publisher portal.
+Once you can successfully get the image, proceed to the publisher portal.
