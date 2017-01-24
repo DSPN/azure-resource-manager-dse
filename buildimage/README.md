@@ -73,21 +73,21 @@ Make sure the image is a vhd.
 
 Now we need to create a URL for the image.  
 
-The Publish Portal could potentially print an error: "The SAS URL start date (st) for the SAS URL should be one day before the current date in UTC, please ensure that the start date for SAS link is on or before 1/23/2017. Please ensure that the SAS URL is generated following the instructions available in the help link."  Here is the [help link](https://docs.microsoft.com/en-us/azure/marketplace-publishing/marketplace-publishing-vm-image-creation)
+The Publish Portal could potentially print an error: "The SAS URL start date (st) for the SAS URL should be one day before the current date in UTC, please ensure that the start date for SAS link is on or before 1/23/2017. Please ensure that the SAS URL is generated following the instructions available in the help link."  Here is the [help link](https://docs.microsoft.com/en-us/azure/marketplace-publishing/marketplace-publishing-vm-image-creation).
 
     azure storage container sas create vhds rl 02/24/2017 -c $con --start 01/23/2017
 
 The "Shared Access URL" should look something like this:
 
-    https://stosnrc0v8cyb40.blob.core.windows.net/vhds?st=2017-01-24T08%3A00%3A00Z&se=2017-02-24T08%3A00%3A00Z&sp=rl&sv=2015-04-05&sr=c&sig=RKLPIiSSWDsMaZABJysrS6W31tEhCJ%2BLhYrnzSbGphI%3D
+    https://stosnrc0v8cyb40.blob.core.windows.net/vhds?st=2017-01-23T08%3A00%3A00Z&se=2017-02-24T08%3A00%3A00Z&sp=rl&sv=2015-04-05&sr=c&sig=woWQmN9YIm3jkWq8ZRzieUlX5SCigNDfOENzq7PzS7Y%3D
 
 to get the sas url, add cli etc after vhds as follows:
 
-    https://stosnrc0v8cyb40.blob.core.windows.net/vhds/cli4ba15cd2b2977623-os-1485296531848.vhd?st=2017-01-24T08%3A00%3A00Z&se=2017-02-24T08%3A00%3A00Z&sp=rl&sv=2015-04-05&sr=c&sig=RKLPIiSSWDsMaZABJysrS6W31tEhCJ%2BLhYrnzSbGphI%3D
+    https://stosnrc0v8cyb40.blob.core.windows.net/vhds/cli4ba15cd2b2977623-os-1485296531848.vhd?st=2017-01-23T08%3A00%3A00Z&se=2017-02-24T08%3A00%3A00Z&sp=rl&sv=2015-04-05&sr=c&sig=woWQmN9YIm3jkWq8ZRzieUlX5SCigNDfOENzq7PzS7Y%3D
 
 Make sure it works by running:
 
-    url="https://stosnrc0v8cyb40.blob.core.windows.net/vhds/cli4ba15cd2b2977623-os-1485296531848.vhd?st=2017-01-24T08%3A00%3A00Z&se=2017-02-24T08%3A00%3A00Z&sp=rl&sv=2015-04-05&sr=c&sig=RKLPIiSSWDsMaZABJysrS6W31tEhCJ%2BLhYrnzSbGphI%3D"
+    url="https://stosnrc0v8cyb40.blob.core.windows.net/vhds/cli4ba15cd2b2977623-os-1485296531848.vhd?st=2017-01-23T08%3A00%3A00Z&se=2017-02-24T08%3A00%3A00Z&sp=rl&sv=2015-04-05&sr=c&sig=woWQmN9YIm3jkWq8ZRzieUlX5SCigNDfOENzq7PzS7Y%3D"
     wget -O tmp.vhd $url
 
 Once you can successfully get the image, proceed to the publisher portal.
