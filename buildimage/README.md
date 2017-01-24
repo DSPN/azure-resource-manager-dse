@@ -6,10 +6,14 @@ General documentation on this process is here:
 * https://azure.microsoft.com/en-us/documentation/articles/marketplace-publishing-vm-image-creation/
 * https://azure.microsoft.com/en-us/documentation/articles/virtual-machines-linux-classic-create-upload-vhd/
 
+## Identify the VM Image to Use
+
+  azure vm image list-skus SouthCentralUS Canonical UbuntuServer
+
 ## Create a VM
 
-    azure group create DSE-Image-RG SouthCentralUS
-    azure vm quick-create --vm-size Standard_DS14_v2 DSE-Image-RG dseimage SouthCentralUS Linux Canonical:UbuntuServer:14.04.4-LTS:latest image-160622
+  azure group create DSE-Image-RG SouthCentralUS
+  azure vm quick-create --vm-size Standard_DS14_v2 DSE-Image-RG dseimage SouthCentralUS Linux Canonical:UbuntuServer:16.04-LTS:latest image-160622
 
 The quick-create command will prompt for a password.  That password is for the SSH credentials to the machine.
 
@@ -17,12 +21,12 @@ SSH into the image.  If the command above was used, the username will be image-1
 
 ## Install Java on the VM
 
-    sudo su
-    apt-get -y install software-properties-common
-    add-apt-repository -y ppa:webupd8team/java
-    apt-get -y update
-    echo debconf shared/accepted-oracle-license-v1-1 select true | sudo debconf-set-selections
-    echo debconf shared/accepted-oracle-license-v1-1 seen true | sudo debconf-set-selections
+  sudo su
+  apt-get -y install software-properties-common
+  add-apt-repository -y ppa:webupd8team/java
+  apt-get -y update
+  echo debconf shared/accepted-oracle-license-v1-1 select true | sudo debconf-set-selections
+  echo debconf shared/accepted-oracle-license-v1-1 seen true | sudo debconf-set-selections
 
 ## Download (but don't install) DataStax Enterprise
 
