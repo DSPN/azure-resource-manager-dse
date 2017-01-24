@@ -58,31 +58,36 @@ You'll want to run this command twice.  The first time will clear root's history
 ## Stop and Generalize the VM
 
   azure vm stop DSE-Image-RG dseimage
+  azure vm deallocate DSE-Image-RG dseimage
   azure vm generalize DSE-Image-RG dseimage
 
 ## Get the SAS URL
 
-Run this command to get a URL for the storage account.  You can lookup the name in the portal.  In my case it was clisto2811037585dseimage.
+Run this command to get a URL for the storage account.  You can lookup the name in the portal.  In my case it was stosnrc0v8cyb40.
 
-    azure storage account connectionstring show <name of your storage account>
+  azure storage account connectionstring show <name of your storage account>
+  con="DefaultEndpointsProtocol=https;AccountName=stosnrc0v8cyb40;AccountKey=<your key>"
+  azure storage container list -c $con
 
-    con="DefaultEndpointsProtocol=https;AccountName=cli15207440163475934758;AccountKey=<your key>"
-    azure storage container list -c $con
+Make sure the image is a vhd.
 
-Make sure the image is a VHD.
+  azure storage blob list vhds -c $con
 
-    azure storage blob list vhds -c $con
+Now we need to create a URL for the image:
 
-You'll be prompted for the resource group name.  Enter DSE-Image-RG.
+  azure storage container sas create vhds rl 02/24/2017 -c $con --start 01/24/2017
 
-    azure storage container sas create vhds rl 09/30/2016 -c $con --start 07/23/2016
+The "Shared Access URL" should look something like this:
 
-This creates a URL for the img:
-
-https://cli15207440163475934758.blob.core.windows.net/vhds?st=2016-07-23T07%3A00%3A00Z&se=2016-09-30T07%3A00%3A00Z&sp=rl&sv=2015-04-05&sr=c&sig=%2BEHZBhu%2FHkZeGTbL3jhKD%2Br1%2F72SvL3btNMHlgD5ERk%3D
+  https://stosnrc0v8cyb40.blob.core.windows.net/vhds?st=2017-01-24T08%3A00%3A00Z&se=2017-02-24T08%3A00%3A00Z&sp=rl&sv=2015-04-05&sr=c&sig=RKLPIiSSWDsMaZABJysrS6W31tEhCJ%2BLhYrnzSbGphI%3D
 
 to get the sas url, add cli etc after vhds as follows:
 
-https://cli15207440163475934758.blob.core.windows.net/vhds/cli6368b7095406bb59-os-1469464726649.vhd?st=2016-07-23T07%3A00%3A00Z&se=2016-09-30T07%3A00%3A00Z&sp=rl&sv=2015-04-05&sr=c&sig=%2BEHZBhu%2FHkZeGTbL3jhKD%2Br1%2F72SvL3btNMHlgD5ERk%3D
+  https://stosnrc0v8cyb40.blob.core.windows.net/vhds/cli4ba15cd2b2977623-os-1485296531848.vhd?st=2017-01-24T08%3A00%3A00Z&se=2017-02-24T08%3A00%3A00Z&sp=rl&sv=2015-04-05&sr=c&sig=RKLPIiSSWDsMaZABJysrS6W31tEhCJ%2BLhYrnzSbGphI%3D
 
-make sure it works by wget -O tmp.vhd <sas url>
+Make sure it works by running:
+
+  url="https://stosnrc0v8cyb40.blob.core.windows.net/vhds/cli4ba15cd2b2977623-os-1485296531848.vhd?st=2017-01-24T08%3A00%3A00Z&se=2017-02-24T08%3A00%3A00Z&sp=rl&sv=2015-04-05&sr=c&sig=RKLPIiSSWDsMaZABJysrS6W31tEhCJ%2BLhYrnzSbGphI%3D"
+  wget -O tmp.vhd $url
+
+If you complete these steps quickly and get a 409, you may need to wait.  Once you can successfully get the image, proceed to the publisher portal.
