@@ -5,6 +5,7 @@ This README describes how we build the VM that the templates use.  As a user of 
 General documentation on this process is here:
 * https://azure.microsoft.com/en-us/documentation/articles/marketplace-publishing-vm-image-creation/
 * https://azure.microsoft.com/en-us/documentation/articles/virtual-machines-linux-classic-create-upload-vhd/
+* https://docs.microsoft.com/en-us/azure/virtual-machines/virtual-machines-linux-capture-image
 
 ## Identify the VM Image to Use
 
