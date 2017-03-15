@@ -65,6 +65,12 @@
       "metadata": {
         "description": "Admin password for the virtual machines"
       }
+    },
+    "DBPassword": {
+      "type": "securestring",
+      "metadata": {
+        "description": "Password for default C* user 'cassandra'"
+      }
     }
   },
   "variables": {
@@ -138,6 +144,9 @@
           "adminPassword": {
             "value": "[parameters('adminPassword')]"
           },
+          "DBPassword": {
+            "value": "[parameters('DBPassword')]"
+          },
           "nodeCount": {
             "value": "[parameters('nodeCount')]"
           },
@@ -199,6 +208,10 @@
     }
   ],
   "outputs": {
+    "lifecycleManagerURL": {
+      "type": "string",
+      "value": "[concat('http://opscenter', variables('uniqueString'), '.', variables('location'), '.cloudapp.azure.com:8888/opscenter/lcm.html')]"
+    },
     "opsCenterURL": {
       "type": "string",
       "value": "[concat('http://opscenter', variables('uniqueString'), '.', variables('location'), '.cloudapp.azure.com:8888')]"

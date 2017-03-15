@@ -25,7 +25,6 @@
     }
   },
   "variables": {
-    "storageAccountName": "[concat('opscenter', parameters('uniqueString'))]",
     "vnetId": "[resourceId('Microsoft.Network/virtualNetworks', parameters('vnetName'))]",
     "subnetId": "[concat(variables('vnetId'), '/subnets/', parameters('subnetName'))]"
   },
@@ -68,28 +67,13 @@
       }
     },
     {
-      "type": "Microsoft.Storage/storageAccounts",
-      "name": "[variables('storageAccountName')]",
-      "apiVersion": "2015-06-15",
-      "location": "[parameters('location')]",
-      "properties": {
-        "accountType": "Standard_LRS"
-      }
-    },
-    {
-      "apiVersion": "2015-06-15",
+      "apiVersion": "2016-04-30-preview",
       "type": "Microsoft.Compute/virtualMachines",
       "name": "opscenter",
       "location": "[parameters('location')]",
       "dependsOn": [
-        "Microsoft.Network/networkInterfaces/opscenter",
-        "[concat('Microsoft.Storage/storageAccounts/', variables('storageAccountName'))]"
+        "Microsoft.Network/networkInterfaces/opscenter"
       ],
-      "plan": {
-        "name": "[parameters('osSettings').imageReference.sku]",
-        "publisher": "[parameters('osSettings').imageReference.publisher]",
-        "product": "[parameters('osSettings').imageReference.offer]"
-      },
       "properties": {
         "hardwareProfile": {
           "vmSize": "Standard_D1_v2"
@@ -102,11 +86,6 @@
         "storageProfile": {
           "imageReference": "[parameters('osSettings').imageReference]",
           "osDisk": {
-            "name": "osdisk",
-            "vhd": {
-              "uri": "[concat('http://', variables('storageAccountName'),'.blob.core.windows.net/vhds/', 'opscenter', 'vm-osdisk.vhd')]"
-            },
-            "caching": "ReadWrite",
             "createOption": "FromImage"
           }
         },
@@ -134,7 +113,7 @@
         "autoUpgradeMinorVersion": true,
         "settings": {
           "fileUris": "[parameters('osSettings').scripts]",
-          "commandToExecute": "[concat('bash opsCenter.sh ', parameters('location'), ' ', parameters('uniqueString'))]"
+          "commandToExecute": "[concat('bash opsCenter.sh ', parameters('adminUsername'), ' ', parameters('adminPassword'))]"
         }
       }
     }
