@@ -16,9 +16,10 @@ The template expects the following parameters:
 | vmSize | Size of virtual machine to provision for the cluster |
 | adminUsername  | Admin user name for the virtual machines |
 | adminPassword  | Admin password for the virtual machines |
+| DBPassword  | Password for default C* user 'cassandra' |
 
 Once the Azure VMs, virtual network and storage are setup, the template installs Java and DSE on the nodes.  It also configures them.  These nodes are assigned both private and public dynamic IP addresses.
 
 The template also sets up a node to run DataStax OpsCenter.  The script opscenter.sh installs OpsCenter and connects to the cluster by calling the OpsCenter REST API.
 
-On completion, OpsCenter will be accessible on port 8888 of the public IP address of the OpsCenter node.
+On completion, OpsCenter will be accessible on port 8888 of the public IP address of the OpsCenter node. **Note**: since this template uses OpsCener's Lifecycle Manager to perform the installation of DSE the cluster may not be ready when the template reports *success*. The progress of the install job may be followed in LCM by going to the `lifecycleManagerURL` output of the template, which has the form http://opscenterip:8888/opscenter/lcm.html 
