@@ -1,6 +1,6 @@
-This template deploys a DataStax Enterprise (DSE) cluster to Azure running on Ubuntu virtual machines in a single datacenter.  The template can provision a cluster from 1 to 40 nodes.  Creating a greater number of nodes may cause issues with storage account I/O contention.
+This template deploys a DataStax Enterprise (DSE) cluster to Azure running on Ubuntu virtual machines in a single datacenter.  The template can provision a cluster from 1 to 40 nodes.  
 
-The template also provisions a storage account, virtual network and public IP addresses required by the installation.  The template will deploy to the location that the resourceGroup it is part of is located in.
+The template also provisions managed disks, virtual network and public IP addresses required by the installation.  The template will deploy to the location that the resourceGroup it is part of is located in. The template also sets up a vm to run DataStax OpsCenter.  The script opscenter.sh installs OpsCenter and performs basic cluster setup.
 
 The button below will deploy this template to Azure.  The template will be dynamically linked directly from this github repository.  Given that, if you want to make changes to subtemplates or extensions, be sure to fork the repo and adjust the baseUrl.
 
@@ -18,8 +18,6 @@ The template expects the following parameters:
 | adminPassword  | Admin password for the virtual machines |
 | DBPassword  | Password for default C* user 'cassandra' |
 
-Once the Azure VMs, virtual network and storage are setup, the template installs Java and DSE on the nodes.  It also configures them.  These nodes are assigned both private and public dynamic IP addresses.
+Once the Azure VMs, virtual network and disks are deployed, the node instances call back to the OpsCenter instance using the LCM REST API.  When the last node registers this triggers an LCM job to install and configure DSE  These nodes are assigned both private and public dynamic IP addresses.
 
-The template also sets up a node to run DataStax OpsCenter.  The script opscenter.sh installs OpsCenter and connects to the cluster by calling the OpsCenter REST API.
-
-On completion, OpsCenter will be accessible on port 8888 of the public IP address of the OpsCenter node. **Note**: since this template uses OpsCener's Lifecycle Manager to perform the installation of DSE the cluster may not be ready when the template reports *success*. The progress of the install job may be followed in LCM by going to the `lifecycleManagerURL` output of the template, which has the form http://opscenterip:8888/opscenter/lcm.html 
+On completion, OpsCenter will be accessible on port 8888 of the public IP address of the OpsCenter node. **Note**: since this template uses OpsCener's Lifecycle Manager to perform the installation of DSE the cluster may not be ready when the template reports *success*. The progress of the install job may be followed in LCM by going to the `lifecycleManagerURL` output of the template, which has the form http://opscenterip:8888/opscenter/lcm.html
