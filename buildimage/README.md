@@ -74,7 +74,7 @@ Run this command to get a URL for the storage account.  You can lookup the name 
     con="DefaultEndpointsProtocol=https;AccountName=stosnrc0v8cyb40;AccountKey=<your key>"
     azure storage container list -c $con
 
-Make sure the image is a vhd.
+Make sure the image is a vhd. If you get an error, most likely the storage account used to generate `$con` is incorrect.
 
     azure storage blob list vhds -c $con
 
