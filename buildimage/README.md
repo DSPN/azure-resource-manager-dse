@@ -51,7 +51,7 @@ SSH into the image.  If the command above was used, the username will be image-1
 ## Remove Azure Linux agent
 As root run:
 
-    waagent -deprovision+user
+    waagent -force -verbose -deprovision+user
 
 ## Clear the history
 
