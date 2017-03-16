@@ -43,10 +43,15 @@ SSH into the image.  If the command above was used, the username will be image-1
 
 ## Download (but don't install) DataStax Enterprise
 
-    dse_version=5.0.5-1
-    opscenter_version=6.0.7
+    dse_version=5.0.7-1
+    opscenter_version=6.0.8
     apt-get -y -d install dse-full=$dse_version dse=$dse_version dse-hive=$dse_version dse-pig=$dse_version dse-demos=$dse_version dse-libsolr=$dse_version dse-libtomcat=$dse_version dse-libsqoop=$dse_version dse-liblog4j=$dse_version dse-libmahout=$dse_version dse-libhadoop-native=$dse_version dse-libcassandra=$dse_version dse-libhive=$dse_version dse-libpig=$dse_version dse-libhadoop=$dse_version dse-libspark=$dse_version
     apt-get -y -d install opscenter=$opscenter_version datastax-agent=$opscenter_version
+
+## Remove Azure Linux agent
+As root run:
+
+    waagent -deprovision+user
 
 ## Clear the history
 
