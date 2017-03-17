@@ -28,7 +28,6 @@ SSH into the image.  If the command above was used, the username will be image-1
     apt-get -y update
     echo debconf shared/accepted-oracle-license-v1-1 select true | sudo debconf-set-selections
     echo debconf shared/accepted-oracle-license-v1-1 seen true | sudo debconf-set-selections
-    apt-get -y install oracle-java8-installer
 
 ## Add the DataStax repo
 
@@ -43,15 +42,10 @@ SSH into the image.  If the command above was used, the username will be image-1
 
 ## Download (but don't install) DataStax Enterprise
 
-    dse_version=5.0.7-1
-    opscenter_version=6.0.8
+    dse_version=5.0.5-1
+    opscenter_version=6.0.7
     apt-get -y -d install dse-full=$dse_version dse=$dse_version dse-hive=$dse_version dse-pig=$dse_version dse-demos=$dse_version dse-libsolr=$dse_version dse-libtomcat=$dse_version dse-libsqoop=$dse_version dse-liblog4j=$dse_version dse-libmahout=$dse_version dse-libhadoop-native=$dse_version dse-libcassandra=$dse_version dse-libhive=$dse_version dse-libpig=$dse_version dse-libhadoop=$dse_version dse-libspark=$dse_version
     apt-get -y -d install opscenter=$opscenter_version datastax-agent=$opscenter_version
-
-## Remove Azure Linux agent
-As root run:
-
-    waagent -force -verbose -deprovision+user
 
 ## Clear the history
 
@@ -74,7 +68,7 @@ Run this command to get a URL for the storage account.  You can lookup the name 
     con="DefaultEndpointsProtocol=https;AccountName=stosnrc0v8cyb40;AccountKey=<your key>"
     azure storage container list -c $con
 
-Make sure the image is a vhd. If you get an error, most likely the storage account used to generate `$con` is incorrect.
+Make sure the image is a vhd.
 
     azure storage blob list vhds -c $con
 

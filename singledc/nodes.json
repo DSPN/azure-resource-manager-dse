@@ -14,9 +14,6 @@
     "adminPassword": {
       "type": "securestring"
     },
-    "DBPassword": {
-      "type": "securestring"
-    },
     "nodeCount": {
       "type": "int"
     },
@@ -38,19 +35,28 @@
   },
   "variables": {
     "vmName": "[concat(parameters('namespace'), 'vm')]",
+    "storageAccountName": "[concat(parameters('namespace'), parameters('uniqueString'))]",
     "vnetId": "[resourceId('Microsoft.Network/virtualNetworks', parameters('vnetName'))]",
     "subnetId": "[concat(variables('vnetId'), '/subnets/', parameters('subnetName'))]"
   },
   "resources": [
     {
-      "apiVersion": "2016-04-30-preview",
+      "apiVersion": "2015-06-15",
       "type": "Microsoft.Compute/availabilitySets",
       "name": "[parameters('namespace')]",
       "location": "[parameters('location')]",
       "properties": {
         "platformFaultDomainCount": 3,
-        "platformUpdateDomainCount": 18,
-        "managed": "true"
+        "platformUpdateDomainCount": 18
+      }
+    },
+    {
+      "type": "Microsoft.Storage/storageAccounts",
+      "name": "[variables('storageAccountName')]",
+      "apiVersion": "2015-06-15",
+      "location": "[parameters('location')]",
+      "properties": {
+        "accountType": "Standard_LRS"
       }
     },
     {
@@ -99,7 +105,7 @@
       }
     },
     {
-      "apiVersion": "2016-04-30-preview",
+      "apiVersion": "2015-06-15",
       "type": "Microsoft.Compute/virtualMachines",
       "name": "[concat(parameters('namespace'), 'vm', copyindex())]",
       "location": "[parameters('location')]",
@@ -109,8 +115,14 @@
       },
       "dependsOn": [
         "[concat('Microsoft.Network/networkInterfaces/', parameters('namespace'), 'vm', copyindex())]",
-        "[concat('Microsoft.Compute/availabilitySets/', parameters('namespace'))]"
+        "[concat('Microsoft.Compute/availabilitySets/', parameters('namespace'))]",
+        "[concat('Microsoft.Storage/storageAccounts/', variables('storageAccountName'))]"
       ],
+      "plan": {
+        "name": "[parameters('osSettings').imageReference.sku]",
+        "publisher": "[parameters('osSettings').imageReference.publisher]",
+        "product": "[parameters('osSettings').imageReference.offer]"
+      },
       "properties": {
         "availabilitySet": {
           "id": "[resourceId('Microsoft.Compute/availabilitySets', concat(parameters('namespace')))]"
@@ -126,15 +138,13 @@
         "storageProfile": {
           "imageReference": "[parameters('osSettings').imageReference]",
           "osDisk": {
+            "name": "osdisk",
+            "vhd": {
+              "uri": "[concat('http://', variables('storageAccountName'),'.blob.core.windows.net/vhds/', variables('vmName'), copyindex(), '-osdisk.vhd')]"
+            },
+            "caching": "ReadWrite",
             "createOption": "FromImage"
-          },
-          "dataDisks": [
-            {
-              "diskSizeGB": "1023",
-              "lun": 0,
-              "createOption": "Empty"
-            }
-          ]
+          }
         },
         "networkProfile": {
           "networkInterfaces": [
@@ -164,7 +174,7 @@
         "autoUpgradeMinorVersion": true,
         "settings": {
           "fileUris": "[parameters('osSettings').scripts]",
-          "commandToExecute": "[concat('bash node.sh ', parameters('nodeCount'), ' ', parameters('uniqueString'), ' ', parameters('namespace'), ' ', resourceGroup().location, ' ', parameters('DBPassword'))]"
+          "commandToExecute": "[concat('bash node.sh ', parameters('location'), ' ', parameters('uniqueString'), ' ', parameters('namespace'), ' ', resourceGroup().location)]"
         }
       }
     }
