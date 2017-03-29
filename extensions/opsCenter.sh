@@ -15,7 +15,18 @@ echo "Calling opscenter.sh with the settings:"
 echo cloud_type $cloud_type
 echo seed_node_dns_name $seed_node_dns_name
 
+# seeing racey fails of apt-get, add sleep/retry on error
 apt-get -y install unzip
+RET=$?
+if [ $RET -ne 0 ]
+then
+  echo "ERROR: call to apt-get returned non-zero, exit code: $RET"
+  echo "Sleeping 2m before retry..."
+  sleep 2m
+  apt-get -y install unzip
+fi
+
+
 
 wget https://github.com/DSPN/install-datastax-ubuntu/archive/master.zip
 unzip master.zip
