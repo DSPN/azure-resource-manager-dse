@@ -24,6 +24,6 @@
     "value": "mock-subnet"
   },
   "namespace": {
-    "value": "prodDC0"
+    "value": "proddc0"
   }
 }
