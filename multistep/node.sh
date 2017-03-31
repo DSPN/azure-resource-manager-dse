@@ -64,9 +64,9 @@ apt-get -y install unzip python-pip
 pip install requests
 
 #cd /
-wget https://github.com/DSPN/install-datastax-ubuntu/archive/master.zip
-unzip master.zip
-cd install-datastax-ubuntu-master/bin/lcm
+wget https://github.com/DSPN/install-datastax-ubuntu/archive/dev.zip
+unzip dev.zip
+cd install-datastax-ubuntu-dev/bin/lcm
 
 #KLUDGE! Force un-parameterized changes
 sed -ie 's/\"graph-enabled\": True/\"graph-enabled\": False/g' ./utilLCM.py
