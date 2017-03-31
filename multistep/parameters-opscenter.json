@@ -8,6 +8,9 @@
   "adminPassword": {
     "value": "foo123!"
   },
+  "clusterName": {
+    "value": "prodCluster"
+  },
   "DBPassword": {
     "value": "asdf456$"
   },

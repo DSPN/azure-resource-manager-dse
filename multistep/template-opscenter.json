@@ -17,6 +17,9 @@
         "description": "Password for default C* user 'cassandra'"
       }
     },
+    "clusterName": {
+      "type": "string"
+    },
     "vnetName": {
       "type": "string"
     },
@@ -129,7 +132,7 @@
         "autoUpgradeMinorVersion": true,
         "settings": {
           "fileUris": "[variables('osSettings').scripts]",
-          "commandToExecute": "[concat('bash opsCenter.sh ', parameters('adminUsername'), ' ', parameters('adminPassword'))]"
+          "commandToExecute": "[concat('bash opsCenter.sh ', parameters('adminUsername'), ' ', parameters('adminPassword'), ' ', paramters('clusterName'))]"
         }
       }
     }
