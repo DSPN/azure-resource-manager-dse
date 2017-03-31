@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 data_center_size=$1
-opscenter_dns_name=$2
+opscenter_ip=$2
 data_center_name=$3
 opscenter_location=$4
 dbpasswd=$5
@@ -9,7 +9,7 @@ cluster_name=$6
 
 echo "Input to node.sh is:"
 echo data_center_size $data_center_size
-echo opscenter_dns_name $opscenter_dns_name
+echo opscenter_ip $opscenter_ip
 echo data_center_name $data_center_name
 echo opscenter_location $opscenter_location
 echo dbpasswd XXXXX
@@ -50,7 +50,7 @@ fault_domain=$(curl --max-time 50000 --retry 12 --retry-delay 50000 http://169.2
 rack=FD$fault_domain
 
 echo "Calling addNode.py with the settings:"
-echo opscenter_dns_name $opscenter_dns_name
+echo opscenter_ip $opscenter_ip
 echo cluster_name $cluster_name
 echo data_center_size $data_center_size
 echo data_center_name $data_center_name
@@ -74,7 +74,7 @@ sed -ie 's/\"spark-enabled\": True/\"spark-enabled\": False/g' ./utilLCM.py
 sed -ie 's/\"solr-enabled\": True/\"solr-enabled\": False/g' ./utilLCM.py
 
 ./addNode.py \
---opsc-ip $opscenter_dns_name \
+--opsc-ip $opscenter_ip \
 --clustername $cluster_name \
 --dcsize $data_center_size \
 --dcname $data_center_name \
