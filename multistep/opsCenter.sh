@@ -4,10 +4,10 @@ username=$1
 password=$2
 cluster_name=$3
 
-echo "Input to node.sh is:"
+echo "Input to opsCenter.sh is:"
 echo username $username
 echo password XXXXX
-echo
+echo cluster_name
 
 public_ip=`curl --retry 10 icanhazip.com`
 
