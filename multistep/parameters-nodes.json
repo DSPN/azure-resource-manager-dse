@@ -1,0 +1,29 @@
+{
+  "location": {
+    "value": "eastus"
+  },
+  "nodeCount": {
+    "value": 3
+  },
+  "vmSize": {
+    "value": "Standard_D2_v2"
+  },
+  "adminUsername": {
+    "value": "datastax"
+  },
+  "adminPassword": {
+    "value": "foo123!"
+  },
+  "DBPassword": {
+    "value": "asdf456$"
+  },
+  "vnetName": {
+    "value": "mock-vnet"
+  },
+  "subnetName": {
+    "value": "mock-subnet"
+  },
+  "namespace": {
+    "value": "dev"
+  }
+}

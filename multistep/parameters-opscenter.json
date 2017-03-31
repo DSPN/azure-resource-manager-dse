@@ -1,0 +1,20 @@
+{
+  "location": {
+    "value": "eastus"
+  },
+  "adminUsername": {
+    "value": "datastax"
+  },
+  "adminPassword": {
+    "value": "foo123!"
+  },
+  "DBPassword": {
+    "value": "asdf456$"
+  },
+  "vnetName": {
+    "value": "mock-vnet"
+  },
+  "subnetName": {
+    "value": "mock-subnet"
+  }
+}
