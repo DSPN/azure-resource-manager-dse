@@ -132,7 +132,7 @@
         "autoUpgradeMinorVersion": true,
         "settings": {
           "fileUris": "[variables('osSettings').scripts]",
-          "commandToExecute": "[concat('bash opsCenter.sh ', parameters('adminUsername'), ' ', parameters('adminPassword'), ' ', paramters('clusterName'))]"
+          "commandToExecute": "[concat('bash opsCenter.sh ', parameters('adminUsername'), ' ', parameters('adminPassword'), ' ', parameters('clusterName'))]"
         }
       }
     }
