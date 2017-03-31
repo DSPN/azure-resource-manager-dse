@@ -138,6 +138,6 @@
     "lifecycleManagerURL": {
       "type": "string",
       "value": "[concat('http://opscenter', variables('uniqueString'), '.', variables('location'), '.cloudapp.azure.com:8888/opscenter/lcm.html')]"
-    },
+    }
   }
 }
