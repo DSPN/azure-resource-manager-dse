@@ -64,7 +64,7 @@
       "name": "[parameters('namespace')]",
       "location": "[parameters('location')]",
       "properties": {
-        "platformFaultDomainCount": 3,
+        "platformFaultDomainCount": 2,
         "platformUpdateDomainCount": 18,
         "managed": "true"
       }
