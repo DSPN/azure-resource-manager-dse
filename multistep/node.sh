@@ -42,7 +42,7 @@ useradd cassandra
 chown -R cassandra:cassandra /mnt/cassandra
 
 # Ignoring public_ip
-# public_ip=`curl --retry 10 icanhazip.com`
+public_ip=`curl --retry 10 icanhazip.com`
 private_ip=`echo $(hostname -I)`
 node_id=$private_ip
 
@@ -55,7 +55,7 @@ echo cluster_name $cluster_name
 echo data_center_size $data_center_size
 echo data_center_name $data_center_name
 echo rack $rack
-echo public_ip [Ignored] $public_ip
+echo public_ip $public_ip
 echo private_ip $private_ip
 echo node_id $node_id
 
