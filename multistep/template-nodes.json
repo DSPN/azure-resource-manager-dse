@@ -148,7 +148,10 @@
             {
               "diskSizeGB": "1023",
               "lun": 0,
-              "createOption": "Empty"
+              "createOption": "Empty",
+              "managedDisk": {
+               "storageAccountType": "Premium_LRS"
+              }
             }
           ]
         },

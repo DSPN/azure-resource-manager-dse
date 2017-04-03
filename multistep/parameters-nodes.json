@@ -6,7 +6,7 @@
     "value": 3
   },
   "vmSize": {
-    "value": "Standard_D2_v2"
+    "value": "Standard_DS2_v2"
   },
   "adminUsername": {
     "value": "datastax"
@@ -22,8 +22,5 @@
   },
   "subnetName": {
     "value": "mock-subnet"
-  },
-  "namespace": {
-    "value": "proddc0"
   }
 }
