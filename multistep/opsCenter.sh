@@ -33,9 +33,6 @@ export OPSC_VERSION='6.0.8'
 ./opscenter/install.sh
 ./opscenter/start.sh
 
-#KLUDGE! Force un-parameterized changes
-sed -ie 's/5.0.7/5.0.5/g' ./lcm/setupCluster.py
-
 sleep 1m
 ./lcm/setupCluster.py \
 --opsc-ip $public_ip \
