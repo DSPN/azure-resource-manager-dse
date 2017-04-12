@@ -3,37 +3,98 @@
   "contentVersion": "1.0.0.0",
   "parameters": {
     "location": {
-      "type": "string"
+      "type": "string",
+      "metadata": {
+        "description": "Region deploying into"
+      }
     },
     "opsCenterIP": {
-      "type": "string"
+      "type": "string",
+      "metadata": {
+        "description": "IP of OpsCenter instance, public or private"
+      }
     },
     "clusterName": {
-      "type": "string"
+      "type": "string",
+      "metadata": {
+        "description": "Name of cluster to deploy nodes into"
+      }
     },
     "adminUsername": {
-      "type": "string"
+      "type": "string",
+      "metadata": {
+        "description": "Username for admin user"
+      }
     },
     "adminPassword": {
-      "type": "securestring"
+      "type": "securestring",
+      "metadata": {
+        "description": "Password for admin user"
+      }
     },
     "DBPassword": {
-      "type": "securestring"
+      "type": "securestring",
+      "metadata": {
+        "description": "Password for default C* user 'cassandra'"
+      }
     },
     "nodeCount": {
-      "type": "int"
+      "type": "int",
+      "metadata": {
+        "description": "Number of nodes to deploy"
+      }
     },
     "vmSize": {
-      "type": "string"
+      "type": "string",
+      "defaultValue": "Standard_DS2_v2",
+      "allowedValues": [
+        "Standard_DS2_v2",
+        "Standard_DS3_v2",
+        "Standard_DS4_v2",
+        "Standard_DS5_v2",
+        "Standard_DS11_v2",
+        "Standard_DS12_v2",
+        "Standard_DS13_v2",
+        "Standard_DS14_v2",
+        "Standard_DS15_v2",
+        "Standard_GS1",
+        "Standard_GS2",
+        "Standard_GS3",
+        "Standard_GS4",
+        "Standard_GS5",
+        "Standard_FS1",
+        "Standard_FS2",
+        "Standard_FS4",
+        "Standard_FS8",
+        "Standard_FS16",
+        "Standard_H8",
+        "Standard_H16",
+        "Standard_H8m",
+        "Standard_H16m",
+        "Standard_H16r",
+        "Standard_H16mr"
+      ],
+      "metadata": {
+        "description": "Size of virtual machine to provision for the cluster"
+      }
     },
     "vnetName": {
-      "type": "string"
+      "type": "string",
+      "metadata": {
+        "description": "Virtual network to deploy into"
+      }
     },
     "subnetName": {
-      "type": "string"
+      "type": "string",
+      "metadata": {
+        "description": "Subnet to deploy into"
+      }
     },
     "namespace": {
-      "type": "string"
+      "type": "string",
+      "metadata": {
+        "description": "Name of datacenter and VM name prefix"
+      }
     }
   },
   "variables": {

@@ -95,7 +95,7 @@
       ],
       "properties": {
         "hardwareProfile": {
-          "vmSize": "Standard_D1_v2"
+          "vmSize": "Standard_DS2_v2"
         },
         "osProfile": {
           "computerName": "opscenter",
