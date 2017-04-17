@@ -85,9 +85,9 @@
     "subnetName": "subnet",
     "osSettings": {
       "imageReference": {
-        "publisher": "datastax",
-        "offer": "datastax-enterprise",
-        "sku": "datastaxenterprise",
+        "publisher": "Canonical",
+        "offer": "UbuntuServer",
+        "sku": "16.04.0-LTS",
         "version": "latest"
       },
       "scripts": [
