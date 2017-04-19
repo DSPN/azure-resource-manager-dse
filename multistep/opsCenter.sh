@@ -33,6 +33,9 @@ export OPSC_VERSION='6.1.0'
 ./opscenter/install.sh
 ./opscenter/start.sh
 
+# Force version change
+sed -ie 's/5.0.8/5.1.0/g' ./lcm/setupCluster.py
+
 sleep 1m
 ./lcm/setupCluster.py \
 --opsc-ip $public_ip \
