@@ -27,7 +27,7 @@ unzip dev.zip
 cd install-datastax-ubuntu-dev/bin/
 
 # Overide install default version
-export OPSC_VERSION='6.0.8'
+export OPSC_VERSION='6.1.0'
 
 ./os/install_java.sh
 ./opscenter/install.sh
