@@ -68,10 +68,6 @@ wget https://github.com/DSPN/install-datastax-ubuntu/archive/dev.zip
 unzip dev.zip
 cd install-datastax-ubuntu-dev/bin/lcm
 
-#KLUDGE! Force un-parameterized changes
-sed -ie 's/\"graph-enabled\": True/\"graph-enabled\": False/g' ./utilLCM.py
-sed -ie 's/\"spark-enabled\": True/\"spark-enabled\": False/g' ./utilLCM.py
-sed -ie 's/\"solr-enabled\": True/\"solr-enabled\": False/g' ./utilLCM.py
 
 ./addNode.py \
 --opsc-ip $opscenter_ip \
