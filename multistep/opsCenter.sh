@@ -22,9 +22,9 @@ apt-get -y install unzip python-pip
 pip install requests
 
 cd /
-wget https://github.com/DSPN/install-datastax-ubuntu/archive/dev.zip
-unzip dev.zip
-cd install-datastax-ubuntu-dev/bin/
+wget https://github.com/DSPN/install-datastax-ubuntu/archive/5.5.0.zip
+unzip 5.5.0.zip
+cd install-datastax-ubuntu-5.5.0/
 
 # Overide install default version
 export OPSC_VERSION='6.1.0'
