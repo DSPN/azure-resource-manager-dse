@@ -34,8 +34,8 @@ export OPSC_VERSION='6.1.0'
 ./opscenter/start.sh
 
 # Force version change
-sed -ie 's/5.0.8/5.1.0/g' ./lcm/setupCluster.py
-sed -ie 's/PasswordAuthenticator/DseAuthenticator/g' ./lcm/setupCluster.py
+sed -i -e 's/5.0.8/5.1.0/g' ./lcm/setupCluster.py
+sed -i -e 's/PasswordAuthenticator/com.datastax.bdp.cassandra.auth.DseAuthenticator/g' ./lcm/setupCluster.py
 
 sleep 1m
 ./lcm/setupCluster.py \
