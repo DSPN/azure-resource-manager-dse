@@ -62,9 +62,9 @@ apt-get -y install unzip python-pip
 pip install requests
 
 cd /tmp
-wget https://github.com/DSPN/install-datastax-ubuntu/archive/5.5.0.zip
-unzip 5.5.0.zip
-cd install-datastax-ubuntu-5.5.0/bin/lcm
+wget https://github.com/DSPN/install-datastax-ubuntu/archive/5.5.1.zip
+unzip 5.5.1.zip
+cd install-datastax-ubuntu-5.5.1/bin/lcm
 
 ./addNode.py \
 --opsc-ip $opscenter_dns_name \
