@@ -35,7 +35,7 @@ export OPSC_VERSION='6.1.0'
 
 # Force version change
 sed -ie 's/5.0.8/5.1.0/g' ./lcm/setupCluster.py
-sed -ie 's/PasswordAuthenticator/DSEAuthenticator/g' ./lcm/setupCluster.py
+sed -ie 's/PasswordAuthenticator/DseAuthenticator/g' ./lcm/setupCluster.py
 
 sleep 1m
 ./lcm/setupCluster.py \
