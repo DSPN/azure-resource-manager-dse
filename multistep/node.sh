@@ -69,6 +69,9 @@ wget https://github.com/DSPN/install-datastax-ubuntu/archive/5.5.0.zip
 unzip 5.5.0.zip
 cd install-datastax-ubuntu-5.5.0/bin/lcm
 
+# force rpc_address to 0.0.0.0
+sed -i -e 's/\"rpc-address\": privateip/\"rpc-address\": \"0.0.0.0\"/g' addNode.py
+
 ./addNode.py \
 --opsc-ip $opscenter_ip \
 --clustername $cluster_name \
