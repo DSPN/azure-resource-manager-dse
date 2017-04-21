@@ -59,6 +59,15 @@ echo node_id $node_id
 
 apt-get update
 apt-get -y install unzip python-pip
+RET=$?
+if [ $RET -ne 0 ]
+then
+  echo "ERROR: call to apt-get returned non-zero, exit code: $RET"
+  echo "Sleeping 2m before retry..."
+  sleep 1m
+  apt-get -y install unzip python-pip
+fi
+
 pip install requests
 
 cd /tmp
