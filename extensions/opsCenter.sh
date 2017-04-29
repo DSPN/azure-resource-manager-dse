@@ -29,7 +29,7 @@ fi
 
 pip install requests
 
-release="master"
+release="5.5.2"
 wget https://github.com/DSPN/install-datastax-ubuntu/archive/$release.zip
 unzip $release.zip
 cd install-datastax-ubuntu-$release/bin
