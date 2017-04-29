@@ -29,13 +29,13 @@ fi
 
 pip install requests
 
-cd /tmp
-wget https://github.com/DSPN/install-datastax-ubuntu/archive/5.5.1.zip
-unzip 5.5.1.zip
-cd install-datastax-ubuntu-5.5.1/bin
+release="master"
+wget https://github.com/DSPN/install-datastax-ubuntu/archive/$release.zip
+unzip $release.zip
+cd install-datastax-ubuntu-$release/bin/lcm
 
-# Overide install default version
-export OPSC_VERSION='6.0.8'
+# Overide install default version if needed
+#export OPSC_VERSION='6.0.8'
 
 ./os/install_java.sh
 ./opscenter/install.sh

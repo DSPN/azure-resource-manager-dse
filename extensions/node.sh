@@ -70,10 +70,10 @@ fi
 
 pip install requests
 
-cd /tmp
-wget https://github.com/DSPN/install-datastax-ubuntu/archive/5.5.1.zip
-unzip 5.5.1.zip
-cd install-datastax-ubuntu-5.5.1/bin/lcm
+release="master"
+wget https://github.com/DSPN/install-datastax-ubuntu/archive/$release.zip
+unzip $release.zip
+cd install-datastax-ubuntu-$release/bin/lcm
 
 ./addNode.py \
 --opsc-ip $opscenter_dns_name \
