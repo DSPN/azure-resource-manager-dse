@@ -5,7 +5,6 @@ unique_string=$2
 data_center_name=$3
 opscenter_location=$4
 dbpasswd=$5
-#--dbpasswd , { "Ref" : "DBPassword"}
 
 echo "Input to node.sh is:"
 echo unique_string $unique_string
@@ -49,6 +48,7 @@ rack=FD$fault_domain
 
 echo "Calling addNode.py with the settings:"
 echo opscenter_dns_name $opscenter_dns_name
+
 echo cluster_name $cluster_name
 echo data_center_size $data_center_size
 echo data_center_name $data_center_name
@@ -59,12 +59,21 @@ echo node_id $node_id
 
 apt-get update
 apt-get -y install unzip python-pip
+RET=$?
+if [ $RET -ne 0 ]
+then
+  echo "ERROR: call to apt-get returned non-zero, exit code: $RET"
+  echo "Sleeping 2m before retry..."
+  sleep 1m
+  apt-get -y install unzip python-pip
+fi
+
 pip install requests
 
-#cd /
-wget https://github.com/DSPN/install-datastax-ubuntu/archive/master.zip
-unzip master.zip
-cd install-datastax-ubuntu-master/bin/lcm
+cd /tmp
+wget https://github.com/DSPN/install-datastax-ubuntu/archive/5.5.1.zip
+unzip 5.5.1.zip
+cd install-datastax-ubuntu-5.5.1/bin/lcm
 
 ./addNode.py \
 --opsc-ip $opscenter_dns_name \

@@ -18,15 +18,24 @@ echo password $password
 
 apt-get update
 apt-get -y install unzip python-pip
+RET=$?
+if [ $RET -ne 0 ]
+then
+  echo "ERROR: call to apt-get returned non-zero, exit code: $RET"
+  echo "Sleeping 2m before retry..."
+  sleep 1m
+  apt-get -y install unzip python-pip
+fi
+
 pip install requests
 
-cd /
-wget https://github.com/DSPN/install-datastax-ubuntu/archive/master.zip
-unzip master.zip
-cd install-datastax-ubuntu-master/bin/
+cd /tmp
+wget https://github.com/DSPN/install-datastax-ubuntu/archive/5.5.1.zip
+unzip 5.5.1.zip
+cd install-datastax-ubuntu-5.5.1/bin
 
 # Overide install default version
-# export OPSC_VERSION='6.0.8'
+export OPSC_VERSION='6.0.8'
 
 ./os/install_java.sh
 ./opscenter/install.sh
