@@ -32,7 +32,7 @@ pip install requests
 release="master"
 wget https://github.com/DSPN/install-datastax-ubuntu/archive/$release.zip
 unzip $release.zip
-cd install-datastax-ubuntu-$release/bin/lcm
+cd install-datastax-ubuntu-$release/bin
 
 # Overide install default version if needed
 #export OPSC_VERSION='6.0.8'
