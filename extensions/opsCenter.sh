@@ -47,3 +47,7 @@ sleep 1m
 --user $username \
 --password $password \
 --datapath "/mnt/cassandra"
+
+# Block execution while waiting for jobs to
+# exit RUNNING/PENDING status
+./lcm/waitForJobs.py
