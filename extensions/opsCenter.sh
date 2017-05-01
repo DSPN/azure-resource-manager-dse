@@ -29,7 +29,7 @@ fi
 
 pip install requests
 
-release="5.5.2"
+release="5.5.3"
 wget https://github.com/DSPN/install-datastax-ubuntu/archive/$release.zip
 unzip $release.zip
 cd install-datastax-ubuntu-$release/bin
@@ -47,3 +47,7 @@ sleep 1m
 --user $username \
 --password $password \
 --datapath "/mnt/cassandra"
+
+# Block execution while waiting for jobs to
+# exit RUNNING/PENDING status
+./lcm/waitForJobs.py
