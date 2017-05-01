@@ -17,7 +17,9 @@ npm --version
 node --version
 
 mkdir pkg1
-cp ../createUIDefinition.json pkg1/
+cp ../createUiDefinition.json pkg1/
+# why? vvv
+mv pkg1/createUiDefinition.json pkg1/createUIDefinition.json
 cp ../../singledc/mainTemplate.json pkg1/
 
 # --force used because a "warning" halts execution
