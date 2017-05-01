@@ -74,6 +74,11 @@
       "dependsOn": [
         "Microsoft.Network/networkInterfaces/opscenter"
       ],
+      "plan": {
+        "name": "[parameters('osSettings').imageReference.sku]",
+        "publisher": "[parameters('osSettings').imageReference.publisher]",
+        "product": "[parameters('osSettings').imageReference.offer]"
+      },
       "properties": {
         "hardwareProfile": {
           "vmSize": "Standard_D1_v2"
