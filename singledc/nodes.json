@@ -111,6 +111,11 @@
         "[concat('Microsoft.Network/networkInterfaces/', parameters('namespace'), 'vm', copyindex())]",
         "[concat('Microsoft.Compute/availabilitySets/', parameters('namespace'))]"
       ],
+      "plan": {
+        "name": "[parameters('osSettings').imageReference.sku]",
+        "publisher": "[parameters('osSettings').imageReference.publisher]",
+        "product": "[parameters('osSettings').imageReference.offer]"
+      },
       "properties": {
         "availabilitySet": {
           "id": "[resourceId('Microsoft.Compute/availabilitySets', concat(parameters('namespace')))]"
