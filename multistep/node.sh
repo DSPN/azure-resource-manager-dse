@@ -43,7 +43,7 @@ chown -R cassandra:cassandra /mnt/cassandra
 
 # Ignoring public_ip
 private_ip=`echo $(hostname -I)`
-public_ip=$private_ip
+public_ip=`curl --retry 10 icanhazip.com`
 node_id=$private_ip
 
 fault_domain=$(curl --max-time 50000 --retry 12 --retry-delay 50000 http://169.254.169.254/metadata/v1/InstanceInfo -s -S | sed -e 's/.*"FD":"\([^"]*\)".*/\1/')
@@ -63,14 +63,10 @@ apt-get update
 apt-get -y install unzip python-pip
 pip install requests
 
-#cd /
-
-wget https://github.com/DSPN/install-datastax-ubuntu/archive/5.5.0.zip
-unzip 5.5.0.zip
-cd install-datastax-ubuntu-5.5.0/bin/lcm
-
-# force rpc_address to 0.0.0.0
-sed -i -e 's/\"rpc-address\": privateip/\"rpc-address\": \"0.0.0.0\"/g' addNode.py
+release="master"
+wget https://github.com/DSPN/install-datastax-ubuntu/archive/$release.zip
+unzip $release.zip
+cd install-datastax-ubuntu-$release/bin/lcm
 
 ./addNode.py \
 --opsc-ip $opscenter_ip \
@@ -79,6 +75,6 @@ sed -i -e 's/\"rpc-address\": privateip/\"rpc-address\": \"0.0.0.0\"/g' addNode.
 --dcname $data_center_name \
 --rack $rack \
 --pubip $private_ip \
---privip $private_ip \
+--privip $public_ip \
 --nodeid $node_id \
 --dbpasswd $dbpasswd

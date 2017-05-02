@@ -21,10 +21,10 @@ apt-get update
 apt-get -y install unzip python-pip
 pip install requests
 
-cd /tmp
-wget https://github.com/DSPN/install-datastax-ubuntu/archive/5.5.0.zip
-unzip 5.5.0.zip
-cd install-datastax-ubuntu-5.5.0/bin
+release="master"
+wget https://github.com/DSPN/install-datastax-ubuntu/archive/$release.zip
+unzip $release.zip
+cd install-datastax-ubuntu-$release/bin
 
 # Overide install default version
 export OPSC_VERSION='6.1.0'
@@ -32,10 +32,6 @@ export OPSC_VERSION='6.1.0'
 ./os/install_java.sh
 ./opscenter/install.sh
 ./opscenter/start.sh
-
-# Force version change
-sed -i -e 's/5.0.8/5.1.0/g' ./lcm/setupCluster.py
-sed -i -e 's/PasswordAuthenticator/com.datastax.bdp.cassandra.auth.DseAuthenticator/g' ./lcm/setupCluster.py
 
 sleep 1m
 ./lcm/setupCluster.py \
