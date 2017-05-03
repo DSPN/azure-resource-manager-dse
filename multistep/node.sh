@@ -74,7 +74,7 @@ cd install-datastax-ubuntu-$release/bin/lcm
 --dcsize $data_center_size \
 --dcname $data_center_name \
 --rack $rack \
---pubip $private_ip \
---privip $public_ip \
+--pubip $public_ip \
+--privip $private_ip \
 --nodeid $node_id \
 --dbpasswd $dbpasswd
