@@ -9,7 +9,7 @@
     "value": "foo123!"
   },
   "clusterName": {
-    "value": "prodCluster"
+    "value": "testCluster"
   },
   "DBPassword": {
     "value": "asdf456$"
