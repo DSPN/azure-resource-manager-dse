@@ -24,7 +24,7 @@ cp /etc/fstab /etc/fstab.bak
 # add C* data disk
 mkfs -t ext4 /dev/sdc
 uuid=$(blkid | grep \/dev\/sdc | awk '{ print $2 }' | tr -d "\"")
-mkdir /data
+mkdir -p /data/cassandra
 echo "# Cassandra data mount, template auto-generated." >> /etc/fstab
 echo "$uuid       /data/cassandra   ext4    defaults,nofail        1       2" >> /etc/fstab
 mount -a
