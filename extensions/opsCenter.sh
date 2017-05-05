@@ -14,7 +14,7 @@ echo "Calling setupCluster.py with the settings:"
 echo public_ip $public_ip
 echo cluster_name $cluster_name
 echo username $username
-echo password $password
+echo password XXXXXX
 
 apt-get update
 n=0
