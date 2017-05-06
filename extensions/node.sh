@@ -21,21 +21,18 @@ echo "" >> /etc/sysctl.conf
 
 # Move tmp disk mount pt and mount data disk
 cp /etc/fstab /etc/fstab.bak
-# tmp disk mounted at /mnt by default, moving to /mnt/tmp
-umount /mnt
-mkdir /mnt/tmp
-sed -ie 's/mnt/mnt\/tmp/g' /etc/fstab
 # add C* data disk
 mkfs -t ext4 /dev/sdc
-mkdir /mnt/cassandra
+uuid=$(blkid /dev/sdc -sUUID -ovalue)
+mkdir -p /data/cassandra
 echo "# Cassandra data mount, template auto-generated." >> /etc/fstab
-echo "/dev/sdc       /mnt/cassandra   ext4    defaults,nofail        0       2" >> /etc/fstab
+echo "UUID=$uuid       /data/cassandra   ext4    defaults,nofail        1       2" >> /etc/fstab
 mount -a
-mkdir /mnt/cassandra/data
-mkdir /mnt/cassandra/commitlog
-mkdir /mnt/cassandra/saved_caches
+mkdir -p /data/cassandra/data
+mkdir -p /data/cassandra/commitlog
+mkdir -p /data/cassandra/saved_caches
 useradd cassandra
-chown -R cassandra:cassandra /mnt/cassandra
+chown -R cassandra:cassandra /data/cassandra
 
 opscenter_dns_name="opscenter$unique_string.$opscenter_location.cloudapp.azure.com"
 cluster_name="mycluster"
@@ -58,15 +55,14 @@ echo private_ip $private_ip
 echo node_id $node_id
 
 apt-get update
-apt-get -y install unzip python-pip
-RET=$?
-if [ $RET -ne 0 ]
-then
-  echo "ERROR: call to apt-get returned non-zero, exit code: $RET"
-  echo "Sleeping 2m before retry..."
-  sleep 1m
-  apt-get -y install unzip python-pip
-fi
+n=0
+until [ $n -ge 8 ]
+do
+  apt-get -y install unzip python-pip jq  && break
+  echo "apt-get try $n failed, sleeping..."
+  n=$[$n+1]
+  sleep 15s
+done
 
 pip install requests
 

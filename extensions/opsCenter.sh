@@ -14,18 +14,17 @@ echo "Calling setupCluster.py with the settings:"
 echo public_ip $public_ip
 echo cluster_name $cluster_name
 echo username $username
-echo password $password
+echo password XXXXXX
 
 apt-get update
-apt-get -y install unzip python-pip
-RET=$?
-if [ $RET -ne 0 ]
-then
-  echo "ERROR: call to apt-get returned non-zero, exit code: $RET"
-  echo "Sleeping 2m before retry..."
-  sleep 1m
-  apt-get -y install unzip python-pip
-fi
+n=0
+until [ $n -ge 8 ]
+do
+  apt-get -y install unzip python-pip jq  && break
+  echo "apt-get try $n failed, sleeping..."
+  n=$[$n+1]
+  sleep 15s
+done
 
 pip install requests
 
@@ -46,7 +45,7 @@ sleep 1m
 --clustername $cluster_name \
 --user $username \
 --password $password \
---datapath "/mnt/cassandra"
+--datapath "/data/cassandra"
 
 # Block execution while waiting for jobs to
 # exit RUNNING/PENDING status
