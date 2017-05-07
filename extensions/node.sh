@@ -27,5 +27,5 @@ wget https://github.com/DSPN/install-datastax-ubuntu/archive/$release.tar.gz
 tar -xvf $release.tar.gz
 cd install-datastax-ubuntu-$release/bin
 
-export DSE_VERSION='5.1.0-1'
+export DSE_VERSION='5.0.8-1'
 ./dse.sh $cloud_type $seed_node_dns_name $data_center_name $opscenter_dns_name
