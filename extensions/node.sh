@@ -22,10 +22,10 @@ echo data_center_name $data_center_name
 echo opscenter_dns_name $opscenter_dns_name
 echo dse_version $dse_version
 
-apt-get -y install unzip
+release="5.5.3"
+wget https://github.com/DSPN/install-datastax-ubuntu/archive/$release.tar.gz
+tar -xvf $release.tar.gz
+cd install-datastax-ubuntu-$release/bin
 
-wget https://github.com/DSPN/install-datastax-ubuntu/archive/master.zip
-unzip master.zip
-cd install-datastax-ubuntu-master/bin
-
+export DSE_VERSION='5.1.0-1'
 ./dse.sh $cloud_type $seed_node_dns_name $data_center_name $opscenter_dns_name
