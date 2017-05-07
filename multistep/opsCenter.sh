@@ -39,4 +39,4 @@ sleep 1m
 --clustername $cluster_name \
 --user $username \
 --password $password \
---datapath "/mnt/cassandra"
+--datapath "/data/cassandra"
