@@ -6,7 +6,7 @@
     "value": 3
   },
   "vmSize": {
-    "value": "Standard_DS14_v2"
+    "value": "Standard_DS4_v2"
   },
   "clusterName": {
     "value": "testCluster"
