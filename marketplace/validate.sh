@@ -4,6 +4,7 @@
 # This is a sketch of a script to do schema validation for mkpl
 #
 
+rm -r ./validate/
 mkdir validate
 cd validate
 
