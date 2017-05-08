@@ -39,12 +39,10 @@ azure group deployment create -f template-nodes.json -e parameters-nodes.json mo
 info:    Executing command group deployment create
 info:    Supply values for the following parameters
 opsCenterIP:  10.0.0.4
-clusterName:  prodCluster
 namespace:  dc0
 ```
 Here we can see there are 3 parameters not in the parameter file, so the CLI prompts for input
   - `opsCenterIP`:  can be either the private or public ip of the OpsCenter VM
-  - `clusterName`:  must match the value passed to `template-opscenter.json`
   - `namespace`:  **important** this parameter serves as both the name of the datacenter the nodes belong to *and* a prefix for the names of node VM's. Because it is used as a prefix this can only contain lowercase letters and numbers, no symbols.
 
 The progress of the LCM install job can be monitored in the LCM web console.
@@ -60,18 +58,16 @@ azure group deployment create -f template-nodes.json -e parameters-nodes.json mo
 info:    Executing command group deployment create
 info:    Supply values for the following parameters
 opsCenterIP:  10.0.0.4
-clusterName:  prodCluster
 namespace:  dc1
 ```
 ### New cluster
-If you want to deploy nodes to a 2nd cluster, first create a new cluster in the LCM console by clicking on the *Clusters* tab and then the plus sign above the column of clusters. Choose a new cluster name (eg `devCluster`) and the default credentials, config profile, and repo. Rerun the same command changing the deployment name (here `nodes3`) and choosing a new and **unique** value for the `namespace` parameter, eg here we pass in `devdc0` since `dc0` has been used previously. Using a non-unique value will result in namespace collisions when trying to create VM's.
+If you want to deploy nodes to a 2nd cluster, first create a new cluster in the LCM console by clicking on the *Clusters* tab and then the plus sign above the column of clusters. Choose a new cluster name (eg `devCluster`) and the default credentials, config profile, and repo. Change the value of `clusterName` in the parameters file, and rerun the same command changing the deployment name (here `nodes3`) and choosing a new and **unique** value for the `namespace` parameter, eg here we pass in `devdc0` since `dc0` has been used previously. Using a non-unique value will result in namespace collisions when trying to create VM's.
 
 ```
 azure group deployment create -f template-nodes.json -e parameters-nodes.json mock nodes3
 info:    Executing command group deployment create
 info:    Supply values for the following parameters
 opsCenterIP:  10.0.0.4
-clusterName:  devCluster
 namespace:  devdc0
 ```
 ## Note on Azure CLI 2.0
