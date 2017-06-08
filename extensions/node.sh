@@ -66,7 +66,7 @@ done
 
 pip install requests
 
-release="master"
+release="5.5.4"
 wget https://github.com/DSPN/install-datastax-ubuntu/archive/$release.zip
 unzip $release.zip
 cd install-datastax-ubuntu-$release/bin/lcm
