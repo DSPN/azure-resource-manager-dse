@@ -26,7 +26,7 @@
             }
           },
           {
-            "name": "SSH internal",
+            "name": "SSHInternal",
             "properties": {
               "protocol": "TCP",
               "sourcePortRange": "VirtualNetwork",
@@ -169,7 +169,7 @@
             }
           },
           {
-            "name": "OpsC internal",
+            "name": "OpsCInternal",
             "properties": {
               "protocol": "TCP",
               "sourcePortRange": "VirtualNetwork",
@@ -195,7 +195,7 @@
             }
           },
           {
-            "name": "OpsCHTTPS internal",
+            "name": "OpsCHTTPSInternal",
             "properties": {
               "protocol": "TCP",
               "sourcePortRange": "VirtualNetwork",
