@@ -203,7 +203,7 @@
               "sourceAddressPrefix": "VirtualNetwork",
               "destinationAddressPrefix": "*",
               "access": "Allow",
-              "priority": 1200,
+              "priority": 1210,
               "direction": "Inbound"
             }
           },
