@@ -33,8 +33,9 @@ wget https://github.com/DSPN/install-datastax-ubuntu/archive/$release.zip
 unzip $release.zip
 cd install-datastax-ubuntu-$release/bin
 
-# Overide install default version if needed
-#export OPSC_VERSION='6.0.8'
+# Overide OpsC install default version if needed
+export OPSC_VERSION='6.1.1'
+ver='5.1.1'
 
 ./os/install_java.sh
 ./opscenter/install.sh
@@ -43,6 +44,7 @@ sleep 1m
 ./lcm/setupCluster.py \
 --opsc-ip $public_ip \
 --clustername $cluster_name \
+--dsever  $ver \
 --user $username \
 --password $password \
 --datapath "/data/cassandra"
