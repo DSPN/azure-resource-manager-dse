@@ -18,49 +18,10 @@
               "protocol": "TCP",
               "sourcePortRange": "*",
               "destinationPortRange": "22",
-              "sourceAddressPrefix": "*",
+              "sourceAddressPrefix": "Internet",
               "destinationAddressPrefix": "*",
               "access": "Allow",
               "priority": 100,
-              "direction": "Inbound"
-            }
-          },
-          {
-            "name": "SSHInternal",
-            "properties": {
-              "protocol": "TCP",
-              "sourcePortRange": "*",
-              "destinationPortRange": "22",
-              "sourceAddressPrefix": "VirtualNetwork",
-              "destinationAddressPrefix": "*",
-              "access": "Allow",
-              "priority": 110,
-              "direction": "Inbound"
-            }
-          },
-          {
-            "name": "CassandraInterNode",
-            "properties": {
-              "protocol": "TCP",
-              "sourcePortRange": "*",
-              "destinationPortRange": "7000-7001",
-              "sourceAddressPrefix": "VirtualNetwork",
-              "destinationAddressPrefix": "*",
-              "access": "Allow",
-              "priority": 200,
-              "direction": "Inbound"
-            }
-          },
-          {
-            "name": "CassandraJMX",
-            "properties": {
-              "protocol": "TCP",
-              "sourcePortRange": "*",
-              "destinationPortRange": "7199",
-              "sourceAddressPrefix": "VirtualNetwork",
-              "destinationAddressPrefix": "*",
-              "access": "Allow",
-              "priority": 300,
               "direction": "Inbound"
             }
           },
@@ -70,36 +31,10 @@
               "protocol": "TCP",
               "sourcePortRange": "*",
               "destinationPortRange": "9042",
-              "sourceAddressPrefix": "VirtualNetwork",
+              "sourceAddressPrefix": "Internet",
               "destinationAddressPrefix": "*",
               "access": "Allow",
               "priority": 400,
-              "direction": "Inbound"
-            }
-          },
-          {
-            "name": "CassandraClientThrift",
-            "properties": {
-              "protocol": "TCP",
-              "sourcePortRange": "*",
-              "destinationPortRange": "9160",
-              "sourceAddressPrefix": "VirtualNetwork",
-              "destinationAddressPrefix": "*",
-              "access": "Allow",
-              "priority": 500,
-              "direction": "Inbound"
-            }
-          },
-          {
-            "name": "DSEFS",
-            "properties": {
-              "protocol": "TCP",
-              "sourcePortRange": "*",
-              "destinationPortRange": "5598-5599",
-              "sourceAddressPrefix": "VirtualNetwork",
-              "destinationAddressPrefix": "*",
-              "access": "Allow",
-              "priority": 600,
               "direction": "Inbound"
             }
           },
@@ -109,7 +44,7 @@
               "protocol": "TCP",
               "sourcePortRange": "*",
               "destinationPortRange": "4040",
-              "sourceAddressPrefix": "VirtualNetwork",
+              "sourceAddressPrefix": "Internet",
               "destinationAddressPrefix": "*",
               "access": "Allow",
               "priority": 700,
@@ -122,7 +57,7 @@
               "protocol": "TCP",
               "sourcePortRange": "*",
               "destinationPortRange": "7080",
-              "sourceAddressPrefix": "VirtualNetwork",
+              "sourceAddressPrefix": "Internet",
               "destinationAddressPrefix": "*",
               "access": "Allow",
               "priority": 800,
@@ -135,7 +70,7 @@
               "protocol": "TCP",
               "sourcePortRange": "*",
               "destinationPortRange": "7081",
-              "sourceAddressPrefix": "VirtualNetwork",
+              "sourceAddressPrefix": "Internet",
               "destinationAddressPrefix": "*",
               "access": "Allow",
               "priority": 900,
@@ -143,12 +78,12 @@
             }
           },
           {
-            "name": "SparkRESR",
+            "name": "SparkREST",
             "properties": {
               "protocol": "TCP",
               "sourcePortRange": "*",
               "destinationPortRange": "8090",
-              "sourceAddressPrefix": "VirtualNetwork",
+              "sourceAddressPrefix": "Internet",
               "destinationAddressPrefix": "*",
               "access": "Allow",
               "priority": 1000,
@@ -169,19 +104,6 @@
             }
           },
           {
-            "name": "OpsCInternal",
-            "properties": {
-              "protocol": "TCP",
-              "sourcePortRange": "*",
-              "destinationPortRange": "8888",
-              "sourceAddressPrefix": "VirtualNetwork",
-              "destinationAddressPrefix": "*",
-              "access": "Allow",
-              "priority": 1110,
-              "direction": "Inbound"
-            }
-          },
-          {
             "name": "OpsCHTTPS",
             "properties": {
               "protocol": "TCP",
@@ -195,106 +117,15 @@
             }
           },
           {
-            "name": "OpsCHTTPSInternal",
-            "properties": {
-              "protocol": "TCP",
-              "sourcePortRange": "*",
-              "destinationPortRange": "8443",
-              "sourceAddressPrefix": "VirtualNetwork",
-              "destinationAddressPrefix": "*",
-              "access": "Allow",
-              "priority": 1210,
-              "direction": "Inbound"
-            }
-          },
-          {
-            "name": "Agent",
-            "properties": {
-              "protocol": "TCP",
-              "sourcePortRange": "*",
-              "destinationPortRange": "61619-61621",
-              "sourceAddressPrefix": "VirtualNetwork",
-              "destinationAddressPrefix": "*",
-              "access": "Allow",
-              "priority": 1300,
-              "direction": "Inbound"
-            }
-          },
-          {
-            "name": "Search",
-            "properties": {
-              "protocol": "TCP",
-              "sourcePortRange": "*",
-              "destinationPortRange": "8983",
-              "sourceAddressPrefix": "VirtualNetwork",
-              "destinationAddressPrefix": "*",
-              "access": "Allow",
-              "priority": 1400,
-              "direction": "Inbound"
-            }
-          },
-          {
-            "name": "SearchInterNode",
-            "properties": {
-              "protocol": "TCP",
-              "sourcePortRange": "*",
-              "destinationPortRange": "8609",
-              "sourceAddressPrefix": "VirtualNetwork",
-              "destinationAddressPrefix": "*",
-              "access": "Allow",
-              "priority": 1500,
-              "direction": "Inbound"
-            }
-          },
-          {
-            "name": "SparkMasterInterNode",
-            "properties": {
-              "protocol": "TCP",
-              "sourcePortRange": "*",
-              "destinationPortRange": "7077",
-              "sourceAddressPrefix": "VirtualNetwork",
-              "destinationAddressPrefix": "*",
-              "access": "Allow",
-              "priority": 1600,
-              "direction": "Inbound"
-            }
-          },
-          {
             "name": "Gremlin",
             "properties": {
               "protocol": "TCP",
               "sourcePortRange": "*",
               "destinationPortRange": "8182",
-              "sourceAddressPrefix": "VirtualNetwork",
+              "sourceAddressPrefix": "Internet",
               "destinationAddressPrefix": "*",
               "access": "Allow",
               "priority": 1700,
-              "direction": "Inbound"
-            }
-          },
-          {
-            "name": "SparkJobServerJMX",
-            "properties": {
-              "protocol": "TCP",
-              "sourcePortRange": "*",
-              "destinationPortRange": "9999",
-              "sourceAddressPrefix": "VirtualNetwork",
-              "destinationAddressPrefix": "*",
-              "access": "Allow",
-              "priority": 1800,
-              "direction": "Inbound"
-            }
-          },
-          {
-            "name": "Block",
-            "properties": {
-              "protocol": "TCP",
-              "sourcePortRange": "*",
-              "destinationPortRange": "*",
-              "sourceAddressPrefix": "Internet",
-              "destinationAddressPrefix": "*",
-              "access": "Deny",
-              "priority": 4096,
               "direction": "Inbound"
             }
           }
