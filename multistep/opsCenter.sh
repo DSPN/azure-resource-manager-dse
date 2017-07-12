@@ -36,7 +36,7 @@ cd install-datastax-ubuntu-$release/bin
 
 # Overide OpsC install default version if needed
 export OPSC_VERSION='6.1.1'
-ver='5.1.2'
+ver='5.1.1'
 
 ./os/install_java.sh
 ./opscenter/install.sh
