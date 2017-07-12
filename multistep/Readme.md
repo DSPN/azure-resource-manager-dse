@@ -1,7 +1,6 @@
 # Multistep templates to deploy a DSE cluster
 These templates are similar to the singledc templates, but have been separated into pieces to allow for more flexibility. They can be used deploy a DSE cluster in an existing resource group or vnet, deploy a cluster with a single datacenter, multiple datacenters, or multiple distinct clusters. This is also a beta version and bugs most likely exist.
 
-If using v2.0 of the Azure CLI, please see note at the end of this doc.
 
 ## 1: Create Resource Group and vnet
 The DSE cluster needs to be deployed into a resource group, vnet, and subnet. If these already exist, skip this step. **Note:** the later example commands and the parameter files reference `mock, mock-vnet, mock-subnet, location`. If skipping this step be sure to change these parameters to the appropriate values.
@@ -77,25 +76,4 @@ info:    Supply values for the following parameters
 opsCenterIP:  10.0.0.4
 namespace:  devdc0
 ```
-## Note on Azure CLI 2.0
 
-The syntax for v2.0 of the Azure CLI is slightly different. The commands become:
-```
-az group create --name mock --location "eastus"
-az group deployment create --resource-group mock --template-file template-mock-vnet.json
-az group deployment create --resource-group mock --template-file template-opscenter.json --parameters @parameters-opscenter.json
-az group deployment create --resource-group mock --template-file template-nodes.json --parameters @parameters-nodes.json
-```
-
-**Important:** there is currently a bug when the CLI prompts for parameters, all parameters must be in the parameter file. Add the following with the correct values for your deployment. See step 3 for a discussion of these parameters.
-```
-   "opsCenterIP": {
-     "value": "10.0.0.4"
-   },
-   "clusterName": {
-      "value": "prodCluster"
-    },
-    "namespace": {
-      "value": "dc0"
-    }
-```
