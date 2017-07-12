@@ -132,22 +132,6 @@
     },
     {
       "apiVersion": "2015-06-15",
-      "type": "Microsoft.Network/publicIPAddresses",
-      "name": "[concat(parameters('namespace'), 'vm', copyindex())]",
-      "location": "[parameters('location')]",
-      "copy": {
-        "name": "[concat(parameters('namespace'), 'ipLoop')]",
-        "count": "[parameters('nodeCount')]"
-      },
-      "properties": {
-        "publicIPAllocationMethod": "Dynamic",
-        "dnsSettings": {
-          "domainNameLabel": "[concat(parameters('namespace'), 'vm', copyIndex(), variables('uniqueString'))]"
-        }
-      }
-    },
-    {
-      "apiVersion": "2015-06-15",
       "type": "Microsoft.Network/networkInterfaces",
       "name": "[concat(parameters('namespace'), 'vm', copyindex())]",
       "location": "[parameters('location')]",
@@ -155,17 +139,11 @@
         "name": "[concat(parameters('namespace'), 'nicLoop')]",
         "count": "[parameters('nodeCount')]"
       },
-      "dependsOn": [
-        "[concat('Microsoft.Network/publicIPAddresses/', parameters('namespace'), 'vm', copyindex())]"
-      ],
       "properties": {
         "ipConfigurations": [
           {
             "name": "ipconfig1",
             "properties": {
-              "publicIPAddress": {
-                "id": "[resourceId('Microsoft.Network/publicIPAddresses', concat(parameters('namespace'), 'vm', copyindex()))]"
-              },
               "privateIPAllocationMethod": "Dynamic",
               "subnet": {
                 "id": "[variables('subnetId')]"

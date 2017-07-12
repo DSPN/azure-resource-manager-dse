@@ -18,25 +18,34 @@ echo username $username
 echo password XXXXXX
 
 apt-get update
-apt-get -y install unzip python-pip
+n=0
+until [ $n -ge 8 ]
+do
+  apt-get -y install unzip python-pip jq  && break
+  echo "apt-get try $n failed, sleeping..."
+  n=$[$n+1]
+  sleep 15s
+done
+
 pip install requests
 
-release="master"
+release="5.5.4"
 wget https://github.com/DSPN/install-datastax-ubuntu/archive/$release.zip
 unzip $release.zip
 cd install-datastax-ubuntu-$release/bin
 
-# Overide install default version
-export OPSC_VERSION='6.1.0'
+# Overide OpsC install default version if needed
+export OPSC_VERSION='6.1.1'
+ver='5.1.2'
 
 ./os/install_java.sh
 ./opscenter/install.sh
 ./opscenter/start.sh
-
 sleep 1m
 ./lcm/setupCluster.py \
 --opsc-ip $public_ip \
 --clustername $cluster_name \
+--dsever  $ver \
 --user $username \
 --password $password \
 --datapath "/data/cassandra"
