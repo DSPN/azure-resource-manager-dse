@@ -6,8 +6,11 @@ If using v2.0 of the Azure CLI, please see note at the end of this doc.
 ## 1: Create Resource Group and vnet
 The DSE cluster needs to be deployed into a resource group, vnet, and subnet. If these already exist, skip this step. **Note:** the later example commands and the parameter files reference `mock, mock-vnet, mock-subnet, location`. If skipping this step be sure to change these parameters to the appropriate values.
 ```
-azure group create mock "eastus" && \
-azure group deployment create -f  template-mock-vnet.json mock
+az group create --name mock --location "eastus"
+az group deployment create \
+--resource-group mock \
+--template-file template-mock-vnet.json \
+--verbose
 ```
 
 ## 2: Deploy OpsCenter
@@ -21,7 +24,11 @@ The template file `template-opscenter.json` performs 2 things:
 
 Run the below command to deploy:
 ```
-azure group deployment create -f template-opscenter.json -e parameters-opscenter.json mock
+az group deployment create \
+--resource-group mock \
+--template-file template-opscenter.json \
+--parameters @parameters-opscenter.json \
+--verbose
 ```
 Allow command to finish before proceeding to the next step. Once the command completes this template has one output: `lifecycleManagerURL`, which goes to the LCM web console in OpsCenter.
 
@@ -35,13 +42,13 @@ The template file `template-nodes.json` will:
 
 Run the below command to deploy:
 ```
-azure group deployment create -f template-nodes.json -e parameters-nodes.json mock
-info:    Executing command group deployment create
-info:    Supply values for the following parameters
-opsCenterIP:  10.0.0.4
-namespace:  dc0
+az group deployment create \
+--resource-group mock \
+--template-file template-nodes.json \
+--parameters @parameters-nodes.json \
+--verbose
 ```
-Here we can see there are 3 parameters not in the parameter file, so the CLI prompts for input
+There are 2 parameters in the parameter file that may be non-obvious:
   - `opsCenterIP`:  can be either the private or public ip of the OpsCenter VM
   - `namespace`:  **important** this parameter serves as both the name of the datacenter the nodes belong to *and* a prefix for the names of node VM's. Because it is used as a prefix this can only contain lowercase letters and numbers, no symbols.
 

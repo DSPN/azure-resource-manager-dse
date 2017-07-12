@@ -8,6 +8,12 @@
   "vmSize": {
     "value": "Standard_DS4_v2"
   },
+  "opsCenterIP": {
+    "value": "10.0.0.4"
+  },
+  "namespace": {
+    "value": "dc0"
+  },
   "clusterName": {
     "value": "testCluster"
   },
