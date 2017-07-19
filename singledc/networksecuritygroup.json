@@ -109,10 +109,23 @@
               "protocol": "TCP",
               "sourcePortRange": "*",
               "destinationPortRange": "8888",
-              "sourceAddressPrefix": "*",
+              "sourceAddressPrefix": "Internet",
               "destinationAddressPrefix": "*",
               "access": "Allow",
               "priority": 1100,
+              "direction": "Inbound"
+            }
+          },
+          {
+            "name": "OpsCVnet",
+            "properties": {
+              "protocol": "TCP",
+              "sourcePortRange": "*",
+              "destinationPortRange": "8888",
+              "sourceAddressPrefix": "VirtualNetwork",
+              "destinationAddressPrefix": "*",
+              "access": "Allow",
+              "priority": 1110,
               "direction": "Inbound"
             }
           },
@@ -122,10 +135,23 @@
               "protocol": "TCP",
               "sourcePortRange": "*",
               "destinationPortRange": "8443",
-              "sourceAddressPrefix": "*",
+              "sourceAddressPrefix": "Internet",
               "destinationAddressPrefix": "*",
               "access": "Allow",
               "priority": 1200,
+              "direction": "Inbound"
+            }
+          },
+          {
+            "name": "OpsCHTTPSVnet",
+            "properties": {
+              "protocol": "TCP",
+              "sourcePortRange": "*",
+              "destinationPortRange": "8443",
+              "sourceAddressPrefix": "VirtualNetwork",
+              "destinationAddressPrefix": "*",
+              "access": "Allow",
+              "priority": 1210,
               "direction": "Inbound"
             }
           },
