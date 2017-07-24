@@ -9,7 +9,8 @@ echo username $username
 echo password XXXXX
 echo cluster_name
 
-public_ip=`curl --retry 10 icanhazip.com`
+#public_ip=`curl --retry 10 icanhazip.com`
+public_ip='127.0.0.1'
 
 echo "Calling setupCluster.py with the settings:"
 echo public_ip $public_ip
