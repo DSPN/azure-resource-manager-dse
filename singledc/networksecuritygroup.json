@@ -39,6 +39,32 @@
             }
           },
           {
+            "name": "DSEInterNode",
+            "properties": {
+              "protocol": "TCP",
+              "sourcePortRange": "*",
+              "destinationPortRange": "7000",
+              "sourceAddressPrefix": "Internet",
+              "destinationAddressPrefix": "*",
+              "access": "Allow",
+              "priority": 410,
+              "direction": "Inbound"
+            }
+          },
+          {
+            "name": "DSEInterNodeSSL",
+            "properties": {
+              "protocol": "TCP",
+              "sourcePortRange": "*",
+              "destinationPortRange": "7001",
+              "sourceAddressPrefix": "Internet",
+              "destinationAddressPrefix": "*",
+              "access": "Allow",
+              "priority": 420,
+              "direction": "Inbound"
+            }
+          },
+          {
             "name": "Agent",
             "properties": {
               "protocol": "TCP",
