@@ -13,5 +13,8 @@
   },
   "DBPassword": {
     "value": "asdf456$"
+  },
+  "OpsCPassword": {
+    "value": "bar987&"
   }
 }

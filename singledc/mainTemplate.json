@@ -89,6 +89,12 @@
       "metadata": {
         "description": "Password for default C* user 'cassandra'"
       }
+    },
+    "OpsCPassword": {
+      "type": "securestring",
+      "metadata": {
+        "description": "Password for default OpsCenter user 'admin'"
+      }
     }
   },
   "variables": {
@@ -231,6 +237,9 @@
           },
           "adminPassword": {
             "value": "[parameters('adminPassword')]"
+          },
+          "OpsCPassword": {
+            "value": "[parameters('OpsCPassword')]"
           },
           "osSettings": {
             "value": "[variables('osSettings')]"
