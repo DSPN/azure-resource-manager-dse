@@ -17,7 +17,8 @@ The template expects the following parameters:
 | adminUsername  | Admin user name for the virtual machines |
 | adminPassword  | Admin password for the virtual machines |
 | DBPassword  | Password for default C* user 'cassandra' |
+| OpsCPassword | Password for default OpsCenter user 'admin' |
 
 Once the Azure VMs, virtual network and disks are deployed, the node instances call back to the OpsCenter instance using the LCM REST API.  When the last node registers this triggers an LCM job to install and configure DSE  These nodes are assigned both private and public dynamic IP addresses.
 
-On completion, OpsCenter will be accessible on port 8888 of the public IP address of the OpsCenter node. **Note**: since this template uses OpsCener's Lifecycle Manager to perform the installation of DSE the cluster may not be ready when the template reports *success*. The progress of the install job may be followed in LCM by going to the `lifecycleManagerURL` output of the template, which has the form http://opscenterip:8888/opscenter/lcm.html
+On completion, OpsCenter will be accessible on port 8443 (https, http connections to port 8888 will be redirected) of the public IP address of the OpsCenter node. OpsCenter uses a self-signed SSL certificate, so you will need to accept the certificate exception. After this you can log in with the user name 'admin' and the password you specified in the OpsCPassword parameter.
