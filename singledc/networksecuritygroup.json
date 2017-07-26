@@ -130,6 +130,19 @@
             }
           },
           {
+            "name": "DSEFS",
+            "properties": {
+              "protocol": "TCP",
+              "sourcePortRange": "*",
+              "destinationPortRange": "5598",
+              "sourceAddressPrefix": "Internet",
+              "destinationAddressPrefix": "*",
+              "access": "Allow",
+              "priority": 1050,
+              "direction": "Inbound",
+            }
+          },
+          {
             "name": "OpsC",
             "properties": {
               "protocol": "TCP",
@@ -191,6 +204,19 @@
               "destinationAddressPrefix": "*",
               "access": "Allow",
               "priority": 1700,
+              "direction": "Inbound"
+            }
+          },
+          {
+            "name": "SolrGUI",
+            "properties": {
+              "protocol": "TCP",
+              "sourcePortRange": "*",
+              "destinationPortRange": "8983",
+              "sourceAddressPrefix": "Internet",
+              "destinationAddressPrefix": "*",
+              "access": "Allow",
+              "priority": 1800,
               "direction": "Inbound"
             }
           }
