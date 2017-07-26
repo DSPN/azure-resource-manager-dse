@@ -2,10 +2,12 @@
 
 username=$1
 password=$2
+opscpw=$3
 
 echo "Input to node.sh is:"
 echo username $username
-echo password $password
+echo password XXXXXX
+echo opscpw YYYYYY
 
 public_ip=`curl --retry 10 icanhazip.com`
 cluster_name="mycluster"
@@ -28,13 +30,14 @@ done
 
 pip install requests
 
-release="5.5.3"
+release="5.5.4"
 wget https://github.com/DSPN/install-datastax-ubuntu/archive/$release.zip
 unzip $release.zip
 cd install-datastax-ubuntu-$release/bin
 
-# Overide install default version if needed
-#export OPSC_VERSION='6.0.8'
+# Overide OpsC install default version if needed
+export OPSC_VERSION='6.1.2'
+ver='5.1.2'
 
 ./os/install_java.sh
 ./opscenter/install.sh
@@ -43,6 +46,7 @@ sleep 1m
 ./lcm/setupCluster.py \
 --opsc-ip $public_ip \
 --clustername $cluster_name \
+--dsever  $ver \
 --user $username \
 --password $password \
 --datapath "/data/cassandra"
@@ -50,3 +54,5 @@ sleep 1m
 # Block execution while waiting for jobs to
 # exit RUNNING/PENDING status
 ./lcm/waitForJobs.py
+# Turn on https, set pw for opsc user admin
+./opscenter/set_opsc_pw_https.sh $opscpw

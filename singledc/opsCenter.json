@@ -14,6 +14,9 @@
     "adminPassword": {
       "type": "securestring"
     },
+    "OpsCPassword": {
+      "type": "securestring"
+    },
     "osSettings": {
       "type": "object"
     },
@@ -118,7 +121,7 @@
         "autoUpgradeMinorVersion": true,
         "settings": {
           "fileUris": "[parameters('osSettings').scripts]",
-          "commandToExecute": "[concat('bash opsCenter.sh ', parameters('adminUsername'), ' ', parameters('adminPassword'))]"
+          "commandToExecute": "[concat('bash opsCenter.sh ', parameters('adminUsername'), ' ', parameters('adminPassword'), ' ', parameters('OpsCPassword'))]"
         }
       }
     }

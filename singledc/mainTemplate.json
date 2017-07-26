@@ -89,12 +89,19 @@
       "metadata": {
         "description": "Password for default C* user 'cassandra'"
       }
+    },
+    "OpsCPassword": {
+      "type": "securestring",
+      "metadata": {
+        "description": "Password for default OpsCenter user 'admin'"
+      }
     }
   },
   "variables": {
     "baseUrl": "https://raw.githubusercontent.com/DSPN/azure-resource-manager-dse/master",
     "templateUrl": "[concat(variables('baseUrl'), '/singledc/')]",
     "extensionUrl": "[concat(variables('baseUrl'), '/extensions/')]",
+    "nsgTemplateUrl": "[concat(variables('templateUrl'), 'networksecuritygroup.json')]",
     "nodesTemplateUrl": "[concat(variables('templateUrl'), 'nodes.json')]",
     "opsCenterTemplateUrl": "[concat(variables('templateUrl'), 'opsCenter.json')]",
     "location": "[resourcegroup().location]",
@@ -116,10 +123,26 @@
   },
   "resources": [
     {
+      "name": "nsg",
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2016-02-01",
+      "dependsOn": [],
+      "properties": {
+        "mode": "Incremental",
+        "templateLink": {
+          "uri": "[variables('nsgTemplateUrl')]",
+          "contentVersion": "1.0.0.0"
+        }
+      }
+    },
+    {
       "apiVersion": "2015-06-15",
       "type": "Microsoft.Network/virtualNetworks",
       "name": "[variables('vnetName')]",
       "location": "[variables('location')]",
+      "dependsOn": [
+        "Microsoft.Resources/deployments/nsg"
+      ],
       "properties": {
         "addressSpace": {
           "addressPrefixes": [
@@ -130,7 +153,10 @@
           {
             "name": "[variables('subnetName')]",
             "properties": {
-              "addressPrefix": "10.0.0.0/24"
+              "addressPrefix": "10.0.0.0/24",
+              "networkSecurityGroup": {
+                "id": "[resourceId('Microsoft.Network/networkSecurityGroups', 'netsec')]"
+}
             }
           }
         ]
@@ -211,6 +237,9 @@
           },
           "adminPassword": {
             "value": "[parameters('adminPassword')]"
+          },
+          "OpsCPassword": {
+            "value": "[parameters('OpsCPassword')]"
           },
           "osSettings": {
             "value": "[variables('osSettings')]"
