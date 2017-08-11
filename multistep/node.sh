@@ -40,8 +40,7 @@ chown -R cassandra:cassandra /data/cassandra
 
 # Ignoring public_ip
 private_ip=`echo $(hostname -I)`
-#public_ip=`curl --retry 10 icanhazip.com`
-public_ip=$private_ip
+public_ip=`curl --retry 10 icanhazip.com`
 node_id=$private_ip
 
 fault_domain=$(curl --max-time 50000 --retry 12 --retry-delay 50000 http://169.254.169.254/metadata/v1/InstanceInfo -s -S | sed -e 's/.*"FD":"\([^"]*\)".*/\1/')
@@ -69,7 +68,7 @@ done
 
 pip install requests
 
-release="5.5.4"
+release="5.5.6"
 wget https://github.com/DSPN/install-datastax-ubuntu/archive/$release.zip
 unzip $release.zip
 cd install-datastax-ubuntu-$release/bin/lcm
