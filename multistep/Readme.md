@@ -65,10 +65,12 @@ If you want to deploy the second datacenter to a **different region** you must a
 - run the command below
 
 ```
-azure group deployment create \
+az group deployment create \
 --resource-group mock \
--f template-nodes.json \
--e parameters-nodes2.json
+--template-file template-nodes.json \
+--parameters @parameters-nodes2.json \
+--name nodes2 \
+--verbose
 ```
 
 ### Post-deploy
@@ -76,7 +78,7 @@ azure group deployment create \
 Once the desired datacenters have been created, the replication factor for the system keyspaces needs to be set.
 
 Run the command below locally, or on the OpsCenter vm. The `strategy_options` field must contain the correct datacenter names.
-Note: null return on curl calls indicates no error
+Note: null return on curl calls indicates no error.
 ```
 OPSC="40.121.208.254"
 # leaving out system and system_schema (local replication)
@@ -113,12 +115,8 @@ Success retrieving token.
 ```
 
 ### New cluster
-If you want to deploy nodes to a 2nd cluster, first create a new cluster in the LCM console by clicking on the *Clusters* tab and then the plus sign above the column of clusters. Choose a new cluster name (eg `devCluster`) and the default credentials, config profile, and repo. Change the value of `clusterName` in the parameters file, and rerun the same command changing the deployment name (here `nodes3`) and choosing a new and **unique** value for the `namespace` parameter, eg here we pass in `devdc0` since `dc0` has been used previously. Using a non-unique value will result in namespace collisions when trying to create VM's. Note that https and auth for Opscenter must not be enabled to do this.
+If you want to deploy nodes to a 2nd cluster, first create a new cluster in the LCM console by clicking on the *Clusters* tab and then the plus sign above the column of clusters. Choose a new cluster name (eg `devCluster`) and the default credentials, config profile, and repo. Change the value of `clusterName` in the parameters file, and rerun the same command changing the deployment name (here `nodes3`) and choosing a new and **unique** value for the `namespace` parameter, eg here we pass in `devdc0` since `dc0` has been used previously. Using a non-unique value will result in namespace collisions when trying to create VM's. Note that https and auth for Opscenter must **not** be enabled to do this.
 
 ```
-azure group deployment create -f template-nodes.json -e parameters-nodes.json mock nodes3
-info:    Executing command group deployment create
-info:    Supply values for the following parameters
-opsCenterIP:  10.0.0.4
-namespace:  devdc0
+az group deployment create -f template-nodes.json -e parameters-nodes3.json mock nodes3
 ```
