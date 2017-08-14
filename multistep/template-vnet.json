@@ -2,17 +2,21 @@
     "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
     "contentVersion": "1.0.0.0",
     "parameters": {
-        "baseUrl": {
-            "type": "string",
-            "metadata": {
-                "description": "Not User Configurable -- The base URL for dependent assets",
-                "artifactsBaseUrl": ""
-            },
-            "defaultValue": "https://gallery.azure.com/artifact/20151001/datastax.datastax-enterprisesingledc.1.0.19/Artifacts"
+      "location": {
+        "type": "string",
+        "metadata": {
+          "description": "Region deploying into"
         }
+      },
+      "name": {
+        "type": "string",
+        "metadata": {
+          "description": "vnet name"
+        }
+      }
     },
     "variables": {
-    "location": "[resourcegroup().location]",
+    "location": "[parameters('location')]",
     "uniqueString": "[uniqueString(resourceGroup().id, deployment().name)]"
   },
 
@@ -20,8 +24,8 @@
 {
     "apiVersion": "2015-06-15",
     "type": "Microsoft.Network/virtualNetworks",
-    "name": "mock-vnet",
-    "location": "[variables('location')]",
+    "name": "[parameters('name')]",
+    "location": "[parameters('location')]",
     "properties": {
         "addressSpace": {
             "addressPrefixes": [
@@ -30,7 +34,7 @@
         },
         "subnets": [
             {
-                "name": "mock-subnet",
+                "name": "[concat(parameters('name'), '-subnet')]",
                 "properties": {
                     "addressPrefix": "10.0.0.0/24"
                 }
