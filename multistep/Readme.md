@@ -3,12 +3,13 @@ These templates are similar to the singledc templates, but have been separated i
 
 
 ## 1: Create Resource Group and vnet
-The DSE cluster needs to be deployed into a resource group, vnet, and subnet. If these already exist, skip this step. **Note:** the later example commands and the parameter files reference `mock, mock-vnet, mock-subnet, location`. If skipping this step be sure to change these parameters to the appropriate values.
+The DSE cluster needs to be deployed into a resource group, vnet, and subnet. If these already exist, skip this step. **Note:** the later example commands and the parameter files reference the resource group, vnet, subnet and location. If skipping this step be sure to change these parameters to the appropriate values.
 ```
 az group create --name mock --location "eastus"
 az group deployment create \
 --resource-group mock \
---template-file template-mock-vnet.json \
+--template-file template-vnet.json \
+--parameters @parameters-vnet.json \
 --verbose
 ```
 
@@ -55,19 +56,64 @@ The progress of the LCM install job can be monitored in the LCM web console.
 
 ## 4: Optionally deploy additional datacenter or cluster
 ### New datacenter
-If deploying an additional datacenter in the same cluster, rerun the previous command but:
-- add a deployment name (here `nodes2`), this avoids reusing `template-nodes` as a deployment name
-- give a different value for `namespace`
+If deploying an additional datacenter in the same cluster, copy the parameters file, give a different value for `namespace`, eg `dc1`, rerun the previous command.
+
+If you want to deploy the second datacenter to a **different region** you must also:
+- deploy a second vnet in that region
+- set the `location, vnet, subnet` parameters correctly
+- set the `opsCenterIP` to be the **public ip of the OpsCenter instance**. If this is not set correctly the vm's must be deleted before redeploying.
+- run the command below
 
 ```
-azure group deployment create -f template-nodes.json -e parameters-nodes.json mock nodes2
-info:    Executing command group deployment create
-info:    Supply values for the following parameters
-opsCenterIP:  10.0.0.4
-namespace:  dc1
+azure group deployment create \
+--resource-group mock \
+-f template-nodes.json \
+-e parameters-nodes2.json
 ```
+
+### Post-deploy
+
+Once the desired datacenters have been created, the replication factor for the system keyspaces needs to be set.
+
+Run the command below locally, or on the OpsCenter vm. The `strategy_options` field must contain the correct datacenter names.
+Note: null return on curl calls indicates no error
+```
+OPSC="40.121.208.254"
+# leaving out system and system_schema (local replication)
+keyspaces="system_auth system_distributed system_traces dse_security dse_perf dse_leases dse_system cfs_archive spark_system cfs solr_admin dsefs OpsCenter HiveMetaStore"
+
+for ks in $keyspaces; do
+  echo "ALTER KEYSPACE "$ks"..."
+  msg=$(curl -s -X PUT http://$OPSC:8888/testCluster/keyspaces/$ks -d '{
+    "strategy_class": "NetworkTopologyStrategy",
+    "strategy_options": {"dc0": "3", "dc1": "3"},
+    "durable_writes": true
+  }')
+  echo "Return: "$msg
+done
+```
+
+Finally https and auth can be turned on for OpsCenter, there is a script one can run on the OpsC vm:
+```
+jcp@tenkara:multistep$ ssh datastax@40.121.208.254
+......
+datastax@opscenter:/tmp$ sudo bash
+root@opscenter:/tmp# cd /var/lib/waagent/Microsoft.OSTCExtensions.CustomScriptForLinux-1.5.2.1/download/0/install-datastax-ubuntu-5.5.6/bin/opscenter/
+root@opscenter:# ./set_opsc_pw_https.sh somepassword
+Turn on OpsC auth
+Turn on SSL
+Restart OpsC
+Connect to OpsC after restart...
+Attempt 1...
+Attempt 2...
+Attempt 3...
+
+Success retrieving token.
+{"sessionid": "1cfd9ec91e6cc420691e2d0580462f25"}
+```
+
 ### New cluster
-If you want to deploy nodes to a 2nd cluster, first create a new cluster in the LCM console by clicking on the *Clusters* tab and then the plus sign above the column of clusters. Choose a new cluster name (eg `devCluster`) and the default credentials, config profile, and repo. Change the value of `clusterName` in the parameters file, and rerun the same command changing the deployment name (here `nodes3`) and choosing a new and **unique** value for the `namespace` parameter, eg here we pass in `devdc0` since `dc0` has been used previously. Using a non-unique value will result in namespace collisions when trying to create VM's.
+If you want to deploy nodes to a 2nd cluster, first create a new cluster in the LCM console by clicking on the *Clusters* tab and then the plus sign above the column of clusters. Choose a new cluster name (eg `devCluster`) and the default credentials, config profile, and repo. Change the value of `clusterName` in the parameters file, and rerun the same command changing the deployment name (here `nodes3`) and choosing a new and **unique** value for the `namespace` parameter, eg here we pass in `devdc0` since `dc0` has been used previously. Using a non-unique value will result in namespace collisions when trying to create VM's. Note that https and auth for Opscenter must not be enabled to do this.
 
 ```
 azure group deployment create -f template-nodes.json -e parameters-nodes.json mock nodes3
@@ -76,4 +122,3 @@ info:    Supply values for the following parameters
 opsCenterIP:  10.0.0.4
 namespace:  devdc0
 ```
-
