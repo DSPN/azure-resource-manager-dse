@@ -15,9 +15,9 @@
     "value": "asdf456$"
   },
   "vnetName": {
-    "value": "mock-vnet"
+    "value": "east-vnet"
   },
   "subnetName": {
-    "value": "mock-subnet"
+    "value": "east-vnet-subnet"
   }
 }
