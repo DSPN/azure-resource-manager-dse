@@ -14,8 +14,8 @@ unzip buildpackage.zip
 npm install
 
 grunt --version
-npm --version
-node --version
+echo "npm version $(npm --version)"
+echo "node version $(node --version)"
 
 mkdir pkg1
 cp ../createUiDefinition.json pkg1/
@@ -23,5 +23,8 @@ cp ../createUiDefinition.json pkg1/
 mv pkg1/createUiDefinition.json pkg1/createUIDefinition.json
 cp ../../singledc/mainTemplate.json pkg1/
 
+echo "Running: grunt --force --folder=./pkg1 test >gruntout.txt"
 # --force used because a "warning" halts execution
-grunt --force --folder=./pkg1 test >errors.txt
+grunt --force --folder=./pkg1 test >gruntout.txt
+echo -e "\n\n\n"
+cat gruntout.txt
