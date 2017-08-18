@@ -44,6 +44,23 @@
         "options": {
           "hideConfirmation": false
         }
+      },
+      {
+        "name": "OpsCPassword",
+        "type": "Microsoft.Common.PasswordBox",
+        "label": {
+          "password": "OpsCenter admin password",
+          "confirmPassword": "Confirm password"
+        },
+        "toolTip": "Password for default OpsCenter user 'admin'",
+        "constraints": {
+          "required": true,
+          "regex": "^(?:(?=.*[a-z])(?:(?=.*[A-Z])(?=.*[\\d\\W])|(?=.*\\W)(?=.*\\d))|(?=.*\\W)(?=.*[A-Z])(?=.*\\d)).{6,72}$",
+          "validationMessage": "The password must be between 6 and 72 characters long, and contain characters from at least 3 of the following groups: uppercase characters, lowercase characters, numbers, and special characters."
+        },
+        "options": {
+          "hideConfirmation": false
+        }
       }
     ],
     "steps": [
@@ -302,6 +319,7 @@
       "adminUsername": "[basics('adminUsername')]",
       "adminPassword": "[basics('adminPassword')]",
       "DBPassword": "[basics('DBPassword')]",
+      "OpsCPassword": "[basics('OpsCPassword')]",
       "nodeCount": "[steps('dataStaxConfig').nodeCount]",
       "vmSize": "[steps('dataStaxConfig').vmSize]",
       "location": "[location()]"
