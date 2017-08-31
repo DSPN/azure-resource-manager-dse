@@ -13,9 +13,27 @@
     },
     "vmSize": {
       "type": "string",
-      "defaultValue": "Standard_D2_v2",
+      "defaultValue": "Standard_DS4_v2",
       "allowedValues": [
-        "Standard_D1_v2",
+        "Standard_DS2_v2",
+        "Standard_DS3_v2",
+        "Standard_DS4_v2",
+        "Standard_DS5_v2",
+        "Standard_DS11_v2",
+        "Standard_DS12_v2",
+        "Standard_DS13_v2",
+        "Standard_DS14_v2",
+        "Standard_DS15_v2",
+        "Standard_GS1",
+        "Standard_GS2",
+        "Standard_GS3",
+        "Standard_GS4",
+        "Standard_GS5",
+        "Standard_FS1",
+        "Standard_FS2",
+        "Standard_FS4",
+        "Standard_FS8",
+        "Standard_FS16",
         "Standard_D2_v2",
         "Standard_D3_v2",
         "Standard_D4_v2",
@@ -72,6 +90,12 @@
         "description": "Password for default C* user 'cassandra'"
       }
     },
+    "OpsCPassword": {
+      "type": "securestring",
+      "metadata": {
+        "description": "Password for default OpsCenter user 'admin'"
+      }
+    },
     "baseUrl": {
       "type": "string",
       "metadata": {
@@ -89,6 +113,7 @@
   "variables": {
     "templateUrl": "[concat(parameters('baseUrl'), '/')]",
     "extensionUrl": "[concat(parameters('baseUrl'), '/')]",
+    "nsgTemplateUrl": "[concat(variables('templateUrl'), 'networksecuritygroup.json')]",
     "nodesTemplateUrl": "[concat(variables('templateUrl'), 'nodes.json')]",
     "opsCenterTemplateUrl": "[concat(variables('templateUrl'), 'opsCenter.json')]",
     "location": "[resourcegroup().location]",
@@ -110,10 +135,26 @@
   },
   "resources": [
     {
+      "name": "nsg",
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2016-02-01",
+      "dependsOn": [],
+      "properties": {
+        "mode": "Incremental",
+        "templateLink": {
+          "uri": "[variables('nsgTemplateUrl')]",
+          "contentVersion": "1.0.0.0"
+        }
+      }
+    },
+    {
       "apiVersion": "2015-06-15",
       "type": "Microsoft.Network/virtualNetworks",
       "name": "[variables('vnetName')]",
       "location": "[variables('location')]",
+      "dependsOn": [
+        "Microsoft.Resources/deployments/nsg"
+      ],
       "properties": {
         "addressSpace": {
           "addressPrefixes": [
@@ -124,7 +165,10 @@
           {
             "name": "[variables('subnetName')]",
             "properties": {
-              "addressPrefix": "10.0.0.0/24"
+              "addressPrefix": "10.0.0.0/24",
+              "networkSecurityGroup": {
+                "id": "[resourceId('Microsoft.Network/networkSecurityGroups', 'netsec')]"
+              }
             }
           }
         ]
@@ -206,6 +250,9 @@
           "adminPassword": {
             "value": "[parameters('adminPassword')]"
           },
+          "OpsCPassword": {
+            "value": "[parameters('OpsCPassword')]"
+          },
           "osSettings": {
             "value": "[variables('osSettings')]"
           },
@@ -222,11 +269,11 @@
   "outputs": {
     "lifecycleManagerURL": {
       "type": "string",
-      "value": "[concat('http://opscenter', variables('uniqueString'), '.', variables('location'), '.cloudapp.azure.com:8888/opscenter/lcm.html')]"
+      "value": "[concat('http://opscenter', variables('uniqueString'), '.', variables('location'), '.cloudapp.azure.com:8443/opscenter/lcm.html')]"
     },
     "opsCenterURL": {
       "type": "string",
-      "value": "[concat('http://opscenter', variables('uniqueString'), '.', variables('location'), '.cloudapp.azure.com:8888')]"
+      "value": "[concat('http://opscenter', variables('uniqueString'), '.', variables('location'), '.cloudapp.azure.com:8443')]"
     }
   }
 }

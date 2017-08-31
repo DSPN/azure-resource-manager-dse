@@ -1,6 +1,7 @@
 {
+  "$schema": "https://schema.management.azure.com/schemas/0.1.2-preview/CreateUIDefinition.MultiVm.json",
   "handler": "Microsoft.Compute.MultiVm",
-  "version": "0.0.1-preview",
+  "version": "0.1.2-preview",
   "parameters": {
     "basics": [
       {
@@ -35,6 +36,23 @@
           "confirmPassword": "Confirm password"
         },
         "toolTip": "Password for default C* user 'cassandra'",
+        "constraints": {
+          "required": true,
+          "regex": "^(?:(?=.*[a-z])(?:(?=.*[A-Z])(?=.*[\\d\\W])|(?=.*\\W)(?=.*\\d))|(?=.*\\W)(?=.*[A-Z])(?=.*\\d)).{6,72}$",
+          "validationMessage": "The password must be between 6 and 72 characters long, and contain characters from at least 3 of the following groups: uppercase characters, lowercase characters, numbers, and special characters."
+        },
+        "options": {
+          "hideConfirmation": false
+        }
+      },
+      {
+        "name": "OpsCPassword",
+        "type": "Microsoft.Common.PasswordBox",
+        "label": {
+          "password": "OpsCenter admin password",
+          "confirmPassword": "Confirm password"
+        },
+        "toolTip": "Password for default OpsCenter user 'admin'",
         "constraints": {
           "required": true,
           "regex": "^(?:(?=.*[a-z])(?:(?=.*[A-Z])(?=.*[\\d\\W])|(?=.*\\W)(?=.*\\d))|(?=.*\\W)(?=.*[A-Z])(?=.*\\d)).{6,72}$",
@@ -236,13 +254,21 @@
             "label": "Virtual Machine Size",
             "toolTip": "Size of virtual machine to provision for the cluster",
             "recommendedSizes": [
-              "Standard_D2_v2",
-              "Standard_D5_v2",
-              "Standard_D14_v2"
+              "Standard_DS3_v2",
+              "Standard_DS5_v2",
+              "Standard_DS14_v2"
             ],
             "constraints": {
               "allowedSizes": [
-                "Standard_D1_v2",
+                "Standard_DS2_v2",
+                "Standard_DS3_v2",
+                "Standard_DS4_v2",
+                "Standard_DS5_v2",
+                "Standard_DS11_v2",
+                "Standard_DS12_v2",
+                "Standard_DS13_v2",
+                "Standard_DS14_v2",
+                "Standard_DS15_v2",
                 "Standard_D2_v2",
                 "Standard_D3_v2",
                 "Standard_D4_v2",
@@ -293,6 +319,7 @@
       "adminUsername": "[basics('adminUsername')]",
       "adminPassword": "[basics('adminPassword')]",
       "DBPassword": "[basics('DBPassword')]",
+      "OpsCPassword": "[basics('OpsCPassword')]",
       "nodeCount": "[steps('dataStaxConfig').nodeCount]",
       "vmSize": "[steps('dataStaxConfig').vmSize]",
       "location": "[location()]"
