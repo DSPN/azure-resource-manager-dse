@@ -9,7 +9,6 @@
       "name": "netsec",
       "location": "[resourcegroup().location]",
       "apiVersion": "2017-03-01",
-      "scale": null,
       "properties": {
         "securityRules": [
           {
@@ -139,7 +138,7 @@
               "destinationAddressPrefix": "*",
               "access": "Allow",
               "priority": 1050,
-              "direction": "Inbound",
+              "direction": "Inbound"
             }
           },
           {

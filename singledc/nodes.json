@@ -54,7 +54,7 @@
       }
     },
     {
-      "apiVersion": "2015-06-15",
+      "apiVersion": "2017-03-30",
       "type": "Microsoft.Network/publicIPAddresses",
       "name": "[concat(parameters('namespace'), 'vm', copyindex())]",
       "location": "[parameters('location')]",
@@ -70,7 +70,7 @@
       }
     },
     {
-      "apiVersion": "2015-06-15",
+      "apiVersion": "2017-03-30",
       "type": "Microsoft.Network/networkInterfaces",
       "name": "[concat(parameters('namespace'), 'vm', copyindex())]",
       "location": "[parameters('location')]",
@@ -153,7 +153,7 @@
     {
       "type": "Microsoft.Compute/virtualMachines/extensions",
       "name": "[concat(parameters('namespace'), 'vm', copyindex(), '/installdsenode')]",
-      "apiVersion": "2015-06-15",
+      "apiVersion": "2017-03-30",
       "location": "[parameters('location')]",
       "copy": {
         "name": "[concat(parameters('namespace'), 'vmLoop')]",
@@ -169,7 +169,9 @@
         "autoUpgradeMinorVersion": true,
         "settings": {
           "fileUris": "[parameters('osSettings').scripts]",
-          "commandToExecute": "[concat('bash node.sh ', parameters('nodeCount'), ' ', parameters('uniqueString'), ' ', parameters('namespace'), ' ', resourceGroup().location, ' ', parameters('DBPassword'))]"
+        },
+        "protectedSettings": {
+          "commandToExecute": "[concat('bash opsCenter.sh ', parameters('adminUsername'), ' ', parameters('adminPassword'), ' ', parameters('OpsCPassword'))]"
         }
       }
     }
