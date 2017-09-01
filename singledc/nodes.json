@@ -173,7 +173,7 @@
           "fileUris": "[parameters('osSettings').scripts]",
         },
         "protectedSettings": {
-          "commandToExecute": "[concat('bash opsCenter.sh ', parameters('adminUsername'), ' ', parameters('adminPassword'), ' ', parameters('OpsCPassword'))]"
+          "commandToExecute": "[concat('bash node.sh ', parameters('nodeCount'), ' ', parameters('uniqueString'), ' ', parameters('namespace'), ' ', resourceGroup().location, ' ', parameters('DBPassword'))]"
         }
       }
     }
