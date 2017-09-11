@@ -54,5 +54,7 @@ sleep 1m
 # Block execution while waiting for jobs to
 # exit RUNNING/PENDING status
 ./lcm/waitForJobs.py
+# set keyspaces to NetworkTopology / RF 3
+./lcm/alterKeyspaces.py
 # Turn on https, set pw for opsc user admin
 ./opscenter/set_opsc_pw_https.sh $opscpw
