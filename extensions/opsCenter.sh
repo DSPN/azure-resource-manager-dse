@@ -40,6 +40,9 @@ export OPSC_VERSION='6.1.2'
 ver='5.1.3'
 
 ./os/install_java.sh
+# clean existing apt file
+rm /etc/apt/sources.list.d/datastax.sources.list
+#install opsc
 ./opscenter/install.sh
 ./opscenter/start.sh
 sleep 1m
