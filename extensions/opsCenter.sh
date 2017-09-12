@@ -30,7 +30,7 @@ done
 
 pip install requests
 
-release="master"
+release="dev"
 wget https://github.com/DSPN/install-datastax-ubuntu/archive/$release.zip
 unzip $release.zip
 cd install-datastax-ubuntu-$release/bin
