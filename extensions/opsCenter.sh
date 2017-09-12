@@ -12,11 +12,17 @@ echo opscpw YYYYYY
 public_ip=`curl --retry 10 icanhazip.com`
 cluster_name="mycluster"
 
+# repo creds
+repouser='datastax@clouddev.com'
+repopw='CJ9o!wOlDX1a'
+
 echo "Calling setupCluster.py with the settings:"
 echo public_ip $public_ip
 echo cluster_name $cluster_name
 echo username $username
 echo password XXXXXX
+echo repouser $repouser
+echo repopw XXXXXX
 
 apt-get update
 n=0
@@ -49,6 +55,8 @@ sleep 1m
 ./lcm/setupCluster.py \
 --opsc-ip $public_ip \
 --clustername $cluster_name \
+--repouser $repouser \
+--repopw $repopw \
 --dsever  $ver \
 --user $username \
 --password $password \
