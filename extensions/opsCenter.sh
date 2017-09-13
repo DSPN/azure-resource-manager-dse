@@ -3,6 +3,8 @@
 username=$1
 password=$2
 opscpw=$3
+dbpasswd=$4
+nodecount=$5
 
 echo "Input to node.sh is:"
 echo username $username
@@ -61,6 +63,14 @@ sleep 1m
 --user $username \
 --password $password \
 --datapath "/data/cassandra"
+
+# trigger install
+./lcm/triggerInstall.py \
+--opsc-ip 127.0.0.1 \
+--clustername $cluster_name \
+--clustersize $nodecount \
+--dclevel \
+--dbpasswd $dbpasswd
 
 # Block execution while waiting for jobs to
 # exit RUNNING/PENDING status

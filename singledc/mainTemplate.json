@@ -194,9 +194,6 @@
           "adminPassword": {
             "value": "[parameters('adminPassword')]"
           },
-          "DBPassword": {
-            "value": "[parameters('DBPassword')]"
-          },
           "nodeCount": {
             "value": "[parameters('nodeCount')]"
           },
@@ -246,6 +243,12 @@
           },
           "OpsCPassword": {
             "value": "[parameters('OpsCPassword')]"
+          },
+          "DBPassword": {
+            "value": "[parameters('DBPassword')]"
+          },
+          "nodeCount": {
+            "value": "[parameters('nodeCount')]"
           },
           "osSettings": {
             "value": "[variables('osSettings')]"

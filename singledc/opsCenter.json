@@ -17,6 +17,12 @@
     "OpsCPassword": {
       "type": "securestring"
     },
+    "DBPassword": {
+      "type": "securestring"
+    },
+    "nodeCount": {
+      "type": "int"
+    },
     "osSettings": {
       "type": "object"
     },
@@ -123,7 +129,7 @@
           "fileUris": "[parameters('osSettings').scripts]"
         },
         "protectedSettings": {
-          "commandToExecute": "[concat('bash opsCenter.sh ', parameters('adminUsername'), ' ', parameters('adminPassword'), ' ', parameters('OpsCPassword'))]"
+          "commandToExecute": "[concat('bash opsCenter.sh ', parameters('adminUsername'), ' ', parameters('adminPassword'), ' ', parameters('OpsCPassword'), ' ', parameters('DBPassword'), ' ', parameters('nodeCount'))]"
         }
       }
     }

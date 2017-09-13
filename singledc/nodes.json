@@ -14,9 +14,6 @@
     "adminPassword": {
       "type": "securestring"
     },
-    "DBPassword": {
-      "type": "securestring"
-    },
     "nodeCount": {
       "type": "int"
     },
