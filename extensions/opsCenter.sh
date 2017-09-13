@@ -15,8 +15,8 @@ public_ip=`curl --retry 10 icanhazip.com`
 cluster_name="mycluster"
 
 # repo creds
-repouser='datastax@clouddev.com'
-repopw='CJ9o!wOlDX1a'
+repouser='datastax@microsoft.com'
+repopw='3A7vadPHbNT'
 
 echo "Calling setupCluster.py with the settings:"
 echo public_ip $public_ip
