@@ -4,7 +4,6 @@ data_center_size=$1
 unique_string=$2
 data_center_name=$3
 opscenter_location=$4
-dbpasswd=$5
 
 echo "Input to node.sh is:"
 echo unique_string $unique_string
@@ -74,10 +73,8 @@ cd install-datastax-ubuntu-$release/bin/lcm
 ./addNode.py \
 --opsc-ip $opscenter_dns_name \
 --clustername $cluster_name \
---dcsize $data_center_size \
 --dcname $data_center_name \
 --rack $rack \
 --pubip $public_ip \
 --privip $private_ip \
---nodeid $node_id \
---dbpasswd $dbpasswd
+--nodeid $node_id
