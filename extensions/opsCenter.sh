@@ -10,8 +10,9 @@ echo "Input to node.sh is:"
 echo username $username
 echo password XXXXXX
 echo opscpw YYYYYY
+echo dbpasswd ZZZZZZZ
+echo nodecount $nodecount
 
-public_ip=`curl --retry 10 icanhazip.com`
 cluster_name="mycluster"
 
 # repo creds
@@ -19,7 +20,7 @@ repouser='datastax@microsoft.com'
 repopw='3A7vadPHbNT'
 
 echo "Calling setupCluster.py with the settings:"
-echo public_ip $public_ip
+echo opsc_ip 127.0.0.1
 echo cluster_name $cluster_name
 echo username $username
 echo password XXXXXX
@@ -51,11 +52,11 @@ ver='5.1.3'
 # clean existing apt file
 rm /etc/apt/sources.list.d/datastax.sources.list
 #install opsc
-./opscenter/install.sh
+./opscenter/install.sh 'azure'
 ./opscenter/start.sh
 sleep 1m
 ./lcm/setupCluster.py \
---opsc-ip $public_ip \
+--opsc-ip 127.0.0.1 \
 --clustername $cluster_name \
 --repouser $repouser \
 --repopw $repopw \

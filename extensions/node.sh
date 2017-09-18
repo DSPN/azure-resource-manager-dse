@@ -6,6 +6,7 @@ data_center_name=$3
 opscenter_location=$4
 
 echo "Input to node.sh is:"
+echo data_center_size $data_center_size
 echo unique_string $unique_string
 echo data_center_name $data_center_name
 echo opscenter_location $opscenter_location
