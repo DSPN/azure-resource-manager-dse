@@ -43,23 +43,12 @@ node_id=$private_ip
 fault_domain=$(curl --max-time 50000 --retry 12 --retry-delay 50000 http://169.254.169.254/metadata/v1/InstanceInfo -s -S | sed -e 's/.*"FD":"\([^"]*\)".*/\1/')
 rack=FD$fault_domain
 
-echo "Calling addNode.py with the settings:"
-echo opscenter_dns_name $opscenter_dns_name
-
-echo cluster_name $cluster_name
-echo data_center_size $data_center_size
-echo data_center_name $data_center_name
-echo rack $rack
-echo public_ip $public_ip
-echo private_ip $private_ip
-echo node_id $node_id
-
 apt-get update
 n=0
-until [ $n -ge 8 ]
+until [ $n -ge 20 ]
 do
   apt-get -y install unzip python-pip jq  && break
-  echo "apt-get try $n failed, sleeping..."
+  echo "apt-get try $n failed, sleeping 15s..."
   n=$[$n+1]
   sleep 15s
 done
@@ -70,6 +59,16 @@ release="dev"
 wget https://github.com/DSPN/install-datastax-ubuntu/archive/$release.zip
 unzip $release.zip
 cd install-datastax-ubuntu-$release/bin/lcm
+
+echo "Calling addNode.py with the settings:"
+echo opscenter_dns_name $opscenter_dns_name
+echo cluster_name $cluster_name
+echo data_center_size $data_center_size
+echo data_center_name $data_center_name
+echo rack $rack
+echo public_ip $public_ip
+echo private_ip $private_ip
+echo node_id $node_id
 
 ./addNode.py \
 --opsc-ip $opscenter_dns_name \

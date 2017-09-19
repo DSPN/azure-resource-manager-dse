@@ -19,20 +19,12 @@ cluster_name="mycluster"
 repouser='datastax@microsoft.com'
 repopw='3A7vadPHbNT'
 
-echo "Calling setupCluster.py with the settings:"
-echo opsc_ip 127.0.0.1
-echo cluster_name $cluster_name
-echo username $username
-echo password XXXXXX
-echo repouser $repouser
-echo repopw XXXXXX
-
 apt-get update
 n=0
-until [ $n -ge 8 ]
+until [ $n -ge 20 ]
 do
   apt-get -y install unzip python-pip jq  && break
-  echo "apt-get try $n failed, sleeping..."
+  echo "apt-get try $n failed, sleeping 15s..."
   n=$[$n+1]
   sleep 15s
 done
@@ -55,6 +47,15 @@ rm /etc/apt/sources.list.d/datastax.sources.list
 ./opscenter/install.sh 'azure'
 ./opscenter/start.sh
 sleep 1m
+
+echo "Calling setupCluster.py with the settings:"
+echo opsc_ip 127.0.0.1
+echo cluster_name $cluster_name
+echo username $username
+echo password XXXXXX
+echo repouser $repouser
+echo repopw XXXXXX
+
 ./lcm/setupCluster.py \
 --opsc-ip 127.0.0.1 \
 --clustername $cluster_name \
