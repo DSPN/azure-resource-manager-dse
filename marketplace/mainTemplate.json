@@ -15,6 +15,12 @@
       "type": "string",
       "defaultValue": "Standard_DS4_v2",
       "allowedValues": [
+        "Standard_DS2_v3",
+        "Standard_DS4_v3",
+        "Standard_DS8_v3",
+        "Standard_DS16_v3",
+        "Standard_DS32_v3",
+        "Standard_DS64_v3",
         "Standard_DS2_v2",
         "Standard_DS3_v2",
         "Standard_DS4_v2",
@@ -137,7 +143,7 @@
     {
       "name": "nsg",
       "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2016-02-01",
+      "apiVersion": "2016-09-01",
       "dependsOn": [],
       "properties": {
         "mode": "Incremental",
@@ -148,7 +154,7 @@
       }
     },
     {
-      "apiVersion": "2015-06-15",
+      "apiVersion": "2017-08-01",
       "type": "Microsoft.Network/virtualNetworks",
       "name": "[variables('vnetName')]",
       "location": "[variables('location')]",
@@ -177,7 +183,7 @@
     {
       "name": "nodes",
       "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2016-02-01",
+      "apiVersion": "2016-09-01",
       "dependsOn": [
         "[concat('Microsoft.Network/virtualNetworks/', variables('vnetName'))]"
       ],
@@ -227,7 +233,7 @@
     {
       "name": "opsCenter",
       "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2016-02-01",
+      "apiVersion": "2016-09-01",
       "dependsOn": [
         "[concat('Microsoft.Network/virtualNetworks/', variables('vnetName'))]"
       ],

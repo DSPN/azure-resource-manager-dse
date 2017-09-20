@@ -14,9 +14,6 @@
     "adminPassword": {
       "type": "securestring"
     },
-    "DBPassword": {
-      "type": "securestring"
-    },
     "nodeCount": {
       "type": "int"
     },
@@ -39,22 +36,110 @@
   "variables": {
     "vmName": "[concat(parameters('namespace'), 'vm')]",
     "vnetId": "[resourceId('Microsoft.Network/virtualNetworks', parameters('vnetName'))]",
-    "subnetId": "[concat(variables('vnetId'), '/subnets/', parameters('subnetName'))]"
+    "subnetId": "[concat(variables('vnetId'), '/subnets/', parameters('subnetName'))]",
+    "faultDomainCountMap": {
+      "australiaeast": {
+          "MaximumPlatformFaultDomainCount": 2
+      },
+      "australiasoutheast": {
+          "MaximumPlatformFaultDomainCount": 2
+      },
+      "brazilsouth": {
+          "MaximumPlatformFaultDomainCount": 2
+      },
+      "canadacentral": {
+          "MaximumPlatformFaultDomainCount": 2
+      },
+      "canadaeast": {
+          "MaximumPlatformFaultDomainCount": 2
+      },
+      "centralindia": {
+          "MaximumPlatformFaultDomainCount": 2
+      },
+      "centralus": {
+          "MaximumPlatformFaultDomainCount": 3
+      },
+      "centraluseuap": {
+          "MaximumPlatformFaultDomainCount": 1
+      },
+      "eastasia": {
+          "MaximumPlatformFaultDomainCount": 2
+      },
+      "eastus": {
+          "MaximumPlatformFaultDomainCount": 3
+      },
+      "eastus2": {
+          "MaximumPlatformFaultDomainCount": 3
+      },
+      "eastus2euap": {
+          "MaximumPlatformFaultDomainCount": 2
+      },
+      "japaneast": {
+          "MaximumPlatformFaultDomainCount": 2
+      },
+      "japanwest": {
+          "MaximumPlatformFaultDomainCount": 2
+      },
+      "koreacentral": {
+          "MaximumPlatformFaultDomainCount": 2
+      },
+      "koreasouth": {
+          "MaximumPlatformFaultDomainCount": 2
+      },
+      "northcentralus": {
+          "MaximumPlatformFaultDomainCount": 3
+      },
+      "northeurope": {
+          "MaximumPlatformFaultDomainCount": 3
+      },
+      "southcentralus": {
+          "MaximumPlatformFaultDomainCount": 3
+      },
+      "southeastasia": {
+          "MaximumPlatformFaultDomainCount": 2
+      },
+      "southindia": {
+          "MaximumPlatformFaultDomainCount": 2
+      },
+      "uksouth": {
+          "MaximumPlatformFaultDomainCount": 2
+      },
+      "ukwest": {
+          "MaximumPlatformFaultDomainCount": 2
+      },
+      "westcentralus": {
+          "MaximumPlatformFaultDomainCount": 2
+      },
+      "westeurope": {
+          "MaximumPlatformFaultDomainCount": 3
+      },
+      "westindia": {
+          "MaximumPlatformFaultDomainCount": 2
+      },
+      "westus": {
+          "MaximumPlatformFaultDomainCount": 3
+      },
+      "westus2": {
+          "MaximumPlatformFaultDomainCount": 2
+      }
+    }
   },
   "resources": [
     {
-      "apiVersion": "2016-04-30-preview",
+      "apiVersion": "2017-03-30",
       "type": "Microsoft.Compute/availabilitySets",
       "name": "[parameters('namespace')]",
       "location": "[parameters('location')]",
       "properties": {
-        "platformFaultDomainCount": 3,
+        "platformFaultDomainCount":"[variables('faultdomainCountMap')[tolower(replace(parameters('location'),' ',''))].MaximumPlatformFaultDomainCount]",
         "platformUpdateDomainCount": 18,
-        "managed": "true"
+      },
+      "sku": {
+        "name": "Aligned"
       }
     },
     {
-      "apiVersion": "2015-06-15",
+      "apiVersion": "2017-08-01",
       "type": "Microsoft.Network/publicIPAddresses",
       "name": "[concat(parameters('namespace'), 'vm', copyindex())]",
       "location": "[parameters('location')]",
@@ -70,7 +155,7 @@
       }
     },
     {
-      "apiVersion": "2015-06-15",
+      "apiVersion": "2017-08-01",
       "type": "Microsoft.Network/networkInterfaces",
       "name": "[concat(parameters('namespace'), 'vm', copyindex())]",
       "location": "[parameters('location')]",
@@ -99,7 +184,7 @@
       }
     },
     {
-      "apiVersion": "2016-04-30-preview",
+      "apiVersion": "2017-03-30",
       "type": "Microsoft.Compute/virtualMachines",
       "name": "[concat(parameters('namespace'), 'vm', copyindex())]",
       "location": "[parameters('location')]",
@@ -153,7 +238,7 @@
     {
       "type": "Microsoft.Compute/virtualMachines/extensions",
       "name": "[concat(parameters('namespace'), 'vm', copyindex(), '/installdsenode')]",
-      "apiVersion": "2015-06-15",
+      "apiVersion": "2017-03-30",
       "location": "[parameters('location')]",
       "copy": {
         "name": "[concat(parameters('namespace'), 'vmLoop')]",
@@ -169,7 +254,9 @@
         "autoUpgradeMinorVersion": true,
         "settings": {
           "fileUris": "[parameters('osSettings').scripts]",
-          "commandToExecute": "[concat('bash node.sh ', parameters('nodeCount'), ' ', parameters('uniqueString'), ' ', parameters('namespace'), ' ', resourceGroup().location, ' ', parameters('DBPassword'))]"
+        },
+        "protectedSettings": {
+          "commandToExecute": "[concat('bash node.sh ', parameters('nodeCount'), ' ', parameters('uniqueString'), ' ', parameters('namespace'), ' ', resourceGroup().location)]"
         }
       }
     }

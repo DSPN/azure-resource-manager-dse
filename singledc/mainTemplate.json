@@ -95,12 +95,18 @@
       "metadata": {
         "description": "Password for default OpsCenter user 'admin'"
       }
+    },
+    "baseUrl": {
+      "type": "string",
+      "defaultValue": "https://raw.githubusercontent.com/DSPN/azure-resource-manager-dse/master",
+      "metadata": {
+        "description": "URL for nested templates and extensions"
+      }
     }
   },
   "variables": {
-    "baseUrl": "https://raw.githubusercontent.com/DSPN/azure-resource-manager-dse/master",
-    "templateUrl": "[concat(variables('baseUrl'), '/singledc/')]",
-    "extensionUrl": "[concat(variables('baseUrl'), '/extensions/')]",
+    "templateUrl": "[concat(parameters('baseUrl'), '/singledc/')]",
+    "extensionUrl": "[concat(parameters('baseUrl'), '/extensions/')]",
     "nsgTemplateUrl": "[concat(variables('templateUrl'), 'networksecuritygroup.json')]",
     "nodesTemplateUrl": "[concat(variables('templateUrl'), 'nodes.json')]",
     "opsCenterTemplateUrl": "[concat(variables('templateUrl'), 'opsCenter.json')]",
@@ -125,18 +131,23 @@
     {
       "name": "nsg",
       "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2016-02-01",
+      "apiVersion": "2016-09-01",
       "dependsOn": [],
       "properties": {
         "mode": "Incremental",
         "templateLink": {
           "uri": "[variables('nsgTemplateUrl')]",
           "contentVersion": "1.0.0.0"
+        },
+        "parameters": {
+          "location": {
+            "value": "[variables('location')]"
+          }
         }
       }
     },
     {
-      "apiVersion": "2015-06-15",
+      "apiVersion": "2017-08-01",
       "type": "Microsoft.Network/virtualNetworks",
       "name": "[variables('vnetName')]",
       "location": "[variables('location')]",
@@ -165,7 +176,7 @@
     {
       "name": "nodes",
       "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2016-02-01",
+      "apiVersion": "2016-09-01",
       "dependsOn": [
         "[concat('Microsoft.Network/virtualNetworks/', variables('vnetName'))]"
       ],
@@ -187,9 +198,6 @@
           },
           "adminPassword": {
             "value": "[parameters('adminPassword')]"
-          },
-          "DBPassword": {
-            "value": "[parameters('DBPassword')]"
           },
           "nodeCount": {
             "value": "[parameters('nodeCount')]"
@@ -215,7 +223,7 @@
     {
       "name": "opsCenter",
       "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2016-02-01",
+      "apiVersion": "2016-09-01",
       "dependsOn": [
         "[concat('Microsoft.Network/virtualNetworks/', variables('vnetName'))]"
       ],
@@ -240,6 +248,12 @@
           },
           "OpsCPassword": {
             "value": "[parameters('OpsCPassword')]"
+          },
+          "DBPassword": {
+            "value": "[parameters('DBPassword')]"
+          },
+          "nodeCount": {
+            "value": "[parameters('nodeCount')]"
           },
           "osSettings": {
             "value": "[variables('osSettings')]"

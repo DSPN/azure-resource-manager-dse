@@ -4,9 +4,9 @@ data_center_size=$1
 unique_string=$2
 data_center_name=$3
 opscenter_location=$4
-dbpasswd=$5
 
 echo "Input to node.sh is:"
+echo data_center_size $data_center_size
 echo unique_string $unique_string
 echo data_center_name $data_center_name
 echo opscenter_location $opscenter_location
@@ -43,9 +43,25 @@ node_id=$private_ip
 fault_domain=$(curl --max-time 50000 --retry 12 --retry-delay 50000 http://169.254.169.254/metadata/v1/InstanceInfo -s -S | sed -e 's/.*"FD":"\([^"]*\)".*/\1/')
 rack=FD$fault_domain
 
+apt-get update
+n=0
+until [ $n -ge 20 ]
+do
+  apt-get -y install unzip python-pip jq  && break
+  echo "apt-get try $n failed, sleeping 15s..."
+  n=$[$n+1]
+  sleep 15s
+done
+
+pip install requests
+
+release="6.0.0"
+wget https://github.com/DSPN/install-datastax-ubuntu/archive/$release.zip
+unzip $release.zip
+cd install-datastax-ubuntu-$release/bin/lcm
+
 echo "Calling addNode.py with the settings:"
 echo opscenter_dns_name $opscenter_dns_name
-
 echo cluster_name $cluster_name
 echo data_center_size $data_center_size
 echo data_center_name $data_center_name
@@ -54,30 +70,11 @@ echo public_ip $public_ip
 echo private_ip $private_ip
 echo node_id $node_id
 
-apt-get update
-n=0
-until [ $n -ge 8 ]
-do
-  apt-get -y install unzip python-pip jq  && break
-  echo "apt-get try $n failed, sleeping..."
-  n=$[$n+1]
-  sleep 15s
-done
-
-pip install requests
-
-release="5.5.4"
-wget https://github.com/DSPN/install-datastax-ubuntu/archive/$release.zip
-unzip $release.zip
-cd install-datastax-ubuntu-$release/bin/lcm
-
 ./addNode.py \
 --opsc-ip $opscenter_dns_name \
 --clustername $cluster_name \
---dcsize $data_center_size \
 --dcname $data_center_name \
 --rack $rack \
 --pubip $public_ip \
 --privip $private_ip \
---nodeid $node_id \
---dbpasswd $dbpasswd
+--nodeid $node_id

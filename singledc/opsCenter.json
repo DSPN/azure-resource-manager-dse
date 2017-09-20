@@ -17,6 +17,12 @@
     "OpsCPassword": {
       "type": "securestring"
     },
+    "DBPassword": {
+      "type": "securestring"
+    },
+    "nodeCount": {
+      "type": "int"
+    },
     "osSettings": {
       "type": "object"
     },
@@ -33,7 +39,7 @@
   },
   "resources": [
     {
-      "apiVersion": "2015-06-15",
+      "apiVersion": "2017-08-01",
       "type": "Microsoft.Network/publicIPAddresses",
       "name": "opscenter",
       "location": "[parameters('location')]",
@@ -45,7 +51,7 @@
       }
     },
     {
-      "apiVersion": "2015-06-15",
+      "apiVersion": "2017-08-01",
       "type": "Microsoft.Network/networkInterfaces",
       "name": "opscenter",
       "location": "[parameters('location')]",
@@ -70,7 +76,7 @@
       }
     },
     {
-      "apiVersion": "2016-04-30-preview",
+      "apiVersion": "2017-03-30",
       "type": "Microsoft.Compute/virtualMachines",
       "name": "opscenter",
       "location": "[parameters('location')]",
@@ -109,7 +115,7 @@
     {
       "type": "Microsoft.Compute/virtualMachines/extensions",
       "name": "opscenter/installopscenter",
-      "apiVersion": "2015-06-15",
+      "apiVersion": "2017-03-30",
       "location": "[parameters('location')]",
       "dependsOn": [
         "Microsoft.Compute/virtualMachines/opscenter"
@@ -120,8 +126,10 @@
         "typeHandlerVersion": "1.4",
         "autoUpgradeMinorVersion": true,
         "settings": {
-          "fileUris": "[parameters('osSettings').scripts]",
-          "commandToExecute": "[concat('bash opsCenter.sh ', parameters('adminUsername'), ' ', parameters('adminPassword'), ' ', parameters('OpsCPassword'))]"
+          "fileUris": "[parameters('osSettings').scripts]"
+        },
+        "protectedSettings": {
+          "commandToExecute": "[concat('bash opsCenter.sh ', parameters('adminUsername'), ' ', parameters('adminPassword'), ' ', parameters('OpsCPassword'), ' ', parameters('DBPassword'), ' ', parameters('nodeCount'))]"
         }
       }
     }

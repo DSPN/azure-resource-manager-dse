@@ -21,8 +21,8 @@
         "toolTip": "Admin password for the virtual machines",
         "constraints": {
           "required": true,
-          "regex": "^(?:(?=.*[a-z])(?:(?=.*[A-Z])(?=.*[\\d\\W])|(?=.*\\W)(?=.*\\d))|(?=.*\\W)(?=.*[A-Z])(?=.*\\d)).{6,72}$",
-          "validationMessage": "The password must be between 6 and 72 characters long, and contain characters from at least 3 of the following groups: uppercase characters, lowercase characters, numbers, and special characters."
+          "regex": "^(?:(?=.*[a-z])(?:(?=.*[A-Z])(?=.*[\\d\\W])|(?=.*\\W)(?=.*\\d))|(?=.*\\W)(?=.*[A-Z])(?=.*\\d)).{12,72}$",
+          "validationMessage": "The password must be between 12 and 72 characters long, and contain characters from at least 3 of the following groups: uppercase characters, lowercase characters, numbers, and special characters."
         },
         "options": {
           "hideConfirmation": false
@@ -38,8 +38,8 @@
         "toolTip": "Password for default C* user 'cassandra'",
         "constraints": {
           "required": true,
-          "regex": "^(?:(?=.*[a-z])(?:(?=.*[A-Z])(?=.*[\\d\\W])|(?=.*\\W)(?=.*\\d))|(?=.*\\W)(?=.*[A-Z])(?=.*\\d)).{6,72}$",
-          "validationMessage": "The password must be between 6 and 72 characters long, and contain characters from at least 3 of the following groups: uppercase characters, lowercase characters, numbers, and special characters."
+          "regex": "^(?:(?=.*[a-z])(?:(?=.*[A-Z])(?=.*[\\d\\W])|(?=.*\\W)(?=.*\\d))|(?=.*\\W)(?=.*[A-Z])(?=.*\\d)).{12,72}$",
+          "validationMessage": "The password must be between 12 and 72 characters long, and contain characters from at least 3 of the following groups: uppercase characters, lowercase characters, numbers, and special characters."
         },
         "options": {
           "hideConfirmation": false
@@ -55,8 +55,8 @@
         "toolTip": "Password for default OpsCenter user 'admin'",
         "constraints": {
           "required": true,
-          "regex": "^(?:(?=.*[a-z])(?:(?=.*[A-Z])(?=.*[\\d\\W])|(?=.*\\W)(?=.*\\d))|(?=.*\\W)(?=.*[A-Z])(?=.*\\d)).{6,72}$",
-          "validationMessage": "The password must be between 6 and 72 characters long, and contain characters from at least 3 of the following groups: uppercase characters, lowercase characters, numbers, and special characters."
+          "regex": "^(?:(?=.*[a-z])(?:(?=.*[A-Z])(?=.*[\\d\\W])|(?=.*\\W)(?=.*\\d))|(?=.*\\W)(?=.*[A-Z])(?=.*\\d)).{12,72}$",
+          "validationMessage": "The password must be between 12 and 72 characters long, and contain characters from at least 3 of the following groups: uppercase characters, lowercase characters, numbers, and special characters."
         },
         "options": {
           "hideConfirmation": false
@@ -260,6 +260,18 @@
             ],
             "constraints": {
               "allowedSizes": [
+                "Standard_DS2_v3",
+                "Standard_DS4_v3",
+                "Standard_DS8_v3",
+                "Standard_DS16_v3",
+                "Standard_DS32_v3",
+                "Standard_DS64_v3",
+                "Standard_D2_v3",
+                "Standard_D4_v3",
+                "Standard_D8_v3",
+                "Standard_D16_v3",
+                "Standard_D32_v3",
+                "Standard_D64_v3",
                 "Standard_DS2_v2",
                 "Standard_DS3_v2",
                 "Standard_DS4_v2",
