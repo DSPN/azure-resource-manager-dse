@@ -254,10 +254,9 @@
             "label": "Virtual Machine Size",
             "toolTip": "Size of virtual machine to provision for the cluster",
             "recommendedSizes": [
-              "Standard_DS4_v3",
-              "Standard_DS8_v3",
-              "Standard_DS16_v3",
-              "Standard_DS32_v3"
+              "Standard_DS3_v2",
+              "Standard_DS5_v2",
+              "Standard_DS14_v2"
             ],
             "constraints": {
               "allowedSizes": [
