@@ -20,10 +20,10 @@ echo password XXXXXX
 
 apt-get update
 n=0
-until [ $n -ge 8 ]
+until [ $n -ge 20 ]
 do
   apt-get -y install unzip python-pip jq  && break
-  echo "apt-get try $n failed, sleeping..."
+  echo "apt-get try $n failed, sleeping 15s..."
   n=$[$n+1]
   sleep 15s
 done
