@@ -78,6 +78,7 @@ echo repopw XXXXXX
 # exit RUNNING/PENDING status
 ./lcm/waitForJobs.py
 # set keyspaces to NetworkTopology / RF 3
+sleep 30s
 ./lcm/alterKeyspaces.py
 # Turn on https, set pw for opsc user admin
 ./opscenter/set_opsc_pw_https.sh $opscpw
