@@ -37,7 +37,7 @@ unzip $release.zip
 cd install-datastax-ubuntu-$release/bin
 
 # Overide OpsC install default version if needed
-export OPSC_VERSION='6.1.2'
+export OPSC_VERSION='6.1.3'
 ver='5.1.3'
 
 ./os/install_java.sh
@@ -78,6 +78,7 @@ echo repopw XXXXXX
 # exit RUNNING/PENDING status
 ./lcm/waitForJobs.py
 # set keyspaces to NetworkTopology / RF 3
+sleep 30s
 ./lcm/alterKeyspaces.py
 # Turn on https, set pw for opsc user admin
 ./opscenter/set_opsc_pw_https.sh $opscpw
