@@ -150,6 +150,11 @@
         "templateLink": {
           "uri": "[variables('nsgTemplateUrl')]",
           "contentVersion": "1.0.0.0"
+        },
+        "parameters": {
+          "location": {
+            "value": "[variables('location')]"
+          }
         }
       }
     },
@@ -206,9 +211,6 @@
           "adminPassword": {
             "value": "[parameters('adminPassword')]"
           },
-          "DBPassword": {
-            "value": "[parameters('DBPassword')]"
-          },
           "nodeCount": {
             "value": "[parameters('nodeCount')]"
           },
@@ -258,6 +260,12 @@
           },
           "OpsCPassword": {
             "value": "[parameters('OpsCPassword')]"
+          },
+          "DBPassword": {
+            "value": "[parameters('DBPassword')]"
+          },
+          "nodeCount": {
+            "value": "[parameters('nodeCount')]"
           },
           "osSettings": {
             "value": "[variables('osSettings')]"
