@@ -6,7 +6,7 @@ opscpw=$3
 dbpasswd=$4
 nodecount=$5
 
-echo "Input to node.sh is:"
+echo "Input to opsCenter.sh is:"
 echo username $username
 echo password XXXXXX
 echo opscpw YYYYYY
