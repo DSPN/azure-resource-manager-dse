@@ -134,5 +134,9 @@
       }
     }
   ],
-  "outputs": {}
+  "outputs": {
+    "opscenterFQDN": {
+      "type": "string",
+      "value": "reference(resourceId('Microsoft.Network/publicIPAddresses', 'opscenter')).dnsSettings.fqdn"
+  }
 }
