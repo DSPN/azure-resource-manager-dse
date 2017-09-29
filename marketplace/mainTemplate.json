@@ -105,14 +105,14 @@
     "baseUrl": {
       "type": "string",
       "metadata": {
-        "description": "Not User Configurable -- The base URL for dependent assets",
+        "description": "The base URL for dependent assets",
         "artifactsBaseUrl": ""
       }
     },
     "location": {
       "type": "string",
       "metadata": {
-        "description": "Not User Configurable -- Dummy parameter required by portal"
+        "description": "Location where resources will be deployed."
       }
     }
   },
