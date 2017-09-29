@@ -282,11 +282,11 @@
   "outputs": {
     "lifecycleManagerURL": {
       "type": "string",
-      "value": "[concat('https://opscenter', variables('uniqueString'), '.', parameters('location'), '.cloudapp.azure.com:8443/opscenter/lcm.html')]"
+      "value": "[concat('http://', reference('opsCenter').outputs.opscenterFQDN.value, ':8443/opscenter/lcm.html')]"
     },
     "opsCenterURL": {
       "type": "string",
-      "value": "[concat('https://opscenter', variables('uniqueString'), '.', parameters('location'), '.cloudapp.azure.com:8443')]"
+      "value": "[concat('http://', reference('opsCenter').outputs.opscenterFQDN.value, ':8443')]"
     }
   }
 }
