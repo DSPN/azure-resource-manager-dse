@@ -122,7 +122,6 @@
     "nsgTemplateUrl": "[concat(variables('templateUrl'), 'networksecuritygroup.json')]",
     "nodesTemplateUrl": "[concat(variables('templateUrl'), 'nodes.json')]",
     "opsCenterTemplateUrl": "[concat(variables('templateUrl'), 'opsCenter.json')]",
-    "location": "[resourcegroup().location]",
     "uniqueString": "[uniqueString(resourceGroup().id, deployment().name)]",
     "vnetName": "vnet",
     "subnetName": "subnet",
@@ -153,7 +152,7 @@
         },
         "parameters": {
           "location": {
-            "value": "[variables('location')]"
+            "value": "[parameters('location')]"
           }
         }
       }
@@ -162,7 +161,7 @@
       "apiVersion": "2017-08-01",
       "type": "Microsoft.Network/virtualNetworks",
       "name": "[variables('vnetName')]",
-      "location": "[variables('location')]",
+      "location": "[parameters('location')]",
       "dependsOn": [
         "Microsoft.Resources/deployments/nsg"
       ],
@@ -200,7 +199,7 @@
         },
         "parameters": {
           "location": {
-            "value": "[variables('location')]"
+            "value": "[parameters('location')]"
           },
           "uniqueString": {
             "value": "[variables('uniqueString')]"
@@ -247,7 +246,7 @@
         },
         "parameters": {
           "location": {
-            "value": "[variables('location')]"
+            "value": "[parameters('location')]"
           },
           "uniqueString": {
             "value": "[variables('uniqueString')]"
@@ -283,11 +282,11 @@
   "outputs": {
     "lifecycleManagerURL": {
       "type": "string",
-      "value": "[concat('https://opscenter', variables('uniqueString'), '.', variables('location'), '.cloudapp.azure.com:8443/opscenter/lcm.html')]"
+      "value": "[concat('https://opscenter', variables('uniqueString'), '.', parameters('location'), '.cloudapp.azure.com:8443/opscenter/lcm.html')]"
     },
     "opsCenterURL": {
       "type": "string",
-      "value": "[concat('https://opscenter', variables('uniqueString'), '.', variables('location'), '.cloudapp.azure.com:8443')]"
+      "value": "[concat('https://opscenter', variables('uniqueString'), '.', parameters('location'), '.cloudapp.azure.com:8443')]"
     }
   }
 }
