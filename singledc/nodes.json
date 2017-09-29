@@ -256,7 +256,7 @@
           "fileUris": "[parameters('osSettings').scripts]",
         },
         "protectedSettings": {
-          "commandToExecute": "[concat('bash node.sh ', parameters('nodeCount'), ' ', parameters('uniqueString'), ' ', parameters('namespace'), ' ', parameters('location')]"
+          "commandToExecute": "[concat('bash node.sh ', parameters('nodeCount'), ' ', parameters('uniqueString'), ' ', parameters('namespace'), ' ', parameters('location'))]"
         }
       }
     }
