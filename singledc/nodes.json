@@ -107,6 +107,9 @@
       "ukwest": {
           "MaximumPlatformFaultDomainCount": 2
       },
+      "usgovvirginia": {
+          "MaximumPlatformFaultDomainCount": 2
+      },
       "westcentralus": {
           "MaximumPlatformFaultDomainCount": 2
       },
