@@ -34,7 +34,6 @@ mkdir -p /data/cassandra/saved_caches
 useradd cassandra
 chown -R cassandra:cassandra /data/cassandra
 
-#opscenter_dns_name="opscenter$unique_string.$opscenter_location.cloudapp.azure.com"
 opscenter_dns_name="opscenter"
 
 cluster_name="mycluster"
