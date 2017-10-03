@@ -107,6 +107,15 @@
       "ukwest": {
           "MaximumPlatformFaultDomainCount": 2
       },
+      "usgovarizona": {
+          "MaximumPlatformFaultDomainCount": 2
+      },
+      "usgovtexas": {
+          "MaximumPlatformFaultDomainCount": 2
+      },
+      "usgovvirginia": {
+          "MaximumPlatformFaultDomainCount": 2
+      },
       "westcentralus": {
           "MaximumPlatformFaultDomainCount": 2
       },
