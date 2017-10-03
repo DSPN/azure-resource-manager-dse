@@ -1,19 +1,46 @@
 #!/bin/bash
 
-RESOURCE_GROUP=$1
+resource_group='dse'
+location='eastus'
+usage="---------------------------------------------------
+Usage:
+deploy.sh [-h] [-r resource-group] [-l location]
+
+Options:
+
+ -h                 : display this message and exit
+ -r resource-group  : name of resource group to create, default 'dse'
+ -l location        : location for resource group, default 'eastus'
+
+---------------------------------------------------"
+
+
+while getopts 'hr:l:' opt; do
+  case $opt in
+    h) echo -e "$usage"
+       exit 1
+    ;;
+    r) resource_group="$OPTARG"
+    ;;
+    l) location="$OPTARG"
+    ;;
+    \?) echo "Invalid option -$OPTARG" >&2
+        exit 1
+    ;;
+  esac
+done
 
 
 if [ -z "$(which az)" ]
 then
-    echo "CLI v2 'az' command not found, falling back to v1 'azure'"
-    azure group create $1 "eastus"
-    azure group deployment create -f mainTemplate.json -e mainTemplateParameters.json $RESOURCE_GROUP dse
-
+    echo "CLI v2 'az' command not found. Please install: https://docs.microsoft.com/en-us/cli/azure/install-az-cli2"
+    exit 1
 else
     echo "CLI v2 'az' command found"
-    az group create --name $RESOURCE_GROUP --location "eastus"
+    echo "Using values: resource_group=$resource_group location=$location"
+    az group create --name $resource_group --location $location
     az group deployment create \
-     --resource-group $RESOURCE_GROUP \
+     --resource-group $resource_group \
      --template-file mainTemplate.json \
      --parameters @mainTemplateParameters.json \
      --verbose
