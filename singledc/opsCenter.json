@@ -45,7 +45,7 @@
     {
       "apiVersion": "2017-08-01",
       "type": "Microsoft.Network/publicIPAddresses",
-      "name": "opscenter",
+      "name": "opscenter-pubip",
       "location": "[parameters('location')]",
       "properties": {
         "publicIPAllocationMethod": "Dynamic",
@@ -57,7 +57,7 @@
     {
       "apiVersion": "2017-08-01",
       "type": "Microsoft.Network/networkInterfaces",
-      "name": "opscenter",
+      "name": "opscenter-nic",
       "location": "[parameters('location')]",
       "dependsOn": [
         "Microsoft.Network/publicIPAddresses/opscenter"
