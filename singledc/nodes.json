@@ -31,6 +31,10 @@
     },
     "namespace": {
       "type": "string"
+    },
+    "test": {
+      "type": "string",
+      "defaultValue":"test"
     }
   },
   "variables": {
