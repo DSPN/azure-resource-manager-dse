@@ -31,10 +31,6 @@
     },
     "subnetName": {
       "type": "string"
-    },
-    "test": {
-      "type": "string",
-      "defaultValue":"test"
     }
   },
   "variables": {
@@ -60,7 +56,7 @@
       "name": "opscenter-nic",
       "location": "[parameters('location')]",
       "dependsOn": [
-        "Microsoft.Network/publicIPAddresses/opscenter"
+        "Microsoft.Network/publicIPAddresses/opscenter-pubip"
       ],
       "properties": {
         "ipConfigurations": [
@@ -68,7 +64,7 @@
             "name": "ipconfig1",
             "properties": {
               "publicIPAddress": {
-                "id": "[resourceId('Microsoft.Network/publicIPAddresses', 'opscenter')]"
+                "id": "[resourceId('Microsoft.Network/publicIPAddresses', 'opscenter-pubip')]"
               },
               "privateIPAllocationMethod": "Dynamic",
               "subnet": {
@@ -85,7 +81,7 @@
       "name": "opscenter",
       "location": "[parameters('location')]",
       "dependsOn": [
-        "Microsoft.Network/networkInterfaces/opscenter"
+        "Microsoft.Network/networkInterfaces/opscenter-nic"
       ],
       "plan": {
         "name": "[parameters('osSettings').imageReference.sku]",
@@ -110,7 +106,7 @@
         "networkProfile": {
           "networkInterfaces": [
             {
-              "id": "[resourceId('Microsoft.Network/networkInterfaces', 'opscenter')]"
+              "id": "[resourceId('Microsoft.Network/networkInterfaces', 'opscenter-nic')]"
             }
           ]
         }
@@ -141,7 +137,7 @@
   "outputs": {
     "opscenterFQDN": {
       "type": "string",
-      "value": "[reference(resourceId('Microsoft.Network/publicIPAddresses', 'opscenter')).dnsSettings.fqdn]"
+      "value": "[reference(resourceId('Microsoft.Network/publicIPAddresses', 'opscenter-pubip')).dnsSettings.fqdn]"
     }
   }
 }
