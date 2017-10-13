@@ -1,0 +1,37 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "location": {
+      "type": "string"
+    },
+    "uniqueString": {
+      "type": "string"
+    }
+  },
+  "variables": {},
+  "resources": [
+    {
+      "apiVersion": "2017-08-01",
+      "type": "Microsoft.Network/publicIPAddresses",
+      "name": "opscenter-pubip",
+      "location": "[parameters('location')]",
+      "properties": {
+        "publicIPAllocationMethod": "Dynamic",
+        "dnsSettings": {
+          "domainNameLabel": "[concat('opscenter', parameters('uniqueString'))]"
+        }
+      }
+    }
+  ],
+  "outputs": {
+    "opsCenterFQDN": {
+      "type": "string",
+      "value": "[reference('opscenter-pubip').dnsSettings.fqdn]"
+    },
+    "opsCenterPublicIPResourceId": {
+      "type": "string",
+      "value": "[resourceId('Microsoft.Network/publicIPAddresses', 'opscenter-pubip')]"
+    }
+  }
+}
