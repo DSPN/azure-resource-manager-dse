@@ -27,11 +27,7 @@
   "outputs": {
     "opsCenterFQDN": {
       "type": "string",
-      "value": "[reference(resourceId('Microsoft.Network/publicIPAddresses', 'opscenter-pubip')).dnsSettings.fqdn]"
-    },
-    "opsCenterPublicIP": {
-      "type": "string",
-      "value": "[reference(resourceId('Microsoft.Network/publicIPAddresses', 'opscenter-pubip')).properties.ipAddress]"
+      "value": "[reference('opscenter-pubip').dnsSettings.fqdn]"
     },
     "opsCenterPublicIPResourceId": {
       "type": "string",
