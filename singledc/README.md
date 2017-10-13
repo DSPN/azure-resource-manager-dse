@@ -8,18 +8,18 @@ The button below will deploy this template to Azure.  The template will be dynam
     <img src="http://azuredeploy.net/deploybutton.png"/>
 </a>
 
-Alternatively, you can run `deploy.sh`. This script takes the following optional arguments:
+Alternatively, you can run clone this repo and run `deploy.sh`. This script takes the following optional arguments:
 
 ```
 ./deploy.sh -h
 ---------------------------------------------------
 Usage:
-deploy.sh [-h] [-r resource-group] [-l location] [-t]
+deploy.sh [-h] [-g resource-group] [-l location] [-t]
 
 Options:
 
  -h                 : display this message and exit
- -r resource-group  : name of resource group to create, default 'dse'
+ -g resource-group  : name of resource group to create, default 'dse'
  -l location        : location for resource group, default 'eastus'
  -t                 : testing flag, sets baseUrl to dev branch
 
