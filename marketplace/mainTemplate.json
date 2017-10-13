@@ -14,66 +14,6 @@
     "vmSize": {
       "type": "string",
       "defaultValue": "Standard_DS4_v2",
-      "allowedValues": [
-        "Standard_DS2_v3",
-        "Standard_DS4_v3",
-        "Standard_DS8_v3",
-        "Standard_DS16_v3",
-        "Standard_DS32_v3",
-        "Standard_DS64_v3",
-        "Standard_DS2_v2",
-        "Standard_DS3_v2",
-        "Standard_DS4_v2",
-        "Standard_DS5_v2",
-        "Standard_DS11_v2",
-        "Standard_DS12_v2",
-        "Standard_DS13_v2",
-        "Standard_DS14_v2",
-        "Standard_DS15_v2",
-        "Standard_GS1",
-        "Standard_GS2",
-        "Standard_GS3",
-        "Standard_GS4",
-        "Standard_GS5",
-        "Standard_FS1",
-        "Standard_FS2",
-        "Standard_FS4",
-        "Standard_FS8",
-        "Standard_FS16",
-        "Standard_D2_v2",
-        "Standard_D3_v2",
-        "Standard_D4_v2",
-        "Standard_D5_v2",
-        "Standard_D11_v2",
-        "Standard_D12_v2",
-        "Standard_D13_v2",
-        "Standard_D14_v2",
-        "Standard_D15_v2",
-        "Standard_G1",
-        "Standard_G2",
-        "Standard_G3",
-        "Standard_G4",
-        "Standard_G5",
-        "Standard_D1",
-        "Standard_D2",
-        "Standard_D3",
-        "Standard_D4",
-        "Standard_F1",
-        "Standard_F2",
-        "Standard_F4",
-        "Standard_F8",
-        "Standard_F16",
-        "Standard_D11",
-        "Standard_D12",
-        "Standard_D13",
-        "Standard_D14",
-        "Standard_H8",
-        "Standard_H16",
-        "Standard_H8m",
-        "Standard_H16m",
-        "Standard_H16r",
-        "Standard_H16mr"
-      ],
       "metadata": {
         "description": "Size of virtual machine to provision for the cluster"
       }
@@ -121,6 +61,7 @@
     "extensionUrl": "[concat(parameters('baseUrl'), '/')]",
     "nsgTemplateUrl": "[concat(variables('templateUrl'), 'networksecuritygroup.json')]",
     "nodesTemplateUrl": "[concat(variables('templateUrl'), 'nodes.json')]",
+    "opsCenterPubIPTemplateUrl": "[concat(variables('templateUrl'), 'opsCenterPublicIP.json')]",
     "opsCenterTemplateUrl": "[concat(variables('templateUrl'), 'opsCenter.json')]",
     "uniqueString": "[uniqueString(resourceGroup().id, deployment().name)]",
     "vnetName": "vnet",
@@ -185,7 +126,7 @@
       }
     },
     {
-      "name": "nodes",
+      "name": "opsCenterPublicIP",
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2016-09-01",
       "dependsOn": [
@@ -194,7 +135,7 @@
       "properties": {
         "mode": "Incremental",
         "templateLink": {
-          "uri": "[variables('nodesTemplateUrl')]",
+          "uri": "[variables('opsCenterPubIPTemplateUrl')]",
           "contentVersion": "1.0.0.0"
         },
         "parameters": {
@@ -203,30 +144,6 @@
           },
           "uniqueString": {
             "value": "[variables('uniqueString')]"
-          },
-          "adminUsername": {
-            "value": "[parameters('adminUsername')]"
-          },
-          "adminPassword": {
-            "value": "[parameters('adminPassword')]"
-          },
-          "nodeCount": {
-            "value": "[parameters('nodeCount')]"
-          },
-          "vmSize": {
-            "value": "[parameters('vmSize')]"
-          },
-          "osSettings": {
-            "value": "[variables('osSettings')]"
-          },
-          "vnetName": {
-            "value": "[variables('vnetName')]"
-          },
-          "subnetName": {
-            "value": "[variables('subnetName')]"
-          },
-          "namespace": {
-            "value": "dc0"
           }
         }
       }
@@ -236,7 +153,8 @@
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2016-09-01",
       "dependsOn": [
-        "[concat('Microsoft.Network/virtualNetworks/', variables('vnetName'))]"
+        "[concat('Microsoft.Network/virtualNetworks/', variables('vnetName'))]",
+        "Microsoft.Resources/deployments/opsCenterPublicIP"
       ],
       "properties": {
         "mode": "Incremental",
@@ -247,6 +165,9 @@
         "parameters": {
           "location": {
             "value": "[parameters('location')]"
+          },
+          "publicIPResourceId": {
+            "value": "[reference('opsCenterPublicIP').outputs.opsCenterPublicIPResourceId.value]"
           },
           "uniqueString": {
             "value": "[variables('uniqueString')]"
@@ -277,16 +198,66 @@
           }
         }
       }
+    },
+    {
+      "name": "nodes",
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2016-09-01",
+      "dependsOn": [
+        "[concat('Microsoft.Network/virtualNetworks/', variables('vnetName'))]"
+      ],
+      "properties": {
+        "mode": "Incremental",
+        "templateLink": {
+          "uri": "[variables('nodesTemplateUrl')]",
+          "contentVersion": "1.0.0.0"
+        },
+        "parameters": {
+          "location": {
+            "value": "[parameters('location')]"
+          },
+          "opsCenterFQDN": {
+            "value": "[reference('opsCenterPublicIP').outputs.opsCenterFQDN.value]"
+          },
+          "uniqueString": {
+            "value": "[variables('uniqueString')]"
+          },
+          "adminUsername": {
+            "value": "[parameters('adminUsername')]"
+          },
+          "adminPassword": {
+            "value": "[parameters('adminPassword')]"
+          },
+          "nodeCount": {
+            "value": "[parameters('nodeCount')]"
+          },
+          "vmSize": {
+            "value": "[parameters('vmSize')]"
+          },
+          "osSettings": {
+            "value": "[variables('osSettings')]"
+          },
+          "vnetName": {
+            "value": "[variables('vnetName')]"
+          },
+          "subnetName": {
+            "value": "[variables('subnetName')]"
+          },
+          "namespace": {
+            "value": "dc0"
+          }
+        }
+      }
     }
   ],
   "outputs": {
     "lifecycleManagerURL": {
       "type": "string",
-      "value": "[concat('http://', reference('opsCenter').outputs.opscenterFQDN.value, ':8443/opscenter/lcm.html')]"
+      "value": "[concat('http://', reference('opsCenterPublicIP').outputs.opsCenterFQDN.value, ':8888/opscenter/lcm.html')]"
     },
     "opsCenterURL": {
       "type": "string",
-      "value": "[concat('http://', reference('opsCenter').outputs.opscenterFQDN.value, ':8443')]"
+      "value": "[concat('http://', reference('opsCenterPublicIP').outputs.opsCenterFQDN.value, ':8888')]"
     }
   }
 }
