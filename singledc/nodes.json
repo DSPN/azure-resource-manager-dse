@@ -5,6 +5,9 @@
     "location": {
       "type": "string"
     },
+    "opsCenterFQDN": {
+      "type": "string"
+    },
     "uniqueString": {
       "type": "string"
     },
