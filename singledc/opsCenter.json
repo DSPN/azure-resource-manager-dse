@@ -124,9 +124,5 @@
     }
   ],
   "outputs": {
-    "opscenterFQDN": {
-      "type": "string",
-      "value": "[reference(resourceId('Microsoft.Network/publicIPAddresses', 'opscenter-pubip')).dnsSettings.fqdn]"
-    }
   }
 }
