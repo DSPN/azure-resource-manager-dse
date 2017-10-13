@@ -31,7 +31,7 @@
     },
     "opsCenterPublicIP": {
       "type": "string",
-      "value": "[reference(resourceId('Microsoft.Network/publicIPAddresses', 'opscenter-pubip')).ipAddress]"
+      "value": "[reference(resourceId('Microsoft.Network/publicIPAddresses', 'opscenter-pubip')).properties.ipAddress]"
     },
     "opsCenterPublicIPResourceId": {
       "type": "string",
