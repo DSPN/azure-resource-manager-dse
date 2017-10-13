@@ -4,24 +4,24 @@ resource_group='dse'
 location='eastus'
 usage="---------------------------------------------------
 Usage:
-deploy.sh [-h] [-r resource-group] [-l location] [-t]
+deploy.sh [-h] [-g resource-group] [-l location] [-t]
 
 Options:
 
  -h                 : display this message and exit
- -r resource-group  : name of resource group to create, default 'dse'
+ -g resource-group  : name of resource group to create, default 'dse'
  -l location        : location for resource group, default 'eastus'
  -t                 : testing flag, sets baseUrl to dev branch
 
 ---------------------------------------------------"
 
 
-while getopts 'hr:l:t' opt; do
+while getopts 'hg:l:t' opt; do
   case $opt in
     h) echo -e "$usage"
        exit 1
     ;;
-    r) resource_group="$OPTARG"
+    g) resource_group="$OPTARG"
     ;;
     l) location="$OPTARG"
     ;;
