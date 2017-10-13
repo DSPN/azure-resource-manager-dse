@@ -1,13 +1,13 @@
 #!/usr/bin/env bash
 
 data_center_size=$1
-unique_string=$2
+opscfqdn=$2
 data_center_name=$3
 opscenter_location=$4
 
 echo "Input to node.sh is:"
 echo data_center_size $data_center_size
-echo unique_string $unique_string
+echo opscfqdn $opscfqdn
 echo data_center_name $data_center_name
 echo opscenter_location $opscenter_location
 
@@ -33,8 +33,6 @@ mkdir -p /data/cassandra/commitlog
 mkdir -p /data/cassandra/saved_caches
 useradd cassandra
 chown -R cassandra:cassandra /data/cassandra
-
-opscenter_dns_name="opscenter"
 
 cluster_name="mycluster"
 public_ip=`curl --retry 10 icanhazip.com`
@@ -62,7 +60,7 @@ unzip $release.zip
 cd install-datastax-ubuntu-$release/bin/lcm
 
 echo "Calling addNode.py with the settings:"
-echo opscenter_dns_name $opscenter_dns_name
+echo opscfqdn $opscfqdn
 echo cluster_name $cluster_name
 echo data_center_size $data_center_size
 echo data_center_name $data_center_name
@@ -72,7 +70,7 @@ echo private_ip $private_ip
 echo node_id $node_id
 
 ./addNode.py \
---opsc-ip $opscenter_dns_name \
+--opsc-ip $opscfqdn \
 --clustername $cluster_name \
 --dcname $data_center_name \
 --rack $rack \
