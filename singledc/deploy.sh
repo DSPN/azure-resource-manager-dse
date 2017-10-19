@@ -43,6 +43,7 @@ echo "CLI v2 'az' command found"
 echo "Using values: resource_group=$resource_group location=$location"
 
 if [ -n "$testing" ]; then
+    if [ -x "$(git branch --list | grep '*' | grep 'dev')"]; then echo "Not on dev branch, exiting."; exit 1; fi
     echo "Testing... setting baseUrl to dev branch..."
     az group create --name $resource_group --location $location
     az group deployment create \
