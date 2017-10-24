@@ -110,6 +110,12 @@
       "ukwest": {
           "MaximumPlatformFaultDomainCount": 2
       },
+      "usdodcentral": {
+          "MaximumPlatformFaultDomainCount": 2
+      },
+      "usdodeast": {
+          "MaximumPlatformFaultDomainCount": 2
+      },
       "usgovarizona": {
           "MaximumPlatformFaultDomainCount": 2
       },
