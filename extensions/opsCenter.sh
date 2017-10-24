@@ -37,8 +37,8 @@ unzip $release.zip
 cd install-datastax-ubuntu-$release/bin
 
 # Overide OpsC install default version if needed
-export OPSC_VERSION='6.1.3'
-ver='5.1.4'
+export OPSC_VERSION='6.1.4'
+ver='5.1.5'
 
 ./os/install_java.sh
 # clean existing apt file
