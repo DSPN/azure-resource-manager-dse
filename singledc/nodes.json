@@ -150,7 +150,7 @@
       "location": "[parameters('location')]",
       "properties": {
         "platformFaultDomainCount":"[variables('faultdomainCountMap')[tolower(replace(parameters('location'),' ',''))].MaximumPlatformFaultDomainCount]",
-        "platformUpdateDomainCount": 18,
+        "platformUpdateDomainCount": 18
       },
       "sku": {
         "name": "Aligned"
@@ -166,7 +166,7 @@
         "count": "[parameters('nodeCount')]"
       },
       "properties": {
-        "publicIPAllocationMethod": "Dynamic",
+        "publicIPAllocationMethod": "Static",
         "dnsSettings": {
           "domainNameLabel": "[concat(parameters('namespace'), 'vm', copyIndex(), parameters('uniqueString'))]"
         }
@@ -271,7 +271,7 @@
         "typeHandlerVersion": "1.4",
         "autoUpgradeMinorVersion": true,
         "settings": {
-          "fileUris": "[parameters('osSettings').scripts]",
+          "fileUris": "[parameters('osSettings').scripts]"
         },
         "protectedSettings": {
           "commandToExecute": "[concat('bash node.sh ', parameters('nodeCount'), ' ', parameters('opsCenterFQDN'), ' ', parameters('namespace'), ' ', parameters('location'))]"

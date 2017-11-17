@@ -31,13 +31,13 @@ done
 
 pip install requests
 
-release="6.0.1"
+release="6.0.2"
 wget https://github.com/DSPN/install-datastax-ubuntu/archive/$release.zip
 unzip $release.zip
 cd install-datastax-ubuntu-$release/bin
 
 # Overide OpsC install default version if needed
-export OPSC_VERSION='6.1.4'
+export OPSC_VERSION='6.1.5'
 ver='5.1.5'
 
 ./os/install_java.sh
