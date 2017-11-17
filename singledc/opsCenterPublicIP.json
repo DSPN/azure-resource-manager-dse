@@ -17,7 +17,7 @@
       "name": "opscenter-pubip",
       "location": "[parameters('location')]",
       "properties": {
-        "publicIPAllocationMethod": "Dynamic",
+        "publicIPAllocationMethod": "Static",
         "dnsSettings": {
           "domainNameLabel": "[concat('opscenter', parameters('uniqueString'))]"
         }
