@@ -17,6 +17,9 @@
     "adminPassword": {
       "type": "securestring"
     },
+    "OpsCPassword": {
+      "type": "securestring"
+    },
     "nodeCount": {
       "type": "int"
     },
@@ -274,7 +277,7 @@
           "fileUris": "[parameters('osSettings').scripts]"
         },
         "protectedSettings": {
-          "commandToExecute": "[concat('bash node.sh ', parameters('nodeCount'), ' ', parameters('opsCenterFQDN'), ' ', parameters('namespace'), ' ', parameters('location'))]"
+          "commandToExecute": "[concat('bash node.sh ', parameters('nodeCount'), ' ', parameters('opsCenterFQDN'), ' ', parameters('namespace'), ' ', parameters('OpsCPassword'))]"
         }
       }
     }

@@ -3,13 +3,13 @@
 data_center_size=$1
 opscfqdn=$2
 data_center_name=$3
-opscenter_location=$4
+opscpw=$4
 
 echo "Input to node.sh is:"
 echo data_center_size $data_center_size
 echo opscfqdn $opscfqdn
 echo data_center_name $data_center_name
-echo opscenter_location $opscenter_location
+echo opscpw XXXXXX
 
 # System setup/config
 # Copied in from general install scripts
@@ -61,6 +61,7 @@ cd install-datastax-ubuntu-$release/bin/lcm
 
 echo "Calling addNode.py with the settings:"
 echo opscfqdn $opscfqdn
+echo opscpw XXXXXX
 echo cluster_name $cluster_name
 echo data_center_size $data_center_size
 echo data_center_name $data_center_name
@@ -71,6 +72,7 @@ echo node_id $node_id
 
 ./addNode.py \
 --opsc-ip $opscfqdn \
+--opscpw $opscpw \
 --clustername $cluster_name \
 --dcname $data_center_name \
 --rack $rack \

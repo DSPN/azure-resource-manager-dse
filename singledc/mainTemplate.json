@@ -277,6 +277,9 @@
           "uniqueString": {
             "value": "[variables('uniqueString')]"
           },
+          "OpsCPassword": {
+            "value": "[parameters('OpsCPassword')]"
+          },
           "adminUsername": {
             "value": "[parameters('adminUsername')]"
           },
