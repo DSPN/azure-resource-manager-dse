@@ -136,6 +136,19 @@
   },
   "resources": [
     {
+      "apiVersion": "2017-05-10",
+      "name": "pid-7c97edf3-231b-4d54-a35b-e6d7e253f353",
+      "type": "Microsoft.Resources/deployments",
+      "properties": {
+        "mode": "Incremental",
+        "template": {
+          "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+          "contentVersion": "1.0.0.0",
+          "resources": []
+        }
+      }
+    },
+    {
       "name": "nsg",
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2016-09-01",
