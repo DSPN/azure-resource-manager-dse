@@ -42,22 +42,13 @@ node_id=$private_ip
 fault_domain=$(curl --max-time 50000 --retry 12 --retry-delay 50000 http://169.254.169.254/metadata/v1/InstanceInfo -s -S | sed -e 's/.*"FD":"\([^"]*\)".*/\1/')
 rack=FD$fault_domain
 
-apt-get update
-n=0
-until [ $n -ge 20 ]
-do
-  apt-get -y install unzip python-pip jq  && break
-  echo "apt-get try $n failed, sleeping 15s..."
-  n=$[$n+1]
-  sleep 15s
-done
-
-pip install requests
-
 release="dev"
-wget https://github.com/DSPN/install-datastax-ubuntu/archive/$release.zip
-unzip $release.zip
+wget https://github.com/DSPN/install-datastax-ubuntu/archive/$release.tar.gz
+tar -xvf $release.tar.gz
+
 cd install-datastax-ubuntu-$release/bin/lcm
+# install extra packages
+./os/extra_packages.sh
 
 echo "Calling addNode.py with the settings:"
 echo opscfqdn $opscfqdn
