@@ -46,7 +46,7 @@ release="dev"
 wget https://github.com/DSPN/install-datastax-ubuntu/archive/$release.tar.gz
 tar -xvf $release.tar.gz
 
-cd install-datastax-ubuntu-$release/bin/lcm
+cd install-datastax-ubuntu-$release/bin/
 # install extra packages
 ./os/extra_packages.sh
 
@@ -61,7 +61,7 @@ echo public_ip $public_ip
 echo private_ip $private_ip
 echo node_id $node_id
 
-./addNode.py \
+./lcm/addNode.py \
 --opsc-ip $opscfqdn \
 --opscpw $opscpw \
 --clustername $cluster_name \
