@@ -19,30 +19,20 @@ cluster_name="mycluster"
 repouser='datastax@microsoft.com'
 repopw='3A7vadPHbNT'
 
-apt-get update
-n=0
-until [ $n -ge 20 ]
-do
-  apt-get -y install unzip python-pip jq  && break
-  echo "apt-get try $n failed, sleeping 15s..."
-  n=$[$n+1]
-  sleep 15s
-done
+release="dev"
+wget https://github.com/DSPN/install-datastax-ubuntu/archive/$release.tar.gz
+tar -xvf $release.tar.gz
 
-pip install requests
-
-release="6.0.2"
-wget https://github.com/DSPN/install-datastax-ubuntu/archive/$release.zip
-unzip $release.zip
 cd install-datastax-ubuntu-$release/bin
+# install extra packages
+./os/extra_packages.sh
 
 # Overide OpsC install default version if needed
 export OPSC_VERSION='6.1.5'
 ver='5.1.5'
 
 ./os/install_java.sh
-# clean existing apt file
-rm /etc/apt/sources.list.d/datastax.sources.list
+
 #install opsc
 ./opscenter/install.sh 'azure'
 ./opscenter/start.sh
