@@ -2,50 +2,55 @@
 
 username=$1
 password=$2
-cluster_name=$3
+opscpw=$3
+dbpasswd=$4
+nodecount=$5
 
 echo "Input to opsCenter.sh is:"
 echo username $username
-echo password XXXXX
-echo cluster_name
+echo password XXXXXX
+echo opscpw YYYYYY
+echo dbpasswd ZZZZZZZ
+echo nodecount $nodecount
 
-#public_ip=`curl --retry 10 icanhazip.com`
-public_ip='127.0.0.1'
+cluster_name="mycluster"
+
+# repo creds
+repouser='datastax@microsoft.com'
+repopw='3A7vadPHbNT'
+
+release="dev"
+wget https://github.com/DSPN/install-datastax-ubuntu/archive/$release.tar.gz
+tar -xvf $release.tar.gz
+
+cd install-datastax-ubuntu-$release/bin
+# install extra packages
+./os/extra_packages.sh
+
+# Overide OpsC install default version if needed
+export OPSC_VERSION='6.1.5'
+ver='5.1.5'
+
+./os/install_java.sh
+
+#install opsc
+./opscenter/install.sh 'azure'
+# Turn on https, set pw for opsc user admin
+./opscenter/set_opsc_pw_https.sh $opscpw
+sleep 1m
 
 echo "Calling setupCluster.py with the settings:"
-echo public_ip $public_ip
+echo opsc_ip 127.0.0.1
 echo cluster_name $cluster_name
 echo username $username
 echo password XXXXXX
+echo repouser $repouser
+echo repopw XXXXXX
 
-apt-get update
-n=0
-until [ $n -ge 20 ]
-do
-  apt-get -y install unzip python-pip jq  && break
-  echo "apt-get try $n failed, sleeping 15s..."
-  n=$[$n+1]
-  sleep 15s
-done
-
-pip install requests
-
-release="5.5.6"
-wget https://github.com/DSPN/install-datastax-ubuntu/archive/$release.zip
-unzip $release.zip
-cd install-datastax-ubuntu-$release/bin
-
-# Overide OpsC install default version if needed
-export OPSC_VERSION='6.1.2'
-ver='5.1.2'
-
-./os/install_java.sh
-./opscenter/install.sh
-./opscenter/start.sh
-sleep 1m
 ./lcm/setupCluster.py \
---opsc-ip $public_ip \
 --clustername $cluster_name \
+--repouser $repouser \
+--repopw $repopw \
 --dsever  $ver \
 --user $username \
 --password $password \

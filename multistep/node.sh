@@ -46,6 +46,14 @@ node_id=$private_ip
 fault_domain=$(curl --max-time 50000 --retry 12 --retry-delay 50000 http://169.254.169.254/metadata/v1/InstanceInfo -s -S | sed -e 's/.*"FD":"\([^"]*\)".*/\1/')
 rack=FD$fault_domain
 
+release="6.0.3"
+wget https://github.com/DSPN/install-datastax-ubuntu/archive/$release.tar.gz
+tar -xvf $release.tar.gz
+
+cd install-datastax-ubuntu-$release/bin/
+# install extra packages
+./os/extra_packages.sh
+
 echo "Calling addNode.py with the settings:"
 echo opscenter_ip $opscenter_ip
 echo cluster_name $cluster_name
@@ -56,30 +64,13 @@ echo public_ip $public_ip
 echo private_ip $private_ip
 echo node_id $node_id
 
-apt-get update
-n=0
-until [ $n -ge 20 ]
-do
-  apt-get -y install unzip python-pip jq  && break
-  echo "apt-get try $n failed, sleeping 15s..."
-  n=$[$n+1]
-  sleep 15s
-done
 
-pip install requests
-
-release="5.5.6"
-wget https://github.com/DSPN/install-datastax-ubuntu/archive/$release.zip
-unzip $release.zip
-cd install-datastax-ubuntu-$release/bin/lcm
-
-./addNode.py \
+./lcm/addNode.py \
 --opsc-ip $opscenter_ip \
 --clustername $cluster_name \
---dcsize $data_center_size \
 --dcname $data_center_name \
 --rack $rack \
 --pubip $public_ip \
 --privip $private_ip \
 --nodeid $node_id \
---dbpasswd $dbpasswd
+
