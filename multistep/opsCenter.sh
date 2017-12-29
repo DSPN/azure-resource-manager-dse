@@ -2,18 +2,12 @@
 
 username=$1
 password=$2
-opscpw=$3
-dbpasswd=$4
-nodecount=$5
+cluster_name=$3
 
 echo "Input to opsCenter.sh is:"
 echo username $username
 echo password XXXXXX
-echo opscpw YYYYYY
-echo dbpasswd ZZZZZZZ
-echo nodecount $nodecount
-
-cluster_name="mycluster"
+echo cluster_name $cluster_name
 
 # repo creds
 repouser='datastax@microsoft.com'
