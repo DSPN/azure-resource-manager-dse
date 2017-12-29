@@ -47,6 +47,7 @@ echo repouser $repouser
 echo repopw XXXXXX
 
 ./lcm/setupCluster.py \
+--opsc-ip 127.0.0.1 \
 --clustername $cluster_name \
 --repouser $repouser \
 --repopw $repopw \
