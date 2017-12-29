@@ -19,7 +19,7 @@ cluster_name="mycluster"
 repouser='datastax@microsoft.com'
 repopw='3A7vadPHbNT'
 
-release="dev"
+release="6.0.3"
 wget https://github.com/DSPN/install-datastax-ubuntu/archive/$release.tar.gz
 tar -xvf $release.tar.gz
 
@@ -36,7 +36,6 @@ ver='5.1.5'
 #install opsc
 ./opscenter/install.sh 'azure'
 # Turn on https, set pw for opsc user admin
-./opscenter/set_opsc_pw_https.sh $opscpw
 sleep 1m
 
 echo "Calling setupCluster.py with the settings:"
