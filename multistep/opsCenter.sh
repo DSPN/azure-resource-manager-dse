@@ -35,7 +35,7 @@ ver='5.1.5'
 
 #install opsc
 ./opscenter/install.sh 'azure'
-# Turn on https, set pw for opsc user admin
+./opscenter/start.sh
 sleep 1m
 
 echo "Calling setupCluster.py with the settings:"
