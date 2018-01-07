@@ -47,33 +47,6 @@
     "vmSize": {
       "type": "string",
       "defaultValue": "Standard_DS2_v2",
-      "allowedValues": [
-        "Standard_DS2_v2",
-        "Standard_DS3_v2",
-        "Standard_DS4_v2",
-        "Standard_DS5_v2",
-        "Standard_DS11_v2",
-        "Standard_DS12_v2",
-        "Standard_DS13_v2",
-        "Standard_DS14_v2",
-        "Standard_DS15_v2",
-        "Standard_GS1",
-        "Standard_GS2",
-        "Standard_GS3",
-        "Standard_GS4",
-        "Standard_GS5",
-        "Standard_FS1",
-        "Standard_FS2",
-        "Standard_FS4",
-        "Standard_FS8",
-        "Standard_FS16",
-        "Standard_H8",
-        "Standard_H16",
-        "Standard_H8m",
-        "Standard_H16m",
-        "Standard_H16r",
-        "Standard_H16mr"
-      ],
       "metadata": {
         "description": "Size of virtual machine to provision for the cluster"
       }
@@ -104,6 +77,107 @@
     "vmName": "[concat(parameters('namespace'), 'vm')]",
     "vnetId": "[resourceId('Microsoft.Network/virtualNetworks', parameters('vnetName'))]",
     "subnetId": "[concat(variables('vnetId'), '/subnets/', parameters('subnetName'))]",
+    "faultDomainCountMap": {
+      "australiaeast": {
+          "MaximumPlatformFaultDomainCount": 2
+      },
+      "australiasoutheast": {
+          "MaximumPlatformFaultDomainCount": 2
+      },
+      "brazilsouth": {
+          "MaximumPlatformFaultDomainCount": 2
+      },
+      "canadacentral": {
+          "MaximumPlatformFaultDomainCount": 2
+      },
+      "canadaeast": {
+          "MaximumPlatformFaultDomainCount": 2
+      },
+      "centralindia": {
+          "MaximumPlatformFaultDomainCount": 2
+      },
+      "centralus": {
+          "MaximumPlatformFaultDomainCount": 3
+      },
+      "centraluseuap": {
+          "MaximumPlatformFaultDomainCount": 1
+      },
+      "eastasia": {
+          "MaximumPlatformFaultDomainCount": 2
+      },
+      "eastus": {
+          "MaximumPlatformFaultDomainCount": 3
+      },
+      "eastus2": {
+          "MaximumPlatformFaultDomainCount": 3
+      },
+      "eastus2euap": {
+          "MaximumPlatformFaultDomainCount": 2
+      },
+      "japaneast": {
+          "MaximumPlatformFaultDomainCount": 2
+      },
+      "japanwest": {
+          "MaximumPlatformFaultDomainCount": 2
+      },
+      "koreacentral": {
+          "MaximumPlatformFaultDomainCount": 2
+      },
+      "koreasouth": {
+          "MaximumPlatformFaultDomainCount": 2
+      },
+      "northcentralus": {
+          "MaximumPlatformFaultDomainCount": 3
+      },
+      "northeurope": {
+          "MaximumPlatformFaultDomainCount": 3
+      },
+      "southcentralus": {
+          "MaximumPlatformFaultDomainCount": 3
+      },
+      "southeastasia": {
+          "MaximumPlatformFaultDomainCount": 2
+      },
+      "southindia": {
+          "MaximumPlatformFaultDomainCount": 2
+      },
+      "uksouth": {
+          "MaximumPlatformFaultDomainCount": 2
+      },
+      "ukwest": {
+          "MaximumPlatformFaultDomainCount": 2
+      },
+      "usdodcentral": {
+          "MaximumPlatformFaultDomainCount": 2
+      },
+      "usdodeast": {
+          "MaximumPlatformFaultDomainCount": 2
+      },
+      "usgovarizona": {
+          "MaximumPlatformFaultDomainCount": 2
+      },
+      "usgovtexas": {
+          "MaximumPlatformFaultDomainCount": 2
+      },
+      "usgovvirginia": {
+          "MaximumPlatformFaultDomainCount": 2
+      },
+      "westcentralus": {
+          "MaximumPlatformFaultDomainCount": 2
+      },
+      "westeurope": {
+          "MaximumPlatformFaultDomainCount": 3
+      },
+      "westindia": {
+          "MaximumPlatformFaultDomainCount": 2
+      },
+      "westus": {
+          "MaximumPlatformFaultDomainCount": 3
+      },
+      "westus2": {
+          "MaximumPlatformFaultDomainCount": 2
+      }
+    },
     "uniqueString": "[uniqueString(resourceGroup().id, deployment().name)]",
     "osSettings": {
       "imageReference": {
@@ -120,18 +194,20 @@
   },
   "resources": [
     {
-      "apiVersion": "2016-04-30-preview",
+      "apiVersion": "2017-03-30",
       "type": "Microsoft.Compute/availabilitySets",
       "name": "[parameters('namespace')]",
       "location": "[parameters('location')]",
       "properties": {
-        "platformFaultDomainCount": 3,
-        "platformUpdateDomainCount": 18,
-        "managed": "true"
+        "platformFaultDomainCount":"[variables('faultdomainCountMap')[tolower(replace(parameters('location'),' ',''))].MaximumPlatformFaultDomainCount]",
+        "platformUpdateDomainCount": 18
+      },
+      "sku": {
+        "name": "Aligned"
       }
     },
     {
-      "apiVersion": "2015-06-15",
+      "apiVersion": "2017-08-01",
       "type": "Microsoft.Network/publicIPAddresses",
       "name": "[concat(parameters('namespace'), 'vm', copyindex())]",
       "location": "[parameters('location')]",
@@ -147,7 +223,7 @@
       }
     },
     {
-      "apiVersion": "2015-06-15",
+      "apiVersion": "2017-08-01",
       "type": "Microsoft.Network/networkInterfaces",
       "name": "[concat(parameters('namespace'), 'vm', copyindex())]",
       "location": "[parameters('location')]",
@@ -176,7 +252,7 @@
       }
     },
     {
-      "apiVersion": "2016-04-30-preview",
+      "apiVersion": "2017-03-30",
       "type": "Microsoft.Compute/virtualMachines",
       "name": "[concat(parameters('namespace'), 'vm', copyindex())]",
       "location": "[parameters('location')]",
@@ -209,10 +285,7 @@
             {
               "diskSizeGB": "1023",
               "lun": 0,
-              "createOption": "Empty",
-              "managedDisk": {
-               "storageAccountType": "Premium_LRS"
-              }
+              "createOption": "Empty"
             }
           ]
         },
@@ -228,7 +301,7 @@
     {
       "type": "Microsoft.Compute/virtualMachines/extensions",
       "name": "[concat(parameters('namespace'), 'vm', copyindex(), '/installdsenode')]",
-      "apiVersion": "2015-06-15",
+      "apiVersion": "2017-03-30",
       "location": "[parameters('location')]",
       "copy": {
         "name": "[concat(parameters('namespace'), 'vmLoop')]",
@@ -243,7 +316,9 @@
         "typeHandlerVersion": "1.4",
         "autoUpgradeMinorVersion": true,
         "settings": {
-          "fileUris": "[variables('osSettings').scripts]",
+          "fileUris": "[variables('osSettings').scripts]"
+        },
+        "protectedSettings": {
           "commandToExecute": "[concat('bash node.sh ', parameters('nodeCount'), ' ', parameters('opsCenterIP'), ' ', parameters('namespace'), ' ', resourceGroup().location, ' ', parameters('DBPassword'), ' ', parameters('clusterName'))]"
         }
       }

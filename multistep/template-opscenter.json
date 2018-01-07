@@ -86,7 +86,7 @@
       }
     },
     {
-      "apiVersion": "2016-04-30-preview",
+      "apiVersion": "2017-03-30",
       "type": "Microsoft.Compute/virtualMachines",
       "name": "opscenter",
       "location": "[parameters('location')]",
@@ -120,7 +120,7 @@
     {
       "type": "Microsoft.Compute/virtualMachines/extensions",
       "name": "opscenter/installopscenter",
-      "apiVersion": "2015-06-15",
+      "apiVersion": "2017-03-30",
       "location": "[parameters('location')]",
       "dependsOn": [
         "Microsoft.Compute/virtualMachines/opscenter"
@@ -131,9 +131,10 @@
         "typeHandlerVersion": "1.4",
         "autoUpgradeMinorVersion": true,
         "settings": {
-          "fileUris": "[variables('osSettings').scripts]",
-          "commandToExecute": "[concat('bash opsCenter.sh ', parameters('adminUsername'), ' ', parameters('adminPassword'), ' ', parameters('clusterName'))]"
-        }
+          "fileUris": "[variables('osSettings').scripts]"
+        },
+        "protectedSettings": {
+          "commandToExecute": "[concat('bash opsCenter.sh ', parameters('adminUsername'), ' ', parameters('adminPassword'), ' ', parameters('clusterName'))]"        }
       }
     }
   ],
