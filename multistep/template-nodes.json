@@ -47,7 +47,7 @@
     },
     "diskSize": {
       "type": "int",
-      "defaultValue": "1023",
+      "defaultValue": 1023,
       "metadata": {
         "description": "Size (GB) of extenal data volume for each node"
       }
