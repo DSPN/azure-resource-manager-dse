@@ -4,8 +4,7 @@ data_center_size=$1
 opscenter_ip=$2
 data_center_name=$3
 opscenter_location=$4
-dbpasswd=$5
-cluster_name=$6
+cluster_name=$5
 
 echo "Input to node.sh is:"
 echo data_center_size $data_center_size
@@ -73,4 +72,3 @@ echo node_id $node_id
 --pubip $public_ip \
 --privip $private_ip \
 --nodeid $node_id \
-

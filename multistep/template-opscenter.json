@@ -11,12 +11,6 @@
     "adminPassword": {
       "type": "securestring"
     },
-    "DBPassword": {
-      "type": "securestring",
-      "metadata": {
-        "description": "Password for default C* user 'cassandra'"
-      }
-    },
     "clusterName": {
       "type": "string"
     },

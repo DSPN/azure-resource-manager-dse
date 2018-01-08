@@ -32,12 +32,6 @@
         "description": "Password for admin user"
       }
     },
-    "DBPassword": {
-      "type": "securestring",
-      "metadata": {
-        "description": "Password for default C* user 'cassandra'"
-      }
-    },
     "nodeCount": {
       "type": "int",
       "metadata": {
@@ -49,6 +43,13 @@
       "defaultValue": "Standard_DS2_v2",
       "metadata": {
         "description": "Size of virtual machine to provision for the cluster"
+      }
+    },
+    "diskSize": {
+      "type": "int",
+      "defaultValue": "1023",
+      "metadata": {
+        "description": "Size (GB) of extenal data volume for each node"
       }
     },
     "vnetName": {
@@ -283,7 +284,7 @@
           },
           "dataDisks": [
             {
-              "diskSizeGB": "1023",
+              "diskSizeGB": "[parameters('diskSize')]",
               "lun": 0,
               "createOption": "Empty"
             }
@@ -319,7 +320,7 @@
           "fileUris": "[variables('osSettings').scripts]"
         },
         "protectedSettings": {
-          "commandToExecute": "[concat('bash node.sh ', parameters('nodeCount'), ' ', parameters('opsCenterIP'), ' ', parameters('namespace'), ' ', resourceGroup().location, ' ', parameters('DBPassword'), ' ', parameters('clusterName'))]"
+          "commandToExecute": "[concat('bash node.sh ', parameters('nodeCount'), ' ', parameters('opsCenterIP'), ' ', parameters('namespace'), ' ', resourceGroup().location, ' ', parameters('clusterName'))]"
         }
       }
     }
