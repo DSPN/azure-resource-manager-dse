@@ -17,6 +17,13 @@
     "vnetName": {
       "type": "string"
     },
+    "vnetRG": {
+      "type": "string",
+      "defaultValue": "[resourceGroup().name]",
+      "metadata": {
+        "description": "Resource group of vnet if different"
+      }
+    },
     "subnetName": {
       "type": "string"
     }
@@ -25,7 +32,7 @@
     "baseUrl": "https://raw.githubusercontent.com/DSPN/azure-resource-manager-dse/dev",
     "templateUrl": "[concat(variables('baseUrl'), '/multistep/')]",
     "extensionUrl": "[concat(variables('baseUrl'), '/multistep/')]",
-    "vnetId": "[resourceId('Microsoft.Network/virtualNetworks', parameters('vnetName'))]",
+    "vnetId": "[resourceId(parameters('vnetRG'), 'Microsoft.Network/virtualNetworks', parameters('vnetName')  )]",
     "subnetId": "[concat(variables('vnetId'), '/subnets/', parameters('subnetName'))]",
     "uniqueString": "[uniqueString(resourceGroup().id, deployment().name)]",
     "osSettings": {
