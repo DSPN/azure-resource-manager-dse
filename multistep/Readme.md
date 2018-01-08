@@ -38,7 +38,6 @@ Allow command to finish before proceeding to the next step. Once the command com
 The template file `template-nodes.json` will:
 - Deploy `nodeCount` VM's as DSE nodes
 - Add these nodes to the cluster `clusterName`
-- Trigger an LCM install job when the last VM comes up
 
 Run the below command to deploy:
 ```
@@ -75,7 +74,13 @@ az group deployment create \
 
 ### Post-deploy
 
-Once the desired datacenters have been created, the replication factor for the system keyspaces needs to be set.
+Once all datacenters have been created you need to open the `lifecycleManagerURL` in a browser and run a cluster level install job.
+
+Once the install is finished and the cluster has been created the following operations should be performed:
+- Appropriate [firewall rules](https://docs.datastax.com/en/dse/5.1/dse-admin/datastax_enterprise/security/secFirewallPorts.html?hl=ports) should be set.
+- [Https](https://docs.datastax.com/en/opscenter/6.1/opsc/configure/opscConfiguringEnablingHttps_t.html) and [auth](https://docs.datastax.com/en/opscenter/6.1/opsc/configure/opscEnablingAuth.html) should be turned on for OpsCenter.
+-The system keyspaces should be set to use NetworkTopology strategy.
+
 
 Run the command below locally, or on the OpsCenter vm. The `strategy_options` field must contain the correct datacenter names.
 Note: null return on curl calls indicates no error.
