@@ -23,9 +23,6 @@
   "adminPassword": {
     "value": "foo123!"
   },
-  "DBPassword": {
-    "value": "asdf456$"
-  },
   "vnetName": {
     "value": "east-vnet"
   },

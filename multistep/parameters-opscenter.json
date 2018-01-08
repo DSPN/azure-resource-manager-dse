@@ -11,9 +11,6 @@
   "clusterName": {
     "value": "testCluster"
   },
-  "DBPassword": {
-    "value": "asdf456$"
-  },
   "vnetName": {
     "value": "east-vnet"
   },
