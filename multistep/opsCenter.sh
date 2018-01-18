@@ -10,7 +10,7 @@ echo password XXXXXX
 echo cluster_name $cluster_name
 
 ##### Install required OS packages
-yum -y update
+yum makecache fast
 yum -y install unzip wget
 wget wget https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
 rpm -ivh epel-release-latest-7.noarch.rpm
