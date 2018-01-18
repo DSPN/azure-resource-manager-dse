@@ -14,13 +14,13 @@ echo opscenter_location $opscenter_location
 echo dbpasswd XXXXX
 echo cluster_name $cluster_name
 
-# System setup/config
-# Copied in from general install scripts
-echo "Going to set the TCP keepalive for now."
-sysctl -w net.ipv4.tcp_keepalive_time=120
-echo "Going to set the TCP keepalive permanently across reboots."
-echo "net.ipv4.tcp_keepalive_time = 120" >> /etc/sysctl.conf
-echo "" >> /etc/sysctl.conf
+##### Install required OS packages
+yum makecache fast
+yum -y install unzip wget
+wget wget https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
+rpm -ivh epel-release-latest-7.noarch.rpm
+yum -y install python-pip
+pip install requests
 
 # mount data disk
 cp /etc/fstab /etc/fstab.bak
@@ -50,8 +50,6 @@ wget https://github.com/DSPN/install-datastax-ubuntu/archive/$release.tar.gz
 tar -xvf $release.tar.gz
 
 cd install-datastax-ubuntu-$release/bin/
-# install extra packages
-./os/extra_packages.sh
 
 echo "Calling addNode.py with the settings:"
 echo opscenter_ip $opscenter_ip
