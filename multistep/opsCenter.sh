@@ -12,9 +12,8 @@ echo cluster_name $cluster_name
 ##### Install required OS packages
 yum -y update
 yum -y install unzip wget
-#wget http://dl.fedoraproject.org/pub/epel/7/x86_64/e/epel-release-7-9.noarch.rpm
-wget http://mirror.centos.org/centos/7/extras/x86_64/Packages/epel-release-7-9.noarch.rpm
-rpm -ivh epel-release-7-9.noarch.rpm
+wget wget https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
+rpm -ivh epel-release-latest-7.noarch.rpm
 yum -y install python-pip
 pip install requests
 
@@ -22,7 +21,7 @@ pip install requests
 repouser='datastax@microsoft.com'
 repopw='3A7vadPHbNT'
 
-release="0.1.9"
+release="master"
 wget https://github.com/DSPN/install-datastax-redhat/archive/$release.tar.gz
 tar -xvf $release.tar.gz
 
