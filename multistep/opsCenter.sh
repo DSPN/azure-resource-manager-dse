@@ -9,6 +9,10 @@ echo username $username
 echo password XXXXXX
 echo cluster_name $cluster_name
 
+##### Turn off the firewall
+service firewalld stop
+chkconfig firewalld off
+
 ##### Install required OS packages
 yum makecache fast
 yum -y install unzip wget
@@ -45,8 +49,6 @@ wget https://github.com/DSPN/install-datastax-ubuntu/archive/$release.tar.gz
 tar -xvf $release.tar.gz
 
 cd install-datastax-ubuntu-$release/bin
-
-exit 0
 
 echo "Calling setupCluster.py with the settings:"
 echo opsc_ip 127.0.0.1
