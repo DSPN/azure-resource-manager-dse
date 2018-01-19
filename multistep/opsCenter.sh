@@ -44,7 +44,7 @@ sleep 1m
 export OPSC_VERSION='6.1.5'
 ver='5.1.5'
 
-release="6.0.3"
+release="config"
 wget https://github.com/DSPN/install-datastax-ubuntu/archive/$release.tar.gz
 tar -xvf $release.tar.gz
 
@@ -66,4 +66,5 @@ echo repopw XXXXXX
 --dsever  $ver \
 --user $username \
 --password $password \
---datapath "/data/cassandra"
+--becomepw \
+--config '{ "cassandra-yaml": { "saved_caches_directory": "/data/cassandra/saved_caches", "data_file_directories": [ "/data/cassandra/data" ], "num_tokens": 32, "authenticator": "com.datastax.bdp.cassandra.auth.DseAuthenticator", "endpoint_snitch": "GossipingPropertyFileSnitch", "commitlog_directory": "/data/cassandra/commitlog" }, "dse-yaml": { "authorization_options": { "enabled": true }, "authentication_options": { "enabled": true } }, "java-setup": { "manage-jce-policy": false, "manage-java": false } }'

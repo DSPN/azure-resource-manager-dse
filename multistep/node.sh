@@ -17,7 +17,7 @@ echo cluster_name $cluster_name
 ##### Install required OS packages
 yum makecache fast
 yum -y install unzip wget
-wget wget https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
+wget https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
 rpm -ivh epel-release-latest-7.noarch.rpm
 yum -y install python-pip
 pip install requests
@@ -37,6 +37,11 @@ mkdir -p /data/cassandra/saved_caches
 useradd cassandra
 chown -R cassandra:cassandra /data/cassandra
 
+# install java
+echo "Installing JDK..."
+wget --no-cookies --no-check-certificate --header "Cookie: gpw_e24=http%3A%2F%2Fwww.oracle.com%2F; oraclelicense=accept-securebackup-cookie" "http://download.oracle.com/otn-pub/java/jdk/8u131-b11/d54c1d3a095b4ff2b6607d096fa80163/jdk-8u131-linux-x64.rpm"
+yum -y localinstall jdk-8u131-linux-x64.rpm
+
 # Ignoring public_ip
 private_ip=`echo $(hostname -I)`
 public_ip=`curl --retry 10 icanhazip.com`
@@ -45,7 +50,7 @@ node_id=$private_ip
 fault_domain=$(curl --max-time 50000 --retry 12 --retry-delay 50000 http://169.254.169.254/metadata/v1/InstanceInfo -s -S | sed -e 's/.*"FD":"\([^"]*\)".*/\1/')
 rack=FD$fault_domain
 
-release="6.0.3"
+release="config"
 wget https://github.com/DSPN/install-datastax-ubuntu/archive/$release.tar.gz
 tar -xvf $release.tar.gz
 
