@@ -29,7 +29,7 @@
     }
   },
   "variables": {
-    "baseUrl": "https://raw.githubusercontent.com/DSPN/azure-resource-manager-dse/dev",
+    "baseUrl": "https://raw.githubusercontent.com/DSPN/azure-resource-manager-dse/rhel",
     "templateUrl": "[concat(variables('baseUrl'), '/multistep/')]",
     "extensionUrl": "[concat(variables('baseUrl'), '/multistep/')]",
     "vnetId": "[resourceId(parameters('vnetRG'), 'Microsoft.Network/virtualNetworks', parameters('vnetName')  )]",
@@ -37,9 +37,9 @@
     "uniqueString": "[uniqueString(resourceGroup().id, deployment().name)]",
     "osSettings": {
       "imageReference": {
-        "publisher": "Canonical",
-        "offer": "UbuntuServer",
-        "sku": "16.04.0-LTS",
+        "publisher": "RedHat",
+        "offer": "RHEL",
+        "sku": "7.2",
         "version": "latest"
       },
       "scripts": [
