@@ -14,6 +14,10 @@ echo opscenter_location $opscenter_location
 echo dbpasswd XXXXX
 echo cluster_name $cluster_name
 
+##### Turn off the firewall
+service firewalld stop
+chkconfig firewalld off
+
 ##### Install required OS packages
 yum makecache fast
 yum -y install unzip wget
