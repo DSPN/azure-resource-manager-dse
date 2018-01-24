@@ -33,6 +33,10 @@ cd install-datastax-redhat-$release/bin
 
 ./os/install_java.sh
 
+# this isn't implemented in rhel scripts
+# Overide OpsC install default version if needed
+#export OPSC_VERSION='6.1.5'
+sed -ie 's/6.1.4/6.1.5/g' ./opscenter/install.sh
 #install opsc
 ./opscenter/install.sh 'azure'
 ./opscenter/start.sh
@@ -40,9 +44,8 @@ cd ../..
 echo "Sleeping 1m..."
 sleep 1m
 
-# Overide OpsC install default version if needed
-export OPSC_VERSION='6.1.5'
-ver='5.1.5'
+# set DSE version
+ver='5.1.6'
 
 release="config"
 wget https://github.com/DSPN/install-datastax-ubuntu/archive/$release.tar.gz
