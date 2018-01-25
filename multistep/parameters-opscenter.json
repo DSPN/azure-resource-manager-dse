@@ -11,6 +11,9 @@
   "clusterName": {
     "value": "testCluster"
   },
+  "vnetRG": {
+    "value": "jcp-bcp-network"
+  },
   "vnetName": {
     "value": "east-vnet"
   },

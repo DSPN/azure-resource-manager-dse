@@ -3,10 +3,10 @@
     "value": "eastus"
   },
   "nodeCount": {
-    "value": 3
+    "value": 4
   },
   "vmSize": {
-    "value": "Standard_DS4_v2"
+    "value": "Standard_D16S_v3"
   },
   "diskSize": {
     "value": 1500
@@ -25,6 +25,9 @@
   },
   "adminPassword": {
     "value": "foo123!"
+  },
+  "vnetRG": {
+    "value": "jcp-bcp-network"
   },
   "vnetName": {
     "value": "east-vnet"
