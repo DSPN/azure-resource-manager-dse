@@ -29,7 +29,7 @@ pip install requests
 # mount data disk
 cp /etc/fstab /etc/fstab.bak
 # add C* data disk
-mkfs -t ext4 /dev/sdc
+mkfs -F -t ext4 /dev/sdc
 uuid=$(blkid /dev/sdc -sUUID -ovalue)
 mkdir -p /data/cassandra
 echo "# Cassandra data mount, template auto-generated." >> /etc/fstab
