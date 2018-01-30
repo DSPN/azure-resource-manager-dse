@@ -202,6 +202,19 @@
   },
   "resources": [
     {
+      "apiVersion": "2017-05-10",
+      "name": "pid-7d0f03b1-c18b-4d99-b0f8-67ea9804ab96",
+      "type": "Microsoft.Resources/deployments",
+      "properties": {
+        "mode": "Incremental",
+        "template": {
+          "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+          "contentVersion": "1.0.0.0",
+          "resources": []
+        }
+      }
+    },
+    {
       "apiVersion": "2017-03-30",
       "type": "Microsoft.Compute/availabilitySets",
       "name": "[parameters('namespace')]",
