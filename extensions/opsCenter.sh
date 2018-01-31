@@ -19,7 +19,7 @@ cluster_name="mycluster"
 repouser='datastax@microsoft.com'
 repopw='3A7vadPHbNT'
 
-release="6.0.4"
+release="6.1.0"
 wget https://github.com/DSPN/install-datastax-ubuntu/archive/$release.tar.gz
 tar -xvf $release.tar.gz
 
@@ -31,11 +31,12 @@ cd install-datastax-ubuntu-$release/bin
 export OPSC_VERSION='6.1.5'
 ver='5.1.6'
 
-./os/install_java.sh
+./os/install_java.sh -m
 
 #install opsc
 ./opscenter/install.sh 'azure'
-./opscenter/start.sh
+# Turn on https, set pw for opsc user admin
+./opscenter/set_opsc_pw_https.sh $opscpw
 sleep 1m
 
 echo "Calling setupCluster.py with the settings:"
@@ -47,7 +48,7 @@ echo repouser $repouser
 echo repopw XXXXXX
 
 ./lcm/setupCluster.py \
---opsc-ip 127.0.0.1 \
+--opscpw $opscpw \
 --clustername $cluster_name \
 --repouser $repouser \
 --repopw $repopw \
@@ -58,7 +59,7 @@ echo repopw XXXXXX
 
 # trigger install
 ./lcm/triggerInstall.py \
---opsc-ip 127.0.0.1 \
+--opscpw $opscpw \
 --clustername $cluster_name \
 --clustersize $nodecount \
 --dclevel \
@@ -66,9 +67,9 @@ echo repopw XXXXXX
 
 # Block execution while waiting for jobs to
 # exit RUNNING/PENDING status
-./lcm/waitForJobs.py
+./lcm/waitForJobs.py \
+--opscpw $opscpw
 # set keyspaces to NetworkTopology / RF 3
 sleep 30s
-./lcm/alterKeyspaces.py
-# Turn on https, set pw for opsc user admin
-./opscenter/set_opsc_pw_https.sh $opscpw
+./lcm/alterKeyspaces.py \
+--opscpw $opscpw \
