@@ -12,7 +12,7 @@
       "type": "Microsoft.Network/networkSecurityGroups",
       "name": "netsec",
       "location": "[parameters('location')]",
-      "apiVersion": "2017-03-01",
+      "apiVersion": "2017-11-01",
       "properties": {
         "securityRules": [
           {
