@@ -12,7 +12,7 @@
   "variables": {},
   "resources": [
     {
-      "apiVersion": "2017-08-01",
+      "apiVersion": "2017-11-01",
       "type": "Microsoft.Network/publicIPAddresses",
       "name": "opscenter-pubip",
       "location": "[parameters('location')]",
