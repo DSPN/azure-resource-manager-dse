@@ -102,6 +102,16 @@
         "description": "Password for default OpsCenter user 'admin'"
       }
     },
+    "publicIpOnNodes": {
+      "type": "string",
+      "metadata": {
+        "description": "Create and use public ip's on node vm's"
+      },
+      "allowedValues": [
+        "yes",
+        "no"
+      ]
+    },
     "baseUrl": {
       "type": "string",
       "defaultValue": "https://raw.githubusercontent.com/DSPN/azure-resource-manager-dse/master",
