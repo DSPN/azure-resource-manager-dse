@@ -199,7 +199,7 @@
           {
             "name": "ipconfig1",
             "properties": {
-              "publicIPAddress": "[if(equals(parameters('publicIpOnNodes'), 'yes') , resourceId('Microsoft.Network/publicIPAddresses', concat(parameters('namespace'), 'vm', copyindex())), json('null'))]",
+              "publicIPAddress": "[if(equals(parameters('publicIpOnNodes'), 'yes') , concat('\"id\": ', resourceId('Microsoft.Network/publicIPAddresses', concat(parameters('namespace'), 'vm', copyindex()))), json('null'))]",
               "privateIPAllocationMethod": "Dynamic",
               "subnet": {
                 "id": "[variables('subnetId')]"
