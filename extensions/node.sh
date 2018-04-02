@@ -69,3 +69,16 @@ echo node_id $node_id
 --pubip $public_ip \
 --privip $private_ip \
 --nodeid $node_id
+
+# block and wait for jobs before running any workshop setup
+./lcm/waitForJobs.py
+sleep 30s
+
+if [ $HOSTNAME == 'dc0vm0' ]
+then
+  release='azure'
+  wget https://github.com/cpoczatek/dse-halfday-workshop/archive/$release.tar.gz
+  tar -xvf $release.tar.gz
+  cd dse-halfday-workshop-azure/
+  ./startup
+fi
