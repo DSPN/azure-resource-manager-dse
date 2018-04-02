@@ -71,11 +71,12 @@ echo node_id $node_id
 --nodeid $node_id
 
 # block and wait for jobs before running any workshop setup
-./lcm/waitForJobs.py
+./lcm/waitForJobs.py --opsc-ip $opscfqdn
 sleep 30s
 
 if [ $HOSTNAME == 'dc0vm0' ]
 then
+  echo "node.sh run on dc0vm0, calling workshop setup..."
   release='azure'
   wget https://github.com/cpoczatek/dse-halfday-workshop/archive/$release.tar.gz
   tar -xvf $release.tar.gz
