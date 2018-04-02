@@ -66,6 +66,6 @@ echo repopw XXXXXX
 
 # Block execution while waiting for jobs to
 # exit RUNNING/PENDING status
-./lcm/waitForJobs.py \
+./lcm/waitForJobs.py
 # set keyspaces to NetworkTopology / RF 3
 sleep 30s
