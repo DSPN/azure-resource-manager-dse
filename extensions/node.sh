@@ -63,7 +63,6 @@ echo node_id $node_id
 
 ./lcm/addNode.py \
 --opsc-ip $opscfqdn \
---opscpw $opscpw \
 --clustername $cluster_name \
 --dcname $data_center_name \
 --rack $rack \
