@@ -33,6 +33,9 @@ while getopts 'hg:l:t' opt; do
   esac
 done
 
+echo "WARNING"
+echo "WARNING"
+echo "WARNING: baseUrl hard coded to 'workshop'"
 
 if [ -z "$(which az)" ]; then
     echo "CLI v2 'az' command not found. Please install: https://docs.microsoft.com/en-us/cli/azure/install-az-cli2"
