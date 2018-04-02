@@ -35,6 +35,7 @@ ver='5.1.6'
 
 #install opsc
 ./opscenter/install.sh 'azure'
+./opscenter/start.sh
 # Turn on https, set pw for opsc user admin
 # Comment out for workshop
 #./opscenter/set_opsc_pw_https.sh $opscpw
