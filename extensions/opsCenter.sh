@@ -36,7 +36,8 @@ ver='5.1.6'
 #install opsc
 ./opscenter/install.sh 'azure'
 # Turn on https, set pw for opsc user admin
-./opscenter/set_opsc_pw_https.sh $opscpw
+# Comment out for workshop
+#./opscenter/set_opsc_pw_https.sh $opscpw
 sleep 1m
 
 echo "Calling setupCluster.py with the settings:"
@@ -48,7 +49,6 @@ echo repouser $repouser
 echo repopw XXXXXX
 
 ./lcm/setupCluster.py \
---opscpw $opscpw \
 --clustername $cluster_name \
 --repouser $repouser \
 --repopw $repopw \
@@ -59,7 +59,6 @@ echo repopw XXXXXX
 
 # trigger install
 ./lcm/triggerInstall.py \
---opscpw $opscpw \
 --clustername $cluster_name \
 --clustersize $nodecount \
 --dclevel \
@@ -68,8 +67,5 @@ echo repopw XXXXXX
 # Block execution while waiting for jobs to
 # exit RUNNING/PENDING status
 ./lcm/waitForJobs.py \
---opscpw $opscpw
 # set keyspaces to NetworkTopology / RF 3
 sleep 30s
-./lcm/alterKeyspaces.py \
---opscpw $opscpw \
