@@ -78,7 +78,7 @@ sleep 30s
 newname='node0'
 if [ $HOSTNAME == 'dc0vm1' ]; then newname='node1'; fi
 if [ $HOSTNAME == 'dc0vm2' ]; then newname='node1'; fi
-echo -e "#added aliases\n127.0.0.1 $newname"
+echo -e "#added aliases\n127.0.0.1 $newname" >> /etc/hosts
 
 if [ $HOSTNAME == 'dc0vm0' ]
 then
