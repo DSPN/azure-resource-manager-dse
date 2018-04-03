@@ -2,105 +2,23 @@
   "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
-    "nodeCount": {
-      "type": "int",
-      "defaultValue": 3,
-      "minValue": 1,
-      "maxValue": 40,
-      "metadata": {
-        "description": "Number of virtual machines to provision for the cluster"
-      }
-    },
-    "vmSize": {
-      "type": "string",
-      "defaultValue": "Standard_D4s_v3",
-      "allowedValues": [
-        "Standard_D2s_v3",
-        "Standard_D4s_v3",
-        "Standard_D8s_v3",
-        "Standard_D16s_v3",
-        "Standard_D32s_v3",
-        "Standard_D64s_v3",
-        "Standard_DS2_v2",
-        "Standard_DS3_v2",
-        "Standard_DS4_v2",
-        "Standard_DS5_v2",
-        "Standard_DS11_v2",
-        "Standard_DS12_v2",
-        "Standard_DS13_v2",
-        "Standard_DS14_v2",
-        "Standard_DS15_v2",
-        "Standard_GS1",
-        "Standard_GS2",
-        "Standard_GS3",
-        "Standard_GS4",
-        "Standard_GS5",
-        "Standard_FS1",
-        "Standard_FS2",
-        "Standard_FS4",
-        "Standard_FS8",
-        "Standard_FS16",
-        "Standard_D2_v2",
-        "Standard_D3_v2",
-        "Standard_D4_v2",
-        "Standard_D5_v2",
-        "Standard_D11_v2",
-        "Standard_D12_v2",
-        "Standard_D13_v2",
-        "Standard_D14_v2",
-        "Standard_D15_v2",
-        "Standard_G1",
-        "Standard_G2",
-        "Standard_G3",
-        "Standard_G4",
-        "Standard_G5",
-        "Standard_D1",
-        "Standard_D2",
-        "Standard_D3",
-        "Standard_D4",
-        "Standard_F1",
-        "Standard_F2",
-        "Standard_F4",
-        "Standard_F8",
-        "Standard_F16",
-        "Standard_D11",
-        "Standard_D12",
-        "Standard_D13",
-        "Standard_D14",
-        "Standard_H8",
-        "Standard_H16",
-        "Standard_H8m",
-        "Standard_H16m",
-        "Standard_H16r",
-        "Standard_H16mr"
-      ],
-      "metadata": {
-        "description": "Size of virtual machine to provision for the cluster"
-      }
-    },
-    "adminUsername": {
+    "Username": {
       "type": "string",
       "metadata": {
         "description": "Admin user name for the virtual machines"
       }
     },
-    "adminPassword": {
+    "UserPassword": {
       "type": "securestring",
       "metadata": {
         "description": "Admin password for the virtual machines"
       }
-    },
-    "baseUrl": {
-      "type": "string",
-      "defaultValue": "https://raw.githubusercontent.com/DSPN/azure-resource-manager-dse/workshop",
-      "metadata": {
-        "description": "URL for nested templates and extensions"
-      }
     }
   },
   "variables": {
-    "templateUrl": "[concat(parameters('baseUrl'), '/singledc/')]",
-    "extensionUrl": "[concat(parameters('baseUrl'), '/extensions/')]",
+    "baseUrl": "https://raw.githubusercontent.com/DSPN/azure-resource-manager-dse/workshop",
+    "templateUrl": "[concat(variables('baseUrl'), '/singledc/')]",
+    "extensionUrl": "[concat(variables('baseUrl'), '/extensions/')]",
     "nodesTemplateUrl": "[concat(variables('templateUrl'), 'nodes.json')]",
     "opsCenterPubIPTemplateUrl": "[concat(variables('templateUrl'), 'opsCenterPublicIP.json')]",
     "opsCenterTemplateUrl": "[concat(variables('templateUrl'), 'opsCenter.json')]",
@@ -108,6 +26,8 @@
     "uniqueString": "[uniqueString(resourceGroup().id, deployment().name)]",
     "vnetName": "vnet",
     "subnetName": "subnet",
+    "nodeCount": 3,
+    "vmSize": "Standard_D4s_v3",
     "DBPassword": "unused",
     "OpsCPassword": "unused",
     "osSettings": {
@@ -206,11 +126,11 @@
           "uniqueString": {
             "value": "[variables('uniqueString')]"
           },
-          "adminUsername": {
-            "value": "[parameters('adminUsername')]"
+          "Username": {
+            "value": "[parameters('Username')]"
           },
-          "adminPassword": {
-            "value": "[parameters('adminPassword')]"
+          "UserPassword": {
+            "value": "[parameters('UserPassword')]"
           },
           "OpsCPassword": {
             "value": "[variables('OpsCPassword')]"
@@ -219,7 +139,7 @@
             "value": "[variables('DBPassword')]"
           },
           "nodeCount": {
-            "value": "[parameters('nodeCount')]"
+            "value": "[variables('nodeCount')]"
           },
           "osSettings": {
             "value": "[variables('osSettings')]"
@@ -259,17 +179,17 @@
           "OpsCPassword": {
             "value": "[variables('OpsCPassword')]"
           },
-          "adminUsername": {
-            "value": "[parameters('adminUsername')]"
+          "Username": {
+            "value": "[parameters('Username')]"
           },
-          "adminPassword": {
-            "value": "[parameters('adminPassword')]"
+          "UserPassword": {
+            "value": "[parameters('UserPassword')]"
           },
           "nodeCount": {
-            "value": "[parameters('nodeCount')]"
+            "value": "[variables('nodeCount')]"
           },
           "vmSize": {
-            "value": "[parameters('vmSize')]"
+            "value": "[variables('vmSize')]"
           },
           "osSettings": {
             "value": "[variables('osSettings')]"
