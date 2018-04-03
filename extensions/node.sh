@@ -78,9 +78,8 @@ if [ $HOSTNAME == 'dc0vm0' ]
 then
   echo "node.sh run on dc0vm0, calling workshop setup..."
   cd ../../
-  release='azure'
-  wget https://github.com/cpoczatek/dse-halfday-workshop/archive/$release.tar.gz
-  tar -xvf $release.tar.gz
-  cd dse-halfday-workshop-$release/
+  git clone https://github.com/cpoczatek/dse-halfday-workshop.git
+  cd dse-halfday-workshop/
+  git checkout azure
   ./startup all
 fi
