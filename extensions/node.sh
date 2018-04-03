@@ -74,10 +74,16 @@ echo node_id $node_id
 ./lcm/waitForJobs.py --opsc-ip $opscfqdn
 sleep 30s
 
+# add aliases to /etc/hosts, could be a regex...
+newname='node0'
+if [ $HOSTNAME == 'dc0vm1' ]; then newname='node1'; fi
+if [ $HOSTNAME == 'dc0vm2' ]; then newname='node1'; fi
+echo -e "#added aliases\n127.0.0.1 $newname"
+
 if [ $HOSTNAME == 'dc0vm0' ]
 then
-  echo "node.sh run on dc0vm0, calling workshop setup..."
-  cd ../../
+  echo "node.sh run on dc0vm0, calling workshop setup in /tmp ..."
+  cd /tmp
   git clone https://github.com/cpoczatek/dse-halfday-workshop.git
   cd dse-halfday-workshop/
   git checkout azure
