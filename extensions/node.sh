@@ -82,5 +82,5 @@ then
   wget https://github.com/cpoczatek/dse-halfday-workshop/archive/$release.tar.gz
   tar -xvf $release.tar.gz
   cd dse-halfday-workshop-$release/
-  ./startup
+  ./startup all
 fi
