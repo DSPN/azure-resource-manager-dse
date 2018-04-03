@@ -282,5 +282,10 @@
       }
     }
   ],
-  "outputs": {}
+  "outputs": {
+    "vm0ip": {
+      "type": "string",
+      "value": "[reference(resourceId('Microsoft.Network/publicIPAddresses',concat(parameters('namespace'), 'vm0'))).IpAddress]"
+    }
+  }
 }
