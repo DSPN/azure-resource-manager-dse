@@ -41,6 +41,10 @@ ver='5.1.6'
 #./opscenter/set_opsc_pw_https.sh $opscpw
 sleep 1m
 
+# This config profile turns off auth, and overrides any other config settings
+# created by other args except dsever
+config='{ "cassandra-yaml": { "authorizer": "AllowAllAuthorizer", "saved_caches_directory": "/data/cassandra/saved_caches", "data_file_directories": ["/data/cassandra/data" ], "num_tokens": 32, "authenticator": "AllowAllAuthenticator", "endpoint_snitch": "GossipingPropertyFileSnitch", "commitlog_directory": "/data/cassandra/commitlog"  },  "dse-yaml": { "authorization_options": {"enabled": true }, "authentication_options": {"enabled": true } }}'
+
 echo "Calling setupCluster.py with the settings:"
 echo opsc_ip 127.0.0.1
 echo cluster_name $cluster_name
@@ -48,6 +52,7 @@ echo username $username
 echo password XXXXXX
 echo repouser $repouser
 echo repopw XXXXXX
+echo config $config
 
 ./lcm/setupCluster.py \
 --clustername $cluster_name \
@@ -56,6 +61,7 @@ echo repopw XXXXXX
 --dsever  $ver \
 --user $username \
 --password $password \
+--config $config \
 --datapath "/data/cassandra"
 
 # trigger install
