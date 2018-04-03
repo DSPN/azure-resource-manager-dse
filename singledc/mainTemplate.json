@@ -4,7 +4,7 @@
   "parameters": {
     "nodeCount": {
       "type": "int",
-      "defaultValue": 6,
+      "defaultValue": 3,
       "minValue": 1,
       "maxValue": 40,
       "metadata": {
@@ -13,7 +13,7 @@
     },
     "vmSize": {
       "type": "string",
-      "defaultValue": "Standard_DS4_v2",
+      "defaultValue": "Standard_DS4_v3",
       "allowedValues": [
         "Standard_DS2_v3",
         "Standard_DS4_v3",
@@ -90,18 +90,6 @@
         "description": "Admin password for the virtual machines"
       }
     },
-    "DBPassword": {
-      "type": "securestring",
-      "metadata": {
-        "description": "Password for default C* user 'cassandra'"
-      }
-    },
-    "OpsCPassword": {
-      "type": "securestring",
-      "metadata": {
-        "description": "Password for default OpsCenter user 'admin'"
-      }
-    },
     "baseUrl": {
       "type": "string",
       "defaultValue": "https://raw.githubusercontent.com/DSPN/azure-resource-manager-dse/workshop",
@@ -120,6 +108,8 @@
     "uniqueString": "[uniqueString(resourceGroup().id, deployment().name)]",
     "vnetName": "vnet",
     "subnetName": "subnet",
+    "DBPassword": "unused",
+    "OpsCPassword": "unused",
     "osSettings": {
       "imageReference": {
         "publisher": "datastax",
@@ -223,10 +213,10 @@
             "value": "[parameters('adminPassword')]"
           },
           "OpsCPassword": {
-            "value": "[parameters('OpsCPassword')]"
+            "value": "[variables('OpsCPassword')]"
           },
           "DBPassword": {
-            "value": "[parameters('DBPassword')]"
+            "value": "[variables('DBPassword')]"
           },
           "nodeCount": {
             "value": "[parameters('nodeCount')]"
@@ -267,7 +257,7 @@
             "value": "[variables('uniqueString')]"
           },
           "OpsCPassword": {
-            "value": "[parameters('OpsCPassword')]"
+            "value": "[variables('OpsCPassword')]"
           },
           "adminUsername": {
             "value": "[parameters('adminUsername')]"
