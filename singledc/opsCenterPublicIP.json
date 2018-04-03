@@ -29,6 +29,10 @@
       "type": "string",
       "value": "[reference('opscenter-pubip').dnsSettings.fqdn]"
     },
+    "opsCenterIP": {
+      "type": "string",
+      "value": "[reference('opscenter-pubip').IpAddress]"
+    },
     "opsCenterPublicIPResourceId": {
       "type": "string",
       "value": "[resourceId('Microsoft.Network/publicIPAddresses', 'opscenter-pubip')]"

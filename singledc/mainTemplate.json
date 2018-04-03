@@ -208,13 +208,21 @@
     }
   ],
   "outputs": {
-    "lifecycleManagerURL": {
-      "type": "string",
-      "value": "[concat('http://', reference('opsCenterPublicIP').outputs.opsCenterFQDN.value, ':8888/opscenter/lcm.html')]"
-    },
     "opsCenterURL": {
       "type": "string",
-      "value": "[concat('http://', reference('opsCenterPublicIP').outputs.opsCenterFQDN.value, ':8888')]"
+      "value": "[concat('http://', reference('opsCenterPublicIP').outputs.opsCenterIP.value, ':8888')]"
+    },
+    "lifecycleManagerURL": {
+      "type": "string",
+      "value": "[concat('http://', reference('opsCenterPublicIP').outputs.opsCenterIP.value, ':8888/opscenter/lcm.html')]"
+    },
+    "studioURL": {
+      "type": "string",
+      "value": "[concat('http://', reference('nodes').outputs.vm0ip.value, ':9091')]"
+    },
+    "docsURL": {
+      "type": "string",
+      "value": "[concat('http://', reference('nodes').outputs.vm0ip.value, ':1313')]"
     }
   }
 }
