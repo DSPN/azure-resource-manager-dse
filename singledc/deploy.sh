@@ -50,5 +50,4 @@ az group deployment create \
  --resource-group $resource_group \
  --template-file mainTemplate.json \
  --parameters @mainTemplateParameters.json \
- --parameters '{"baseUrl": {"value": "https://raw.githubusercontent.com/DSPN/azure-resource-manager-dse/workshop"}}' \
  --verbose

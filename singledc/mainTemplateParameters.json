@@ -1,11 +1,8 @@
 {
-  "nodeCount": {
-    "value": 3
-  },
-  "adminUsername": {
+  "Username": {
     "value": "datastax"
   },
-  "adminPassword": {
+  "UserPassword": {
     "value": "foo123!"
   }
 }

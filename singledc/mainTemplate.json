@@ -126,10 +126,10 @@
           "uniqueString": {
             "value": "[variables('uniqueString')]"
           },
-          "Username": {
+          "adminUsername": {
             "value": "[parameters('Username')]"
           },
-          "UserPassword": {
+          "adminPassword": {
             "value": "[parameters('UserPassword')]"
           },
           "OpsCPassword": {
@@ -179,10 +179,10 @@
           "OpsCPassword": {
             "value": "[variables('OpsCPassword')]"
           },
-          "Username": {
+          "adminUsername": {
             "value": "[parameters('Username')]"
           },
-          "UserPassword": {
+          "adminPassword": {
             "value": "[parameters('UserPassword')]"
           },
           "nodeCount": {
