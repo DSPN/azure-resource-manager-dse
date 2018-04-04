@@ -9,9 +9,9 @@
       }
     },
     "UserPassword": {
-      "type": "securestring",
+      "type": "string",
       "metadata": {
-        "description": "User password for the virtual machines"
+        "description": "User password for the virtual machines. 6-72 characters in length. Must have 3 of the following: uppercase, lowercase, number, symbol."
       }
     }
   },
@@ -208,6 +208,14 @@
     }
   ],
   "outputs": {
+    "Username": {
+      "type": "string",
+      "value": "[parameters('Username')]"
+    },
+    "UserPassword": {
+      "type": "string",
+      "value": "[parameters('UserPassword')]"
+    },
     "opsCenterURL": {
       "type": "string",
       "value": "[concat('http://', reference('opsCenterPublicIP').outputs.opsCenterIP.value, ':8888')]"
