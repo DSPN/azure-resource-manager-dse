@@ -5,13 +5,13 @@
     "Username": {
       "type": "string",
       "metadata": {
-        "description": "Admin user name for the virtual machines"
+        "description": "User name for the virtual machines. Cannot be 'admin'"
       }
     },
     "UserPassword": {
       "type": "securestring",
       "metadata": {
-        "description": "Admin password for the virtual machines"
+        "description": "User password for the virtual machines"
       }
     }
   },
