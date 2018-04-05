@@ -11,7 +11,7 @@
     "UserPassword": {
       "type": "string",
       "metadata": {
-        "description": "User password for the virtual machines. 6-72 characters in length. Must have 3 of the following: uppercase, lowercase, number, symbol."
+        "description": "User password for the virtual machines. 6-72 characters in length. <a href=\"https://docs.microsoft.com/en-us/azure/virtual-machines/linux/faq#what-are-the-password-requirements-when-creating-a-vm\" target=\"_blank\">Must have 3 of the following</a>: uppercase, lowercase, number, symbol."
       }
     }
   },
