@@ -5,7 +5,7 @@
     "Username": {
       "type": "string",
       "metadata": {
-        "description": "User name for the virtual machines. Cannot be 'admin'"
+        "description": "User name for the virtual machines. Some names are <a href=\"https://docs.microsoft.com/en-us/azure/virtual-machines/linux/faq#what-are-the-username-requirements-when-creating-a-vm\"not allowed</a>."
       }
     },
     "UserPassword": {
