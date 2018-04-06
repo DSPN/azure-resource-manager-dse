@@ -2,16 +2,16 @@
 
 resource_group='dse'
 location='eastus'
-usage="---------------------------------------------------
+usage="
+---------------------------------------------------
 Usage:
-deploy.sh [-h] [-g resource-group] [-l location] [-t]
+deploy.sh [-h] [-g resource-group] [-l location]
 
 Options:
 
  -h                 : display this message and exit
  -g resource-group  : name of resource group to create, default 'dse'
  -l location        : location for resource group, default 'eastus'
- -t                 : testing flag, sets baseUrl to dev branch
 
 ---------------------------------------------------"
 
@@ -25,8 +25,6 @@ while getopts 'hg:l:t' opt; do
     ;;
     l) location="$OPTARG"
     ;;
-    t) testing="true"
-    ;;
     \?) echo "Invalid option -$OPTARG" >&2
         exit 1
     ;;
@@ -34,8 +32,8 @@ while getopts 'hg:l:t' opt; do
 done
 
 echo "WARNING"
-echo "WARNING"
 echo "WARNING: baseUrl hard coded to 'workshop'"
+echo "WARNING"
 
 if [ -z "$(which az)" ]; then
     echo "CLI v2 'az' command not found. Please install: https://docs.microsoft.com/en-us/cli/azure/install-az-cli2"
