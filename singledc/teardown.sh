@@ -5,10 +5,13 @@ usage="
 Usage:
 deploy.sh [-h] -g resource-group -n num
 
+Delete resource groups prefix1 ... prefixN
+Will prompt once before deleting.
+
 Options:
 
  -h                 : display this message and exit
- -g resource-group  : PREFIX for name of resource group to DELETE
+ -g resource-group  : PREFIX for name of resource groups to DELETE
                       Resource groups assumed to be named prefix1 ... prefixN
  -n num             : number of deployments
 
