@@ -1,7 +1,7 @@
 #!/bin/bash
 
 resource_group='dse'
-location='eastus'
+location='westus2'
 usage="
 ---------------------------------------------------
 Usage:
@@ -11,7 +11,7 @@ Options:
 
  -h                 : display this message and exit
  -g resource-group  : name of resource group to create, default 'dse'
- -l location        : location for resource group, default 'eastus'
+ -l location        : location for resource group, default 'westus2'
 
 ---------------------------------------------------"
 
