@@ -273,6 +273,9 @@
           "DBPassword": {
             "value": "[parameters('DBPassword')]"
           },
+          "DSEVersion": {
+            "value": "[parameters('DSEVersion')]"
+          },
           "nodeCount": {
             "value": "[parameters('nodeCount')]"
           },
