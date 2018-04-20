@@ -55,15 +55,14 @@ echo repopw XXXXXX
 --dsever  $ver \
 --user $username \
 --password $password \
+--dbpasswd $dbpasswd \
 --datapath "/data/cassandra"
 
 # trigger install
 ./lcm/triggerInstall.py \
 --opscpw $opscpw \
 --clustername $cluster_name \
---clustersize $nodecount \
---dclevel \
---dbpasswd $dbpasswd
+--clustersize $nodecount
 
 # Block execution while waiting for jobs to
 # exit RUNNING/PENDING status
