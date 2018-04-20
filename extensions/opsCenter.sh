@@ -5,6 +5,7 @@ password=$2
 opscpw=$3
 dbpasswd=$4
 nodecount=$5
+ver=$6
 
 echo "Input to opsCenter.sh is:"
 echo username $username
@@ -29,7 +30,6 @@ cd install-datastax-ubuntu-$release/bin
 
 # Overide OpsC install default version if needed
 export OPSC_VERSION='6.5.0'
-ver='6.0.0'
 
 ./os/install_java.sh
 

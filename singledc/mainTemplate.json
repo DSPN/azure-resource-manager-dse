@@ -78,6 +78,17 @@
         "description": "Size of virtual machine to provision for the cluster"
       }
     },
+    "DSEVersion": {
+      "type": "string",
+      "defaultValue": "6.0.0",
+      "allowedValues": [
+        "6.0.0",
+        "5.1.7"
+      ],
+      "metadata": {
+        "description": "Version of DSE to deploy"
+      }
+    },
     "adminUsername": {
       "type": "string",
       "metadata": {
