@@ -34,14 +34,6 @@ mkdir -p /data/cassandra/saved_caches
 useradd cassandra
 chown -R cassandra:cassandra /data/cassandra
 
-cluster_name="mycluster"
-public_ip=`curl --retry 10 icanhazip.com`
-private_ip=`echo $(hostname -I)`
-node_id=$private_ip
-
-fault_domain=$(curl --max-time 50000 --retry 12 --retry-delay 50000 http://169.254.169.254/metadata/v1/InstanceInfo -s -S | sed -e 's/.*"FD":"\([^"]*\)".*/\1/')
-rack=FD$fault_domain
-
 release="workshop"
 wget https://github.com/DSPN/install-datastax-ubuntu/archive/$release.tar.gz
 tar -xvf $release.tar.gz
@@ -49,6 +41,23 @@ tar -xvf $release.tar.gz
 cd install-datastax-ubuntu-$release/bin/
 # install extra packages
 ./os/extra_packages.sh
+
+# grabbing metadata after extra_packages.sh to ensure we have jq
+cluster_name="mycluster"
+private_ip=`echo $(hostname -I)`
+node_id=$private_ip
+public_ip=$(curl --max-time 200 --retry 12 --retry-delay 5 -sS -H Metadata:true "http://169.254.169.254/metadata/instance?api-version=2017-04-02" | \
+jq .network.interface[0].ipv4.ipAddress[0].publicIpAddress | \
+tr -d '"')
+if [ -z "$public_ip" ]; then
+    echo "public_ip doesn't exist, setting to private_ip"
+    public_ip=$private_ip
+fi
+
+fault_domain=$(curl -sS --max-time 200 --retry 12 --retry-delay 5 -H Metadata:true "http://169.254.169.254/metadata/instance?api-version=2017-04-02" | \
+jq .compute.platformFaultDomain | \
+tr -d '"')
+rack=FD$fault_domain
 
 echo "Calling addNode.py with the settings:"
 echo opscfqdn $opscfqdn

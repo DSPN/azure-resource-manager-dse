@@ -28,8 +28,8 @@ cd install-datastax-ubuntu-$release/bin
 ./os/extra_packages.sh
 
 # Overide OpsC install default version if needed
-export OPSC_VERSION='6.1.5'
-ver='5.1.6'
+export OPSC_VERSION='6.5.0'
+ver='6.0.0'
 
 ./os/install_java.sh
 
@@ -43,10 +43,10 @@ sleep 1m
 
 # This config profile turns off auth, and overrides any other config settings
 # created by other args except dsever
-config="{ \"cassandra-yaml\": { \"authorizer\": \"AllowAllAuthorizer\", \"saved_caches_directory\": \"/data/cassandra/saved_caches\", \"data_file_directories\": [\"/data/cassandra/data\" ], \"num_tokens\": 32, \"authenticator\": \"AllowAllAuthenticator\", \"endpoint_snitch\": \"GossipingPropertyFileSnitch\", \"commitlog_directory\": \"/data/cassandra/commitlog\"  },  \"dse-yaml\": { \"authorization_options\": {\"enabled\": true }, \"authentication_options\": {\"enabled\": true } }}"
+config="{ \"datastax-version\": \"6.0.0\", \"name\": \"test\", \"json\": { \"cassandra-yaml\": { \"saved_caches_directory\": \"/data/cassandra/saved_caches\", \"data_file_directories\": [ \"/data/cassandra/data\" ], \"num_tokens\": 32, \"authenticator\": \"com.datastax.bdp.cassandra.auth.DseAuthenticator\", \"endpoint_snitch\": \"org.apache.cassandra.locator.GossipingPropertyFileSnitch\", \"commitlog_directory\": \"/data/cassandra/commitlog\" }, \"dse-yaml\": { \"authorization_options\": { \"enabled\": true }, \"authentication_options\": { \"enabled\": true }, \"resource_manager_options\": { \"worker_options\": { \"workpools\": [ { \"memory\": \"0.25\", \"cores\": \"0.25\", \"name\": \"alwayson_sql\" } ] } }, \"alwayson_sql_options\": { \"enabled\": true } } }}"
 
 echo "Calling setupCluster.py with the settings:"
-echo opsc_ip 127.0.0.1
+echo opsc_ip 127.0.0.1s
 echo cluster_name $cluster_name
 echo username $username
 echo password XXXXXX
@@ -58,11 +58,9 @@ echo config $config
 --clustername $cluster_name \
 --repouser $repouser \
 --repopw $repopw \
---dsever  $ver \
 --user $username \
 --password $password \
---config "$config" \
---datapath "/data/cassandra"
+--config "$config"
 
 # trigger install
 ./lcm/triggerInstall.py \
@@ -76,3 +74,5 @@ echo config $config
 ./lcm/waitForJobs.py
 # set keyspaces to NetworkTopology / RF 3
 sleep 30s
+./lcm/alterKeyspaces.py \
++--opscpw $opscpw
