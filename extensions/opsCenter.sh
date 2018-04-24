@@ -43,7 +43,7 @@ sleep 1m
 
 # This config profile turns off auth, and overrides any other config settings
 # created by other args except dsever
-config="{ \"datastax-version\": \"6.0.0\", \"name\": \"test\", \"json\": { \"authorizer\": \"AllowAllAuthorizer\", \"cassandra-yaml\": { \"saved_caches_directory\": \"/data/cassandra/saved_caches\", \"data_file_directories\": [ \"/data/cassandra/data\" ], \"num_tokens\": 32, \"authenticator\": \"AllowAllAuthenticator\", \"endpoint_snitch\": \"org.apache.cassandra.locator.GossipingPropertyFileSnitch\", \"commitlog_directory\": \"/data/cassandra/commitlog\" }, \"dse-yaml\": { \"authorization_options\": { \"enabled\": true }, \"authentication_options\": { \"enabled\": true }, \"resource_manager_options\": { \"worker_options\": { \"workpools\": [ { \"memory\": \"0.25\", \"cores\": \"0.25\", \"name\": \"alwayson_sql\" } ] } }, \"alwayson_sql_options\": { \"enabled\": true } } }}"
+config="{ \"datastax-version\": \"6.0.0\", \"name\": \"test\", \"json\": { \"cassandra-yaml\": { \"authorizer\": \"AllowAllAuthorizer\", \"saved_caches_directory\": \"/data/cassandra/saved_caches\", \"data_file_directories\": [ \"/data/cassandra/data\" ], \"num_tokens\": 32, \"authenticator\": \"AllowAllAuthenticator\", \"endpoint_snitch\": \"org.apache.cassandra.locator.GossipingPropertyFileSnitch\", \"commitlog_directory\": \"/data/cassandra/commitlog\" }, \"dse-yaml\": { \"authorization_options\": { \"enabled\": true }, \"authentication_options\": { \"enabled\": true }, \"resource_manager_options\": { \"worker_options\": { \"workpools\": [ { \"memory\": \"0.25\", \"cores\": \"0.25\", \"name\": \"alwayson_sql\" } ] } }, \"alwayson_sql_options\": { \"enabled\": true } } }}"
 
 echo "Calling setupCluster.py with the settings:"
 echo opsc_ip 127.0.0.1s
