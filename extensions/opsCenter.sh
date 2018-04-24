@@ -60,19 +60,18 @@ echo config $config
 --repopw $repopw \
 --user $username \
 --password $password \
+--dbpasswd $dbpasswd \
 --config "$config"
 
 # trigger install
 ./lcm/triggerInstall.py \
 --clustername $cluster_name \
---clustersize $nodecount \
---dclevel \
---dbpasswd $dbpasswd
+--clustersize $nodecount
+
 
 # Block execution while waiting for jobs to
 # exit RUNNING/PENDING status
 ./lcm/waitForJobs.py
 # set keyspaces to NetworkTopology / RF 3
 sleep 30s
-./lcm/alterKeyspaces.py \
-+--opscpw $opscpw
+./lcm/alterKeyspaces.py
