@@ -59,6 +59,9 @@ jq .compute.platformFaultDomain | \
 tr -d '"')
 rack=FD$fault_domain
 
+# override, use only priv ip
+public_ip=$private_ip
+
 echo "Calling addNode.py with the settings:"
 echo opscfqdn $opscfqdn
 echo opscpw XXXXXX
