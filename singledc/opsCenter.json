@@ -5,9 +5,6 @@
     "location": {
       "type": "string"
     },
-    "publicIPResourceId": {
-      "type": "string"
-    },
     "uniqueString": {
       "type": "string"
     },
