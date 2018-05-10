@@ -50,7 +50,7 @@
   },
   "variables": {
     "vmName": "[concat(parameters('namespace'), 'vm')]",
-    "vnetId": "[resourceId('Microsoft.Network/virtualNetworks', parameters('vnetName'))]",
+    "vnetId": "[resourceId(parameters('vnetRG'), 'Microsoft.Network/virtualNetworks', parameters('vnetName')  )]",
     "subnetId": "[concat(variables('vnetId'), '/subnets/', parameters('subnetName'))]",
     "faultDomainCountMap": {
       "australiaeast": {

@@ -35,12 +35,15 @@
     "vnetName": {
       "type": "string"
     },
+    "vnetRG": {
+      "type": "string"
+    },
     "subnetName": {
       "type": "string"
     }
   },
   "variables": {
-    "vnetId": "[resourceId('Microsoft.Network/virtualNetworks', parameters('vnetName'))]",
+    "vnetId": "[resourceId(parameters('vnetRG'), 'Microsoft.Network/virtualNetworks', parameters('vnetName')  )]",
     "subnetId": "[concat(variables('vnetId'), '/subnets/', parameters('subnetName'))]"
   },
   "resources": [
@@ -55,9 +58,7 @@
           {
             "name": "ipconfig1",
             "properties": {
-              "publicIPAddress": {
-                "id": "[parameters('publicIPResourceID')]"
-              },
+              "publicIPAddress": {},
               "privateIPAllocationMethod": "Dynamic",
               "subnet": {
                 "id": "[variables('subnetId')]"
