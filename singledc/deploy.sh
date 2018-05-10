@@ -39,7 +39,7 @@ fi
 echo "CLI v2 'az' command found"
 echo "Using values: resource_group=$resource_group location=$location"
 
-eco "WARNING: baseUrl hardcoded to rr branch"
+echo "WARNING: baseUrl hardcoded to rr branch"
 
 az group create --name $resource_group --location $location
 az group deployment create \
