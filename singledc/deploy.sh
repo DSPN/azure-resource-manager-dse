@@ -1,7 +1,7 @@
 #!/bin/bash
 
 resource_group='dse'
-location='eastus'
+location='westus2'
 usage="---------------------------------------------------
 Usage:
 deploy.sh [-h] [-g resource-group] [-l location]
