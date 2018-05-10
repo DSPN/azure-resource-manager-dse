@@ -7,7 +7,6 @@
     },
     "vnetRG": {
       "type": "string",
-      "defaultValue": "[resourceGroup().name]",
       "metadata": {
         "description": "Resource group of vnet if different"
       }
