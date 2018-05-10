@@ -32,6 +32,9 @@
     "vnetName": {
       "type": "string"
     },
+    "vnetRG": {
+      "type": "string"
+    },
     "subnetName": {
       "type": "string"
     },

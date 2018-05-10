@@ -2,6 +2,19 @@
   "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
+    "vnetName": {
+      "type": "string"
+    },
+    "vnetRG": {
+      "type": "string",
+      "defaultValue": "[resourceGroup().name]",
+      "metadata": {
+        "description": "Resource group of vnet if different"
+      }
+    },
+    "subnetName": {
+      "type": "string"
+    },
     "nodeCount": {
       "type": "int",
       "defaultValue": 6,
@@ -113,19 +126,9 @@
         "description": "Password for default OpsCenter user 'admin'"
       }
     },
-    "publicIpOnNodes": {
-      "type": "string",
-      "metadata": {
-        "description": "Create and use public ip's on node vm's"
-      },
-      "allowedValues": [
-        "yes",
-        "no"
-      ]
-    },
     "baseUrl": {
       "type": "string",
-      "defaultValue": "https://raw.githubusercontent.com/DSPN/azure-resource-manager-dse/master",
+      "defaultValue": "https://raw.githubusercontent.com/DSPN/azure-resource-manager-dse/rr",
       "metadata": {
         "description": "URL for nested templates and extensions"
       }
@@ -134,14 +137,11 @@
   "variables": {
     "templateUrl": "[concat(parameters('baseUrl'), '/singledc/')]",
     "extensionUrl": "[concat(parameters('baseUrl'), '/extensions/')]",
-    "nsgTemplateUrl": "[concat(variables('templateUrl'), 'networksecuritygroup.json')]",
     "nodesTemplateUrl": "[concat(variables('templateUrl'), 'nodes.json')]",
-    "opsCenterPubIPTemplateUrl": "[concat(variables('templateUrl'), 'opsCenterPublicIP.json')]",
     "opsCenterTemplateUrl": "[concat(variables('templateUrl'), 'opsCenter.json')]",
     "location": "[resourcegroup().location]",
     "uniqueString": "[uniqueString(resourceGroup().id, deployment().name)]",
-    "vnetName": "vnet",
-    "subnetName": "subnet",
+    "opscenterHostname": "opscenter",
     "osSettings": {
       "imageReference": {
         "publisher": "datastax",
@@ -158,7 +158,7 @@
   "resources": [
     {
       "apiVersion": "2017-08-01",
-      "name": "pid-7c97edf3-231b-4d54-a35b-e6d7e253f353",
+      "name": "pid-92074674-1f7f-436a-b0e7-8bd102e3b0f5",
       "type": "Microsoft.Resources/deployments",
       "properties": {
         "mode": "Incremental",
@@ -170,81 +170,10 @@
       }
     },
     {
-      "name": "nsg",
-      "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2017-08-01",
-      "dependsOn": [],
-      "properties": {
-        "mode": "Incremental",
-        "templateLink": {
-          "uri": "[variables('nsgTemplateUrl')]",
-          "contentVersion": "1.0.0.0"
-        },
-        "parameters": {
-          "location": {
-            "value": "[variables('location')]"
-          }
-        }
-      }
-    },
-    {
-      "apiVersion": "2017-11-01",
-      "type": "Microsoft.Network/virtualNetworks",
-      "name": "[variables('vnetName')]",
-      "location": "[variables('location')]",
-      "dependsOn": [
-        "Microsoft.Resources/deployments/nsg"
-      ],
-      "properties": {
-        "addressSpace": {
-          "addressPrefixes": [
-            "10.0.0.0/16"
-          ]
-        },
-        "subnets": [
-          {
-            "name": "[variables('subnetName')]",
-            "properties": {
-              "addressPrefix": "10.0.0.0/24",
-              "networkSecurityGroup": {
-                "id": "[resourceId('Microsoft.Network/networkSecurityGroups', 'netsec')]"
-              }
-            }
-          }
-        ]
-      }
-    },
-    {
-      "name": "opsCenterPublicIP",
-      "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2017-08-01",
-      "dependsOn": [
-        "[concat('Microsoft.Network/virtualNetworks/', variables('vnetName'))]"
-      ],
-      "properties": {
-        "mode": "Incremental",
-        "templateLink": {
-          "uri": "[variables('opsCenterPubIPTemplateUrl')]",
-          "contentVersion": "1.0.0.0"
-        },
-        "parameters": {
-          "location": {
-            "value": "[variables('location')]"
-          },
-          "uniqueString": {
-            "value": "[variables('uniqueString')]"
-          }
-        }
-      }
-    },
-    {
       "name": "opsCenter",
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2017-08-01",
-      "dependsOn": [
-        "[concat('Microsoft.Network/virtualNetworks/', variables('vnetName'))]",
-        "Microsoft.Resources/deployments/opsCenterPublicIP"
-      ],
+      "dependsOn": [],
       "properties": {
         "mode": "Incremental",
         "templateLink": {
@@ -254,9 +183,6 @@
         "parameters": {
           "location": {
             "value": "[variables('location')]"
-          },
-          "publicIPResourceId": {
-            "value": "[reference('opsCenterPublicIP').outputs.opsCenterPublicIPResourceId.value]"
           },
           "uniqueString": {
             "value": "[variables('uniqueString')]"
@@ -283,10 +209,13 @@
             "value": "[variables('osSettings')]"
           },
           "vnetName": {
-            "value": "[variables('vnetName')]"
+            "value": "[parameters('vnetName')]"
+          },
+          "vnetRG": {
+            "value": "[parameters('vnetRG')]"
           },
           "subnetName": {
-            "value": "[variables('subnetName')]"
+            "value": "[parameters('subnetName')]"
           }
         }
       }
@@ -295,9 +224,7 @@
       "name": "nodes",
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2017-08-01",
-      "dependsOn": [
-        "[concat('Microsoft.Network/virtualNetworks/', variables('vnetName'))]"
-      ],
+      "dependsOn": [],
       "properties": {
         "mode": "Incremental",
         "templateLink": {
@@ -309,7 +236,7 @@
             "value": "[variables('location')]"
           },
           "opsCenterFQDN": {
-            "value": "[reference('opsCenterPublicIP').outputs.opsCenterFQDN.value]"
+            "value": "[variables('opscenterHostname')]"
           },
           "uniqueString": {
             "value": "[variables('uniqueString')]"
@@ -333,13 +260,16 @@
             "value": "[variables('osSettings')]"
           },
           "vnetName": {
-            "value": "[variables('vnetName')]"
+            "value": "[parameters('vnetName')]"
+          },
+          "vnetRG": {
+            "value": "[parameters('vnetRG')]"
           },
           "subnetName": {
-            "value": "[variables('subnetName')]"
+            "value": "[parameters('subnetName')]"
           },
           "publicIpOnNodes": {
-            "value": "[parameters('publicIpOnNodes')]"
+            "value": "no"
           },
           "namespace": {
             "value": "dc0"
@@ -348,14 +278,5 @@
       }
     }
   ],
-  "outputs": {
-    "lifecycleManagerURL": {
-      "type": "string",
-      "value": "[concat('http://', reference('opsCenterPublicIP').outputs.opsCenterFQDN.value, ':8888/opscenter/lcm.html')]"
-    },
-    "opsCenterURL": {
-      "type": "string",
-      "value": "[concat('http://', reference('opsCenterPublicIP').outputs.opsCenterFQDN.value, ':8888')]"
-    }
-  }
+  "outputs": {}
 }
