@@ -1,4 +1,13 @@
 {
+  "subnetName": {
+    "value": "testsubnet"
+  },
+  "vnetName": {
+    "value": "testvnet"
+  },
+  "vnetRG": {
+    "value": "jcp-nettest"
+  },
   "nodeCount": {
     "value": 3
   },
