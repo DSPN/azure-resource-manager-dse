@@ -13,6 +13,9 @@ multidc/generatedTemplate.json
 # PyCharm files
 *.idea
 
+#tmp files
+*tmp*
+
 # Misc junk
 *scratch*
 *.swp
