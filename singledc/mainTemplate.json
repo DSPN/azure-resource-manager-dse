@@ -127,7 +127,6 @@
     },
     "baseUrl": {
       "type": "string",
-      "defaultValue": "https://raw.githubusercontent.com/DSPN/azure-resource-manager-dse/rr",
       "metadata": {
         "description": "URL for nested templates and extensions"
       }
