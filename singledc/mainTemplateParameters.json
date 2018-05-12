@@ -12,7 +12,7 @@
     "value": 3
   },
   "vmSize": {
-    "value": "Standard_DS3_v2"
+    "value": "Standard_D16s_v3"
   },
   "adminUsername": {
     "value": "datastax"
