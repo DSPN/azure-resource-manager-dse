@@ -90,6 +90,12 @@
         "description": "Size of virtual machine to provision for the cluster"
       }
     },
+    "dnsZone": {
+      "type": "string",
+      "metadata": {
+        "description": "Name of the dnsZone to use as the suffix on the clients and to register records in"
+      }
+    },
     "DSEVersion": {
       "type": "string",
       "defaultValue": "6.0.0",
@@ -149,8 +155,10 @@
       },
       "scripts": [
         "[concat(variables('extensionUrl'), 'node.sh')]",
-        "[concat(variables('extensionUrl'), 'opsCenter.sh')]"
-      ]
+        "[concat(variables('extensionUrl'), 'opsCenter.sh')]",
+        "[concat(variables('extensionUrl'), 'ddns-dhcphook')]"
+      ],
+      "dnsZone": "[parameters('dnsZone')]"
     }
   },
   "resources": [

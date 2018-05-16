@@ -6,6 +6,7 @@ opscpw=$3
 dbpasswd=$4
 nodecount=$5
 ver=$6
+domain=$7
 
 echo "Input to opsCenter.sh is:"
 echo username $username
@@ -13,6 +14,15 @@ echo password XXXXXX
 echo opscpw YYYYYY
 echo dbpasswd ZZZZZZZ
 echo nodecount $nodecount
+echo domain $domain
+
+grep -v -G domain-name /etc/dhcp/dhclient.conf  > dhclient.tmp
+echo "supersede domain-name \"$domain\";"    >> dhclient.tmp
+sudo cp /etc/dhcp/dhclient.conf /etc/dhcp/dhclient.conf.old
+sudo cp dhclient.tmp /etc/dhcp/dhclient.conf
+sudo cp ddns-dhcphook /etc/dhcp/dhclient-exit-hooks.d
+# do dhcp update to update resolv.conf and register ddns
+sudo dhclient -v
 
 cluster_name="mycluster"
 

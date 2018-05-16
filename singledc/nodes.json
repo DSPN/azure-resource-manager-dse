@@ -285,7 +285,7 @@
           "fileUris": "[parameters('osSettings').scripts]"
         },
         "protectedSettings": {
-          "commandToExecute": "[concat('bash node.sh ', parameters('nodeCount'), ' ', parameters('opsCenterFQDN'), ' ', parameters('namespace'), ' ', parameters('OpsCPassword'))]"
+          "commandToExecute": "[concat('bash node.sh ', parameters('nodeCount'), ' ', parameters('opsCenterFQDN'), ' ', parameters('namespace'), ' ', parameters('OpsCPassword'), ' ', parameters('osSettings').dnsZone)]"
         }
       }
     }

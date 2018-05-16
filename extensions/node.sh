@@ -4,12 +4,22 @@ data_center_size=$1
 opscfqdn=$2
 data_center_name=$3
 opscpw=$4
+domain=$5
 
 echo "Input to node.sh is:"
 echo data_center_size $data_center_size
 echo opscfqdn $opscfqdn
 echo data_center_name $data_center_name
 echo opscpw XXXXXX
+echo domain $domain
+
+grep -v -G domain-name /etc/dhcp/dhclient.conf  > dhclient.tmp
+echo "supersede domain-name \"$domain\";"    >> dhclient.tmp
+sudo cp /etc/dhcp/dhclient.conf /etc/dhcp/dhclient.conf.old
+sudo cp dhclient.tmp /etc/dhcp/dhclient.conf
+sudo cp ddns-dhcphook /etc/dhcp/dhclient-exit-hooks.d
+# do dhcp update to update resolv.conf and register ddns
+sudo dhclient -v
 
 # System setup/config
 # Copied in from general install scripts

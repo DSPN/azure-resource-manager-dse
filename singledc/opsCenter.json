@@ -118,7 +118,7 @@
           "fileUris": "[parameters('osSettings').scripts]"
         },
         "protectedSettings": {
-          "commandToExecute": "[concat('bash opsCenter.sh ', parameters('adminUsername'), ' ', parameters('adminPassword'), ' ', parameters('OpsCPassword'), ' ', parameters('DBPassword'), ' ', parameters('nodeCount'), ' ', parameters('DSEVersion'))]"
+          "commandToExecute": "[concat('bash opsCenter.sh ', parameters('adminUsername'), ' ', parameters('adminPassword'), ' ', parameters('OpsCPassword'), ' ', parameters('DBPassword'), ' ', parameters('nodeCount'), ' ', parameters('DSEVersion'), ' ', parameters('osSettings').dnsZone)]"
         }
       }
     }

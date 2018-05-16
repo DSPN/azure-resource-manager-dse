@@ -1,18 +1,21 @@
 {
   "subnetName": {
-    "value": "testsubnet"
+    "value": "adSubnet"
   },
   "vnetName": {
-    "value": "testvnet"
+    "value": "adVNET"
   },
   "vnetRG": {
-    "value": "jcp-nettest"
+    "value": "privatedns"
   },
   "nodeCount": {
     "value": 3
   },
   "vmSize": {
     "value": "Standard_D16s_v3"
+  },
+  "dnsZone": {
+    "value": "dns1.scottsdomain.com"
   },
   "adminUsername": {
     "value": "datastax"
