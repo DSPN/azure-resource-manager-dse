@@ -118,6 +118,7 @@
       "metadata": {
         "description": "Create and use public ip's on node vm's"
       },
+      "defaultValue": "yes",
       "allowedValues": [
         "yes",
         "no"
