@@ -39,6 +39,14 @@ The template expects the following parameters (examples of which are in `mainTem
 | DBPassword  | Password for default C* user 'cassandra' |
 | OpsCPassword | Password for default OpsCenter user 'admin' |
 
+The template also takes the following optional parameters (examples *not* included in `mainTemplateParameters.json`):
+
+| Name   | Description |
+|:--- |:---|
+| publicIpOnNodes | Default 'yes', setting to 'no' will create no public IPs on node VMs |
+| DSEVersion | Default '6.0.0', allowed values '6.0.0' / '5.1.9' |
+| baseUrl | Default master branch of this repo, this is used as the URL for nested templates/extensions |
+
 Once the Azure VMs, virtual network and disks are deployed, the node instances call back to the OpsCenter instance using the LCM REST API.  When the last node registers this triggers an LCM job to install and configure DSE  These nodes are assigned both private and public dynamic IP addresses.
 
 On completion, OpsCenter will be accessible on port 8443 (https, http connections to port 8888 will be redirected) of the public IP address of the OpsCenter node. OpsCenter uses a self-signed SSL certificate, so you will need to accept the certificate exception. After this you can log in with the user name 'admin' and the password you specified in the OpsCPassword parameter.

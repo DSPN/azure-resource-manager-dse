@@ -78,6 +78,17 @@
         "description": "Size of virtual machine to provision for the cluster"
       }
     },
+    "DSEVersion": {
+      "type": "string",
+      "defaultValue": "6.0.0",
+      "allowedValues": [
+        "6.0.0",
+        "5.1.9"
+      ],
+      "metadata": {
+        "description": "Version of DSE to deploy"
+      }
+    },
     "adminUsername": {
       "type": "string",
       "metadata": {
@@ -101,6 +112,16 @@
       "metadata": {
         "description": "Password for default OpsCenter user 'admin'"
       }
+    },
+    "publicIpOnNodes": {
+      "type": "string",
+      "metadata": {
+        "description": "Create and use public ip's on node vm's"
+      },
+      "allowedValues": [
+        "yes",
+        "no"
+      ]
     },
     "baseUrl": {
       "type": "string",
@@ -252,6 +273,9 @@
           "DBPassword": {
             "value": "[parameters('DBPassword')]"
           },
+          "DSEVersion": {
+            "value": "[parameters('DSEVersion')]"
+          },
           "nodeCount": {
             "value": "[parameters('nodeCount')]"
           },
@@ -313,6 +337,9 @@
           },
           "subnetName": {
             "value": "[variables('subnetName')]"
+          },
+          "publicIpOnNodes": {
+            "value": "[parameters('publicIpOnNodes')]"
           },
           "namespace": {
             "value": "dc0"
