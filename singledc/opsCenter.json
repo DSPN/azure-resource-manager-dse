@@ -41,16 +41,36 @@
   },
   "variables": {
     "vnetId": "[resourceId('Microsoft.Network/virtualNetworks', parameters('vnetName'))]",
-    "subnetId": "[concat(variables('vnetId'), '/subnets/', parameters('subnetName'))]"
+    "subnetId": "[concat(variables('vnetId'), '/subnets/', parameters('subnetName'))]",
+    "nsgTemplateUrl": "[concat(deployment(), '/opscNSG.json')]",
   },
   "resources": [
+    {
+      "name": "opscNSG",
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2017-08-01",
+      "dependsOn": [],
+      "properties": {
+        "mode": "Incremental",
+        "templateLink": {
+          "uri": "[variables('nsgTemplateUrl')]",
+          "contentVersion": "1.0.0.0"
+        },
+        "parameters": {
+          "location": {
+            "value": "[variables('location')]"
+          }
+        }
+      }
+    },
     {
       "apiVersion": "2017-11-01",
       "type": "Microsoft.Network/networkInterfaces",
       "name": "opscenter-nic",
       "location": "[parameters('location')]",
-      "dependsOn": [],
+      "dependsOn": ["[resourceId('Microsoft.Network/networkSecurityGroups', 'opscNSG']"],
       "properties": {
+        "networkSecurityGroup": "[resourceId('Microsoft.Network/networkSecurityGroups', 'opscNSG']",
         "ipConfigurations": [
           {
             "name": "ipconfig1",

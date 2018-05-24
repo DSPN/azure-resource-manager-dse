@@ -49,6 +49,7 @@
     "vmName": "[concat(parameters('namespace'), 'vm')]",
     "vnetId": "[resourceId('Microsoft.Network/virtualNetworks', parameters('vnetName'))]",
     "subnetId": "[concat(variables('vnetId'), '/subnets/', parameters('subnetName'))]",
+    "nsgTemplateUrl": "[concat(deployment(), '/nodeNSG.json')]",
     "faultDomainCountMap": {
       "australiaeast": {
           "MaximumPlatformFaultDomainCount": 2
@@ -153,6 +154,24 @@
   },
   "resources": [
     {
+      "name": "nodeNSG",
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2017-08-01",
+      "dependsOn": [],
+      "properties": {
+        "mode": "Incremental",
+        "templateLink": {
+          "uri": "[variables('nsgTemplateUrl')]",
+          "contentVersion": "1.0.0.0"
+        },
+        "parameters": {
+          "location": {
+            "value": "[variables('location')]"
+          }
+        }
+      }
+    },
+    {
       "apiVersion": "2017-12-01",
       "type": "Microsoft.Compute/availabilitySets",
       "name": "[parameters('namespace')]",
@@ -192,9 +211,11 @@
         "count": "[parameters('nodeCount')]"
       },
       "dependsOn": [
-        "[concat('Microsoft.Network/publicIPAddresses/', parameters('namespace'), 'vm', copyindex())]"
+        "[concat('Microsoft.Network/publicIPAddresses/', parameters('namespace'), 'vm', copyindex())]",
+        "[resourceId(Microsoft.Resources/deployments,'nodeNSG')]"
       ],
       "properties": {
+        "networkSecurityGroup": "[resourceId('Microsoft.Network/networkSecurityGroups', 'nodeNSG']",
         "ipConfigurations": [
           {
             "name": "ipconfig1",

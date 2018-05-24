@@ -135,7 +135,6 @@
   "variables": {
     "templateUrl": "[concat(parameters('baseUrl'), '/singledc/')]",
     "extensionUrl": "[concat(parameters('baseUrl'), '/extensions/')]",
-    "nsgTemplateUrl": "[concat(variables('templateUrl'), 'networksecuritygroup.json')]",
     "nodesTemplateUrl": "[concat(variables('templateUrl'), 'nodes.json')]",
     "opsCenterPubIPTemplateUrl": "[concat(variables('templateUrl'), 'opsCenterPublicIP.json')]",
     "opsCenterTemplateUrl": "[concat(variables('templateUrl'), 'opsCenter.json')]",
@@ -171,31 +170,12 @@
       }
     },
     {
-      "name": "nsg",
-      "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2017-08-01",
-      "dependsOn": [],
-      "properties": {
-        "mode": "Incremental",
-        "templateLink": {
-          "uri": "[variables('nsgTemplateUrl')]",
-          "contentVersion": "1.0.0.0"
-        },
-        "parameters": {
-          "location": {
-            "value": "[variables('location')]"
-          }
-        }
-      }
-    },
-    {
       "apiVersion": "2017-11-01",
       "type": "Microsoft.Network/virtualNetworks",
       "name": "[variables('vnetName')]",
+      "condition": "[equals('yes', 'yes')]",
       "location": "[variables('location')]",
-      "dependsOn": [
-        "Microsoft.Resources/deployments/nsg"
-      ],
+      "dependsOn": [],
       "properties": {
         "addressSpace": {
           "addressPrefixes": [
@@ -206,10 +186,7 @@
           {
             "name": "[variables('subnetName')]",
             "properties": {
-              "addressPrefix": "10.0.0.0/24",
-              "networkSecurityGroup": {
-                "id": "[resourceId('Microsoft.Network/networkSecurityGroups', 'netsec')]"
-              }
+              "addressPrefix": "10.0.0.0/24"
             }
           }
         ]
