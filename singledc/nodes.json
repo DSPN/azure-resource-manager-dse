@@ -346,7 +346,7 @@
       },
       "dependsOn": [
         "[concat('Microsoft.Network/publicIPAddresses/', parameters('namespace'), 'vm', copyindex())]",
-        "[resourceId('Microsoft.Network/networkSecurityGroups', 'nodeNSG')]"
+        "Microsoft.Network/networkSecurityGroups/nodeNSG"
       ],
       "properties": {
         "networkSecurityGroup": "[resourceId('Microsoft.Network/networkSecurityGroups', 'nodeNSG')]",

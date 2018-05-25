@@ -138,7 +138,7 @@
       "name": "opscenter-nic",
       "location": "[parameters('location')]",
       "dependsOn": [
-        "[resourceId('Microsoft.Network/networkSecurityGroups', 'opscNSG')]"
+        "Microsoft.Network/networkSecurityGroups/opscNSG"
       ],
       "properties": {
         "networkSecurityGroup": "[resourceId('Microsoft.Network/networkSecurityGroups', 'opscNSG')]",
