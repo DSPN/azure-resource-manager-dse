@@ -349,7 +349,9 @@
         "Microsoft.Network/networkSecurityGroups/nodeNSG"
       ],
       "properties": {
-        "networkSecurityGroup": "[resourceId('Microsoft.Network/networkSecurityGroups', 'nodeNSG')]",
+        "networkSecurityGroup": {
+          "id": "[resourceId('Microsoft.Network/networkSecurityGroups', 'nodeNSG')]"
+        },
         "ipConfigurations": [
           {
             "name": "ipconfig1",

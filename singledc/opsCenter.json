@@ -141,7 +141,9 @@
         "Microsoft.Network/networkSecurityGroups/opscNSG"
       ],
       "properties": {
-        "networkSecurityGroup": "[resourceId('Microsoft.Network/networkSecurityGroups', 'opscNSG')]",
+        "networkSecurityGroup":  {
+          "id": "[resourceId('Microsoft.Network/networkSecurityGroups', 'opscNSG')]"
+        },
         "ipConfigurations": [
           {
             "name": "ipconfig1",
