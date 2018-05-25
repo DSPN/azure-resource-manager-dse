@@ -139,7 +139,7 @@
       "location": "[parameters('location')]",
       "dependsOn": [],
       "properties": {
-        "networkSecurityGroup": "[resourceId('Microsoft.Network/networkSecurityGroups', 'opscNSG']",
+        "networkSecurityGroup": "[resourceId('Microsoft.Network/networkSecurityGroups', 'opscNSG')]",
         "ipConfigurations": [
           {
             "name": "ipconfig1",

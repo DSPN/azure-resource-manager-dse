@@ -348,7 +348,7 @@
         "[concat('Microsoft.Network/publicIPAddresses/', parameters('namespace'), 'vm', copyindex())]"
       ],
       "properties": {
-        "networkSecurityGroup": "[resourceId('Microsoft.Network/networkSecurityGroups', 'nodeNSG']",
+        "networkSecurityGroup": "[resourceId('Microsoft.Network/networkSecurityGroups', 'nodeNSG')]",
         "ipConfigurations": [
           {
             "name": "ipconfig1",
