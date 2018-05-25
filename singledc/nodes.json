@@ -49,7 +49,6 @@
     "vmName": "[concat(parameters('namespace'), 'vm')]",
     "vnetId": "[resourceId('Microsoft.Network/virtualNetworks', parameters('vnetName'))]",
     "subnetId": "[concat(variables('vnetId'), '/subnets/', parameters('subnetName'))]",
-    "nsgTemplateUrl": "[concat(deployment(), '/nodeNSG.json')]",
     "faultDomainCountMap": {
       "australiaeast": {
           "MaximumPlatformFaultDomainCount": 2
@@ -154,21 +153,156 @@
   },
   "resources": [
     {
+      "type": "Microsoft.Network/networkSecurityGroups",
       "name": "nodeNSG",
-      "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2017-08-01",
-      "dependsOn": [],
+      "location": "[parameters('location')]",
+      "apiVersion": "2017-11-01",
       "properties": {
-        "mode": "Incremental",
-        "templateLink": {
-          "uri": "[variables('nsgTemplateUrl')]",
-          "contentVersion": "1.0.0.0"
-        },
-        "parameters": {
-          "location": {
-            "value": "[variables('location')]"
+        "securityRules": [
+          {
+            "name": "SSH",
+            "properties": {
+              "protocol": "TCP",
+              "sourcePortRange": "*",
+              "destinationPortRange": "22",
+              "sourceAddressPrefix": "Internet",
+              "destinationAddressPrefix": "*",
+              "access": "Allow",
+              "priority": 100,
+              "direction": "Inbound"
+            }
+          },
+          {
+            "name": "CassandraClient",
+            "properties": {
+              "protocol": "TCP",
+              "sourcePortRange": "*",
+              "destinationPortRange": "9042",
+              "sourceAddressPrefix": "Internet",
+              "destinationAddressPrefix": "*",
+              "access": "Allow",
+              "priority": 400,
+              "direction": "Inbound"
+            }
+          },
+          {
+            "name": "DSEInterNode",
+            "properties": {
+              "protocol": "TCP",
+              "sourcePortRange": "*",
+              "destinationPortRange": "7000",
+              "sourceAddressPrefix": "Internet",
+              "destinationAddressPrefix": "*",
+              "access": "Allow",
+              "priority": 410,
+              "direction": "Inbound"
+            }
+          },
+          {
+            "name": "DSEInterNodeSSL",
+            "properties": {
+              "protocol": "TCP",
+              "sourcePortRange": "*",
+              "destinationPortRange": "7001",
+              "sourceAddressPrefix": "Internet",
+              "destinationAddressPrefix": "*",
+              "access": "Allow",
+              "priority": 420,
+              "direction": "Inbound"
+            }
+          },
+          {
+            "name": "SparkAppWeb",
+            "properties": {
+              "protocol": "TCP",
+              "sourcePortRange": "*",
+              "destinationPortRange": "4040",
+              "sourceAddressPrefix": "Internet",
+              "destinationAddressPrefix": "*",
+              "access": "Allow",
+              "priority": 700,
+              "direction": "Inbound"
+            }
+          },
+          {
+            "name": "SparkMasterWeb",
+            "properties": {
+              "protocol": "TCP",
+              "sourcePortRange": "*",
+              "destinationPortRange": "7080",
+              "sourceAddressPrefix": "Internet",
+              "destinationAddressPrefix": "*",
+              "access": "Allow",
+              "priority": 800,
+              "direction": "Inbound"
+            }
+          },
+          {
+            "name": "SparkWorkerWeb",
+            "properties": {
+              "protocol": "TCP",
+              "sourcePortRange": "*",
+              "destinationPortRange": "7081",
+              "sourceAddressPrefix": "Internet",
+              "destinationAddressPrefix": "*",
+              "access": "Allow",
+              "priority": 900,
+              "direction": "Inbound"
+            }
+          },
+          {
+            "name": "SparkREST",
+            "properties": {
+              "protocol": "TCP",
+              "sourcePortRange": "*",
+              "destinationPortRange": "8090",
+              "sourceAddressPrefix": "Internet",
+              "destinationAddressPrefix": "*",
+              "access": "Allow",
+              "priority": 1000,
+              "direction": "Inbound"
+            }
+          },
+          {
+            "name": "DSEFS",
+            "properties": {
+              "protocol": "TCP",
+              "sourcePortRange": "*",
+              "destinationPortRange": "5598-5599",
+              "sourceAddressPrefix": "Internet",
+              "destinationAddressPrefix": "*",
+              "access": "Allow",
+              "priority": 1050,
+              "direction": "Inbound"
+            }
+          },
+          {
+            "name": "Gremlin",
+            "properties": {
+              "protocol": "TCP",
+              "sourcePortRange": "*",
+              "destinationPortRange": "8182",
+              "sourceAddressPrefix": "Internet",
+              "destinationAddressPrefix": "*",
+              "access": "Allow",
+              "priority": 1700,
+              "direction": "Inbound"
+            }
+          },
+          {
+            "name": "SolrGUI",
+            "properties": {
+              "protocol": "TCP",
+              "sourcePortRange": "*",
+              "destinationPortRange": "8983",
+              "sourceAddressPrefix": "Internet",
+              "destinationAddressPrefix": "*",
+              "access": "Allow",
+              "priority": 1800,
+              "direction": "Inbound"
+            }
           }
-        }
+        ]
       }
     },
     {
