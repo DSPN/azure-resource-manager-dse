@@ -95,7 +95,7 @@
             "properties": {
               "protocol": "TCP",
               "sourcePortRange": "*",
-              "destinationPortRange": "61619-61621",
+              "destinationPortRange": "61619-61620",
               "sourceAddressPrefix": "Internet",
               "destinationAddressPrefix": "*",
               "access": "Allow",

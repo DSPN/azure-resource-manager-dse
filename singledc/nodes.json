@@ -301,6 +301,19 @@
               "priority": 1800,
               "direction": "Inbound"
             }
+          },
+          {
+            "name": "OpsCAgent",
+            "properties": {
+              "protocol": "TCP",
+              "sourcePortRange": "*",
+              "destinationPortRange": "61621",
+              "sourceAddressPrefix": "Internet",
+              "destinationAddressPrefix": "*",
+              "access": "Allow",
+              "priority": 4000,
+              "direction": "Inbound"
+            }
           }
         ]
       }
