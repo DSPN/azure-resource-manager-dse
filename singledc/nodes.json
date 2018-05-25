@@ -345,8 +345,7 @@
         "count": "[parameters('nodeCount')]"
       },
       "dependsOn": [
-        "[concat('Microsoft.Network/publicIPAddresses/', parameters('namespace'), 'vm', copyindex())]",
-        "[resourceId(Microsoft.Resources/deployments,'nodeNSG')]"
+        "[concat('Microsoft.Network/publicIPAddresses/', parameters('namespace'), 'vm', copyindex())]"
       ],
       "properties": {
         "networkSecurityGroup": "[resourceId('Microsoft.Network/networkSecurityGroups', 'nodeNSG']",
