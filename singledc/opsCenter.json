@@ -137,7 +137,9 @@
       "type": "Microsoft.Network/networkInterfaces",
       "name": "opscenter-nic",
       "location": "[parameters('location')]",
-      "dependsOn": [],
+      "dependsOn": [
+        "[resourceId('Microsoft.Network/networkSecurityGroups', 'opscNSG')]"
+      ],
       "properties": {
         "networkSecurityGroup": "[resourceId('Microsoft.Network/networkSecurityGroups', 'opscNSG')]",
         "ipConfigurations": [
