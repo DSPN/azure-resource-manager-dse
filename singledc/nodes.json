@@ -156,6 +156,7 @@
       "type": "Microsoft.Network/networkSecurityGroups",
       "name": "nodeNSG",
       "location": "[parameters('location')]",
+      "condition": "[equals(parameters('publicIpOnNodes'), 'yes')]",
       "apiVersion": "2017-11-01",
       "properties": {
         "securityRules": [
@@ -362,9 +363,7 @@
         "Microsoft.Network/networkSecurityGroups/nodeNSG"
       ],
       "properties": {
-        "networkSecurityGroup": {
-          "id": "[resourceId('Microsoft.Network/networkSecurityGroups', 'nodeNSG')]"
-        },
+        "networkSecurityGroup": "[if(equals(parameters('publicIpOnNodes'), 'yes') , json(concat('{\"id\": \"', resourceId('Microsoft.Network/networkSecurityGroups', 'nodeNSG'),'\"}')), json('null'))]",
         "ipConfigurations": [
           {
             "name": "ipconfig1",
