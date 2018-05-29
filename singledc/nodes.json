@@ -26,6 +26,13 @@
     "vmSize": {
       "type": "string"
     },
+    "diskSize": {
+      "type": "int",
+      "defaultValue": 1023,
+      "metadata": {
+        "description": "Size (GB) of extenal data volume for each node"
+      }
+    },
     "osSettings": {
       "type": "object"
     },
@@ -43,11 +50,30 @@
       "allowedValues": [
         "yes",
         "no"]
+    },
+    "vnetName": {
+      "type": "string",
+      "metadata": {
+        "description": "Virtual network to deploy into"
+      }
+    },
+    "vnetRG": {
+      "type": "string",
+      "defaultValue": "[resourceGroup().name]",
+      "metadata": {
+        "description": "Resource group of vnet if different"
+      }
+    },
+    "subnetName": {
+      "type": "string",
+      "metadata": {
+        "description": "Subnet to deploy into"
+      }
     }
   },
   "variables": {
     "vmName": "[concat(parameters('namespace'), 'vm')]",
-    "vnetId": "[resourceId('Microsoft.Network/virtualNetworks', parameters('vnetName'))]",
+    "vnetId": "[resourceId(parameters('vnetRG'), 'Microsoft.Network/virtualNetworks', parameters('vnetName')  )]",
     "subnetId": "[concat(variables('vnetId'), '/subnets/', parameters('subnetName'))]",
     "faultDomainCountMap": {
       "australiaeast": {

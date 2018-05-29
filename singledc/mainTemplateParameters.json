@@ -16,5 +16,8 @@
   },
   "OpsCPassword": {
     "value": "bar987&"
+  },
+  "publicIpOnNodes": {
+    "value": "no"
   }
 }
