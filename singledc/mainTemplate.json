@@ -262,7 +262,9 @@
       "name": "opsCenter",
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2017-08-01",
-      "dependsOn": [],
+      "dependsOn": [
+        "Microsoft.Resources/deployments/opsCenterPublicIP"
+      ],
       "properties": {
         "mode": "Incremental",
         "templateLink": {
@@ -274,7 +276,7 @@
             "value": "[variables('location')]"
           },
           "publicIPResourceId": {
-            "value": "[if(equals(parameters('publicIpOnOpsc'), 'yes'), reference('opsCenterPublicIP').outputs.opsCenterPublicIPResourceId.value, 'null')]"
+            "value": "[if(equals(parameters('publicIpOnOpsc'), 'yes'), reference('opsCenterPublicIP','2017-08-01').outputs.opsCenterPublicIPResourceId.value, 'notcreated')]"
           },
           "publicIpOnOpsc": {
             "value": "[parameters('publicIpOnOpsc')]"
@@ -376,11 +378,11 @@
   "outputs": {
     "lifecycleManagerURL": {
       "type": "string",
-      "value": "[concat('http://', reference('opsCenterPublicIP').outputs.opsCenterFQDN.value, ':8888/opscenter/lcm.html')]"
+      "value": "[concat('http://', if(equals(parameters('publicIpOnOpsc'),'yes'), reference('opsCenterPublicIP','2017-08-01').outputs.opsCenterFQDN.value, 'xxxx'), ':8888/opscenter/lcm.html')]"
     },
     "opsCenterURL": {
       "type": "string",
-      "value": "[concat('http://', reference('opsCenterPublicIP').outputs.opsCenterFQDN.value, ':8888')]"
+      "value": "[concat('http://', if(equals(parameters('publicIpOnOpsc'),'yes'), reference('opsCenterPublicIP','2017-08-01').outputs.opsCenterFQDN.value, 'xxxx'), ':8888')]"
     }
   }
 }
