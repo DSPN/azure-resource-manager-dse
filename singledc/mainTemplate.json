@@ -124,6 +124,49 @@
         "no"
       ]
     },
+    "publicIpOnOpsc": {
+      "type": "string",
+      "metadata": {
+        "description": "Create and use public ip's on node vm's"
+      },
+      "defaultValue": "yes",
+      "allowedValues": [
+        "yes",
+        "no"
+      ]
+    },
+    "vnetNeworExisting": {
+      "type": "string",
+      "metadata": {
+        "description": "Create and use public ip's on node vm's"
+      },
+      "defaultValue": "new",
+      "allowedValues": [
+        "new",
+        "existing"
+      ]
+    },
+    "vnetName": {
+      "type": "string",
+      "defaultValue": "vnet",
+      "metadata": {
+        "description": "Name of existing vnet, unused if blank."
+      }
+    },
+    "vnetRG": {
+      "type": "string",
+      "defaultValue": "[resourceGroup().name]",
+      "metadata": {
+        "description": "Resource group of vnet if different"
+      }
+    },
+    "subnetName": {
+      "type": "string",
+      "defaultValue": "subnet",
+      "metadata": {
+        "description": "Name of existing vnet, unused if blank."
+      }
+    },
     "baseUrl": {
       "type": "string",
       "defaultValue": "https://raw.githubusercontent.com/DSPN/azure-resource-manager-dse/master",
@@ -140,8 +183,9 @@
     "opsCenterTemplateUrl": "[concat(variables('templateUrl'), 'opsCenter.json')]",
     "location": "[resourcegroup().location]",
     "uniqueString": "[uniqueString(resourceGroup().id, deployment().name)]",
-    "vnetName": "vnet",
-    "subnetName": "subnet",
+    "vnetName": "[if(equals(parameters('vnetNeworExisting'), 'new') , 'vnet', parameters('vnetName'))]",
+    "subnetName": "[if(equals(parameters('vnetNeworExisting'), 'new') , 'subnet', parameters('subnetName'))]",
+    "vnetRG": "[if(equals(parameters('vnetNeworExisting'), 'new') , variables('location'), parameters('vnetRG'))]",
     "osSettings": {
       "imageReference": {
         "publisher": "datastax",
@@ -173,7 +217,7 @@
       "apiVersion": "2017-11-01",
       "type": "Microsoft.Network/virtualNetworks",
       "name": "[variables('vnetName')]",
-      "condition": "[equals('yes', 'yes')]",
+      "condition": "[equals(parameters('vnetName'), '')]",
       "location": "[variables('location')]",
       "dependsOn": [],
       "properties": {
@@ -196,9 +240,8 @@
       "name": "opsCenterPublicIP",
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2017-08-01",
-      "dependsOn": [
-        "[concat('Microsoft.Network/virtualNetworks/', variables('vnetName'))]"
-      ],
+      "condition": "[equals(parameters('publicIpOnOpsc'), 'yes')]",
+      "dependsOn": [],
       "properties": {
         "mode": "Incremental",
         "templateLink": {
@@ -219,10 +262,7 @@
       "name": "opsCenter",
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2017-08-01",
-      "dependsOn": [
-        "[concat('Microsoft.Network/virtualNetworks/', variables('vnetName'))]",
-        "Microsoft.Resources/deployments/opsCenterPublicIP"
-      ],
+      "dependsOn": [],
       "properties": {
         "mode": "Incremental",
         "templateLink": {
@@ -234,7 +274,10 @@
             "value": "[variables('location')]"
           },
           "publicIPResourceId": {
-            "value": "[reference('opsCenterPublicIP').outputs.opsCenterPublicIPResourceId.value]"
+            "value": "[if(equals(parameters('publicIpOnOpsc'), 'yes'), reference('opsCenterPublicIP').outputs.opsCenterPublicIPResourceId.value, 'null')]"
+          },
+          "publicIpOnOpsc": {
+            "value": "[parameters('publicIpOnOpsc')]"
           },
           "uniqueString": {
             "value": "[variables('uniqueString')]"
@@ -265,6 +308,9 @@
           },
           "subnetName": {
             "value": "[variables('subnetName')]"
+          },
+          "vnetRG": {
+            "value": "[variables('vnetRG')]"
           }
         }
       }
@@ -273,9 +319,7 @@
       "name": "nodes",
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2017-08-01",
-      "dependsOn": [
-        "[concat('Microsoft.Network/virtualNetworks/', variables('vnetName'))]"
-      ],
+      "dependsOn": [],
       "properties": {
         "mode": "Incremental",
         "templateLink": {
@@ -287,7 +331,7 @@
             "value": "[variables('location')]"
           },
           "opsCenterFQDN": {
-            "value": "[reference('opsCenterPublicIP').outputs.opsCenterFQDN.value]"
+            "value": "[if(equals(parameters('publicIpOnOpsc'), 'yes'), reference('opsCenterPublicIP').outputs.opsCenterFQDN.value, 'opscenter')]"
           },
           "uniqueString": {
             "value": "[variables('uniqueString')]"
@@ -315,6 +359,9 @@
           },
           "subnetName": {
             "value": "[variables('subnetName')]"
+          },
+          "vnetRG": {
+            "value": "[variables('vnetRG')]"
           },
           "publicIpOnNodes": {
             "value": "[parameters('publicIpOnNodes')]"

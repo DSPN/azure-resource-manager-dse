@@ -44,6 +44,9 @@
     },
     "subnetName": {
       "type": "string"
+    },
+    "publicIpOnOpsc": {
+      "type": "string",
     }
   },
   "variables": {
@@ -156,7 +159,7 @@
             "name": "ipconfig1",
             "properties": {
               "publicIPAddress": {
-                "id": "[parameters('publicIPResourceID')]"
+                "id": "[if(equals(parameters('publicIpOnNodes'), 'yes') , json(concat('{\"id\": \"', parameters('publicIPResourceID'),'\"}')), json('null'))]"
               },
               "privateIPAllocationMethod": "Dynamic",
               "subnet": {
