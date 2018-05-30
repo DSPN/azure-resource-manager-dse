@@ -151,9 +151,7 @@
         "Microsoft.Network/networkSecurityGroups/opscNSG"
       ],
       "properties": {
-        "networkSecurityGroup":  {
-          "id": "[resourceId('Microsoft.Network/networkSecurityGroups', 'opscNSG')]"
-        },
+        "networkSecurityGroup": "[if(equals(parameters('publicIpOnOpsc'), 'yes') , json(concat('{\"id\": \"', resourceId('Microsoft.Network/networkSecurityGroups', 'opscNSG'),'\"}')), json('null'))]", 
         "ipConfigurations": [
           {
             "name": "ipconfig1",
