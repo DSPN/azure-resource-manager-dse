@@ -158,9 +158,7 @@
           {
             "name": "ipconfig1",
             "properties": {
-              "publicIPAddress": {
-                "id": "[if(equals(parameters('publicIpOnOpsc'), 'yes') , json(concat('{\"id\": \"', parameters('publicIPResourceID'),'\"}')), json('null'))]"
-              },
+              "publicIPAddress": "[if(equals(parameters('publicIpOnOpsc'), 'yes') , json(concat('{\"id\": \"', parameters('publicIPResourceID'),'\"}')), json('null'))]",
               "privateIPAllocationMethod": "Dynamic",
               "subnet": {
                 "id": "[variables('subnetId')]"
