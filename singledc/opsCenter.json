@@ -57,6 +57,7 @@
     {
       "type": "Microsoft.Network/networkSecurityGroups",
       "name": "opscNSG",
+      "condition": "[equals(parameters('publicIpOnOpsc'), 'yes')]",
       "location": "[parameters('location')]",
       "apiVersion": "2017-11-01",
       "properties": {
@@ -151,7 +152,7 @@
         "Microsoft.Network/networkSecurityGroups/opscNSG"
       ],
       "properties": {
-        "networkSecurityGroup": "[if(equals(parameters('publicIpOnOpsc'), 'yes') , json(concat('{\"id\": \"', resourceId('Microsoft.Network/networkSecurityGroups', 'opscNSG'),'\"}')), json('null'))]", 
+        "networkSecurityGroup": "[if(equals(parameters('publicIpOnOpsc'), 'yes') , json(concat('{\"id\": \"', resourceId('Microsoft.Network/networkSecurityGroups', 'opscNSG'),'\"}')), json('null'))]",
         "ipConfigurations": [
           {
             "name": "ipconfig1",
