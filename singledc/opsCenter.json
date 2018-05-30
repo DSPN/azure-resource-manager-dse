@@ -159,7 +159,7 @@
             "name": "ipconfig1",
             "properties": {
               "publicIPAddress": {
-                "id": "[if(equals(parameters('publicIpOnNodes'), 'yes') , json(concat('{\"id\": \"', parameters('publicIPResourceID'),'\"}')), json('null'))]"
+                "id": "[if(equals(parameters('publicIpOnOpsc'), 'yes') , json(concat('{\"id\": \"', parameters('publicIPResourceID'),'\"}')), json('null'))]"
               },
               "privateIPAllocationMethod": "Dynamic",
               "subnet": {
