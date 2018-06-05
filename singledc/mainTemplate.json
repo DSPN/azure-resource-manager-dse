@@ -217,7 +217,7 @@
       "apiVersion": "2017-11-01",
       "type": "Microsoft.Network/virtualNetworks",
       "name": "[variables('vnetName')]",
-      "condition": "[equals(parameters('vnetName'), '')]",
+      "condition": "[equals(parameters('vnetNeworExisting'), 'new')]",
       "location": "[variables('location')]",
       "dependsOn": [],
       "properties": {
