@@ -185,7 +185,7 @@
     "uniqueString": "[uniqueString(resourceGroup().id, deployment().name)]",
     "vnetName": "[if(equals(parameters('vnetNeworExisting'), 'new') , 'vnet', parameters('vnetName'))]",
     "subnetName": "[if(equals(parameters('vnetNeworExisting'), 'new') , 'subnet', parameters('subnetName'))]",
-    "vnetRG": "[if(equals(parameters('vnetNeworExisting'), 'new') , variables('location'), parameters('vnetRG'))]",
+    "vnetRG": "[if(equals(parameters('vnetNeworExisting'), 'new') , resourcegroup().name, parameters('vnetRG'))]",
     "osSettings": {
       "imageReference": {
         "publisher": "datastax",
