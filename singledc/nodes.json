@@ -485,7 +485,7 @@
   "outputs": {
     "nodePubIp": {
       "type": "string",
-      "value": "[if(equals(parameters('publicIpOnNodes'), 'yes'), reference(resourceId('Microsoft.Network/publicIPAddresses', concat(parameters('namespace'), 'vm0'))).ipAddress, 'null')]"
+      "value": "[if(equals(parameters('publicIpOnNodes'), 'yes'), reference(resourceId('Microsoft.Network/publicIPAddresses', concat(parameters('namespace'), 'vm0'))).properties.ipAddress, 'null')]"
     },
     "nodePrivIp": {
       "type": "string",

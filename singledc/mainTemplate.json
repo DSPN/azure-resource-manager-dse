@@ -391,6 +391,14 @@
     "opsCenterFQDN": {
       "type": "string",
       "value": "[if(equals(parameters('publicIpOnOpsc'),'yes'), reference('opsCenterPublicIP','2017-08-01').outputs.opsCenterFQDN.value, 'xxxx')]"
+    },
+    "nodePubIp": {
+      "type": "string",
+      "value": "[reference('nodes','2017-08-01').outputs.nodePubIp.value]"
+    },
+    "nodePrivIp": {
+      "type": "string",
+      "value": "[reference('nodes','2017-08-01').outputs.nodePrivIp.value]"
     }
   }
 }
