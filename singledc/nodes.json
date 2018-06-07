@@ -482,5 +482,14 @@
       }
     }
   ],
-  "outputs": {}
+  "outputs": {
+    "nodePubIp": {
+      "type": "string",
+      "value": "[if(equals(parameters(publicIpOnNodes), 'yes'), reference(resourceId('Microsoft.Network/publicIPAddresses', concat(parameters(namespace), 'vm0')).ipAddress, 'null']"
+    },
+    "nodePrivIp": {
+      "type": "string",
+      "value": "[reference(resourceId('Microsoft.Network/networkInterfaces', concat(parameters(namespace), 'vm0')).ipConfigurations[0].privateIpAddress]"
+    }
+  }
 }
