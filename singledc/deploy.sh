@@ -2,6 +2,7 @@
 
 resource_group='dse'
 location='eastus'
+branch='master'
 usage="---------------------------------------------------
 Usage:
 deploy.sh [-h] [-g resource-group] [-l location] [-t]
@@ -11,12 +12,12 @@ Options:
  -h                 : display this message and exit
  -g resource-group  : name of resource group to create, default 'dse'
  -l location        : location for resource group, default 'eastus'
- -t                 : testing flag, sets baseUrl to dev branch
+ -t branch          : testing flag, sets baseUrl branch, default 'master'
 
 ---------------------------------------------------"
 
 
-while getopts 'hg:l:t' opt; do
+while getopts 'hg:l:t:' opt; do
   case $opt in
     h) echo -e "$usage"
        exit 1
@@ -25,7 +26,8 @@ while getopts 'hg:l:t' opt; do
     ;;
     l) location="$OPTARG"
     ;;
-    t) testing="true"
+    t) branch="$OPTARG"
+       testing="true"
     ;;
     \?) echo "Invalid option -$OPTARG" >&2
         exit 1
@@ -40,23 +42,25 @@ if [ -z "$(which az)" ]; then
 fi
 
 echo "CLI v2 'az' command found"
-echo "Using values: resource_group=$resource_group location=$location"
+echo "Using values: resource_group=$resource_group location=$location branch=$branch"
 
 if [ -n "$testing" ]; then
-    if [ -x "$(git branch --list | grep '*' | grep 'dev')" ]; then echo "Not on dev branch, exiting."; exit 1; fi
-    echo "Testing... setting baseUrl to dev branch..."
+    if [ -z "$(git branch --list | grep '*' | grep $branch)" ]; then echo "Not on dev branch, exiting."; exit 1; fi
+    echo "Testing... setting baseUrl to $branch branch..."
     az group create --name $resource_group --location $location
     az group deployment create \
      --resource-group $resource_group \
      --template-file mainTemplate.json \
+     --name DSE \
      --parameters @mainTemplateParameters.json \
-     --parameters '{"baseUrl": {"value": "https://raw.githubusercontent.com/DSPN/azure-resource-manager-dse/dev"}}' \
+     --parameters '{"baseUrl": {"value": "https://raw.githubusercontent.com/DSPN/azure-resource-manager-dse/'$branch'"}}' \
      --verbose
 else
     az group create --name $resource_group --location $location
     az group deployment create \
      --resource-group $resource_group \
      --template-file mainTemplate.json \
+     --name DSE \
      --parameters @mainTemplateParameters.json \
      --verbose
 fi
