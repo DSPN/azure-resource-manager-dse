@@ -5,7 +5,7 @@ location='eastus'
 branch='master'
 usage="---------------------------------------------------
 Usage:
-deploy.sh [-h] [-g resource-group] [-l location] [-t]
+deploy.sh [-h] [-g resource-group] [-l location] [-t branch]
 
 Options:
 
