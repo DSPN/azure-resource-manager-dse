@@ -378,11 +378,11 @@
   "outputs": {
     "lifecycleManagerURL": {
       "type": "string",
-      "value": "[concat('http://', if(equals(parameters('publicIpOnOpsc'),'yes'), reference('opsCenterPublicIP','2017-08-01').outputs.opsCenterFQDN.value, 'xxxx'), ':8443/opscenter/lcm.html')]"
+      "value": "[concat('https://', if(equals(parameters('publicIpOnOpsc'),'yes'), reference('opsCenterPublicIP','2017-08-01').outputs.opsCenterFQDN.value, 'xxxx'), ':8443/opscenter/lcm.html')]"
     },
     "opsCenterURL": {
       "type": "string",
-      "value": "[concat('http://', if(equals(parameters('publicIpOnOpsc'),'yes'), reference('opsCenterPublicIP','2017-08-01').outputs.opsCenterFQDN.value, 'xxxx'), ':8443')]"
+      "value": "[concat('https://', if(equals(parameters('publicIpOnOpsc'),'yes'), reference('opsCenterPublicIP','2017-08-01').outputs.opsCenterFQDN.value, 'xxxx'), ':8443')]"
     },
     "opsCenterPubIp": {
       "type": "string",
