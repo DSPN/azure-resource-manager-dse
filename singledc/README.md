@@ -46,7 +46,7 @@ The template also takes the following optional parameters (examples *not* includ
 | publicIpOnNodes | Default 'yes', setting to 'no' will create no public IPs on node VMs |
 | publicIpOnOpsc | Default 'yes', setting to 'no' the OpsCenter VM will only have a private IP and access to OpsCenter must be through a VPN, ssh jumpbox, or similar method which are not created by these templates  |
 | vnetNeworExisting | Default 'new', setting to 'existing' requires also setting the vnet/subnet parameters bellow as no network resources will be created |
-| vnetName | Name of existing vnet to deploy VMs into |
+| vnetName | Name of existing vnet to deploy VMs into. **Note**: You must deploy into the same region if using and existing vnet. |
 | vnetRG | Resource group containing *vnetName* |
 | subnetName | Name of existing subnet in *vnetName* to deploy VMs into |
 | baseUrl | Default master branch of this repo, this is used as the URL for nested templates/extensions |
