@@ -14,17 +14,16 @@ Alternatively, you can run clone this repo and run `deploy.sh`. This script take
 ./deploy.sh -h
 ---------------------------------------------------
 Usage:
-deploy.sh [-h] [-g resource-group] [-l location] [-t]
+deploy.sh [-h] [-g resource-group] [-l location] [-t branch]
 
 Options:
 
  -h                 : display this message and exit
  -g resource-group  : name of resource group to create, default 'dse'
  -l location        : location for resource group, default 'eastus'
- -t                 : testing flag, sets baseUrl to dev branch
+ -t branch          : testing flag, sets baseUrl branch, default 'master'
 
 ---------------------------------------------------
-
 ```
 Note the `-t` flag is for *testing only* and is not for normal use.
 
