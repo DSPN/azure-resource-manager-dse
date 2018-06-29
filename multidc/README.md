@@ -1,3 +1,9 @@
+
+# Deprecation warning: 
+This script should be considered **deprecated** and is being refactored. For more information or details please contact *partner-architecture at datastax.com*
+
+
+
 multidc is a Python script that generates an ARM template.  This supports multiple data centers and is highly customizable.
 
 deploy.sh is the main entry point.  This takes the name of a resource group as a parameter.  deploy.sh creates that resource group, generates an ARM template by invoking main.py and submits that template to Azure.  The template created is written to ./generatedTemplate.json
