@@ -183,9 +183,6 @@
     "opsCenterTemplateUrl": "[concat(variables('templateUrl'), 'opsCenter.json')]",
     "location": "[resourcegroup().location]",
     "uniqueString": "[uniqueString(resourceGroup().id, deployment().name)]",
-    "vnetName": "[if(equals(parameters('vnetNeworExisting'), 'new') , 'vnet', parameters('vnetName'))]",
-    "subnetName": "[if(equals(parameters('vnetNeworExisting'), 'new') , 'subnet', parameters('subnetName'))]",
-    "vnetRG": "[if(equals(parameters('vnetNeworExisting'), 'new') , resourcegroup().name, parameters('vnetRG'))]",
     "osSettings": {
       "imageReference": {
         "publisher": "datastax",
@@ -216,7 +213,7 @@
     {
       "apiVersion": "2017-11-01",
       "type": "Microsoft.Network/virtualNetworks",
-      "name": "[variables('vnetName')]",
+      "name": "[parameters('vnetName')]",
       "condition": "[equals(parameters('vnetNeworExisting'), 'new')]",
       "location": "[variables('location')]",
       "dependsOn": [],
@@ -228,7 +225,7 @@
         },
         "subnets": [
           {
-            "name": "[variables('subnetName')]",
+            "name": "[parameters('subnetName')]",
             "properties": {
               "addressPrefix": "10.0.0.0/24"
             }
@@ -306,13 +303,13 @@
             "value": "[variables('osSettings')]"
           },
           "vnetName": {
-            "value": "[variables('vnetName')]"
+            "value": "[parameters('vnetName')]"
           },
           "subnetName": {
-            "value": "[variables('subnetName')]"
+            "value": "[parameters('subnetName')]"
           },
           "vnetRG": {
-            "value": "[variables('vnetRG')]"
+            "value": "[parameters('vnetRG')]"
           }
         }
       }
@@ -357,13 +354,13 @@
             "value": "[variables('osSettings')]"
           },
           "vnetName": {
-            "value": "[variables('vnetName')]"
+            "value": "[parameters('vnetName')]"
           },
           "subnetName": {
-            "value": "[variables('subnetName')]"
+            "value": "[parameters('subnetName')]"
           },
           "vnetRG": {
-            "value": "[variables('vnetRG')]"
+            "value": "[parameters('vnetRG')]"
           },
           "publicIpOnNodes": {
             "value": "[parameters('publicIpOnNodes')]"
