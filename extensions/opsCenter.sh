@@ -31,7 +31,9 @@ cd install-datastax-ubuntu-$release/bin
 # Overide OpsC install default version if needed
 export OPSC_VERSION='6.5.0'
 
-./os/install_java.sh
+# install openjdk 8, must also call on nodes
+./os/install_java.sh -o
+# add --nojava to setupCluster call below
 
 #install opsc
 ./opscenter/install.sh 'azure'
@@ -56,7 +58,9 @@ echo repopw XXXXXX
 --user $username \
 --password $password \
 --dbpasswd $dbpasswd \
---datapath "/data/cassandra"
+--datapath "/data/cassandra" \
+--nojava \
+--aoss
 
 # trigger install
 ./lcm/triggerInstall.py \
