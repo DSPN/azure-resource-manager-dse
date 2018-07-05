@@ -29,7 +29,7 @@ cd install-datastax-ubuntu-$release/bin
 ./os/extra_packages.sh
 
 # Overide OpsC install default version if needed
-export OPSC_VERSION='6.5.0'
+export OPSC_VERSION='6.5.1'
 
 # install openjdk 8, must also call on nodes
 ./os/install_java.sh -o
