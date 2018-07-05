@@ -59,8 +59,7 @@ echo repopw XXXXXX
 --password $password \
 --dbpasswd $dbpasswd \
 --datapath "/data/cassandra" \
---nojava \
---aoss
+--nojava
 
 # trigger install
 ./lcm/triggerInstall.py \
