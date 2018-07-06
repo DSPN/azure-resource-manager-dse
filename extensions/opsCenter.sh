@@ -58,8 +58,8 @@ echo repopw XXXXXX
 --user $username \
 --password $password \
 --dbpasswd $dbpasswd \
---datapath "/data/cassandra" \
---nojava
+--datapath "/data/cassandra"
+#--nojava
 
 # trigger install
 ./lcm/triggerInstall.py \
@@ -73,6 +73,5 @@ echo repopw XXXXXX
 --opscpw $opscpw
 # set keyspaces to NetworkTopology / RF 3
 sleep 30s
-echo "skipping alterKeyspaces"
-#./lcm/alterKeyspaces.py \
-#--opscpw $opscpw \
+./lcm/alterKeyspaces.py \
+--opscpw $opscpw \
