@@ -16,5 +16,8 @@
   },
   "OpsCPassword": {
     "value": "bar987&"
+  },
+  "dseVersion": {
+    "value": "6.0.1"
   }
 }

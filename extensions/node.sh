@@ -42,8 +42,6 @@ cd install-datastax-ubuntu-$release/bin/
 # install extra packages
 ./os/extra_packages.sh
 
-# install openjdk 8
-./os/install_java.sh -o
 
 # grabbing metadata after extra_packages.sh to ensure we have jq
 cluster_name="mycluster"
