@@ -58,7 +58,8 @@ echo repopw XXXXXX
 --password $password \
 --dbpasswd $dbpasswd \
 --datapath "/data/cassandra" \
---nojava
+--nojava \
+--verbose
 
 # trigger install
 ./lcm/triggerInstall.py \
@@ -74,3 +75,4 @@ echo repopw XXXXXX
 sleep 30s
 ./lcm/alterKeyspaces.py \
 --opscpw $opscpw \
+--verbose
