@@ -39,9 +39,8 @@ wget https://github.com/DSPN/install-datastax-ubuntu/archive/$release.tar.gz
 tar -xvf $release.tar.gz
 
 cd install-datastax-ubuntu-$release/bin/
-# install extra packages, openjdk
+# install extra packages
 ./os/extra_packages.sh
-./os/install_java.sh -o
 
 # grabbing metadata after extra_packages.sh to ensure we have jq
 cluster_name="mycluster"

@@ -25,9 +25,9 @@ wget https://github.com/DSPN/install-datastax-ubuntu/archive/$release.tar.gz
 tar -xvf $release.tar.gz
 
 cd install-datastax-ubuntu-$release/bin
-# install extra packages, openjdk
+# install extra packages, oracle java
 ./os/extra_packages.sh
-./os/install_java.sh -o
+./os/install_java.sh
 
 # Overide OpsC install default version if needed
 export OPSC_VERSION='6.5.1'
@@ -58,7 +58,6 @@ echo repopw XXXXXX
 --password $password \
 --dbpasswd $dbpasswd \
 --datapath "/data/cassandra" \
---nojava \
 --verbose
 
 # trigger install
