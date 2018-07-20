@@ -43,6 +43,7 @@ The template also takes the following optional parameters (examples *not* includ
 | Name   | Description |
 |:--- |:---|
 | DSEVersion | Default '6.0.0', allowed values '6.0.0' / '5.1.9' |
+| opscvmSize | Default 'Standard_D1_v2' |
 | publicIpOnNodes | Default 'yes', setting to 'no' will create no public IPs on node VMs |
 | publicIpOnOpsc | Default 'yes', setting to 'no' the OpsCenter VM will only have a private IP and access to OpsCenter must be through a VPN, ssh jumpbox, or similar method which are not created by these templates  |
 | vnetNeworExisting | Default 'new', setting to 'existing' requires also setting the vnet/subnet parameters bellow as no network resources will be created |
