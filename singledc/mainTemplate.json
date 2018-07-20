@@ -91,6 +91,13 @@
         "description": "Version of DSE to deploy"
       }
     },
+    "opscvmSize": {
+      "type": "string",
+      "defaultValue": "Standard_D1_v2",
+      "metadata": {
+        "description": "Size of OpsCenter VM"
+      }
+    },
     "adminUsername": {
       "type": "string",
       "metadata": {
@@ -282,6 +289,9 @@
           },
           "uniqueString": {
             "value": "[variables('uniqueString')]"
+          },
+          "vmSize": {
+            "value": "[parameters('opscvmSize')]"
           },
           "adminUsername": {
             "value": "[parameters('adminUsername')]"

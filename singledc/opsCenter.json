@@ -17,6 +17,9 @@
     "adminPassword": {
       "type": "securestring"
     },
+    "vmSize": {
+      "type": "string"
+    },
     "OpsCPassword": {
       "type": "securestring"
     },
@@ -46,7 +49,7 @@
       "type": "string"
     },
     "publicIpOnOpsc": {
-      "type": "string",
+      "type": "string"
     }
   },
   "variables": {
@@ -182,7 +185,7 @@
       },
       "properties": {
         "hardwareProfile": {
-          "vmSize": "Standard_D1_v2"
+          "vmSize": "[parameters('vmSize')]"
         },
         "osProfile": {
           "computerName": "opscenter",
