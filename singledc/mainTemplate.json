@@ -84,6 +84,7 @@
       "allowedValues": [
         "6.0.0",
         "6.0.1",
+        "6.0.2",
         "5.1.9",
         "5.1.10"
       ],
@@ -93,7 +94,7 @@
     },
     "opscvmSize": {
       "type": "string",
-      "defaultValue": "Standard_D1_v2",
+      "defaultValue": "Standard_D2s_v3",
       "metadata": {
         "description": "Size of OpsCenter VM"
       }
