@@ -2,34 +2,194 @@
   "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
-    "Username": {
-      "type": "string",
+    "nodeCount": {
+      "type": "int",
+      "defaultValue": 3,
+      "minValue": 1,
+      "maxValue": 40,
       "metadata": {
-        "description": "User name for the virtual machines. Some names are <a href=\"https://docs.microsoft.com/en-us/azure/virtual-machines/linux/faq#what-are-the-username-requirements-when-creating-a-vm\" target=\"_blank\">not allowed</a>."
+        "description": "Number of virtual machines to provision for the cluster"
       }
     },
-    "UserPassword": {
+    "vmSize": {
+      "type": "string",
+      "defaultValue": "Standard_DS4_v2",
+      "allowedValues": [
+        "Standard_D2s_v3",
+        "Standard_D4s_v3",
+        "Standard_D8s_v3",
+        "Standard_D16s_v3",
+        "Standard_D32s_v3",
+        "Standard_D64s_v3",
+        "Standard_DS2_v2",
+        "Standard_DS3_v2",
+        "Standard_DS4_v2",
+        "Standard_DS5_v2",
+        "Standard_DS11_v2",
+        "Standard_DS12_v2",
+        "Standard_DS13_v2",
+        "Standard_DS14_v2",
+        "Standard_DS15_v2",
+        "Standard_GS1",
+        "Standard_GS2",
+        "Standard_GS3",
+        "Standard_GS4",
+        "Standard_GS5",
+        "Standard_FS1",
+        "Standard_FS2",
+        "Standard_FS4",
+        "Standard_FS8",
+        "Standard_FS16",
+        "Standard_D2_v2",
+        "Standard_D3_v2",
+        "Standard_D4_v2",
+        "Standard_D5_v2",
+        "Standard_D11_v2",
+        "Standard_D12_v2",
+        "Standard_D13_v2",
+        "Standard_D14_v2",
+        "Standard_D15_v2",
+        "Standard_G1",
+        "Standard_G2",
+        "Standard_G3",
+        "Standard_G4",
+        "Standard_G5",
+        "Standard_D1",
+        "Standard_D2",
+        "Standard_D3",
+        "Standard_D4",
+        "Standard_F1",
+        "Standard_F2",
+        "Standard_F4",
+        "Standard_F8",
+        "Standard_F16",
+        "Standard_D11",
+        "Standard_D12",
+        "Standard_D13",
+        "Standard_D14",
+        "Standard_H8",
+        "Standard_H16",
+        "Standard_H8m",
+        "Standard_H16m",
+        "Standard_H16r",
+        "Standard_H16mr"
+      ],
+      "metadata": {
+        "description": "Size of virtual machine to provision for the cluster"
+      }
+    },
+    "DSEVersion": {
+      "type": "string",
+      "defaultValue": "6.0.0",
+      "allowedValues": [
+        "6.0.0",
+        "5.1.9"
+      ],
+      "metadata": {
+        "description": "Version of DSE to deploy"
+      }
+    },
+    "opscvmSize": {
+      "type": "string",
+      "defaultValue": "Standard_D1_v2",
+      "metadata": {
+        "description": "Size of OpsCenter VM"
+      }
+    },
+    "adminUsername": {
       "type": "string",
       "metadata": {
-        "description": "User password for the virtual machines. 6-72 characters in length. <a href=\"https://docs.microsoft.com/en-us/azure/virtual-machines/linux/faq#what-are-the-password-requirements-when-creating-a-vm\" target=\"_blank\">Must have 3 of the following</a>: uppercase, lowercase, number, symbol."
+        "description": "Admin user name for the virtual machines"
+      }
+    },
+    "adminPassword": {
+      "type": "securestring",
+      "metadata": {
+        "description": "Admin password for the virtual machines"
+      }
+    },
+    "DBPassword": {
+      "type": "securestring",
+      "metadata": {
+        "description": "Password for default C* user 'cassandra'"
+      }
+    },
+    "OpsCPassword": {
+      "type": "securestring",
+      "metadata": {
+        "description": "Password for default OpsCenter user 'admin'"
+      }
+    },
+    "publicIpOnNodes": {
+      "type": "string",
+      "metadata": {
+        "description": "Create and use public ip's on node vm's"
+      },
+      "defaultValue": "yes",
+      "allowedValues": [
+        "yes",
+        "no"
+      ]
+    },
+    "publicIpOnOpsc": {
+      "type": "string",
+      "metadata": {
+        "description": "Create and use public ip's on node vm's"
+      },
+      "defaultValue": "yes",
+      "allowedValues": [
+        "yes",
+        "no"
+      ]
+    },
+    "vnetNeworExisting": {
+      "type": "string",
+      "metadata": {
+        "description": "Create and use public ip's on node vm's"
+      },
+      "defaultValue": "new",
+      "allowedValues": [
+        "new",
+        "existing"
+      ]
+    },
+    "vnetName": {
+      "type": "string",
+      "defaultValue": "vnet",
+      "metadata": {
+        "description": "Name of existing vnet, unused if blank."
+      }
+    },
+    "vnetRG": {
+      "type": "string",
+      "defaultValue": "[resourceGroup().name]",
+      "metadata": {
+        "description": "Resource group of vnet if different"
+      }
+    },
+    "subnetName": {
+      "type": "string",
+      "defaultValue": "subnet",
+      "metadata": {
+        "description": "Name of existing vnet, unused if blank."
+      }
+    },
+    "baseUrl": {
+      "type": "string",
+      "defaultValue": "https://raw.githubusercontent.com/DSPN/azure-resource-manager-dse/master",
+      "metadata": {
+        "description": "URL for nested templates and extensions"
       }
     }
   },
   "variables": {
-    "baseUrl": "https://raw.githubusercontent.com/DSPN/azure-resource-manager-dse/workshop",
-    "templateUrl": "[concat(variables('baseUrl'), '/singledc/')]",
-    "extensionUrl": "[concat(variables('baseUrl'), '/extensions/')]",
+    "templateUrl": "[concat(parameters('baseUrl'), '/singledc/')]",
+    "extensionUrl": "[concat(parameters('baseUrl'), '/extensions/')]",
     "nodesTemplateUrl": "[concat(variables('templateUrl'), 'nodes.json')]",
     "opsCenterPubIPTemplateUrl": "[concat(variables('templateUrl'), 'opsCenterPublicIP.json')]",
     "opsCenterTemplateUrl": "[concat(variables('templateUrl'), 'opsCenter.json')]",
     "location": "[resourcegroup().location]",
     "uniqueString": "[uniqueString(resourceGroup().id, deployment().name)]",
-    "vnetName": "vnet",
-    "subnetName": "subnet",
-    "nodeCount": 3,
-    "vmSize": "Standard_D4s_v3",
-    "DBPassword": "unused",
-    "OpsCPassword": "unused",
     "osSettings": {
       "imageReference": {
         "publisher": "datastax",
@@ -60,7 +220,8 @@
     {
       "apiVersion": "2017-11-01",
       "type": "Microsoft.Network/virtualNetworks",
-      "name": "[variables('vnetName')]",
+      "name": "[parameters('vnetName')]",
+      "condition": "[equals(parameters('vnetNeworExisting'), 'new')]",
       "location": "[variables('location')]",
       "dependsOn": [],
       "properties": {
@@ -71,7 +232,7 @@
         },
         "subnets": [
           {
-            "name": "[variables('subnetName')]",
+            "name": "[parameters('subnetName')]",
             "properties": {
               "addressPrefix": "10.0.0.0/24"
             }
@@ -83,9 +244,8 @@
       "name": "opsCenterPublicIP",
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2017-08-01",
-      "dependsOn": [
-        "[concat('Microsoft.Network/virtualNetworks/', variables('vnetName'))]"
-      ],
+      "condition": "[equals(parameters('publicIpOnOpsc'), 'yes')]",
+      "dependsOn": [],
       "properties": {
         "mode": "Incremental",
         "templateLink": {
@@ -107,7 +267,6 @@
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2017-08-01",
       "dependsOn": [
-        "[concat('Microsoft.Network/virtualNetworks/', variables('vnetName'))]",
         "Microsoft.Resources/deployments/opsCenterPublicIP"
       ],
       "properties": {
@@ -121,34 +280,46 @@
             "value": "[variables('location')]"
           },
           "publicIPResourceId": {
-            "value": "[reference('opsCenterPublicIP').outputs.opsCenterPublicIPResourceId.value]"
+            "value": "[if(equals(parameters('publicIpOnOpsc'), 'yes'), reference('opsCenterPublicIP','2017-08-01').outputs.opsCenterPublicIPResourceId.value, 'notcreated')]"
+          },
+          "publicIpOnOpsc": {
+            "value": "[parameters('publicIpOnOpsc')]"
           },
           "uniqueString": {
             "value": "[variables('uniqueString')]"
           },
+          "vmSize": {
+            "value": "[parameters('opscvmSize')]"
+          },
           "adminUsername": {
-            "value": "[parameters('Username')]"
+            "value": "[parameters('adminUsername')]"
           },
           "adminPassword": {
-            "value": "[parameters('UserPassword')]"
+            "value": "[parameters('adminPassword')]"
           },
           "OpsCPassword": {
-            "value": "[variables('OpsCPassword')]"
+            "value": "[parameters('OpsCPassword')]"
           },
           "DBPassword": {
-            "value": "[variables('DBPassword')]"
+            "value": "[parameters('DBPassword')]"
+          },
+          "DSEVersion": {
+            "value": "[parameters('DSEVersion')]"
           },
           "nodeCount": {
-            "value": "[variables('nodeCount')]"
+            "value": "[parameters('nodeCount')]"
           },
           "osSettings": {
             "value": "[variables('osSettings')]"
           },
           "vnetName": {
-            "value": "[variables('vnetName')]"
+            "value": "[parameters('vnetName')]"
           },
           "subnetName": {
-            "value": "[variables('subnetName')]"
+            "value": "[parameters('subnetName')]"
+          },
+          "vnetRG": {
+            "value": "[parameters('vnetRG')]"
           }
         }
       }
@@ -157,9 +328,7 @@
       "name": "nodes",
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2017-08-01",
-      "dependsOn": [
-        "[concat('Microsoft.Network/virtualNetworks/', variables('vnetName'))]"
-      ],
+      "dependsOn": [],
       "properties": {
         "mode": "Incremental",
         "templateLink": {
@@ -171,34 +340,40 @@
             "value": "[variables('location')]"
           },
           "opsCenterFQDN": {
-            "value": "[reference('opsCenterPublicIP').outputs.opsCenterFQDN.value]"
+            "value": "[if(equals(parameters('publicIpOnOpsc'), 'yes'), reference('opsCenterPublicIP').outputs.opsCenterFQDN.value, 'opscenter')]"
           },
           "uniqueString": {
             "value": "[variables('uniqueString')]"
           },
           "OpsCPassword": {
-            "value": "[variables('OpsCPassword')]"
+            "value": "[parameters('OpsCPassword')]"
           },
           "adminUsername": {
-            "value": "[parameters('Username')]"
+            "value": "[parameters('adminUsername')]"
           },
           "adminPassword": {
-            "value": "[parameters('UserPassword')]"
+            "value": "[parameters('adminPassword')]"
           },
           "nodeCount": {
-            "value": "[variables('nodeCount')]"
+            "value": "[parameters('nodeCount')]"
           },
           "vmSize": {
-            "value": "[variables('vmSize')]"
+            "value": "[parameters('vmSize')]"
           },
           "osSettings": {
             "value": "[variables('osSettings')]"
           },
           "vnetName": {
-            "value": "[variables('vnetName')]"
+            "value": "[parameters('vnetName')]"
           },
           "subnetName": {
-            "value": "[variables('subnetName')]"
+            "value": "[parameters('subnetName')]"
+          },
+          "vnetRG": {
+            "value": "[parameters('vnetRG')]"
+          },
+          "publicIpOnNodes": {
+            "value": "[parameters('publicIpOnNodes')]"
           },
           "namespace": {
             "value": "dc0"
@@ -208,29 +383,29 @@
     }
   ],
   "outputs": {
-    "Username": {
+    "lifecycleManagerURL": {
       "type": "string",
-      "value": "[parameters('Username')]"
-    },
-    "UserPassword": {
-      "type": "string",
-      "value": "[parameters('UserPassword')]"
+      "value": "[concat('https://', if(equals(parameters('publicIpOnOpsc'),'yes'), reference('opsCenterPublicIP','2017-08-01').outputs.opsCenterFQDN.value, 'xxxx'), ':8443/opscenter/lcm.html')]"
     },
     "opsCenterURL": {
       "type": "string",
-      "value": "[concat('http://', reference('opsCenterPublicIP').outputs.opsCenterIP.value, ':8888')]"
+      "value": "[concat('https://', if(equals(parameters('publicIpOnOpsc'),'yes'), reference('opsCenterPublicIP','2017-08-01').outputs.opsCenterFQDN.value, 'xxxx'), ':8443')]"
     },
-    "lifecycleManagerURL": {
+    "opsCenterPubIp": {
       "type": "string",
-      "value": "[concat('http://', reference('opsCenterPublicIP').outputs.opsCenterIP.value, ':8888/opscenter/lcm.html')]"
+      "value": "[if(equals(parameters('publicIpOnOpsc'),'yes'), reference('opsCenterPublicIP','2017-08-01').outputs.opsCenterPubIp.value, 'xxxx')]"
     },
-    "studioURL": {
+    "opsCenterFQDN": {
       "type": "string",
-      "value": "[concat('http://', reference('nodes').outputs.vm0ip.value, ':9091')]"
+      "value": "[if(equals(parameters('publicIpOnOpsc'),'yes'), reference('opsCenterPublicIP','2017-08-01').outputs.opsCenterFQDN.value, 'xxxx')]"
     },
-    "docsURL": {
+    "nodePubIp": {
       "type": "string",
-      "value": "[concat('http://', reference('nodes').outputs.vm0ip.value, ':1313')]"
+      "value": "[reference('nodes','2017-08-01').outputs.nodePubIp.value]"
+    },
+    "nodePrivIp": {
+      "type": "string",
+      "value": "[reference('nodes','2017-08-01').outputs.nodePrivIp.value]"
     }
   }
 }

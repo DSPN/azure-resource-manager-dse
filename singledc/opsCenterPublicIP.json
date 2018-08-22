@@ -29,9 +29,9 @@
       "type": "string",
       "value": "[reference('opscenter-pubip').dnsSettings.fqdn]"
     },
-    "opsCenterIP": {
+    "opsCenterPubIp": {
       "type": "string",
-      "value": "[reference('opscenter-pubip').IpAddress]"
+      "value": "[reference('opscenter-pubip').ipAddress]"
     },
     "opsCenterPublicIPResourceId": {
       "type": "string",
