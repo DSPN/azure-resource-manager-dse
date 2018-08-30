@@ -383,11 +383,11 @@
     },
     "opsCenterURL": {
       "type": "string",
-      "value": "[concat('http://', reference('opsCenterPublicIP').outputs.opsCenterIP.value, ':8888')]"
+      "value": "[concat('http://', reference('opsCenterPublicIP').outputs.opsCenterPubIP.value, ':8888')]"
     },
     "lifecycleManagerURL": {
       "type": "string",
-      "value": "[concat('http://', reference('opsCenterPublicIP').outputs.opsCenterIP.value, ':8888/opscenter/lcm.html')]"
+      "value": "[concat('http://', reference('opsCenterPublicIP').outputs.opsCenterPubIP.value, ':8888/opscenter/lcm.html')]"
     },
     "studioURL": {
       "type": "string",
