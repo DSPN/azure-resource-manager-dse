@@ -336,7 +336,7 @@
             "value": "[variables('uniqueString')]"
           },
           "OpsCPassword": {
-            "value": "[parameters('OpsCPassword')]"
+            "value": "[variables('OpsCPassword')]"
           },
           "adminUsername": {
             "value": "[parameters('adminUsername')]"
@@ -373,29 +373,29 @@
     }
   ],
   "outputs": {
-    "lifecycleManagerURL": {
+    "Username": {
       "type": "string",
-      "value": "[concat('https://', if(equals(parameters('publicIpOnOpsc'),'yes'), reference('opsCenterPublicIP','2017-08-01').outputs.opsCenterFQDN.value, 'xxxx'), ':8443/opscenter/lcm.html')]"
+      "value": "[parameters('Username')]"
+    },
+    "UserPassword": {
+      "type": "string",
+      "value": "[parameters('UserPassword')]"
     },
     "opsCenterURL": {
       "type": "string",
-      "value": "[concat('https://', if(equals(parameters('publicIpOnOpsc'),'yes'), reference('opsCenterPublicIP','2017-08-01').outputs.opsCenterFQDN.value, 'xxxx'), ':8443')]"
+      "value": "[concat('http://', reference('opsCenterPublicIP').outputs.opsCenterIP.value, ':8888')]"
     },
-    "opsCenterPubIp": {
+    "lifecycleManagerURL": {
       "type": "string",
-      "value": "[if(equals(parameters('publicIpOnOpsc'),'yes'), reference('opsCenterPublicIP','2017-08-01').outputs.opsCenterPubIp.value, 'xxxx')]"
+      "value": "[concat('http://', reference('opsCenterPublicIP').outputs.opsCenterIP.value, ':8888/opscenter/lcm.html')]"
     },
-    "opsCenterFQDN": {
+    "studioURL": {
       "type": "string",
-      "value": "[if(equals(parameters('publicIpOnOpsc'),'yes'), reference('opsCenterPublicIP','2017-08-01').outputs.opsCenterFQDN.value, 'xxxx')]"
+      "value": "[concat('http://', reference('nodes').outputs.vm0ip.value, ':9091')]"
     },
-    "nodePubIp": {
+    "docsURL": {
       "type": "string",
-      "value": "[reference('nodes','2017-08-01').outputs.nodePubIp.value]"
-    },
-    "nodePrivIp": {
-      "type": "string",
-      "value": "[reference('nodes','2017-08-01').outputs.nodePrivIp.value]"
+      "value": "[concat('http://', reference('nodes').outputs.vm0ip.value, ':1313')]"
     }
   }
 }
