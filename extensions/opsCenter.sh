@@ -62,6 +62,7 @@ echo repopw XXXXXX
 --config "$config" \
 --user $username \
 --password $password \
+--dbpasswd "unused" \
 --verbose
 
 # trigger install
@@ -76,4 +77,4 @@ echo repopw XXXXXX
 ./lcm/waitForJobs.py
 
 # set keyspaces to NetworkTopology / RF 3
-./lcm/alterKeyspaces.py 
+./lcm/alterKeyspaces.py
