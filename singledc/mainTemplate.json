@@ -391,11 +391,11 @@
     },
     "studioURL": {
       "type": "string",
-      "value": "[concat('http://', reference('nodes').outputs.vm0ip.value, ':9091')]"
+      "value": "[concat('http://', reference('nodes').outputs.nodePubIp.value, ':9091')]"
     },
     "docsURL": {
       "type": "string",
-      "value": "[concat('http://', reference('nodes').outputs.vm0ip.value, ':1313')]"
+      "value": "[concat('http://', reference('nodes').outputs.nodePubIp.value, ':1313')]"
     }
   }
 }
