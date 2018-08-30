@@ -1,8 +1,8 @@
 {
-  "Username": {
+  "adminUsername": {
     "value": "datastax"
   },
-  "UserPassword": {
+  "adminPassword": {
     "value": "foo123!"
   }
 }

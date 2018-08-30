@@ -108,18 +108,6 @@
         "description": "Admin password for the virtual machines"
       }
     },
-    "DBPassword": {
-      "type": "securestring",
-      "metadata": {
-        "description": "Password for default C* user 'cassandra'"
-      }
-    },
-    "OpsCPassword": {
-      "type": "securestring",
-      "metadata": {
-        "description": "Password for default OpsCenter user 'admin'"
-      }
-    },
     "publicIpOnNodes": {
       "type": "string",
       "metadata": {
@@ -188,6 +176,8 @@
     "nodesTemplateUrl": "[concat(variables('templateUrl'), 'nodes.json')]",
     "opsCenterPubIPTemplateUrl": "[concat(variables('templateUrl'), 'opsCenterPublicIP.json')]",
     "opsCenterTemplateUrl": "[concat(variables('templateUrl'), 'opsCenter.json')]",
+    "DBPassword": "unused",
+    "OpsCPassword": "unused",
     "location": "[resourcegroup().location]",
     "uniqueString": "[uniqueString(resourceGroup().id, deployment().name)]",
     "osSettings": {
@@ -298,10 +288,10 @@
             "value": "[parameters('adminPassword')]"
           },
           "OpsCPassword": {
-            "value": "[parameters('OpsCPassword')]"
+            "value": "[variables('OpsCPassword')]"
           },
           "DBPassword": {
-            "value": "[parameters('DBPassword')]"
+            "value": "[variables('DBPassword')]"
           },
           "DSEVersion": {
             "value": "[parameters('DSEVersion')]"
