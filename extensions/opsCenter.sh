@@ -20,17 +20,17 @@ cluster_name="mycluster"
 repouser='datastax@microsoft.com'
 repopw='3A7vadPHbNT'
 
-release="dev"
+release="7.1.0"
 wget https://github.com/DSPN/install-datastax-ubuntu/archive/$release.tar.gz
 tar -xvf $release.tar.gz
 
 cd install-datastax-ubuntu-$release/bin
-# install extra packages, oracle java
+# install extra packages, openjdk
 ./os/extra_packages.sh
-./os/install_java.sh
+./os/install_java.sh -o
 
 # Overide OpsC install default version if needed
-export OPSC_VERSION='6.5.1'
+export OPSC_VERSION='6.5.2'
 
 #install opsc
 ./opscenter/install.sh 'azure'
@@ -58,20 +58,24 @@ echo repopw XXXXXX
 --password $password \
 --dbpasswd $dbpasswd \
 --datapath "/data/cassandra" \
+--nojava \
 --verbose
 
 # trigger install
 ./lcm/triggerInstall.py \
 --opscpw $opscpw \
 --clustername $cluster_name \
---clustersize $nodecount
+--clustersize $nodecount \
+--pause 10 \
+--trys 400
 
 # Block execution while waiting for jobs to
 # exit RUNNING/PENDING status
 ./lcm/waitForJobs.py \
 --opscpw $opscpw
 # set keyspaces to NetworkTopology / RF 3
-sleep 30s
-./lcm/alterKeyspaces.py \
+
+echo "Backgrounding call to alterKeyspaces.py, writing ouput to repair.log... "
+nohup ./lcm/alterKeyspaces.py \
 --opscpw $opscpw \
---verbose
+--delay 60 >> ../../repair.log &

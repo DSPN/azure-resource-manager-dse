@@ -34,13 +34,14 @@ mkdir -p /data/cassandra/saved_caches
 useradd cassandra
 chown -R cassandra:cassandra /data/cassandra
 
-release="dev"
+release="7.1.0"
 wget https://github.com/DSPN/install-datastax-ubuntu/archive/$release.tar.gz
 tar -xvf $release.tar.gz
 
 cd install-datastax-ubuntu-$release/bin/
-# install extra packages
+# install extra packages, openjdk
 ./os/extra_packages.sh
+./os/install_java.sh -o
 
 # grabbing metadata after extra_packages.sh to ensure we have jq
 cluster_name="mycluster"
@@ -73,6 +74,8 @@ echo node_id $node_id
 ./lcm/addNode.py \
 --opsc-ip $opscfqdn \
 --opscpw $opscpw \
+--trys 120 \
+--pause 10 \
 --clustername $cluster_name \
 --dcname $data_center_name \
 --rack $rack \

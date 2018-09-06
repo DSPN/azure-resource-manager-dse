@@ -94,7 +94,7 @@
     },
     "opscvmSize": {
       "type": "string",
-      "defaultValue": "Standard_D2s_v3",
+      "defaultValue": "Standard_D1_v2",
       "metadata": {
         "description": "Size of OpsCenter VM"
       }
