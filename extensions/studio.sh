@@ -4,7 +4,7 @@ user=$1
 
 echo "Installing DS Studio..."
 
-cd ~$user
+cd /home/$user
 sversion='6.0.2'
 curl -sS -O https://dsetestdrivestor.blob.core.windows.net/studio/datastax-studio-$sversion.tar.gz
 tar -xf datastax-studio-$sversion.tar.gz
