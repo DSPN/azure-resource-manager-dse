@@ -8,6 +8,8 @@ cd /home/$user
 sversion='6.0.2'
 curl -sS -O https://dsetestdrivestor.blob.core.windows.net/studio/datastax-studio-$sversion.tar.gz
 tar -xf datastax-studio-$sversion.tar.gz
+# open up connections
+sed -i -e 's/httpBindAddress: localhost/httpBindAddress: 0.0.0.0/g' ./datastax-studio-$sversion/conf/configuration.yaml
 # DONT setup connection
 echo "Remove sparksql example..."
 rm ./datastax-studio-$sversion/examples/notebooks/3a0a2fc4-d7d7-40ba-9438-8d672da3c1d5
