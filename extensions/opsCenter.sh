@@ -79,3 +79,10 @@ echo "Backgrounding call to alterKeyspaces.py, writing ouput to repair.log... "
 nohup ./lcm/alterKeyspaces.py \
 --opscpw $opscpw \
 --delay 60 >> ../../repair.log &
+
+studio="true"
+if [ "$studio" = true ] ; then
+    echo "Passed studio='true', installing/starting studio"
+    cd ../../
+    bash ./studio.sh $username
+fi

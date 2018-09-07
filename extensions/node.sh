@@ -53,7 +53,7 @@ curl -L https://packages.microsoft.com/keys/microsoft.asc | sudo apt-key add -
 echo "deb [arch=amd64] https://packages.microsoft.com/repos/microsoft-ubuntu-xenial-prod/ xenial main" > azure.list
 cp ./azure.list /etc/apt/sources.list.d/
 apt-key adv --keyserver packages.microsoft.com --recv-keys EB3E94ADBE1229CF
-#3 install
+# install
 apt-get install apt-transport-https
 apt-get update && sudo apt-get -y install azure-cli azcopy
 
