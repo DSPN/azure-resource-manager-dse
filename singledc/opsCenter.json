@@ -142,6 +142,19 @@
               "priority": 1210,
               "direction": "Inbound"
             }
+          },
+          {
+            "name": "Studio",
+            "properties": {
+              "protocol": "TCP",
+              "sourcePortRange": "*",
+              "destinationPortRange": "9091",
+              "sourceAddressPrefix": "Internet",
+              "destinationAddressPrefix": "*",
+              "access": "Allow",
+              "priority": 1400,
+              "direction": "Inbound"
+            }
           }
         ]
       }
