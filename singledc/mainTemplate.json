@@ -78,6 +78,13 @@
         "description": "Size of virtual machine to provision for the cluster"
       }
     },
+    "diskSize": {
+      "type": "int",
+      "defaultValue": 1023,
+      "metadata": {
+        "description": "Size (GB) of extenal data volume for each node. If 0, ephemeral disk will be used for data."
+      }
+    },
     "DSEVersion": {
       "type": "string",
       "defaultValue": "6.0.1",
@@ -176,6 +183,17 @@
       "metadata": {
         "description": "Name of existing vnet, unused if blank."
       }
+    },
+    "installStudio": {
+      "type": "string",
+      "metadata": {
+        "description": "Install DSE Studio on OpsCenter vm"
+      },
+      "defaultValue": "yes",
+      "allowedValues": [
+        "yes",
+        "no"
+      ]
     },
     "baseUrl": {
       "type": "string",
@@ -316,6 +334,9 @@
           "osSettings": {
             "value": "[variables('osSettings')]"
           },
+          "installStudio": {
+            "value": "[parameters('installStudio')]"
+          },
           "vnetName": {
             "value": "[parameters('vnetName')]"
           },
@@ -364,6 +385,9 @@
           "vmSize": {
             "value": "[parameters('vmSize')]"
           },
+          "diskSize": {
+            "value": "[parameters('diskSize')]"
+          },
           "osSettings": {
             "value": "[variables('osSettings')]"
           },
@@ -402,6 +426,10 @@
     "opsCenterFQDN": {
       "type": "string",
       "value": "[if(equals(parameters('publicIpOnOpsc'),'yes'), reference('opsCenterPublicIP','2017-08-01').outputs.opsCenterFQDN.value, 'xxxx')]"
+    },
+    "studioURL": {
+      "type": "string",
+      "value": "[concat('https://', if(equals(parameters('installStudio'),'yes'), reference('opsCenterPublicIP','2017-08-01').outputs.opsCenterFQDN.value, 'xxxx'), ':9091')]"
     },
     "nodePubIp": {
       "type": "string",

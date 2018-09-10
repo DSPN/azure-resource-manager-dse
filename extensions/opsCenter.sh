@@ -6,6 +6,7 @@ opscpw=$3
 dbpasswd=$4
 nodecount=$5
 ver=$6
+studio=$7
 
 echo "Input to opsCenter.sh is:"
 echo username $username
@@ -80,9 +81,7 @@ nohup ./lcm/alterKeyspaces.py \
 --opscpw $opscpw \
 --delay 60 >> ../../repair.log &
 
-studio="true"
-if [ "$studio" = true ] ; then
-    echo "Passed studio='true', installing/starting studio"
-    cd ../../
-    bash ./studio.sh $username
+if [ "$studio" = "yes" ] ; then
+    echo "Passed studio='yes', installing/starting studio"
+    bash ../../studio.sh $username
 fi

@@ -4,12 +4,14 @@ data_center_size=$1
 opscfqdn=$2
 data_center_name=$3
 opscpw=$4
+disksize=$5
 
 echo "Input to node.sh is:"
 echo data_center_size $data_center_size
 echo opscfqdn $opscfqdn
 echo data_center_name $data_center_name
 echo opscpw XXXXXX
+echo disksize $disksize
 
 # System setup/config
 # Copied in from general install scripts

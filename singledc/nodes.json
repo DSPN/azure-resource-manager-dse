@@ -27,11 +27,7 @@
       "type": "string"
     },
     "diskSize": {
-      "type": "int",
-      "defaultValue": 1023,
-      "metadata": {
-        "description": "Size (GB) of extenal data volume for each node"
-      }
+      "type": "int"
     },
     "osSettings": {
       "type": "object"
@@ -440,11 +436,7 @@
             "createOption": "FromImage"
           },
           "dataDisks": [
-            {
-              "diskSizeGB": "1023",
-              "lun": 0,
-              "createOption": "Empty"
-            }
+            "[if( greater(parameters('diskSize'), 0 ) , json(concat('{\"diskSizeGB\": \"', parameters('diskSize'), '\", \"lun\": 0, \"createOption\": \"Empty\"}')), json('null') )]"
           ]
         },
         "networkProfile": {
@@ -477,7 +469,7 @@
           "fileUris": "[parameters('osSettings').scripts]"
         },
         "protectedSettings": {
-          "commandToExecute": "[concat('bash node.sh ', parameters('nodeCount'), ' ', parameters('opsCenterFQDN'), ' ', parameters('namespace'), ' ', parameters('OpsCPassword'))]"
+          "commandToExecute": "[concat('bash node.sh ', parameters('nodeCount'), ' ', parameters('opsCenterFQDN'), ' ', parameters('namespace'), ' ', parameters('OpsCPassword'), ' ', parameters('diskSize') )]"
         }
       }
     }

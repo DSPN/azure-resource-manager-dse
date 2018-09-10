@@ -35,6 +35,9 @@
     "osSettings": {
       "type": "object"
     },
+    "installStudio": {
+      "type": "string"
+    },
     "vnetName": {
       "type": "string"
     },
@@ -237,7 +240,7 @@
           "fileUris": "[parameters('osSettings').scripts]"
         },
         "protectedSettings": {
-          "commandToExecute": "[concat('bash opsCenter.sh ', parameters('adminUsername'), ' ', parameters('adminPassword'), ' ', parameters('OpsCPassword'), ' ', parameters('DBPassword'), ' ', parameters('nodeCount'), ' ', parameters('DSEVersion'))]"
+          "commandToExecute": "[concat('bash opsCenter.sh ', parameters('adminUsername'), ' ', parameters('adminPassword'), ' ', parameters('OpsCPassword'), ' ', parameters('DBPassword'), ' ', parameters('nodeCount'), ' ', parameters('DSEVersion'), ' ', parameters('installStudio'))]"
         }
       }
     }
