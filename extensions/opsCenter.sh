@@ -41,6 +41,8 @@ export OPSC_VERSION='6.5.2'
 ./opscenter/set_opsc_pw_https.sh $opscpw
 sleep 1m
 
+datapath="/data/cassandra"
+
 echo "Calling setupCluster.py with the settings:"
 echo opsc_ip 127.0.0.1
 echo cluster_name $cluster_name
@@ -48,6 +50,7 @@ echo username $username
 echo password XXXXXX
 echo repouser $repouser
 echo repopw XXXXXX
+echo datapath $datapath
 
 # add --nojava to setupCluster call below,
 # java must be installed on nodes separate from LCM
@@ -60,7 +63,7 @@ echo repopw XXXXXX
 --user $username \
 --password $password \
 --dbpasswd $dbpasswd \
---datapath "/data/cassandra" \
+--datapath $datapath \
 --nojava \
 --verbose
 

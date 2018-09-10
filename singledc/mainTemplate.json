@@ -218,7 +218,8 @@
       "scripts": [
         "[concat(variables('extensionUrl'), 'node.sh')]",
         "[concat(variables('extensionUrl'), 'opsCenter.sh')]",
-        "[concat(variables('extensionUrl'), 'studio.sh')]"
+        "[concat(variables('extensionUrl'), 'studio.sh')]",
+        "[concat(variables('extensionUrl'), 'disk.sh')]"
       ]
     }
   },

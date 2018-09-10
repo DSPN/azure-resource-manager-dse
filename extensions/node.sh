@@ -21,21 +21,8 @@ echo "Going to set the TCP keepalive permanently across reboots."
 echo "net.ipv4.tcp_keepalive_time = 120" >> /etc/sysctl.conf
 echo "" >> /etc/sysctl.conf
 
-# mount data disk
-cp /etc/fstab /etc/fstab.bak
-# add C* data disk
-mkfs -t ext4 /dev/sdc
-uuid=$(blkid /dev/sdc -sUUID -ovalue)
-mkdir -p /data/cassandra
-echo "# Cassandra data mount, template auto-generated." >> /etc/fstab
-echo "UUID=$uuid       /data/cassandra   ext4    defaults,nofail        1       2" >> /etc/fstab
-mount -a
-mkdir -p /data/cassandra/data
-mkdir -p /data/cassandra/commitlog
-mkdir -p /data/cassandra/saved_caches
-useradd cassandra
-usermod -d /var/lib/cassandra -s /bin/false cassandra
-chown -R cassandra:cassandra /data/cassandra
+# mount/format disk if needed
+bash ./disk.sh $disksize
 
 release="7.1.0"
 wget https://github.com/DSPN/install-datastax-ubuntu/archive/$release.tar.gz
