@@ -435,9 +435,7 @@
           "osDisk": {
             "createOption": "FromImage"
           },
-          "dataDisks": [
-            "[if( greater(parameters('diskSize'), 0 ) , json(concat('{\"diskSizeGB\": \"', parameters('diskSize'), '\", \"lun\": 0, \"createOption\": \"Empty\"}')), json('null') )]"
-          ]
+          "dataDisks": "[if( greater(parameters('diskSize'), 0 ) , createArray(json(concat('{\"diskSizeGB\": \"', parameters('diskSize'), '\", \"lun\": 0, \"createOption\": \"Empty\"}'))), createArray(json('null')) )]"
         },
         "networkProfile": {
           "networkInterfaces": [
