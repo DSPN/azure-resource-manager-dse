@@ -14,6 +14,8 @@ echo password XXXXXX
 echo opscpw YYYYYY
 echo dbpasswd ZZZZZZZ
 echo nodecount $nodecount
+echo ver $ver
+echo studio $studio
 
 cluster_name="mycluster"
 
