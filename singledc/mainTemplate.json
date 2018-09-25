@@ -87,8 +87,9 @@
     },
     "DSEVersion": {
       "type": "string",
-      "defaultValue": "6.0.0",
+      "defaultValue": "6.0.3",
       "allowedValues": [
+        "6.0.3",
         "6.0.0",
         "5.1.9"
       ],
@@ -427,7 +428,7 @@
     },
     "studioURL": {
       "type": "string",
-      "value": "[concat('https://', if(equals(parameters('installStudio'),'yes'), reference('opsCenterPublicIP','2017-08-01').outputs.opsCenterFQDN.value, 'xxxx'), ':9091')]"
+      "value": "[concat('http://', if(equals(parameters('installStudio'),'yes'), reference('opsCenterPublicIP','2017-08-01').outputs.opsCenterFQDN.value, 'xxxx'), ':9091/notebooks/32714686-1bbd-45cd-bed4-c95de5c242d0')]"
     },
     "nodePubIp": {
       "type": "string",
