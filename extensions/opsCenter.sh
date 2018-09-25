@@ -23,7 +23,7 @@ cluster_name="mycluster"
 repouser='datastax@microsoft.com'
 repopw='3A7vadPHbNT'
 
-release="7.1.0"
+release="dev"
 wget https://github.com/DSPN/install-datastax-ubuntu/archive/$release.tar.gz
 tar -xvf $release.tar.gz
 
@@ -33,7 +33,7 @@ cd install-datastax-ubuntu-$release/bin
 ./os/install_java.sh -o
 
 # Overide OpsC install default version if needed
-export OPSC_VERSION='6.5.2'
+# export OPSC_VERSION='6.5.2'
 
 #install opsc
 ./opscenter/install.sh 'azure'

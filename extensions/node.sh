@@ -24,7 +24,7 @@ echo "" >> /etc/sysctl.conf
 # mount/format disk if needed
 bash ./disk.sh $disksize
 
-release="7.1.0"
+release="dev"
 wget https://github.com/DSPN/install-datastax-ubuntu/archive/$release.tar.gz
 tar -xvf $release.tar.gz
 
