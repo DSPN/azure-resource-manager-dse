@@ -87,11 +87,10 @@
     },
     "DSEVersion": {
       "type": "string",
-      "defaultValue": "6.0.3",
+      "defaultValue": "6.0.0",
       "allowedValues": [
-        "6.0.3",
         "6.0.0",
-        "5.1.9"
+        "5.1.11"
       ],
       "metadata": {
         "description": "Version of DSE to deploy"
