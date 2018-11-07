@@ -11,6 +11,9 @@
     "uniqueString": {
       "type": "string"
     },
+    "clusterName": {
+      "type": "string"
+    },
     "adminUsername": {
       "type": "string"
     },
@@ -232,15 +235,15 @@
         "Microsoft.Compute/virtualMachines/opscenter"
       ],
       "properties": {
-        "publisher": "Microsoft.OSTCExtensions",
-        "type": "CustomScriptForLinux",
-        "typeHandlerVersion": "1.4",
+        "publisher": "Microsoft.Azure.Extensions",
+        "type": "CustomScript",
+        "typeHandlerVersion": "2.0",
         "autoUpgradeMinorVersion": true,
         "settings": {
           "fileUris": "[parameters('osSettings').scripts]"
         },
         "protectedSettings": {
-          "commandToExecute": "[concat('bash opsCenter.sh ', parameters('adminUsername'), ' ', parameters('adminPassword'), ' ', parameters('OpsCPassword'), ' ', parameters('DBPassword'), ' ', parameters('nodeCount'), ' ', parameters('DSEVersion'), ' ', parameters('installStudio'))]"
+          "commandToExecute": "[concat('bash opsCenter.sh ', parameters('adminUsername'), ' \"', parameters('adminPassword'), '\" \"', parameters('OpsCPassword'), '\" \"', parameters('DBPassword'), '\" ', parameters('nodeCount'), ' ', parameters('DSEVersion'), ' ', parameters('installStudio'),' ', parameters('clusterName'))]"
         }
       }
     }

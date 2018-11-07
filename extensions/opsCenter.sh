@@ -7,6 +7,7 @@ dbpasswd=$4
 nodecount=$5
 ver=$6
 studio=$7
+cluster_name=$8
 
 echo "Input to opsCenter.sh is:"
 echo username $username
@@ -16,15 +17,13 @@ echo dbpasswd ZZZZZZZ
 echo nodecount $nodecount
 echo ver $ver
 echo studio $studio
-
-cluster_name="mycluster"
+echo cluster_name $cluster_name
 
 # repo creds
 repouser='datastax@microsoft.com'
 repopw='3A7vadPHbNT'
 
-release="7.1.0"
-wget https://github.com/DSPN/install-datastax-ubuntu/archive/$release.tar.gz
+release="7.2.0"
 tar -xvf $release.tar.gz
 
 cd install-datastax-ubuntu-$release/bin
