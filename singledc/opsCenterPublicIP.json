@@ -5,7 +5,7 @@
     "location": {
       "type": "string"
     },
-    "uniqueString": {
+    "domainName": {
       "type": "string"
     }
   },
@@ -19,7 +19,7 @@
       "properties": {
         "publicIPAllocationMethod": "Static",
         "dnsSettings": {
-          "domainNameLabel": "[concat('opscenter', parameters('uniqueString'))]"
+          "domainNameLabel": "[parameters('domainName')]"
         }
       }
     }

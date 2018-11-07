@@ -5,6 +5,7 @@ opscfqdn=$2
 data_center_name=$3
 opscpw=$4
 disksize=$5
+cluster_name=$6
 
 echo "Input to node.sh is:"
 echo data_center_size $data_center_size
@@ -24,14 +25,15 @@ echo "" >> /etc/sysctl.conf
 # mount/format disk if needed
 bash ./disk.sh $disksize
 
-release="master"
-wget https://github.com/DSPN/install-datastax-ubuntu/archive/$release.tar.gz
+release="7.2.0"
 tar -xvf $release.tar.gz
 
 cd install-datastax-ubuntu-$release/bin/
 # install extra packages, openjdk
 ./os/extra_packages.sh
 ./os/install_java.sh -o
+./os/os.sh "azure"
+
 # install az/azcopy
 # az repo
 AZ_REPO=$(lsb_release -cs)
@@ -48,7 +50,6 @@ apt-get update && sudo apt-get -y install azure-cli azcopy
 
 
 # grabbing metadata after extra_packages.sh to ensure we have jq
-cluster_name="mycluster"
 private_ip=`echo $(hostname -I)`
 node_id=$private_ip
 public_ip=$(curl --max-time 200 --retry 12 --retry-delay 5 -sS -H Metadata:true "http://169.254.169.254/metadata/instance?api-version=2017-04-02" | \

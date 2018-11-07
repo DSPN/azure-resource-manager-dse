@@ -102,9 +102,23 @@
     },
     "opscvmSize": {
       "type": "string",
-      "defaultValue": "Standard_D1_v2",
+      "defaultValue": "Standard_D2s_v3",
       "metadata": {
         "description": "Size of OpsCenter VM"
+      }
+    },
+    "clusterName": {
+      "type": "string",
+      "defaultValue": "DSECluster",
+      "metadata": {
+        "description": "Name of DSE cluster"
+      }
+    },
+    "datacenterName": {
+      "type": "string",
+      "defaultValue": "dc0",
+      "metadata": {
+        "description": "Name of DSE datacenter, and namespace for VMs"
       }
     },
     "adminUsername": {
@@ -156,7 +170,7 @@
     "vnetNeworExisting": {
       "type": "string",
       "metadata": {
-        "description": "Create and use public ip's on node vm's"
+        "description": "Create a new vNet or use existing"
       },
       "defaultValue": "new",
       "allowedValues": [
@@ -171,6 +185,13 @@
         "description": "Name of existing vnet, unused if blank."
       }
     },
+    "vnetCIDR": {
+      "type": "string",
+      "defaultValue": "10.0.0.0/16",
+      "metadata": {
+        "description": "CIDR of vnet."
+      }
+    },
     "vnetRG": {
       "type": "string",
       "defaultValue": "[resourceGroup().name]",
@@ -183,6 +204,13 @@
       "defaultValue": "subnet",
       "metadata": {
         "description": "Name of existing vnet, unused if blank."
+      }
+    },
+    "subnetCIDR": {
+      "type": "string",
+      "defaultValue": "10.0.0.0/24",
+      "metadata": {
+        "description": "CIDR of subnet."
       }
     },
     "installStudio": {
@@ -223,7 +251,8 @@
         "[concat(variables('extensionUrl'), 'node.sh')]",
         "[concat(variables('extensionUrl'), 'opsCenter.sh')]",
         "[concat(variables('extensionUrl'), 'studio.sh')]",
-        "[concat(variables('extensionUrl'), 'disk.sh')]"
+        "[concat(variables('extensionUrl'), 'disk.sh')]",
+        "https://github.com/DSPN/install-datastax-ubuntu/archive/7.2.0.tar.gz"
       ]
     }
   },
@@ -251,14 +280,14 @@
       "properties": {
         "addressSpace": {
           "addressPrefixes": [
-            "10.0.0.0/16"
+            "[parameters('vnetCIDR')]"
           ]
         },
         "subnets": [
           {
             "name": "[parameters('subnetName')]",
             "properties": {
-              "addressPrefix": "10.0.0.0/24"
+              "addressPrefix": "[parameters('subnetCIDR')]"
             }
           }
         ]
@@ -280,8 +309,8 @@
           "location": {
             "value": "[variables('location')]"
           },
-          "uniqueString": {
-            "value": "[variables('uniqueString')]"
+          "domainName": {
+            "value": "[variables('opsCenterDomainName')]"
           }
         }
       }
@@ -304,7 +333,7 @@
             "value": "[variables('location')]"
           },
           "publicIPResourceId": {
-            "value": "[if(equals(parameters('publicIpOnOpsc'), 'yes'), reference('opsCenterPublicIP','2017-08-01').outputs.opsCenterPublicIPResourceId.value, 'notcreated')]"
+            "value": "[resourceId('Microsoft.Network/publicIPAddresses', 'opscenter-pubip')]"
           },
           "publicIpOnOpsc": {
             "value": "[parameters('publicIpOnOpsc')]"
@@ -314,6 +343,9 @@
           },
           "vmSize": {
             "value": "[parameters('opscvmSize')]"
+          },
+          "clusterName": {
+            "value": "[parameters('clusterName')]"
           },
           "adminUsername": {
             "value": "[parameters('adminUsername')]"
@@ -405,8 +437,11 @@
           "publicIpOnNodes": {
             "value": "[parameters('publicIpOnNodes')]"
           },
+          "clusterName": {
+            "value": "[parameters('clusterName')]"
+          },
           "namespace": {
-            "value": "dc0"
+            "value": "[parameters('datacenterName')]"
           }
         }
       }
