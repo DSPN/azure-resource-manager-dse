@@ -240,6 +240,7 @@
     "opsCenterTemplateUrl": "[concat(variables('templateUrl'), 'opsCenter.json')]",
     "location": "[resourcegroup().location]",
     "uniqueString": "[uniqueString(resourceGroup().id, deployment().name)]",
+    "opsCenterDomainName": "[concat('opscenter',variables('uniqueString'))]",
     "osSettings": {
       "imageReference": {
         "publisher": "datastax",
