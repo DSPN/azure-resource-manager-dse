@@ -101,7 +101,7 @@ if [ $HOSTNAME == 'dc0vm0' ]
 then
   echo "node.sh run on dc0vm0, calling workshop setup in /tmp ..."
   cd /tmp
-  git clone https://github.com/cpoczatek/dse-halfday-workshop.git
+  git clone https://github.com/scotthds/dse-halfday-workshop.git
   cd dse-halfday-workshop/
   git checkout azure
   ./startup all
