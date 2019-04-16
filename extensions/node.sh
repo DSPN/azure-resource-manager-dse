@@ -95,6 +95,18 @@ echo node_id $node_id
 --privip $private_ip \
 --nodeid $node_id
 
+pkill -9  apt
+killall -9 apt apt-get apt-key
+#
+rm /var/lib/dpkg/lock
+rm /var/lib/apt/lists/lock
+rm /var/cache/apt/archives/lock
+#
+systemctl stop apt-daily.service
+systemctl kill --kill-who=all apt-daily.service
+
+
+
 # block and wait for jobs before running any workshop setup
 ./lcm/waitForJobs.py --opsc-ip $opscfqdn
 sleep 30s
