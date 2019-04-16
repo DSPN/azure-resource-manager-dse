@@ -49,6 +49,8 @@ sleep 1m
 config="{ \"datastax-version\": \"6.0.0\", \"name\": \"test\", \"json\": { \"java-setup\": {\"manage-java\": false, \"manage-jce-policy\": false}, \"cassandra-yaml\": { \"authorizer\": \"AllowAllAuthorizer\", \"saved_caches_directory\": \"/data/cassandra/saved_caches\", \"data_file_directories\": [ \"/data/cassandra/data\" ], \"num_tokens\": 32, \"authenticator\": \"AllowAllAuthenticator\", \"endpoint_snitch\": \"org.apache.cassandra.locator.GossipingPropertyFileSnitch\", \"commitlog_directory\": \"/data/cassandra/commitlog\" }, \"dse-yaml\": { \"authorization_options\": { \"enabled\": true }, \"authentication_options\": { \"enabled\": true }, \"resource_manager_options\": { \"worker_options\": { \"workpools\": [ { \"memory\": \"0.25\", \"cores\": \"0.25\", \"name\": \"alwayson_sql\" } ] } }, \"alwayson_sql_options\": { \"enabled\": true } } }}"
 
 
+while ps -A | grep -e apt -e dpkg >/dev/null 2>&1; do sleep 10s; done;
+
 echo "Calling setupCluster.py with the settings:"
 echo opsc_ip 127.0.0.1
 echo cluster_name $cluster_name
@@ -70,17 +72,6 @@ echo repopw XXXXXX
 --verbose
 
 echo "node.sh run on dc0vm0, calling workshop setup in /tmp ..."
- pkill -9  apt
- pkill -9  dpkg
- killall -9 apt apt-get apt-key
-#
- rm /var/lib/dpkg/lock
- rm /var/lib/apt/lists/lock
- rm /var/cache/apt/archives/lock
-#
-systemctl stop apt-daily.timer
- systemctl stop apt-daily.service
- systemctl kill --kill-who=all apt-daily.service
 
 # trigger install
 ./lcm/triggerInstall.py \
