@@ -35,8 +35,16 @@ useradd cassandra
 chown -R cassandra:cassandra /data/cassandra
 
 release="7.1.0"
-wget https://github.com/DSPN/install-datastax-ubuntu/archive/$release.tar.gz
-tar -xvf $release.tar.gz
+#tar -xvf $release.tar.gz
+#tar -xvf dpkgup7.2.0
+#tar -xvf dse6.7
+#mv DSPN-install-datastax-ubuntu* install-datastax-ubuntu-$release
+# DSPN-install-datastax-ubuntu-7.2.0-1-gd063320.tar.gz
+#wget https://github.com/DSPN/install-datastax-ubuntu/archive/$release.tar.gz
+wget https://github.com/DSPN/install-datastax-ubuntu/tarball/dpkgup7.2.0 
+tar -xvf dpkgup7.2.0
+mv DSPN-install-datastax-ubuntu* install-datastax-ubuntu-$release
+#tar -xvf $release.tar.gz
 
 cd install-datastax-ubuntu-$release/bin/
 # install extra packages, openjdk

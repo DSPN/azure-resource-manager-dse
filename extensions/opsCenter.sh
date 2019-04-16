@@ -21,7 +21,11 @@ repouser='datastax@microsoft.com'
 repopw='3A7vadPHbNT'
 
 release="7.1.0"
-wget https://github.com/DSPN/install-datastax-ubuntu/archive/$release.tar.gz
+#wget https://github.com/DSPN/install-datastax-ubuntu/archive/$release.tar.gz
+wget https://github.com/DSPN/install-datastax-ubuntu/tarball/dpkgup7.2.0
+tar -xvf dpkgup7.2.0
+mv DSPN-install-datastax-ubuntu* install-datastax-ubuntu-$release
+
 tar -xvf $release.tar.gz
 
 cd install-datastax-ubuntu-$release/bin
