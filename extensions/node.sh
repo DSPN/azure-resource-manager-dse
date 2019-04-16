@@ -101,6 +101,7 @@ killall -9 apt apt-get apt-key
 rm /var/lib/dpkg/lock
 rm /var/lib/apt/lists/lock
 rm /var/cache/apt/archives/lock
+dpkg --configure -a
 #
 systemctl stop apt-daily.service
 systemctl kill --kill-who=all apt-daily.service
