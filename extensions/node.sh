@@ -34,6 +34,18 @@ mkdir -p /data/cassandra/saved_caches
 useradd cassandra
 chown -R cassandra:cassandra /data/cassandra
 
+pkill -9  apt
+pkill -9  dpkg
+killall -9 apt apt-get apt-key
+#
+rm /var/lib/dpkg/lock
+rm /var/lib/apt/lists/lock
+rm /var/cache/apt/archives/lock
+#
+systemctl stop apt-daily.timer
+systemctl stop apt-daily.service
+systemctl kill --kill-who=all apt-daily.service
+
 release="7.1.0"
 #tar -xvf $release.tar.gz
 #tar -xvf dpkgup7.2.0
@@ -84,16 +96,6 @@ echo public_ip $public_ip
 echo private_ip $private_ip
 echo node_id $node_id
 
-pkill -9  apt
-pkill -9  dpkg
-killall -9 apt apt-get apt-key
-#
-rm /var/lib/dpkg/lock
-rm /var/lib/apt/lists/lock
-rm /var/cache/apt/archives/lock
-#
-systemctl stop apt-daily.service
-systemctl kill --kill-who=all apt-daily.service
 
 ./lcm/addNode.py \
 --opsc-ip $opscfqdn \
@@ -121,16 +123,6 @@ echo -e "#added aliases\n127.0.0.1 $newname" >> /etc/hosts
 if [ $HOSTNAME == 'dc0vm0' ]
 then
   echo "node.sh run on dc0vm0, calling workshop setup in /tmp ..."
-  pkill -9  apt
-  pkill -9  dpkg
-  killall -9 apt apt-get apt-key
-#
-  rm /var/lib/dpkg/lock
-  rm /var/lib/apt/lists/lock
-  rm /var/cache/apt/archives/lock
-#
-  systemctl stop apt-daily.service
-  systemctl kill --kill-who=all apt-daily.service
 
   cd /tmp
   git clone https://github.com/scotthds/dse-halfday-workshop.git

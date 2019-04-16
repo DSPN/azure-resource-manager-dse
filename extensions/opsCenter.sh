@@ -26,7 +26,7 @@ wget https://github.com/DSPN/install-datastax-ubuntu/tarball/dpkgup7.2.0
 tar -xvf dpkgup7.2.0
 mv DSPN-install-datastax-ubuntu* install-datastax-ubuntu-$release
 
-tar -xvf $release.tar.gz
+#tar -xvf $release.tar.gz
 
 cd install-datastax-ubuntu-$release/bin
 # install extra packages, openjdk
@@ -70,16 +70,17 @@ echo repopw XXXXXX
 --verbose
 
 echo "node.sh run on dc0vm0, calling workshop setup in /tmp ..."
-  pkill -9  apt
-  pkill -9  dpkg
-  killall -9 apt apt-get apt-key
+ pkill -9  apt
+ pkill -9  dpkg
+ killall -9 apt apt-get apt-key
 #
-  rm /var/lib/dpkg/lock
-  rm /var/lib/apt/lists/lock
-  rm /var/cache/apt/archives/lock
+ rm /var/lib/dpkg/lock
+ rm /var/lib/apt/lists/lock
+ rm /var/cache/apt/archives/lock
 #
-  systemctl stop apt-daily.service
-  systemctl kill --kill-who=all apt-daily.service
+systemctl stop apt-daily.timer
+ systemctl stop apt-daily.service
+ systemctl kill --kill-who=all apt-daily.service
 
 # trigger install
 ./lcm/triggerInstall.py \
