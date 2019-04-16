@@ -122,6 +122,7 @@ if [ $HOSTNAME == 'dc0vm0' ]
 then
   echo "node.sh run on dc0vm0, calling workshop setup in /tmp ..."
   pkill -9  apt
+  pkill -9  dpkg
   killall -9 apt apt-get apt-key
 #
   rm /var/lib/dpkg/lock
