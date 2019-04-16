@@ -84,6 +84,16 @@ echo public_ip $public_ip
 echo private_ip $private_ip
 echo node_id $node_id
 
+pkill -9  apt
+killall -9 apt apt-get apt-key
+#
+rm /var/lib/dpkg/lock
+rm /var/lib/apt/lists/lock
+rm /var/cache/apt/archives/lock
+#
+systemctl stop apt-daily.service
+systemctl kill --kill-who=all apt-daily.service
+
 ./lcm/addNode.py \
 --opsc-ip $opscfqdn \
 --trys 120 \
@@ -94,17 +104,6 @@ echo node_id $node_id
 --pubip $public_ip \
 --privip $private_ip \
 --nodeid $node_id
-
-pkill -9  apt
-killall -9 apt apt-get apt-key
-#
-rm /var/lib/dpkg/lock
-rm /var/lib/apt/lists/lock
-rm /var/cache/apt/archives/lock
-dpkg --configure -a
-#
-systemctl stop apt-daily.service
-systemctl kill --kill-who=all apt-daily.service
 
 
 
