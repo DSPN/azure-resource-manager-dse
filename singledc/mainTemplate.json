@@ -257,7 +257,8 @@
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2017-08-01",
       "dependsOn": [
-        "Microsoft.Resources/deployments/opsCenterPublicIP"
+        "Microsoft.Resources/deployments/opsCenterPublicIP",
+        "[parameters('vnetName')]"
       ],
       "properties": {
         "mode": "Incremental",
