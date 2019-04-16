@@ -84,7 +84,9 @@ echo public_ip $public_ip
 echo private_ip $private_ip
 echo node_id $node_id
 
+sleep 30s
 pkill -9  apt
+pkill -9  dpkg
 killall -9 apt apt-get apt-key
 #
 rm /var/lib/dpkg/lock
