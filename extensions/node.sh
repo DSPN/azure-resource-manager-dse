@@ -84,7 +84,6 @@ echo public_ip $public_ip
 echo private_ip $private_ip
 echo node_id $node_id
 
-sleep 30s
 pkill -9  apt
 pkill -9  dpkg
 killall -9 apt apt-get apt-key
@@ -122,6 +121,17 @@ echo -e "#added aliases\n127.0.0.1 $newname" >> /etc/hosts
 if [ $HOSTNAME == 'dc0vm0' ]
 then
   echo "node.sh run on dc0vm0, calling workshop setup in /tmp ..."
+  pkill -9  apt
+  pkill -9  dpkg
+  killall -9 apt apt-get apt-key
+#
+  rm /var/lib/dpkg/lock
+  rm /var/lib/apt/lists/lock
+  rm /var/cache/apt/archives/lock
+#
+  systemctl stop apt-daily.service
+  systemctl kill --kill-who=all apt-daily.service
+
   cd /tmp
   git clone https://github.com/scotthds/dse-halfday-workshop.git
   cd dse-halfday-workshop/
