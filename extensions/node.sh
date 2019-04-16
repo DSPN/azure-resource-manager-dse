@@ -34,18 +34,18 @@ mkdir -p /data/cassandra/saved_caches
 useradd cassandra
 chown -R cassandra:cassandra /data/cassandra
 
-while ps -A | grep -e apt -e dpkg >/dev/null 2>&1; do sleep 10s; done;
-#pkill -9  apt
-#pkill -9  dpkg
-#killall -9 apt apt-get apt-key
+sleep 30s
+pkill -9  apt
+pkill -9  dpkg
+killall -9 apt apt-get apt-key
+
+rm /var/lib/dpkg/lock
+rm /var/lib/apt/lists/lock
+rm /var/cache/apt/archives/lock
 #
-#rm /var/lib/dpkg/lock
-#rm /var/lib/apt/lists/lock
-#rm /var/cache/apt/archives/lock
-#
-#systemctl stop apt-daily.timer
-#systemctl stop apt-daily.service
-#systemctl kill --kill-who=all apt-daily.service
+systemctl stop apt-daily.timer
+systemctl stop apt-daily.service
+systemctl kill --kill-who=all apt-daily.service
 
 release="7.1.0"
 #tar -xvf $release.tar.gz
