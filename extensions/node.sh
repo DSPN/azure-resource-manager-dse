@@ -34,7 +34,6 @@ mkdir -p /data/cassandra/saved_caches
 useradd cassandra
 chown -R cassandra:cassandra /data/cassandra
 
-sleep 30s
 pkill -9  apt
 pkill -9  dpkg
 killall -9 apt apt-get apt-key
@@ -43,7 +42,6 @@ rm /var/lib/dpkg/lock
 rm /var/lib/apt/lists/lock
 rm /var/cache/apt/archives/lock
 #
-systemctl stop apt-daily.timer
 systemctl stop apt-daily.service
 systemctl kill --kill-who=all apt-daily.service
 
@@ -54,15 +52,15 @@ release="7.1.0"
 #mv DSPN-install-datastax-ubuntu* install-datastax-ubuntu-$release
 # DSPN-install-datastax-ubuntu-7.2.0-1-gd063320.tar.gz
 #wget https://github.com/DSPN/install-datastax-ubuntu/archive/$release.tar.gz
-wget https://github.com/DSPN/install-datastax-ubuntu/tarball/dpkgup7.2.0 
-tar -xvf dpkgup7.2.0
-mv DSPN-install-datastax-ubuntu* install-datastax-ubuntu-$release
+#wget https://github.com/DSPN/install-datastax-ubuntu/tarball/dpkgup7.2.0 
+#tar -xvf dpkgup7.2.0
+#mv DSPN-install-datastax-ubuntu* install-datastax-ubuntu-$release
 #tar -xvf $release.tar.gz
 
 cd install-datastax-ubuntu-$release/bin/
 # install extra packages, openjdk
-./os/extra_packages.sh
-./os/install_java.sh -o
+./extra_packages.sh
+./install_java.sh -o
 ln -s /usr/lib/jvm/java-8-openjdk-amd64/bin/jps /usr/lib/jvm/java-8-openjdk-amd64/jre/bin/jps
 ls -l /usr/lib/jvm/java-8-openjdk-amd64/jre/bin/jps
 
@@ -98,7 +96,7 @@ echo private_ip $private_ip
 echo node_id $node_id
 
 
-./lcm/addNode.py \
+./addNode.py \
 --opsc-ip $opscfqdn \
 --trys 120 \
 --pause 10 \
@@ -112,7 +110,7 @@ echo node_id $node_id
 
 
 # block and wait for jobs before running any workshop setup
-./lcm/waitForJobs.py --opsc-ip $opscfqdn
+./waitForJobs.py --opsc-ip $opscfqdn
 sleep 30s
 
 # add aliases to /etc/hosts, could be a regex...
@@ -124,6 +122,17 @@ echo -e "#added aliases\n127.0.0.1 $newname" >> /etc/hosts
 if [ $HOSTNAME == 'dc0vm0' ]
 then
   echo "node.sh run on dc0vm0, calling workshop setup in /tmp ..."
+
+  pkill -9  apt
+  pkill -9  dpkg
+  killall -9 apt apt-get apt-key
+
+  rm /var/lib/dpkg/lock
+  rm /var/lib/apt/lists/lock
+  rm /var/cache/apt/archives/lock
+  #
+  systemctl stop apt-daily.service
+  systemctl kill --kill-who=all apt-daily.service
 
   cd /tmp
   git clone https://github.com/scotthds/dse-halfday-workshop.git

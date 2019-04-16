@@ -189,7 +189,20 @@
       },
       "scripts": [
         "[concat(variables('extensionUrl'), 'node.sh')]",
-        "[concat(variables('extensionUrl'), 'opsCenter.sh')]"
+        "[concat(variables('extensionUrl'), 'opsCenter.sh')]",
+        "[concat(variables('extensionUrl'), 'addNode.py')]",
+        "[concat(variables('extensionUrl'), 'alterKeyspaces.py')]",
+        "[concat(variables('extensionUrl'), 'extra_packages.sh')]",
+        "[concat(variables('extensionUrl'), 'installDse.sh')]",
+        "[concat(variables('extensionUrl'), 'installOpsC.sh')]",
+        "[concat(variables('extensionUrl'), 'install_java.sh')]",
+        "[concat(variables('extensionUrl'), 'set_opsc_pw_https.sh')]",
+        "[concat(variables('extensionUrl'), 'set_tcp_keepalive_time.sh')]",
+        "[concat(variables('extensionUrl'), 'setupCluster.py')]",
+        "[concat(variables('extensionUrl'), 'start.sh')]",
+        "[concat(variables('extensionUrl'), 'triggerInstall.py')]",
+        "[concat(variables('extensionUrl'), 'utilLCM.py')]",
+        "[concat(variables('extensionUrl'), 'waitForJobs.py')]"
       ]
     }
   },
