@@ -56,6 +56,9 @@ release="7.1.0"
 #tar -xvf dpkgup7.2.0
 #mv DSPN-install-datastax-ubuntu* install-datastax-ubuntu-$release
 #tar -xvf $release.tar.gz
+cd /var/lib/waagent/Microsoft.OSTCExtensions.CustomScriptForLinux-1.5.4/download/0
+chmod ug+x *.sh
+chmod ug+x *.py
 
 cd install-datastax-ubuntu-$release/bin/
 # install extra packages, openjdk

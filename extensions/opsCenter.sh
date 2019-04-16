@@ -28,6 +28,9 @@ release="7.1.0"
 #tar -xvf $release.tar.gz
 #cd install-datastax-ubuntu-$release/bin
 # install extra packages, openjdk
+cd /var/lib/waagent/Microsoft.OSTCExtensions.CustomScriptForLinux-1.5.4/download/0
+chmod ug+x *.sh
+chmod ug+x *.py
 ./extra_packages.sh
 ./install_java.sh -o
 
