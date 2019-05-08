@@ -1,32 +1,20 @@
-This template deploys a DataStax Enterprise (DSE) cluster to Azure running on Ubuntu virtual machines in a single datacenter.  The template can provision a cluster from 1 to 40 nodes.  
+These templates and associated scripts are for develpment purposes only. They may not run in all client environments and are meant to be a starting point for Datastax Enterprise deployments on Azure and not for production environments.
+
+This template deploys a DataStax Enterprise (DSE) cluster to Azure running on Ubuntu virtual machines in a single datacenter.  The template will provision a 3 node cluster.  
 
 The template also provisions managed disks, virtual network and public IP addresses required by the installation.  The template will deploy to the location that the resourceGroup it is part of is located in. The template also sets up a vm to run DataStax OpsCenter.  The script opscenter.sh installs OpsCenter and performs basic cluster setup.
 
-The button below will deploy this template to Azure.  The template will be dynamically linked directly from this github repository.  Given that, if you want to make changes to subtemplates or extensions, be sure to fork the repo and adjust the baseUrl.
-
-<a href="https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2FDSPN%2Fazure-resource-manager-dse%2Fmaster%2Fsingledc%2FmainTemplate.json" target="_blank">
-    <img src="http://azuredeploy.net/deploybutton.png"/>
-</a>
-
-Alternatively, you can run clone this repo and run `deploy.sh`. This script takes the following optional arguments:
+Alternatively, you can run clone this repo and run `deploy.sh`. This script will randomly generate a resource group and deploy into the region specified in the mainTemplateParameters.json file
 
 ```
-./deploy.sh -h
+./deploy.sh
 ---------------------------------------------------
 Usage:
-deploy.sh [-h] [-g resource-group] [-l location] [-t]
+deploy.sh
 
-Options:
-
- -h                 : display this message and exit
- -g resource-group  : name of resource group to create, default 'dse'
- -l location        : location for resource group, default 'eastus'
- -t                 : testing flag, sets baseUrl to dev branch
 
 ---------------------------------------------------
-
 ```
-Note the `-t` flag is for *testing only* and is not for normal use.
 
 The template expects the following parameters (examples of which are in `mainTemplateParameters.json`):
 
@@ -39,6 +27,15 @@ The template expects the following parameters (examples of which are in `mainTem
 | DBPassword  | Password for default C* user 'cassandra' |
 | OpsCPassword | Password for default OpsCenter user 'admin' |
 
-Once the Azure VMs, virtual network and disks are deployed, the node instances call back to the OpsCenter instance using the LCM REST API.  When the last node registers this triggers an LCM job to install and configure DSE  These nodes are assigned both private and public dynamic IP addresses.
+The template also takes the following optional parameters (examples *not* included in `mainTemplateParameters.json`):
+
+| Name   | Description |
+|:--- |:---|
+| DSEVersion | Default '6.7.1', allowed values '6.7.1' / '5.1.11' |
+| clusterName | Default 'DSECluster', name of cluster in OpsCenter |
+| datacenterName | Default 'dc0', name of DSE datacenter and namespace prefix for node VMs and related resources |
+| opscvmSize | Default 'Standard_D2s_v3' |
+| publicIpOnNodes | Default 'yes', setting to 'no' will create no public IPs on node VMs |
+
 
 On completion, OpsCenter will be accessible on port 8443 (https, http connections to port 8888 will be redirected) of the public IP address of the OpsCenter node. OpsCenter uses a self-signed SSL certificate, so you will need to accept the certificate exception. After this you can log in with the user name 'admin' and the password you specified in the OpsCPassword parameter.

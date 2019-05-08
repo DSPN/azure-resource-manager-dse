@@ -4,12 +4,15 @@ data_center_size=$1
 opscfqdn=$2
 data_center_name=$3
 opscpw=$4
+disksize=$5
+cluster_name=$6
 
 echo "Input to node.sh is:"
 echo data_center_size $data_center_size
 echo opscfqdn $opscfqdn
 echo data_center_name $data_center_name
 echo opscpw XXXXXX
+echo disksize $disksize
 
 # System setup/config
 # Copied in from general install scripts
@@ -19,31 +22,30 @@ echo "Going to set the TCP keepalive permanently across reboots."
 echo "net.ipv4.tcp_keepalive_time = 120" >> /etc/sysctl.conf
 echo "" >> /etc/sysctl.conf
 
-# mount data disk
-cp /etc/fstab /etc/fstab.bak
-# add C* data disk
-mkfs -t ext4 /dev/sdc
-uuid=$(blkid /dev/sdc -sUUID -ovalue)
-mkdir -p /data/cassandra
-echo "# Cassandra data mount, template auto-generated." >> /etc/fstab
-echo "UUID=$uuid       /data/cassandra   ext4    defaults,nofail        1       2" >> /etc/fstab
-mount -a
-mkdir -p /data/cassandra/data
-mkdir -p /data/cassandra/commitlog
-mkdir -p /data/cassandra/saved_caches
-useradd cassandra
-chown -R cassandra:cassandra /data/cassandra
+# mount/format disk if needed
+bash ./disk.sh $disksize
 
-release="master"
-wget https://github.com/DSPN/install-datastax-ubuntu/archive/$release.tar.gz
-tar -xvf $release.tar.gz
+# install extra packages, openjdk
+./extra_packages.sh
+./install_java.sh -o
+./os.sh "azure"
 
-cd install-datastax-ubuntu-$release/bin/
-# install extra packages
-./os/extra_packages.sh
+# install az/azcopy
+# az repo
+AZ_REPO=$(lsb_release -cs)
+echo "deb [arch=amd64] https://packages.microsoft.com/repos/azure-cli/ $AZ_REPO main" | \
+    sudo tee /etc/apt/sources.list.d/azure-cli.list
+curl -L https://packages.microsoft.com/keys/microsoft.asc | sudo apt-key add -
+# azcopy repo
+echo "deb [arch=amd64] https://packages.microsoft.com/repos/microsoft-ubuntu-xenial-prod/ xenial main" > azure.list
+cp ./azure.list /etc/apt/sources.list.d/
+apt-key adv --keyserver packages.microsoft.com --recv-keys EB3E94ADBE1229CF
+# install
+apt-get install apt-transport-https
+apt-get update && sudo apt-get -y install azure-cli azcopy
+
 
 # grabbing metadata after extra_packages.sh to ensure we have jq
-cluster_name="mycluster"
 private_ip=`echo $(hostname -I)`
 node_id=$private_ip
 public_ip=$(curl --max-time 200 --retry 12 --retry-delay 5 -sS -H Metadata:true "http://169.254.169.254/metadata/instance?api-version=2017-04-02" | \
@@ -59,6 +61,15 @@ jq .compute.platformFaultDomain | \
 tr -d '"')
 rack=FD$fault_domain
 
+# get sku from metadata server and check if it's a 'graph' sku
+sku=$(curl --max-time 200 --retry 12 --retry-delay 5 -sS -H Metadata:true "http://169.254.169.254/metadata/instance?api-version=2017-04-02" | jq '.compute.sku' | tr -d '"')
+extraargs=""
+if [[ ${sku} != *"graph"* ]];then
+    echo "Deployed with non-graph sku, adding --nograph arg"
+    extraargs=" --nograph "
+fi
+# similar check possible for 'prod' sku if needed
+
 echo "Calling addNode.py with the settings:"
 echo opscfqdn $opscfqdn
 echo opscpw XXXXXX
@@ -69,13 +80,28 @@ echo rack $rack
 echo public_ip $public_ip
 echo private_ip $private_ip
 echo node_id $node_id
+echo extraargs $extraargs
 
-./lcm/addNode.py \
+./addNode.py \
 --opsc-ip $opscfqdn \
 --opscpw $opscpw \
+--trys 120 \
+--pause 10 \
 --clustername $cluster_name \
 --dcname $data_center_name \
 --rack $rack \
 --pubip $public_ip \
 --privip $private_ip \
---nodeid $node_id
+--nodeid $node_id \
+ $extraargs
+
+#
+pkill -9  apt
+killall -9 apt apt-get apt-key
+#
+rm /var/lib/dpkg/lock
+rm /var/lib/apt/lists/lock
+rm /var/cache/apt/archives/lock
+#
+systemctl stop apt-daily.service
+systemctl kill --kill-who=all apt-daily.service

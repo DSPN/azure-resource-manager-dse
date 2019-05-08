@@ -20,11 +20,17 @@
     "OpsCPassword": {
       "type": "securestring"
     },
+    "clusterName": {
+      "type": "string"
+    },
     "nodeCount": {
       "type": "int"
     },
     "vmSize": {
       "type": "string"
+    },
+    "diskSize": {
+      "type": "int"
     },
     "osSettings": {
       "type": "object"
@@ -43,11 +49,30 @@
       "allowedValues": [
         "yes",
         "no"]
+    },
+    "vnetName": {
+      "type": "string",
+      "metadata": {
+        "description": "Virtual network to deploy into"
+      }
+    },
+    "vnetRG": {
+      "type": "string",
+      "defaultValue": "[resourceGroup().name]",
+      "metadata": {
+        "description": "Resource group of vnet if different"
+      }
+    },
+    "subnetName": {
+      "type": "string",
+      "metadata": {
+        "description": "Subnet to deploy into"
+      }
     }
   },
   "variables": {
     "vmName": "[concat(parameters('namespace'), 'vm')]",
-    "vnetId": "[resourceId('Microsoft.Network/virtualNetworks', parameters('vnetName'))]",
+    "vnetId": "[resourceId(parameters('vnetRG'), 'Microsoft.Network/virtualNetworks', parameters('vnetName')  )]",
     "subnetId": "[concat(variables('vnetId'), '/subnets/', parameters('subnetName'))]",
     "faultDomainCountMap": {
       "australiaeast": {
@@ -153,6 +178,173 @@
   },
   "resources": [
     {
+      "type": "Microsoft.Network/networkSecurityGroups",
+      "name": "nodeNSG",
+      "location": "[parameters('location')]",
+      "condition": "[equals(parameters('publicIpOnNodes'), 'yes')]",
+      "apiVersion": "2017-11-01",
+      "properties": {
+        "securityRules": [
+          {
+            "name": "SSH",
+            "properties": {
+              "protocol": "TCP",
+              "sourcePortRange": "*",
+              "destinationPortRange": "22",
+              "sourceAddressPrefix": "Internet",
+              "destinationAddressPrefix": "*",
+              "access": "Allow",
+              "priority": 100,
+              "direction": "Inbound"
+            }
+          },
+          {
+            "name": "CassandraClient",
+            "properties": {
+              "protocol": "TCP",
+              "sourcePortRange": "*",
+              "destinationPortRange": "9042",
+              "sourceAddressPrefix": "Internet",
+              "destinationAddressPrefix": "*",
+              "access": "Allow",
+              "priority": 400,
+              "direction": "Inbound"
+            }
+          },
+          {
+            "name": "DSEInterNode",
+            "properties": {
+              "protocol": "TCP",
+              "sourcePortRange": "*",
+              "destinationPortRange": "7000",
+              "sourceAddressPrefix": "Internet",
+              "destinationAddressPrefix": "*",
+              "access": "Allow",
+              "priority": 410,
+              "direction": "Inbound"
+            }
+          },
+          {
+            "name": "DSEInterNodeSSL",
+            "properties": {
+              "protocol": "TCP",
+              "sourcePortRange": "*",
+              "destinationPortRange": "7001",
+              "sourceAddressPrefix": "Internet",
+              "destinationAddressPrefix": "*",
+              "access": "Allow",
+              "priority": 420,
+              "direction": "Inbound"
+            }
+          },
+          {
+            "name": "SparkAppWeb",
+            "properties": {
+              "protocol": "TCP",
+              "sourcePortRange": "*",
+              "destinationPortRange": "4040",
+              "sourceAddressPrefix": "Internet",
+              "destinationAddressPrefix": "*",
+              "access": "Allow",
+              "priority": 700,
+              "direction": "Inbound"
+            }
+          },
+          {
+            "name": "SparkMasterWeb",
+            "properties": {
+              "protocol": "TCP",
+              "sourcePortRange": "*",
+              "destinationPortRange": "7080",
+              "sourceAddressPrefix": "Internet",
+              "destinationAddressPrefix": "*",
+              "access": "Allow",
+              "priority": 800,
+              "direction": "Inbound"
+            }
+          },
+          {
+            "name": "SparkWorkerWeb",
+            "properties": {
+              "protocol": "TCP",
+              "sourcePortRange": "*",
+              "destinationPortRange": "7081",
+              "sourceAddressPrefix": "Internet",
+              "destinationAddressPrefix": "*",
+              "access": "Allow",
+              "priority": 900,
+              "direction": "Inbound"
+            }
+          },
+          {
+            "name": "SparkREST",
+            "properties": {
+              "protocol": "TCP",
+              "sourcePortRange": "*",
+              "destinationPortRange": "8090",
+              "sourceAddressPrefix": "Internet",
+              "destinationAddressPrefix": "*",
+              "access": "Allow",
+              "priority": 1000,
+              "direction": "Inbound"
+            }
+          },
+          {
+            "name": "DSEFS",
+            "properties": {
+              "protocol": "TCP",
+              "sourcePortRange": "*",
+              "destinationPortRange": "5598-5599",
+              "sourceAddressPrefix": "Internet",
+              "destinationAddressPrefix": "*",
+              "access": "Allow",
+              "priority": 1050,
+              "direction": "Inbound"
+            }
+          },
+          {
+            "name": "Gremlin",
+            "properties": {
+              "protocol": "TCP",
+              "sourcePortRange": "*",
+              "destinationPortRange": "8182",
+              "sourceAddressPrefix": "Internet",
+              "destinationAddressPrefix": "*",
+              "access": "Allow",
+              "priority": 1700,
+              "direction": "Inbound"
+            }
+          },
+          {
+            "name": "SolrGUI",
+            "properties": {
+              "protocol": "TCP",
+              "sourcePortRange": "*",
+              "destinationPortRange": "8983",
+              "sourceAddressPrefix": "Internet",
+              "destinationAddressPrefix": "*",
+              "access": "Allow",
+              "priority": 1800,
+              "direction": "Inbound"
+            }
+          },
+          {
+            "name": "OpsCAgent",
+            "properties": {
+              "protocol": "TCP",
+              "sourcePortRange": "*",
+              "destinationPortRange": "61621",
+              "sourceAddressPrefix": "Internet",
+              "destinationAddressPrefix": "*",
+              "access": "Allow",
+              "priority": 4000,
+              "direction": "Inbound"
+            }
+          }
+        ]
+      }
+    },
+    {
       "apiVersion": "2017-12-01",
       "type": "Microsoft.Compute/availabilitySets",
       "name": "[parameters('namespace')]",
@@ -192,9 +384,11 @@
         "count": "[parameters('nodeCount')]"
       },
       "dependsOn": [
-        "[concat('Microsoft.Network/publicIPAddresses/', parameters('namespace'), 'vm', copyindex())]"
+        "[concat('Microsoft.Network/publicIPAddresses/', parameters('namespace'), 'vm', copyindex())]",
+        "Microsoft.Network/networkSecurityGroups/nodeNSG"
       ],
       "properties": {
+        "networkSecurityGroup": "[if(equals(parameters('publicIpOnNodes'), 'yes') , json(concat('{\"id\": \"', resourceId('Microsoft.Network/networkSecurityGroups', 'nodeNSG'),'\"}')), json('null'))]",
         "ipConfigurations": [
           {
             "name": "ipconfig1",
@@ -244,13 +438,7 @@
           "osDisk": {
             "createOption": "FromImage"
           },
-          "dataDisks": [
-            {
-              "diskSizeGB": "1023",
-              "lun": 0,
-              "createOption": "Empty"
-            }
-          ]
+          "dataDisks": "[if( greater(parameters('diskSize'), 0 ) , json(concat('[{\"diskSizeGB\": \"', parameters('diskSize'), '\", \"lun\": 0, \"createOption\": \"Empty\"}]')), json('[]') )]"
         },
         "networkProfile": {
           "networkInterfaces": [
@@ -274,18 +462,27 @@
         "[concat('Microsoft.Compute/virtualMachines/', parameters('namespace'), 'vm', copyindex())]"
       ],
       "properties": {
-        "publisher": "Microsoft.OSTCExtensions",
-        "type": "CustomScriptForLinux",
-        "typeHandlerVersion": "1.4",
+        "publisher": "Microsoft.Azure.Extensions",
+        "type": "CustomScript",
+        "typeHandlerVersion": "2.0",
         "autoUpgradeMinorVersion": true,
         "settings": {
           "fileUris": "[parameters('osSettings').scripts]"
         },
         "protectedSettings": {
-          "commandToExecute": "[concat('bash node.sh ', parameters('nodeCount'), ' ', parameters('opsCenterFQDN'), ' ', parameters('namespace'), ' ', parameters('OpsCPassword'))]"
+          "commandToExecute": "[concat('bash node.sh ', parameters('nodeCount'), ' ', parameters('opsCenterFQDN'), ' ', parameters('namespace'), ' \"', parameters('OpsCPassword'), '\" ', parameters('diskSize'),' ', parameters('clusterName'))]"
         }
       }
     }
   ],
-  "outputs": {}
+  "outputs": {
+    "nodePubIp": {
+      "type": "string",
+      "value": "[if(equals(parameters('publicIpOnNodes'), 'yes'), reference(resourceId('Microsoft.Network/publicIPAddresses', concat(parameters('namespace'), 'vm0'))).ipAddress, 'null')]"
+    },
+    "nodePrivIp": {
+      "type": "string",
+      "value": "[reference(resourceId('Microsoft.Network/networkInterfaces', concat(parameters('namespace'), 'vm0'))).ipConfigurations[0].properties.privateIpAddress]"
+    }
+  }
 }

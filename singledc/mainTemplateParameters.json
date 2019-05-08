@@ -1,23 +1,44 @@
 {
-  "nodeCount": {
-    "value": 3
-  },
-  "vmSize": {
-    "value": "Standard_DS3_v2"
+  "sku": {
+    "value": "datastaxenterprise"
   },
   "adminUsername": {
     "value": "datastax"
   },
   "adminPassword": {
-    "value": "foo123!"
+    "value": "Datastax.1234!"
   },
   "DBPassword": {
-    "value": "asdf456$"
+    "value": "Datastax.1234!"
   },
   "OpsCPassword": {
-    "value": "bar987&"
+    "value": "Datastax.1234!"
+  },
+  "nodeCount": {
+    "value": 3
+  },
+  "vmSize": {
+    "value": "Standard_D16s_v3"
+  },
+  "diskSize": {
+    "value": 1024
+  },
+  "DSEVersion": {
+    "value": "6.7.1"
+  },
+  "clusterName": {
+    "value": "dsecluster"
+  },
+  "datacenterName": {
+    "value": "dc0"
   },
   "publicIpOnNodes": {
-    "value": "yes"
+    "value": "no"
+  },
+  "opscvmSize": {
+    "value": "Standard_D4s_v3"
+  },
+  "location": {
+    "value": "westus"
   }
 }
