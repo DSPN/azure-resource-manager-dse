@@ -1,31 +1,20 @@
-This template deploys a DataStax Enterprise (DSE) cluster to Azure running on Ubuntu virtual machines in a single datacenter.  The template can provision a cluster from 1 to 40 nodes.  
+These templates and associated scripts are for develpment purposes only. They may not run in all client environments and are meant to be a starting point for Datastax Enterprise deployments on Azure and not for production environments.
+
+This template deploys a DataStax Enterprise (DSE) cluster to Azure running on Ubuntu virtual machines in a single datacenter.  The template will provision a 3 node cluster.  
 
 The template also provisions managed disks, virtual network and public IP addresses required by the installation.  The template will deploy to the location that the resourceGroup it is part of is located in. The template also sets up a vm to run DataStax OpsCenter.  The script opscenter.sh installs OpsCenter and performs basic cluster setup.
 
-The button below will deploy this template to Azure.  The template will be dynamically linked directly from this github repository.  Given that, if you want to make changes to subtemplates or extensions, be sure to fork the repo and adjust the baseUrl.
-
-<a href="https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2FDSPN%2Fazure-resource-manager-dse%2Fmaster%2Fsingledc%2FmainTemplate.json" target="_blank">
-    <img src="http://azuredeploy.net/deploybutton.png"/>
-</a>
-
-Alternatively, you can run clone this repo and run `deploy.sh`. This script takes the following optional arguments:
+Alternatively, you can run clone this repo and run `deploy.sh`. This script will randomly generate a resource group and deploy into the region specified in the mainTemplateParameters.json file
 
 ```
-./deploy.sh -h
+./deploy.sh
 ---------------------------------------------------
 Usage:
-deploy.sh [-h] [-g resource-group] [-l location] [-t branch]
+deploy.sh
 
-Options:
-
- -h                 : display this message and exit
- -g resource-group  : name of resource group to create, default 'dse'
- -l location        : location for resource group, default 'eastus'
- -t branch          : testing flag, sets baseUrl branch, default 'master'
 
 ---------------------------------------------------
 ```
-Note the `-t` flag is for *testing only* and is not for normal use.
 
 The template expects the following parameters (examples of which are in `mainTemplateParameters.json`):
 
@@ -42,22 +31,11 @@ The template also takes the following optional parameters (examples *not* includ
 
 | Name   | Description |
 |:--- |:---|
-| DSEVersion | Default '6.0.0', allowed values '6.0.0' / '5.1.11' |
+| DSEVersion | Default '6.7.1', allowed values '6.7.1' / '5.1.11' |
 | clusterName | Default 'DSECluster', name of cluster in OpsCenter |
 | datacenterName | Default 'dc0', name of DSE datacenter and namespace prefix for node VMs and related resources |
 | opscvmSize | Default 'Standard_D2s_v3' |
 | publicIpOnNodes | Default 'yes', setting to 'no' will create no public IPs on node VMs |
-| publicIpOnOpsc | Default 'yes', setting to 'no' the OpsCenter VM will only have a private IP and access to OpsCenter must be through a VPN, ssh jumpbox, or similar method which are not created by these templates  |
-| diskSize | Default '1023' GB, size of Premium storage disk for each node. Note: **if set to 0 the external volume will not be created and data will be put on the instance's ephemeral disk on /mnt** |
-| vnetNeworExisting | Default 'new', setting to 'existing' requires also setting the vnet/subnet parameters bellow as no network resources will be created |
-| vnetCIDR | Default '10.0.0.0/16', CIDR of new vnet |
-| subnetCIDR | Default '10.0.0.0/24', CIDR of neww subnet |
-| vnetName | Name of existing vnet to deploy VMs into. **Note**: You must deploy into the same region as the vnet if using and existing vnet. |
-| vnetRG | Resource group containing *vnetName* |
-| subnetName | Name of existing subnet in *vnetName* to deploy VMs into |
-| installStudio | Default 'yes', will install DS Studio on the OpsCenter VM. Note, some post deploy configuration is needed and can be found by following the studioURL output of the template. |
-| baseUrl | Default master branch of this repo, this is used as the URL for nested templates/extensions |
 
-Once the Azure VMs, virtual network and disks are deployed, the node instances call back to the OpsCenter instance using the LCM REST API.  When the last node registers this triggers an LCM job to install and configure DSE.
 
 On completion, OpsCenter will be accessible on port 8443 (https, http connections to port 8888 will be redirected) of the public IP address of the OpsCenter node. OpsCenter uses a self-signed SSL certificate, so you will need to accept the certificate exception. After this you can log in with the user name 'admin' and the password you specified in the OpsCPassword parameter.

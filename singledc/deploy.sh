@@ -1,66 +1,32 @@
 #!/bin/bash
 
-resource_group='dse'
-location='eastus'
-branch='master'
-usage="---------------------------------------------------
-Usage:
-deploy.sh [-h] [-g resource-group] [-l location] [-t branch]
+# be strict with errors
+set -e
 
-Options:
+params="mainTemplateParameters.json"
+# pull location/region from params since
+# this is in the params created in the portal
+location=$(jq .location.value $params | tr -d '"')
+rand=$(LC_ALL=C tr -cd '[:alnum:]' < /dev/urandom | tr -cd '[:lower:]' | fold -w10 | head -n1)
+rg="public-devonly-"$rand
+storage="store"$rand
 
- -h                 : display this message and exit
- -g resource-group  : name of resource group to create, default 'dse'
- -l location        : location for resource group, default 'eastus'
- -t branch          : testing flag, sets baseUrl branch, default 'master'
+echo "Creating resource group $rg"
+az group create --name $rg --location $location
 
----------------------------------------------------"
+echo "Creating tmp storage account $storage"
+az storage account create --location $location --resource-group $rg --name $storage --sku Standard_LRS
 
+echo "Creating container 'dstest' for templates/extensions"
+az storage container create --name dstest --public-access "blob" --account-name $storage
+az storage blob upload-batch --account-name $storage --destination dstest --source ./extensions
+az storage blob upload-batch --account-name $storage --destination dstest --source ./templates
 
-while getopts 'hg:l:t:' opt; do
-  case $opt in
-    h) echo -e "$usage"
-       exit 1
-    ;;
-    g) resource_group="$OPTARG"
-    ;;
-    l) location="$OPTARG"
-    ;;
-    t) branch="$OPTARG"
-       testing="true"
-    ;;
-    \?) echo "Invalid option -$OPTARG" >&2
-        exit 1
-    ;;
-  esac
-done
-
-
-if [ -z "$(which az)" ]; then
-    echo "CLI v2 'az' command not found. Please install: https://docs.microsoft.com/en-us/cli/azure/install-az-cli2"
-    exit 1
-fi
-
-echo "CLI v2 'az' command found"
-echo "Using values: resource_group=$resource_group location=$location branch=$branch"
-
-if [ -n "$testing" ]; then
-    if [ -z "$(git branch --list | grep '*' | grep $branch)" ]; then echo "Not on dev branch, exiting."; exit 1; fi
-    echo "Testing... setting baseUrl to $branch branch..."
-    az group create --name $resource_group --location $location
-    az group deployment create \
-     --resource-group $resource_group \
-     --template-file mainTemplate.json \
-     --name DSE \
-     --parameters @mainTemplateParameters.json \
-     --parameters '{"baseUrl": {"value": "https://raw.githubusercontent.com/DSPN/azure-resource-manager-dse/'$branch'"}}' \
-     --verbose
-else
-    az group create --name $resource_group --location $location
-    az group deployment create \
-     --resource-group $resource_group \
-     --template-file mainTemplate.json \
-     --name DSE \
-     --parameters @mainTemplateParameters.json \
-     --verbose
-fi
+# baseUri has no default in the template
+az group deployment create \
+ --resource-group $rg \
+ --template-file mainTemplate.json \
+ --parameters @$params \
+ --parameters '{"baseUrl": {"value": "https://'$storage'.blob.core.windows.net/dstest"}}' \
+ --parameters '{"location": {"value": "'$location'"}}' \
+ --verbose

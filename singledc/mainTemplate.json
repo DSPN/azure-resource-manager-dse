@@ -13,71 +13,7 @@
     },
     "vmSize": {
       "type": "string",
-      "defaultValue": "Standard_DS4_v2",
-      "allowedValues": [
-        "Standard_D2s_v3",
-        "Standard_D4s_v3",
-        "Standard_D8s_v3",
-        "Standard_D16s_v3",
-        "Standard_D32s_v3",
-        "Standard_D64s_v3",
-        "Standard_DS2_v2",
-        "Standard_DS3_v2",
-        "Standard_DS4_v2",
-        "Standard_DS5_v2",
-        "Standard_DS11_v2",
-        "Standard_DS12_v2",
-        "Standard_DS13_v2",
-        "Standard_DS14_v2",
-        "Standard_DS15_v2",
-        "Standard_L4s",
-        "Standard_L8s",
-        "Standard_L16s",
-        "Standard_L32s",
-        "Standard_GS1",
-        "Standard_GS2",
-        "Standard_GS3",
-        "Standard_GS4",
-        "Standard_GS5",
-        "Standard_FS1",
-        "Standard_FS2",
-        "Standard_FS4",
-        "Standard_FS8",
-        "Standard_FS16",
-        "Standard_D2_v2",
-        "Standard_D3_v2",
-        "Standard_D4_v2",
-        "Standard_D5_v2",
-        "Standard_D11_v2",
-        "Standard_D12_v2",
-        "Standard_D13_v2",
-        "Standard_D14_v2",
-        "Standard_D15_v2",
-        "Standard_G1",
-        "Standard_G2",
-        "Standard_G3",
-        "Standard_G4",
-        "Standard_G5",
-        "Standard_D1",
-        "Standard_D2",
-        "Standard_D3",
-        "Standard_D4",
-        "Standard_F1",
-        "Standard_F2",
-        "Standard_F4",
-        "Standard_F8",
-        "Standard_F16",
-        "Standard_D11",
-        "Standard_D12",
-        "Standard_D13",
-        "Standard_D14",
-        "Standard_H8",
-        "Standard_H16",
-        "Standard_H8m",
-        "Standard_H16m",
-        "Standard_H16r",
-        "Standard_H16mr"
-      ],
+      "defaultValue": "Standard_D8s_v3",
       "metadata": {
         "description": "Size of virtual machine to provision for the cluster"
       }
@@ -91,9 +27,9 @@
     },
     "DSEVersion": {
       "type": "string",
-      "defaultValue": "6.0.0",
+      "defaultValue": "6.7.1",
       "allowedValues": [
-        "6.0.0",
+        "6.7.1",
         "5.1.11"
       ],
       "metadata": {
@@ -102,7 +38,7 @@
     },
     "opscvmSize": {
       "type": "string",
-      "defaultValue": "Standard_D2s_v3",
+      "defaultValue": "Standard_D8s_v3",
       "metadata": {
         "description": "Size of OpsCenter VM"
       }
@@ -213,35 +149,52 @@
         "description": "CIDR of subnet."
       }
     },
-    "installStudio": {
-      "type": "string",
-      "metadata": {
-        "description": "Install DSE Studio on OpsCenter vm"
-      },
-      "defaultValue": "yes",
-      "allowedValues": [
-        "yes",
-        "no"
-      ]
-    },
     "baseUrl": {
       "type": "string",
-      "defaultValue": "https://raw.githubusercontent.com/DSPN/azure-resource-manager-dse/master",
       "metadata": {
-        "description": "URL for nested templates and extensions"
+        "description": "The base URL for dependent assets",
+        "artifactsBaseUrl": ""
+      }
+    },
+    "sku": {
+      "type": "string",
+      "metadata": {
+        "description": "DSE SKU (VM image) for node deployment."
+      }
+    },
+    "location": {
+      "type": "string",
+      "metadata": {
+        "description": "Location where resources will be deployed."
       }
     }
   },
   "variables": {
-    "templateUrl": "[concat(parameters('baseUrl'), '/singledc/')]",
-    "extensionUrl": "[concat(parameters('baseUrl'), '/extensions/')]",
+    "templateUrl": "[concat(parameters('baseUrl'), '/')]",
+    "extensionUrl": "[concat(parameters('baseUrl'), '/')]",
     "nodesTemplateUrl": "[concat(variables('templateUrl'), 'nodes.json')]",
     "opsCenterPubIPTemplateUrl": "[concat(variables('templateUrl'), 'opsCenterPublicIP.json')]",
     "opsCenterTemplateUrl": "[concat(variables('templateUrl'), 'opsCenter.json')]",
-    "location": "[resourcegroup().location]",
     "uniqueString": "[uniqueString(resourceGroup().id, deployment().name)]",
     "opsCenterDomainName": "[concat('opscenter',variables('uniqueString'))]",
     "osSettings": {
+      "imageReference": {
+        "publisher": "datastax",
+        "offer": "datastax-enterprise",
+        "sku": "[parameters('sku')]",
+        "version": "latest"
+      },
+      "scripts": [
+        "[concat(variables('extensionUrl'), 'node.sh')]",
+        "[concat(variables('extensionUrl'), 'disk.sh')]",
+        "[concat(variables('extensionUrl'), 'extra_packages.sh')]",
+        "[concat(variables('extensionUrl'), 'install_java.sh')]",
+        "[concat(variables('extensionUrl'), 'os.sh')]",
+        "[concat(variables('extensionUrl'), 'utilLCM.py')]",
+        "[concat(variables('extensionUrl'), 'addNode.py')]"
+      ]
+    },
+    "opscOSSettings": {
       "imageReference": {
         "publisher": "datastax",
         "offer": "datastax-enterprise",
@@ -249,18 +202,25 @@
         "version": "latest"
       },
       "scripts": [
-        "[concat(variables('extensionUrl'), 'node.sh')]",
         "[concat(variables('extensionUrl'), 'opsCenter.sh')]",
-        "[concat(variables('extensionUrl'), 'studio.sh')]",
-        "[concat(variables('extensionUrl'), 'disk.sh')]",
-        "https://github.com/DSPN/install-datastax-ubuntu/archive/7.2.0.tar.gz"
+        "[concat(variables('extensionUrl'), 'extra_packages.sh')]",
+        "[concat(variables('extensionUrl'), 'install_java.sh')]",
+        "[concat(variables('extensionUrl'), 'installOpsc.sh')]",
+        "[concat(variables('extensionUrl'), 'set_opsc_pw_https.sh')]",
+        "[concat(variables('extensionUrl'), 'setupCluster.py')]",
+        "[concat(variables('extensionUrl'), 'utilLCM.py')]",
+        "[concat(variables('extensionUrl'), 'triggerInstall.py')]",
+        "[concat(variables('extensionUrl'), 'waitForJobs.py')]",
+        "[concat(variables('extensionUrl'), 'alterKeyspaces.py')]",
+        "[concat(variables('extensionUrl'), 'opsCenter.sh')]",
+        "[concat(variables('extensionUrl'), 'disk.sh')]"
       ]
     }
   },
   "resources": [
     {
       "apiVersion": "2017-08-01",
-      "name": "pid-7c97edf3-231b-4d54-a35b-e6d7e253f353",
+      "name": "pid-f8f8d577-b0cc-4dd1-8716-2f6c20161c7b",
       "type": "Microsoft.Resources/deployments",
       "properties": {
         "mode": "Incremental",
@@ -276,7 +236,7 @@
       "type": "Microsoft.Network/virtualNetworks",
       "name": "[parameters('vnetName')]",
       "condition": "[equals(parameters('vnetNeworExisting'), 'new')]",
-      "location": "[variables('location')]",
+      "location": "[parameters('location')]",
       "dependsOn": [],
       "properties": {
         "addressSpace": {
@@ -308,7 +268,7 @@
         },
         "parameters": {
           "location": {
-            "value": "[variables('location')]"
+            "value": "[parameters('location')]"
           },
           "domainName": {
             "value": "[variables('opsCenterDomainName')]"
@@ -321,7 +281,8 @@
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2017-08-01",
       "dependsOn": [
-        "Microsoft.Resources/deployments/opsCenterPublicIP"
+        "Microsoft.Resources/deployments/opsCenterPublicIP",
+	"[parameters('vnetName')]"
       ],
       "properties": {
         "mode": "Incremental",
@@ -331,7 +292,7 @@
         },
         "parameters": {
           "location": {
-            "value": "[variables('location')]"
+            "value": "[parameters('location')]"
           },
           "publicIPResourceId": {
             "value": "[resourceId('Microsoft.Network/publicIPAddresses', 'opscenter-pubip')]"
@@ -367,10 +328,10 @@
             "value": "[parameters('nodeCount')]"
           },
           "osSettings": {
-            "value": "[variables('osSettings')]"
+            "value": "[variables('opscOSSettings')]"
           },
           "installStudio": {
-            "value": "[parameters('installStudio')]"
+            "value": "no"
           },
           "vnetName": {
             "value": "[parameters('vnetName')]"
@@ -388,7 +349,9 @@
       "name": "nodes",
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2017-08-01",
-      "dependsOn": [],
+      "dependsOn": [
+          "[parameters('vnetName')]"
+      ],
       "properties": {
         "mode": "Incremental",
         "templateLink": {
@@ -397,10 +360,10 @@
         },
         "parameters": {
           "location": {
-            "value": "[variables('location')]"
+            "value": "[parameters('location')]"
           },
           "opsCenterFQDN": {
-            "value": "[if(equals(parameters('publicIpOnOpsc'), 'yes'), reference('opsCenterPublicIP').outputs.opsCenterFQDN.value, 'opscenter')]"
+            "value": "opscenter"
           },
           "uniqueString": {
             "value": "[variables('uniqueString')]"
@@ -451,23 +414,19 @@
   "outputs": {
     "lifecycleManagerURL": {
       "type": "string",
-      "value": "[concat('https://', if(equals(parameters('publicIpOnOpsc'),'yes'), reference('opsCenterPublicIP','2017-08-01').outputs.opsCenterFQDN.value, 'xxxx'), ':8443/opscenter/lcm.html')]"
+      "value": "[concat('https://', if(equals(parameters('publicIpOnOpsc'),'yes'), reference('opsCenterPublicIP','2017-08-01').outputs.opsCenterFQDN.value, 'none'), ':8443/opscenter/lcm.html')]"
     },
     "opsCenterURL": {
       "type": "string",
-      "value": "[concat('https://', if(equals(parameters('publicIpOnOpsc'),'yes'), reference('opsCenterPublicIP','2017-08-01').outputs.opsCenterFQDN.value, 'xxxx'), ':8443')]"
+      "value": "[concat('https://', if(equals(parameters('publicIpOnOpsc'),'yes'), reference('opsCenterPublicIP','2017-08-01').outputs.opsCenterFQDN.value, 'none'), ':8443')]"
     },
     "opsCenterPubIp": {
       "type": "string",
-      "value": "[if(equals(parameters('publicIpOnOpsc'),'yes'), reference('opsCenterPublicIP','2017-08-01').outputs.opsCenterPubIp.value, 'xxxx')]"
+      "value": "[if(equals(parameters('publicIpOnOpsc'),'yes'), reference('opsCenterPublicIP','2017-08-01').outputs.opsCenterPubIp.value, 'none')]"
     },
     "opsCenterFQDN": {
       "type": "string",
-      "value": "[if(equals(parameters('publicIpOnOpsc'),'yes'), reference('opsCenterPublicIP','2017-08-01').outputs.opsCenterFQDN.value, 'xxxx')]"
-    },
-    "studioURL": {
-      "type": "string",
-      "value": "[concat('http://', if(equals(parameters('installStudio'),'yes'), reference('opsCenterPublicIP','2017-08-01').outputs.opsCenterFQDN.value, 'xxxx'), ':9091/notebooks/32714686-1bbd-45cd-bed4-c95de5c242d0')]"
+      "value": "[if(equals(parameters('publicIpOnOpsc'),'yes'), reference('opsCenterPublicIP','2017-08-01').outputs.opsCenterFQDN.value, 'none')]"
     },
     "nodePubIp": {
       "type": "string",
