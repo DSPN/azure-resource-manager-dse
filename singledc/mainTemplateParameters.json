@@ -18,13 +18,13 @@
     "value": 3
   },
   "vmSize": {
-    "value": "Standard_D16s_v3"
+    "value": "Standard_D8s_v3"
   },
   "diskSize": {
     "value": 1024
   },
   "DSEVersion": {
-    "value": "6.7.1"
+    "value": "6.7.3"
   },
   "clusterName": {
     "value": "dsecluster"
@@ -39,6 +39,6 @@
     "value": "Standard_D4s_v3"
   },
   "location": {
-    "value": "westus"
+    "value": "centralus"
   }
 }
