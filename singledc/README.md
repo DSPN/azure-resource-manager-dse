@@ -31,7 +31,7 @@ The template also takes the following optional parameters (examples *not* includ
 
 | Name   | Description |
 |:--- |:---|
-| DSEVersion | Default '6.7.1', allowed values '6.7.1' / '5.1.11' |
+| DSEVersion | Default '6.7.3', allowed values '6.7.3' / '5.1.15' |
 | clusterName | Default 'DSECluster', name of cluster in OpsCenter |
 | datacenterName | Default 'dc0', name of DSE datacenter and namespace prefix for node VMs and related resources |
 | opscvmSize | Default 'Standard_D2s_v3' |

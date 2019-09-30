@@ -23,12 +23,26 @@ echo cluster_name $cluster_name
 repouser='datastax@microsoft.com'
 repopw='3A7vadPHbNT'
 
+echo "disable apt-daily apt-daily-upgrade"
+pkill -9  apt
+killall -9 apt apt-get apt-key
+#
+rm /var/lib/dpkg/lock
+rm /var/lib/apt/lists/lock
+rm /var/cache/apt/archives/lock
+
+sudo systemctl disable apt-daily.service
+sudo systemctl disable apt-daily.timer
+
+sudo systemctl disable apt-daily-upgrade.timer
+sudo systemctl disable apt-daily-upgrade.service
+
 # install extra packages, openjdk
 ./extra_packages.sh
 ./install_java.sh -o
 
 # Overide OpsC install default version if needed
-export OPSC_VERSION='6.7.1'
+export OPSC_VERSION='6.7.4'
 
 #install opsc
 ./installOpsc.sh 'azure'
