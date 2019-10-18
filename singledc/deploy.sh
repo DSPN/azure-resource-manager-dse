@@ -1,7 +1,7 @@
 #!/bin/bash
 
 resource_group='dse'
-location='westus2'
+location='centralus'
 usage="
 ---------------------------------------------------
 Usage:
