@@ -1,6 +1,6 @@
 #!/bin/bash
 
-resource_group='dse'
+resource_group='dse-01'
 location='centralus'
 usage="
 ---------------------------------------------------

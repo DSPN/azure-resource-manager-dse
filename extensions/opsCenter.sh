@@ -20,6 +20,19 @@ cluster_name="mycluster"
 repouser='datastax@microsoft.com'
 repopw='3A7vadPHbNT'
 
+pkill -9  apt
+killall -9 apt apt-get apt-key
+#
+rm /var/lib/dpkg/lock
+rm /var/lib/apt/lists/lock
+rm /var/cache/apt/archives/lock
+
+sudo systemctl disable apt-daily.service
+sudo systemctl disable apt-daily.timer
+
+sudo systemctl disable apt-daily-upgrade.timer
+sudo systemctl disable apt-daily-upgrade.service
+
 release="7.1.0"
 #wget https://github.com/DSPN/install-datastax-ubuntu/archive/$release.tar.gz
 #wget https://github.com/DSPN/install-datastax-ubuntu/tarball/dpkgup7.2.0

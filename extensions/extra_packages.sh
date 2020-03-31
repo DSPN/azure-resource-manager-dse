@@ -2,14 +2,13 @@
 
 # install extra packages
 echo "---> install_java - dealing with apt.daily"
+pkill -9  apt
 killall -9 apt apt-get apt-key
 #
 rm /var/lib/dpkg/lock
 rm /var/lib/apt/lists/lock
 rm /var/cache/apt/archives/lock
-#
-#dpkg --configure -a &
-#dpkg_process_id=$!
+
 #echo "dpkg_process_id $dpkg_process_id"
 
 systemctl stop apt-daily.service

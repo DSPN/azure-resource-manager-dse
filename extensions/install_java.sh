@@ -51,7 +51,7 @@ if [ -n "$openjdk" ]; then
   echo "Performing package OpenJDK install"
   # check for lock
   echo -e "Checking if apt/dpkg running, start: $(date +%r)"
-  echo -e "No other procs: $(date +%r)"
+
   apt-get -y update
   apt-get -y install openjdk-8-jdk
   exit 0
