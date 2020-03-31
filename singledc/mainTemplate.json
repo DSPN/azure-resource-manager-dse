@@ -5,8 +5,8 @@
     "nodeCount": {
       "type": "int",
       "defaultValue": 3,
-      "minValue": 1,
-      "maxValue": 40,
+      "minValue": 3,
+      "maxValue": 32,
       "metadata": {
         "description": "Number of virtual machines to provision for the cluster"
       }
@@ -20,27 +20,16 @@
     },
     "diskSize": {
       "type": "int",
-      "defaultValue": 1023,
+      "defaultValue": 2048,
       "metadata": {
         "description": "Size (GB) of extenal data volume for each node. If 0, ephemeral disk will be used for data."
       }
     },
-    "DSEVersion": {
+    "devOpsvmSize": {
       "type": "string",
-      "defaultValue": "6.7.3",
-      "allowedValues": [
-        "6.7.3",
-        "5.1.15"
-      ],
+      "defaultValue": "Standard_D2s_v3",
       "metadata": {
-        "description": "Version of DSE to deploy"
-      }
-    },
-    "opscvmSize": {
-      "type": "string",
-      "defaultValue": "Standard_D8s_v3",
-      "metadata": {
-        "description": "Size of OpsCenter VM"
+        "description": "Size of devOps VM"
       }
     },
     "clusterName": {
@@ -69,18 +58,6 @@
         "description": "Admin password for the virtual machines"
       }
     },
-    "DBPassword": {
-      "type": "securestring",
-      "metadata": {
-        "description": "Password for default C* user 'cassandra'"
-      }
-    },
-    "OpsCPassword": {
-      "type": "securestring",
-      "metadata": {
-        "description": "Password for default OpsCenter user 'admin'"
-      }
-    },
     "publicIpOnNodes": {
       "type": "string",
       "metadata": {
@@ -92,10 +69,10 @@
         "no"
       ]
     },
-    "publicIpOnOpsc": {
+    "publicIpOnDevOps": {
       "type": "string",
       "metadata": {
-        "description": "Create and use public ip's on node vm's"
+        "description": "Create and use public ip's on dev node vm's"
       },
       "defaultValue": "yes",
       "allowedValues": [
@@ -118,7 +95,7 @@
       "type": "string",
       "defaultValue": "vnet",
       "metadata": {
-        "description": "Name of existing vnet, unused if blank."
+        "description": "Name of vnet."
       }
     },
     "vnetCIDR": {
@@ -137,9 +114,9 @@
     },
     "subnetName": {
       "type": "string",
-      "defaultValue": "subnet",
+      "defaultValue": "subnet1",
       "metadata": {
-        "description": "Name of existing vnet, unused if blank."
+        "description": "Name of subnet."
       }
     },
     "subnetCIDR": {
@@ -149,13 +126,31 @@
         "description": "CIDR of subnet."
       }
     },
-    "baseUrl": {
+    "dbSubnetStartAddress": {
       "type": "string",
+      "defaultValue": "10.0.0.5",
       "metadata": {
-        "description": "The base URL for dependent assets",
-        "artifactsBaseUrl": ""
+          "description": "Start IP address in the subnet for the VMs"
       }
     },
+    "privateIPAddress": {
+      "type": "string",
+      "defaultValue": "10.0.0.4"
+    },
+    "_artifactsLocation": {
+        "type": "string",
+        "metadata": {
+           "description": "The base URL for dependent assets"
+        },
+        "defaultValue": "[deployment().properties.templateLink.uri]"
+    },
+    "_artifactsLocationSasToken": {
+          "type": "securestring",
+          "metadata": {
+              "description": "The sasToken required to access _artifactsLocation.  When the template is deployed using the accompanying scripts, a sasToken will be automatically generated. Use the defaultValue if the staging location is not secured."
+          },
+          "defaultValue": ""
+      },
     "sku": {
       "type": "string",
       "metadata": {
@@ -167,53 +162,66 @@
       "metadata": {
         "description": "Location where resources will be deployed."
       }
+    },
+    "deployOPSC": {
+      "type": "string",
+      "defaultValue": "true",
+      "metadata": {
+        "description": "deploy the OPSC tarball or not"
+      }
+    },
+    "nicOffset": {
+      "type": "int",
+      "defaultValue": 0,
+      "metadata": {
+        "description": "offset of nic and VMs"
+      }  
     }
   },
   "variables": {
-    "templateUrl": "[concat(parameters('baseUrl'), '/')]",
-    "extensionUrl": "[concat(parameters('baseUrl'), '/')]",
-    "nodesTemplateUrl": "[concat(variables('templateUrl'), 'nodes.json')]",
-    "opsCenterPubIPTemplateUrl": "[concat(variables('templateUrl'), 'opsCenterPublicIP.json')]",
-    "opsCenterTemplateUrl": "[concat(variables('templateUrl'), 'opsCenter.json')]",
+    "createNodesTemplateUrl": "[uri(parameters('_artifactsLocation'), concat('createNodes.json', parameters('_artifactsLocationSasToken')))]",
+    "devOpsPubIPTemplateUrl": "[uri(parameters('_artifactsLocation'), concat('devOpsPublicIP.json', parameters('_artifactsLocationSasToken')))]",
+    "devOpsTemplateUrl": "[uri(parameters('_artifactsLocation'), concat('devOps.json', parameters('_artifactsLocationSasToken')))]",
     "uniqueString": "[uniqueString(resourceGroup().id, deployment().name)]",
-    "opsCenterDomainName": "[concat('opscenter',variables('uniqueString'))]",
+    "devOpsDomainName": "[concat('devops',variables('uniqueString'))]",
     "osSettings": {
       "imageReference": {
         "publisher": "datastax",
-        "offer": "datastax-enterprise",
-        "sku": "[parameters('sku')]",
+        "offer": "datastax-enterprise-preview",
+        "sku": "datastax-6",
         "version": "latest"
       },
       "scripts": [
-        "[concat(variables('extensionUrl'), 'node.sh')]",
-        "[concat(variables('extensionUrl'), 'disk.sh')]",
-        "[concat(variables('extensionUrl'), 'extra_packages.sh')]",
-        "[concat(variables('extensionUrl'), 'install_java.sh')]",
-        "[concat(variables('extensionUrl'), 'os.sh')]",
-        "[concat(variables('extensionUrl'), 'utilLCM.py')]",
-        "[concat(variables('extensionUrl'), 'addNode.py')]"
+        "[uri(parameters('_artifactsLocation'), concat('devops.pub', parameters('_artifactsLocationSasToken')))]",
+        "[uri(parameters('_artifactsLocation'), concat('node.sh', parameters('_artifactsLocationSasToken')))]",
+        "[uri(parameters('_artifactsLocation'), concat('start-cassandra', parameters('_artifactsLocationSasToken')))]",
+        "[uri(parameters('_artifactsLocation'), concat('stop-cassandra', parameters('_artifactsLocationSasToken')))]",
+        "[uri(parameters('_artifactsLocation'), concat('cassandra.service', parameters('_artifactsLocationSasToken')))]",
+        "[uri(parameters('_artifactsLocation'), concat('cassconf', parameters('_artifactsLocationSasToken')))]"
       ]
     },
-    "opscOSSettings": {
+    "devOpsOSSettings": {
       "imageReference": {
         "publisher": "datastax",
-        "offer": "datastax-enterprise",
-        "sku": "datastaxenterprise",
+        "offer": "datastax-enterprise-preview",
+        "sku": "datastax-6-opsc",
         "version": "latest"
       },
       "scripts": [
-        "[concat(variables('extensionUrl'), 'opsCenter.sh')]",
-        "[concat(variables('extensionUrl'), 'extra_packages.sh')]",
-        "[concat(variables('extensionUrl'), 'install_java.sh')]",
-        "[concat(variables('extensionUrl'), 'installOpsc.sh')]",
-        "[concat(variables('extensionUrl'), 'set_opsc_pw_https.sh')]",
-        "[concat(variables('extensionUrl'), 'setupCluster.py')]",
-        "[concat(variables('extensionUrl'), 'utilLCM.py')]",
-        "[concat(variables('extensionUrl'), 'triggerInstall.py')]",
-        "[concat(variables('extensionUrl'), 'waitForJobs.py')]",
-        "[concat(variables('extensionUrl'), 'alterKeyspaces.py')]",
-        "[concat(variables('extensionUrl'), 'opsCenter.sh')]",
-        "[concat(variables('extensionUrl'), 'disk.sh')]"
+        "[uri(parameters('_artifactsLocation'), concat('devOps.sh', parameters('_artifactsLocationSasToken')))]",
+        "[uri(parameters('_artifactsLocation'), concat('devops.pub', parameters('_artifactsLocationSasToken')))]",
+        "[uri(parameters('_artifactsLocation'), concat('devops', parameters('_artifactsLocationSasToken')))]",
+        "[uri(parameters('_artifactsLocation'), concat('ansible.cfg', parameters('_artifactsLocationSasToken')))]",
+        "[uri(parameters('_artifactsLocation'), concat('hosts', parameters('_artifactsLocationSasToken')))]",
+        "[uri(parameters('_artifactsLocation'), concat('ansible.cfg', parameters('_artifactsLocationSasToken')))]",
+        "[uri(parameters('_artifactsLocation'), concat('dse-directories.yml', parameters('_artifactsLocationSasToken')))]",
+        "[uri(parameters('_artifactsLocation'), concat('dse-install.yml', parameters('_artifactsLocationSasToken')))]",
+        "[uri(parameters('_artifactsLocation'), concat('ebs-init.yml', parameters('_artifactsLocationSasToken')))]",
+        "[uri(parameters('_artifactsLocation'), concat('os-config.yml', parameters('_artifactsLocationSasToken')))]",
+        "[uri(parameters('_artifactsLocation'), concat('os-removekeys.yml', parameters('_artifactsLocationSasToken')))]",
+        "[uri(parameters('_artifactsLocation'), concat('opscenter-install.yml', parameters('_artifactsLocationSasToken')))]"
+
+
       ]
     }
   },
@@ -243,27 +251,35 @@
           "addressPrefixes": [
             "[parameters('vnetCIDR')]"
           ]
-        },
-        "subnets": [
-          {
-            "name": "[parameters('subnetName')]",
-            "properties": {
-              "addressPrefix": "[parameters('subnetCIDR')]"
-            }
+        }  
+      },
+      "resources": [
+        {
+          "apiVersion": "2018-10-01",
+          "type": "subnets",
+          "location": "[parameters('location')]",
+          "name": "[parameters('subnetName')]",
+          "dependsOn": [
+            "[parameters('vnetName')]"
+          ],
+          "properties": {
+            "addressPrefix": "[parameters('subnetCIDR')]"
           }
-        ]
-      }
+        }
+      ]
     },
     {
-      "name": "opsCenterPublicIP",
+      "name": "devOpsPublicIP",
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2017-08-01",
-      "condition": "[equals(parameters('publicIpOnOpsc'), 'yes')]",
-      "dependsOn": [],
+      "condition": "[equals(parameters('publicIpOnDevOps'), 'yes')]",
+      "dependsOn": [
+         "[parameters('vnetName')]"
+      ],
       "properties": {
         "mode": "Incremental",
         "templateLink": {
-          "uri": "[variables('opsCenterPubIPTemplateUrl')]",
+          "uri": "[variables('devOpsPubIPTemplateUrl')]",
           "contentVersion": "1.0.0.0"
         },
         "parameters": {
@@ -271,23 +287,23 @@
             "value": "[parameters('location')]"
           },
           "domainName": {
-            "value": "[variables('opsCenterDomainName')]"
+            "value": "[variables('devOpsDomainName')]"
           }
         }
       }
     },
     {
-      "name": "opsCenter",
+      "name": "devOps",
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2017-08-01",
       "dependsOn": [
-        "Microsoft.Resources/deployments/opsCenterPublicIP",
-	"[parameters('vnetName')]"
+        "Microsoft.Resources/deployments/devOpsPublicIP",
+        "seednodes"
       ],
       "properties": {
         "mode": "Incremental",
         "templateLink": {
-          "uri": "[variables('opsCenterTemplateUrl')]",
+          "uri": "[variables('devOpsTemplateUrl')]",
           "contentVersion": "1.0.0.0"
         },
         "parameters": {
@@ -295,19 +311,19 @@
             "value": "[parameters('location')]"
           },
           "publicIPResourceId": {
-            "value": "[resourceId('Microsoft.Network/publicIPAddresses', 'opscenter-pubip')]"
+            "value": "[resourceId('Microsoft.Network/publicIPAddresses', 'devops-pubip')]"
           },
-          "publicIpOnOpsc": {
-            "value": "[parameters('publicIpOnOpsc')]"
-          },
-          "uniqueString": {
-            "value": "[variables('uniqueString')]"
+          "publicIpOnDevOps": {
+            "value": "[parameters('publicIpOnDevOps')]"
           },
           "vmSize": {
-            "value": "[parameters('opscvmSize')]"
+            "value": "[parameters('devOpsvmSize')]"
           },
           "clusterName": {
             "value": "[parameters('clusterName')]"
+          },
+          "datacenterName": {
+            "value": "[parameters('datacenterName')]"
           },
           "adminUsername": {
             "value": "[parameters('adminUsername')]"
@@ -315,23 +331,14 @@
           "adminPassword": {
             "value": "[parameters('adminPassword')]"
           },
-          "OpsCPassword": {
-            "value": "[parameters('OpsCPassword')]"
-          },
-          "DBPassword": {
-            "value": "[parameters('DBPassword')]"
-          },
-          "DSEVersion": {
-            "value": "[parameters('DSEVersion')]"
-          },
           "nodeCount": {
             "value": "[parameters('nodeCount')]"
           },
           "osSettings": {
-            "value": "[variables('opscOSSettings')]"
+            "value": "[variables('devOpsOSSettings')]"
           },
-          "installStudio": {
-            "value": "no"
+          "diskSize": {
+            "value": "[parameters('diskSize')]"
           },
           "vnetName": {
             "value": "[parameters('vnetName')]"
@@ -341,12 +348,21 @@
           },
           "vnetRG": {
             "value": "[parameters('vnetRG')]"
+          },
+          "privateIPAddress": {
+            "value": "[parameters('privateIPAddress')]"
+          },
+          "subnetCIDR": {
+            "value": "[parameters('subnetCIDR')]"
+          },
+          "deployOPSC": {
+            "value": "[parameters('deployOPSC')]"
           }
         }
       }
     },
     {
-      "name": "nodes",
+      "name": "seednodes",
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2017-08-01",
       "dependsOn": [
@@ -355,21 +371,18 @@
       "properties": {
         "mode": "Incremental",
         "templateLink": {
-          "uri": "[variables('nodesTemplateUrl')]",
+          "uri": "[variables('createNodesTemplateUrl')]",
           "contentVersion": "1.0.0.0"
         },
         "parameters": {
           "location": {
             "value": "[parameters('location')]"
           },
-          "opsCenterFQDN": {
-            "value": "opscenter"
+          "devOpsFQDN": {
+            "value": "devOps"
           },
           "uniqueString": {
             "value": "[variables('uniqueString')]"
-          },
-          "OpsCPassword": {
-            "value": "[parameters('OpsCPassword')]"
           },
           "adminUsername": {
             "value": "[parameters('adminUsername')]"
@@ -404,37 +417,37 @@
           "clusterName": {
             "value": "[parameters('clusterName')]"
           },
+          "dbSubnetStartAddress": {
+            "value": "[parameters('dbSubnetStartAddress')]"
+
+          },
+          "vnetCIDR": {
+            "value": "[parameters('vnetCIDR')]"
+          },
+          "subnetCIDR": {
+            "value": "[parameters('subnetCIDR')]"
+          },
+          "nicOffset": {
+            "value": "[parameters('nicOffset')]"
+          },
           "namespace": {
             "value": "[parameters('datacenterName')]"
           }
         }
       }
     }
+  
+
+
   ],
-  "outputs": {
-    "lifecycleManagerURL": {
+  "outputs": { 
+    "OpsCenterPubIp": {
       "type": "string",
-      "value": "[concat('https://', if(equals(parameters('publicIpOnOpsc'),'yes'), reference('opsCenterPublicIP','2017-08-01').outputs.opsCenterFQDN.value, 'none'), ':8443/opscenter/lcm.html')]"
+      "value": "[if(equals(parameters('publicIpOnDevOps'),'yes'), reference('devOpsPublicIP','2017-08-01').outputs.devOpsPubIp.value, 'none')]"
     },
-    "opsCenterURL": {
+    "OpsCenterURL": {
       "type": "string",
-      "value": "[concat('https://', if(equals(parameters('publicIpOnOpsc'),'yes'), reference('opsCenterPublicIP','2017-08-01').outputs.opsCenterFQDN.value, 'none'), ':8443')]"
-    },
-    "opsCenterPubIp": {
-      "type": "string",
-      "value": "[if(equals(parameters('publicIpOnOpsc'),'yes'), reference('opsCenterPublicIP','2017-08-01').outputs.opsCenterPubIp.value, 'none')]"
-    },
-    "opsCenterFQDN": {
-      "type": "string",
-      "value": "[if(equals(parameters('publicIpOnOpsc'),'yes'), reference('opsCenterPublicIP','2017-08-01').outputs.opsCenterFQDN.value, 'none')]"
-    },
-    "nodePubIp": {
-      "type": "string",
-      "value": "[reference('nodes','2017-08-01').outputs.nodePubIp.value]"
-    },
-    "nodePrivIp": {
-      "type": "string",
-      "value": "[reference('nodes','2017-08-01').outputs.nodePrivIp.value]"
+      "value": "[concat('http://', reference('devOpsPublicIP','2017-08-01').outputs.devOpsPubIp.value,':8888')]"
     }
   }
 }

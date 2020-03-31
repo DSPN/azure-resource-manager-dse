@@ -3,7 +3,7 @@
 # be strict with errors
 set -e
 
-params="./mainTemplateParametersUI.json"
+params="params/mainTemplateParametersUI.json"
 #params="params/sidecar.json"
 # pull location/region from params since
 # this is in the params created in the portal

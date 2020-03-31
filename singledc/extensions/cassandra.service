@@ -1,0 +1,19 @@
+[Unit]
+Description=Cassandra Service
+
+[Service]
+Type=simple
+PIDFile=/usr/share/dse/PID
+
+EnvironmentFile=/etc/systemd/system/cassconf
+ExecStartPre=/sbin/swapoff -a
+ExecStart=/usr/share/dse/bin/dse cassandra $ARG1 $ARG2 -p /usr/share/dse/PID
+
+WorkingDirectory=/usr/share/dse
+Restart=no
+TimeoutStopSec=60
+TimeoutStartSec=120
+User=cassandra
+
+[Install]
+WantedBy=multi-user.target

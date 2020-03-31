@@ -1,0 +1,30 @@
+#!/bin/bash
+  
+# A script to enable custom behavior for starting Cassandra or DSE.
+# This script should not run forever, but should instead background
+# the long-running process.
+# This script should exit with a status of 0 if the operation is a
+# success, and a non-zero value otherwise.
+
+# To enable this script, rename this file to start-cassandra and
+# make sure that it's executable.
+#
+# Note: for this script to run properly the user running the agent 
+# (cassandra by default) must have proper permissions to start
+# and stop the DSE/Cassandra process (sudo is acceptable if your
+# environment supports it).
+
+if [ -z "$CASSANDRA_HOME" ]; then
+    CASSANDRA_HOME="/usr/share/dse"
+fi
+
+systemctl start cassandra
+ret=$?
+
+# accept exit status of 0 or 1
+# (due to https://issues.apache.org/jira/browse/CASSANDRA-4271)
+if [ "$ret" -eq "0" -o "$ret" -eq "1" ]; then
+    exit 0
+else
+    exit $ret
+fi

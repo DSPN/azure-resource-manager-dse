@@ -1,0 +1,10 @@
+- name:  remove keys
+  hosts: '{{ host }}'
+  become: true
+
+  tasks:
+    - name: Remove authorized keys
+      authorized_key:
+        user: root
+        state: absent
+        key: "{{ lookup('file', '/home/dse/dse-azure-install/devops.pub') }}"

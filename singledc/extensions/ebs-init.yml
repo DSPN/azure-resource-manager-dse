@@ -1,0 +1,60 @@
+---
+- name: ebs initilization
+  hosts: '{{ host }}'
+  become: true
+  vars:
+    disksize: "{{ disksize }}"
+    cass_mount_point: "/data/cassandra"
+
+  tasks:
+    - name: Determine if mount point exists
+      command: "/usr/bin/env stat -c '%m' {{ cass_mount_point }}"
+      register: cass_mount_point
+      ignore_errors: yes
+    - debug:
+        msg:  mount point is {{ cass_mount_point.stdout }}
+    - name: Execute the mkfs command
+      shell: mkfs -t ext4 -E nodiscard /dev/disk/azure/scsi1/lun0
+      when: cass_mount_point.stderr != ""
+    - name: Create /data/cassandra
+      file:
+        path: /data/cassandra
+        state: directory
+        owner: root
+        group: root
+        mode: '0755'
+      when: cass_mount_point.stderr != ""
+    - name: Copy /etc/fstab with owner and permissions
+      copy:
+        src: /etc/fstab
+        dest: /etc/fstab.bak
+        owner: root
+        group: root
+        mode: '0644'
+      when: cass_mount_point.stderr != ""
+    - name: Getting ebs blockid
+      shell: blkid /dev/disk/azure/scsi1/lun0 -sUUID -ovalue
+      register: uuid
+      when: cass_mount_point.stderr != ""
+    - debug:
+        msg: System has uuid {{ uuid.stdout }}
+      when: cass_mount_point.stderr != ""
+    - name: Add a line to /etc/fstab
+      lineinfile:
+        path: /etc/fstab
+        line: "# Cassandra data mount, template auto-generated."
+        create: yes
+      when: cass_mount_point.stderr != ""
+    - name: Add a line to /etc/fstab
+      lineinfile:
+        path: /etc/fstab
+        line: "UUID={{ uuid.stdout }}      /data/cassandra   ext4    defaults,nofail        1       2"
+        create: yes
+      when: cass_mount_point.stderr != ""
+    - name: Mount filesystem for cassandra
+      mount:
+        path: /data/cassandra
+        src: /dev/disk/azure/scsi1/lun0
+        fstype: ext4
+        opts: defaults,discard
+        state: mounted

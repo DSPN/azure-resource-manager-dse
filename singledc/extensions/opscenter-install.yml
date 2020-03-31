@@ -1,0 +1,76 @@
+---
+- name: opscenter initilization
+  hosts: OPSC
+  become: true
+  vars:
+    seeds: "{{ seeds }}"
+    cluster_name: "{{ cluster_name }}"
+
+  tasks:
+     - debug:
+         msg: seed nodes {{ seeds }}
+     - debug:
+         msg: cluster name {{ cluster_name }}
+     - stat: path=/home/dse/opscenter/LICENSE.txt
+       register: opsc_file
+     - name: Create DSE directory  /home/dse/opscenter
+       file:
+         path: /home/dse/opscenter
+         state: directory
+         mode: '0755'
+     - name: Unarchive OPSC tarball
+       unarchive:
+        src: /home/dse/opscenter-6.7.7.tar.gz
+        dest: /home/dse/opscenter
+        extra_opts:
+        - --strip-components=1
+       when: opsc_file.stat.exists == False
+     - name: Add the user 'james' with a bash shell, appending the group 'admins' and 'developers' to the user's groups
+       user:
+         name: opsc
+         shell: /bin/bash
+         groups: root
+         append: yes
+     - name: Recursively change ownership of /home/dse/opscenter
+       file:
+         path: /home/dse/opscenter
+         state: directory
+         recurse: yes
+         owner: opsc
+         group: opsc
+     - name: Start OpsC
+       shell: /usr/bin/nohup ./opscenter
+       args:
+         chdir: /home/dse/opscenter/bin
+       register: opscbin
+     - debug:
+         msg: opscenter start {{ opscbin.stdout }}
+     - name: Check opscenter port is accessible from current host
+       wait_for:
+         host: 127.0.0.1
+         port: "{{ item }}"
+         state: started         # Port should be open
+         delay: 1               # 1s wait before first check (sec)
+         timeout: 120           # Stop checking after timeout (sec)
+       ignore_errors: yes
+       with_items:
+        - 8888
+       when: opsc_file.stat.exists == False
+     - pause:
+         minutes: 2
+     - name: Manage Cluster with OpsC
+       shell: "curl -X POST http://127.0.0.1:8888/cluster-configs -d '{ \"cassandra\": { \"seed_hosts\": \"{{ seeds }}\", \"username\": \"cassandra\", \"password\": \"cassandra\" }, \"cassandra_metrics\": {},\"jmx\": { \"port\": \"7199\" } }'"
+       register: opscc
+       when: opsc_file.stat.exists == False
+     - debug:
+         msg: manage cluster {{ opscc.stdout }}
+       when: opsc_file.stat.exists == False
+     - name: Add a line to cluster_name].conf
+       lineinfile:
+         path: "/home/dse/opscenter/conf/opscenterd.conf"
+         line: "{{ item.line}}"
+       with_items:
+         - line: "[definitions]"
+         - line: "auto_update = True"
+         - line: "download_host = opscenter.datastax.com"
+         - line: "definitions_dir = /home/dse/opscenter/definitions"

@@ -1,0 +1,23 @@
+---
+- name: os configs
+  hosts: '{{ host }}'
+  become: true
+
+  tasks:
+    - name: Execute setkeepalive
+      shell: sysctl -w net.ipv4.tcp_keepalive_time=60
+    - name: Add a line to /etc/sysctl.conf for keepalive
+      lineinfile:
+        path: /etc/sysctl.conf
+        line: "net.ipv4.tcp_keepalive_time = 60"
+    - name: Getting hostip
+      shell: hostname -i
+      register: hostip
+    - name: Getting hostname
+      shell: hostname
+      register: hostname
+    - name: Add a line to /etc/hosts
+      lineinfile:
+        path: /etc/hosts
+        line: "{{ hostip.stdout }} {{ hostname.stdout }}"
+   

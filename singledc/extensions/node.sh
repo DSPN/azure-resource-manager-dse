@@ -1,107 +1,26 @@
-#!/usr/bin/env bash
-
-data_center_size=$1
-opscfqdn=$2
-data_center_name=$3
-opscpw=$4
-disksize=$5
-cluster_name=$6
-
-echo "Input to node.sh is:"
-echo data_center_size $data_center_size
-echo opscfqdn $opscfqdn
-echo data_center_name $data_center_name
-echo opscpw XXXXXX
-echo disksize $disksize
-
-# System setup/config
-# Copied in from general install scripts
-echo "Going to set the TCP keepalive for now."
-sysctl -w net.ipv4.tcp_keepalive_time=120
-echo "Going to set the TCP keepalive permanently across reboots."
-echo "net.ipv4.tcp_keepalive_time = 120" >> /etc/sysctl.conf
-echo "" >> /etc/sysctl.conf
-
-# mount/format disk if needed
-bash ./disk.sh $disksize
-
-# install extra packages, openjdk
-./extra_packages.sh
-./install_java.sh -o
-./os.sh "azure"
-
-# install az/azcopy
-# az repo
-AZ_REPO=$(lsb_release -cs)
-echo "deb [arch=amd64] https://packages.microsoft.com/repos/azure-cli/ $AZ_REPO main" | \
-    sudo tee /etc/apt/sources.list.d/azure-cli.list
-curl -L https://packages.microsoft.com/keys/microsoft.asc | sudo apt-key add -
-# azcopy repo
-echo "deb [arch=amd64] https://packages.microsoft.com/repos/microsoft-ubuntu-xenial-prod/ xenial main" > azure.list
-cp ./azure.list /etc/apt/sources.list.d/
-apt-key adv --keyserver packages.microsoft.com --recv-keys EB3E94ADBE1229CF
-# install
-apt-get install apt-transport-https
-apt-get update && sudo apt-get -y install azure-cli azcopy
+#!/bin/bash
+set -e
 
 
-# grabbing metadata after extra_packages.sh to ensure we have jq
-private_ip=`echo $(hostname -I)`
-node_id=$private_ip
-public_ip=$(curl --max-time 200 --retry 12 --retry-delay 5 -sS -H Metadata:true "http://169.254.169.254/metadata/instance?api-version=2017-04-02" | \
-jq .network.interface[0].ipv4.ipAddress[0].publicIpAddress | \
-tr -d '"')
-if [ -z "$public_ip" ]; then
-    echo "public_ip doesn't exist, setting to private_ip"
-    public_ip=$private_ip
+alias python=python3
+#
+# initial directories for ansible and shell
+#
+echo "DSE Deploy : create base dirs"
+cd /home/dse
+if [ -d "/home/dse/dse-azure-install" ]
+then
+  echo "dse-azure-install exists"
+else
+  mkdir dse-azure-install
 fi
-
-fault_domain=$(curl -sS --max-time 200 --retry 12 --retry-delay 5 -H Metadata:true "http://169.254.169.254/metadata/instance?api-version=2017-04-02" | \
-jq .compute.platformFaultDomain | \
-tr -d '"')
-rack=FD$fault_domain
-
-# get sku from metadata server and check if it's a 'graph' sku
-sku=$(curl --max-time 200 --retry 12 --retry-delay 5 -sS -H Metadata:true "http://169.254.169.254/metadata/instance?api-version=2017-04-02" | jq '.compute.sku' | tr -d '"')
-extraargs=""
-if [[ ${sku} != *"graph"* ]];then
-    echo "Deployed with non-graph sku, adding --nograph arg"
-    extraargs=" --nograph "
-fi
-# similar check possible for 'prod' sku if needed
-
-echo "Calling addNode.py with the settings:"
-echo opscfqdn $opscfqdn
-echo opscpw XXXXXX
-echo cluster_name $cluster_name
-echo data_center_size $data_center_size
-echo data_center_name $data_center_name
-echo rack $rack
-echo public_ip $public_ip
-echo private_ip $private_ip
-echo node_id $node_id
-echo extraargs $extraargs
-
-./addNode.py \
---opsc-ip $opscfqdn \
---opscpw $opscpw \
---trys 120 \
---pause 10 \
---clustername $cluster_name \
---dcname $data_center_name \
---rack $rack \
---pubip $public_ip \
---privip $private_ip \
---nodeid $node_id \
- $extraargs
-
+cd dse-azure-install
 #
-pkill -9  apt
-killall -9 apt apt-get apt-key
+echo "DSE Deploy : copy ansible playbooks and shell to base dirs"
+cp /var/lib/waagent/custom-script/download/0/*.pub .
+cp /var/lib/waagent/custom-script/download/0/cassconf .
+cp /var/lib/waagent/custom-script/download/0/*.service .
+cp /var/lib/waagent/custom-script/download/0/start-cassandra .
+cp /var/lib/waagent/custom-script/download/0/stop-cassandra .
 #
-rm /var/lib/dpkg/lock
-rm /var/lib/apt/lists/lock
-rm /var/cache/apt/archives/lock
-#
-systemctl stop apt-daily.service
-systemctl kill --kill-who=all apt-daily.service
+cat < /home/dse/dse-azure-install/devops.pub >> /root/.ssh/authorized_keys

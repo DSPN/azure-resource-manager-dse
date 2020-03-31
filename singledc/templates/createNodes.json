@@ -5,7 +5,7 @@
     "location": {
       "type": "string"
     },
-    "opsCenterFQDN": {
+    "devOpsFQDN": {
       "type": "string"
     },
     "uniqueString": {
@@ -15,9 +15,6 @@
       "type": "string"
     },
     "adminPassword": {
-      "type": "securestring"
-    },
-    "OpsCPassword": {
       "type": "securestring"
     },
     "clusterName": {
@@ -35,11 +32,12 @@
     "osSettings": {
       "type": "object"
     },
-    "vnetName": {
-      "type": "string"
-    },
-    "subnetName": {
-      "type": "string"
+    "dbSubnetStartAddress": {
+            "type": "string",
+            "defaultValue": "10.0.0.5",
+            "metadata": {
+                "description": "Start IP address in the subnet for the VMs"
+            }
     },
     "namespace": {
       "type": "string"
@@ -58,7 +56,6 @@
     },
     "vnetRG": {
       "type": "string",
-      "defaultValue": "[resourceGroup().name]",
       "metadata": {
         "description": "Resource group of vnet if different"
       }
@@ -68,12 +65,37 @@
       "metadata": {
         "description": "Subnet to deploy into"
       }
+    },
+    "vnetCIDR": {
+      "type": "string",
+      "defaultValue": "10.0.0.0/16",
+      "metadata": {
+        "description": "CIDR of vnet."
+      }
+    },
+    "subnetCIDR": {
+      "type": "string",
+      "defaultValue": "10.0.0.0/24",
+      "metadata": {
+        "description": "CIDR of subnet."
+      }
+    },
+    "nicOffset": {
+      "type": "int",
+      "defaultValue": 0,
+      "metadata": {
+        "description": "offset for nic  and VMs."
+      }
     }
+
   },
   "variables": {
     "vmName": "[concat(parameters('namespace'), 'vm')]",
-    "vnetId": "[resourceId(parameters('vnetRG'), 'Microsoft.Network/virtualNetworks', parameters('vnetName')  )]",
-    "subnetId": "[concat(variables('vnetId'), '/subnets/', parameters('subnetName'))]",
+    "subnetId": "[resourceId(parameters('vnetRG'), 'Microsoft.Network/virtualNetworks/subnets', parameters('vnetName'), parameters('subnetName'))]",
+    "sa": "[parameters('dbSubnetStartAddress')]",
+    "ipOctet01": "[concat(split(variables('sa'), '.')[0], '.', split(variables('sa'), '.')[1], '.')]",
+    "ipOctet2": "[int(split(variables('sa'), '.')[2])]",
+    "ipOctet3": "[int(split(variables('sa'), '.')[3])]",
     "faultDomainCountMap": {
       "australiaeast": {
           "MaximumPlatformFaultDomainCount": 2
@@ -109,6 +131,9 @@
           "MaximumPlatformFaultDomainCount": 3
       },
       "eastus2euap": {
+          "MaximumPlatformFaultDomainCount": 2
+      },
+      "francecentral": {
           "MaximumPlatformFaultDomainCount": 2
       },
       "japaneast": {
@@ -225,6 +250,19 @@
             }
           },
           {
+            "name": "DSEJMX",
+            "properties": {
+              "protocol": "TCP",
+              "sourcePortRange": "*",
+              "destinationPortRange": "7199",
+              "sourceAddressPrefix": "Internet",
+              "destinationAddressPrefix": "*",
+              "access": "Allow",
+              "priority": 420,
+              "direction": "Inbound"
+            }
+          },
+          {
             "name": "DSEInterNodeSSL",
             "properties": {
               "protocol": "TCP",
@@ -233,7 +271,7 @@
               "sourceAddressPrefix": "Internet",
               "destinationAddressPrefix": "*",
               "access": "Allow",
-              "priority": 420,
+              "priority": 430,
               "direction": "Inbound"
             }
           },
@@ -329,7 +367,7 @@
             }
           },
           {
-            "name": "OpsCAgent",
+            "name": "devOpsAgent",
             "properties": {
               "protocol": "TCP",
               "sourcePortRange": "*",
@@ -360,7 +398,7 @@
     {
       "apiVersion": "2017-11-01",
       "type": "Microsoft.Network/publicIPAddresses",
-      "name": "[concat(parameters('namespace'), 'vm', copyindex())]",
+      "name": "[concat(parameters('namespace'), 'vm', copyindex(parameters('nicOffset')))]",
       "location": "[parameters('location')]",
       "condition": "[equals(parameters('publicIpOnNodes'), 'yes')]",
       "copy": {
@@ -370,21 +408,21 @@
       "properties": {
         "publicIPAllocationMethod": "Static",
         "dnsSettings": {
-          "domainNameLabel": "[concat(parameters('namespace'), 'vm', copyIndex(), parameters('uniqueString'))]"
+          "domainNameLabel": "[concat(parameters('namespace'), 'vm', copyIndex(parameters('nicOffset')), parameters('uniqueString'))]"
         }
       }
     },
     {
       "apiVersion": "2017-11-01",
       "type": "Microsoft.Network/networkInterfaces",
-      "name": "[concat(parameters('namespace'), 'vm', copyindex())]",
+      "name": "[concat(parameters('namespace'), 'vm', copyindex(parameters('nicOffset')))]",
       "location": "[parameters('location')]",
       "copy": {
         "name": "[concat(parameters('namespace'), 'nicLoop')]",
         "count": "[parameters('nodeCount')]"
       },
       "dependsOn": [
-        "[concat('Microsoft.Network/publicIPAddresses/', parameters('namespace'), 'vm', copyindex())]",
+        "[concat('Microsoft.Network/publicIPAddresses/', parameters('namespace'), 'vm', copyindex(parameters('nicOffset')))]",
         "Microsoft.Network/networkSecurityGroups/nodeNSG"
       ],
       "properties": {
@@ -393,8 +431,9 @@
           {
             "name": "ipconfig1",
             "properties": {
-              "publicIPAddress": "[if(equals(parameters('publicIpOnNodes'), 'yes') , json(concat('{\"id\": \"', resourceId('Microsoft.Network/publicIPAddresses', concat(parameters('namespace'), 'vm', copyindex())),'\"}')), json('null'))]",
-              "privateIPAllocationMethod": "Dynamic",
+              "publicIPAddress": "[if(equals(parameters('publicIpOnNodes'), 'yes') , json(concat('{\"id\": \"', resourceId('Microsoft.Network/publicIPAddresses', concat(parameters('namespace'), 'vm', copyindex(parameters('nicOffset')))),'\"}')), json('null'))]",
+              "privateIPAllocationMethod": "Static",
+              "privateIPAddress": "[concat(variables('ipOctet01'), add(variables('ipOctet2'), div(copyIndex(variables('ipOctet3')), 255)), '.', mod(copyIndex(variables('ipOctet3')), 255))]",
               "subnet": {
                 "id": "[variables('subnetId')]"
               }
@@ -406,14 +445,14 @@
     {
       "apiVersion": "2017-12-01",
       "type": "Microsoft.Compute/virtualMachines",
-      "name": "[concat(parameters('namespace'), 'vm', copyindex())]",
+      "name": "[concat(parameters('namespace'), 'vm', copyindex(parameters('nicOffset')))]",
       "location": "[parameters('location')]",
       "copy": {
         "name": "[concat(parameters('namespace'), 'vmLoop')]",
         "count": "[parameters('nodeCount')]"
       },
       "dependsOn": [
-        "[concat('Microsoft.Network/networkInterfaces/', parameters('namespace'), 'vm', copyindex())]",
+        "[concat('Microsoft.Network/networkInterfaces/', parameters('namespace'), 'vm', copyindex(parameters('nicOffset')))]",
         "[concat('Microsoft.Compute/availabilitySets/', parameters('namespace'))]"
       ],
       "plan": {
@@ -429,7 +468,7 @@
           "vmSize": "[parameters('vmSize')]"
         },
         "osProfile": {
-          "computerName": "[concat(parameters('namespace'), 'vm', copyIndex())]",
+          "computerName": "[concat(parameters('namespace'), 'vm', copyIndex(parameters('nicOffset')))]",
           "adminUsername": "[parameters('adminUsername')]",
           "adminPassword": "[parameters('adminPassword')]"
         },
@@ -443,7 +482,7 @@
         "networkProfile": {
           "networkInterfaces": [
             {
-              "id": "[resourceId('Microsoft.Network/networkInterfaces',concat(parameters('namespace'), 'vm', copyindex()))]"
+              "id": "[resourceId('Microsoft.Network/networkInterfaces',concat(parameters('namespace'), 'vm', copyindex(parameters('nicOffset'))))]"
             }
           ]
         }
@@ -451,38 +490,38 @@
     },
     {
       "type": "Microsoft.Compute/virtualMachines/extensions",
-      "name": "[concat(parameters('namespace'), 'vm', copyindex(), '/installdsenode')]",
+      "name": "[concat(parameters('namespace'), 'vm',copyindex('dc0vmNodesLoop',parameters('nicOffset')), '/installnodes')]",
       "apiVersion": "2017-12-01",
       "location": "[parameters('location')]",
       "copy": {
-        "name": "[concat(parameters('namespace'), 'vmLoop')]",
+        "name": "dc0vmNodesLoop",
         "count": "[parameters('nodeCount')]"
       },
       "dependsOn": [
-        "[concat('Microsoft.Compute/virtualMachines/', parameters('namespace'), 'vm', copyindex())]"
+        "[concat(parameters('namespace'), 'vm', copyindex(parameters('nicOffset')))]"
       ],
       "properties": {
         "publisher": "Microsoft.Azure.Extensions",
         "type": "CustomScript",
         "typeHandlerVersion": "2.0",
         "autoUpgradeMinorVersion": true,
+
         "settings": {
           "fileUris": "[parameters('osSettings').scripts]"
         },
         "protectedSettings": {
-          "commandToExecute": "[concat('bash node.sh ', parameters('nodeCount'), ' ', parameters('opsCenterFQDN'), ' ', parameters('namespace'), ' \"', parameters('OpsCPassword'), '\" ', parameters('diskSize'),' ', parameters('clusterName'))]"
+          "commandToExecute": "[concat('bash node.sh ',    parameters('devOpsFQDN'), ' ', parameters('namespace'),' ', parameters('diskSize'),' ', parameters('clusterName'))]"
         }
       }
-    }
+  }
+
+
+
   ],
   "outputs": {
-    "nodePubIp": {
+     "nodePubIp": {
       "type": "string",
       "value": "[if(equals(parameters('publicIpOnNodes'), 'yes'), reference(resourceId('Microsoft.Network/publicIPAddresses', concat(parameters('namespace'), 'vm0'))).ipAddress, 'null')]"
-    },
-    "nodePrivIp": {
-      "type": "string",
-      "value": "[reference(resourceId('Microsoft.Network/networkInterfaces', concat(parameters('namespace'), 'vm0'))).ipConfigurations[0].properties.privateIpAddress]"
     }
   }
 }

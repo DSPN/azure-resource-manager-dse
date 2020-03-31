@@ -1,0 +1,79 @@
+---
+- name: create cassandra directories
+  hosts: '{{ host }}'
+  become: true
+
+  tasks:
+    - name: Ensure group "cassandra" exists
+      group:
+        name: cassandra
+        state: present
+    - name: Add the user "casssandra"
+      user:
+        name: cassandra
+        comment: cassandra
+        group: cassandra
+    - name: Change file ownership of /data/cassandra
+      file:
+        path: /data/cassandra
+        owner: cassandra
+        group: cassandra
+        mode: '0755'
+    - name: create cassandra folders
+      file:
+        path: "{{ item }}"
+        state: directory
+        owner: cassandra
+        group: cassandra
+        mode: '0755'
+      loop:
+        - /var/lib/cassandra
+        - /var/lib/dsefs
+        - /var/lib/spark
+        - /var/log/cassandra
+        - /var/log/spark
+        - /data/cassandra
+        - /data/cassandra/lib/cassandra
+        - /data/cassandra/lib/spark
+        - /data/cassandra/lib/spark/rdd
+        - /data/cassandra/lib/spark/worker
+        - /data/cassandra/lib/datastax-agent
+        - /data/cassandra/lib/cassandra/data
+        - /data/cassandra/lib/cassandra/saved_caches
+        - /data/cassandra/lib/cassandra/commitlog
+        - /data/cassandra/lib/cassandra/hints
+        - /data/cassandra/lib/cassandra/cdc_raw
+        - /data/cassandra/lib/cassandra/insights_data
+        - /data/cassandra/lib/dsefs
+        - /data/cassandra/lib/dsefs/data
+        - /data/cassandra/log/cassandra
+        - /data/cassandra/log/spark
+        - /data/cassandra/log/spark/master
+        - /data/cassandra/log/spark/worker
+        - /data/cassandra/log/audit
+    - name: Create cassandra symbolic links
+      file:
+        src: "{{ item.src }}"
+        dest: "{{ item.dest }}"
+        owner: cassandra
+        group: cassandra
+        state: link
+      loop:
+        - {src: /data/cassandra/lib/cassandra/cdc_raw, dest: /var/lib/cassandra/cdc_raw}
+        - {src: /data/cassandra/lib/cassandra/hints, dest: /var/lib/cassandra/hints}
+        - {src: /data/cassandra/lib/dsefs/data, dest: /var/lib/cassandra/dsefs}
+        - {src: /data/cassandra/lib/cassandra/commitlog, dest: /var/lib/cassandra/commitlog}
+        - {src: /data/cassandra/lib/cassandra/saved_caches, dest: /var/lib/cassandra/saved_caches}
+        - {src: /data/cassandra/lib/cassandra/data, dest: /var/lib/cassandra/data}
+        - {src: /data/cassandra/lib/datastax-agent, dest: /var/lib/cassandra/datastax-agent}
+        - {src: /data/cassandra/lib/spark/rdd, dest: /var/lib/spark/rdd}
+        - {src: /data/cassandra/lib/spark/worker, dest: /var/lib/spark/worker}
+        - {src: /data/cassandra/lib/cassandra/insights_data, dest: /var/lib/cassandra/insights_data}
+        - {src: /data/cassandra/log/audit, dest: /var/log/cassandra/audit}
+        - {src: /data/cassandra/log/spark/master, dest: /var/log/spark/master}
+        - {src: /data/cassandra/log/spark/worker, dest: /var/log/spark/worker}
+
+        # - src: /data/cassandra/log
+        #   dest: /var/log/cassandra
+    # - name: Execute command to set softlink
+    #   shell: ln -s /data/cassandra/log /var/log/cassandra
