@@ -6,7 +6,7 @@
       "type": "int",
       "defaultValue": 3,
       "minValue": 3,
-      "maxValue": 32,
+      "maxValue": 3,
       "metadata": {
         "description": "Number of virtual machines to provision for the cluster"
       }
@@ -20,7 +20,7 @@
     },
     "diskSize": {
       "type": "int",
-      "defaultValue": 2048,
+      "defaultValue": 1024,
       "metadata": {
         "description": "Size (GB) of extenal data volume for each node. If 0, ephemeral disk will be used for data."
       }

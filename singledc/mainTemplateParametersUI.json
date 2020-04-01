@@ -9,7 +9,7 @@
     "value": "Datastax.1234!"
   },
   "nodeCount": {
-    "value": 4
+    "value": 3
   },
   "vmSize": {
     "value": "Standard_D8s_v3"
