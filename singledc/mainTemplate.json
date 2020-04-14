@@ -187,7 +187,7 @@
     "osSettings": {
       "imageReference": {
         "publisher": "datastax",
-        "offer": "datastax-enterprise-preview",
+        "offer": "datastax-enterprise",
         "sku": "datastax-6",
         "version": "latest"
       },
@@ -203,7 +203,7 @@
     "devOpsOSSettings": {
       "imageReference": {
         "publisher": "datastax",
-        "offer": "datastax-enterprise-preview",
+        "offer": "datastax-enterprise",
         "sku": "datastax-6-opsc",
         "version": "latest"
       },
