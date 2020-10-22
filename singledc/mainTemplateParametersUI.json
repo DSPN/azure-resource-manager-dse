@@ -1,44 +1,44 @@
 {
-  "sku": {
-    "value": "datastax-6"
-  },
-  "adminUsername": {
-    "value": "developer"
-  },
-  "adminPassword": {
-    "value": "Datastax.1234!"
-  },
-  "nodeCount": {
-    "value": 3
-  },
-  "vmSize": {
-    "value": "Standard_D8s_v3"
-  },
-  "diskSize": {
-    "value": 1024
-  },
-  "clusterName": {
-    "value": "test_cluster"
-  },
-  "datacenterName": {
-    "value": "dc0"
-  },
-  "publicIpOnNodes": {
-    "value": "yes"
-  },
-  "vnetNeworExisting": {
-    "value": "new"
-  },
-  "vnetName": {
-    "value": "cassandravnet"
-  },
-  "subnetName": {
-    "value": "subnet1"
-  },
-  "devOpsvmSize": {
-    "value": "Standard_D8s_v3"
-  },
-  "location": {
-    "value": "southcentralus"
-  }
+    "sku": {
+        "value": "datastax-6"
+    },
+    "adminUsername": {
+        "value": "ubuntu"
+    },
+    "adminPassword": {
+        "value": "Datastax.1234!"
+    },
+    "nodeCount": {
+        "value": 3
+    },
+    "vmSize": {
+        "value": "Standard_D8s_v3"
+    },
+    "diskSize": {
+        "value": 1024
+    },
+    "clusterName": {
+        "value": "test_cluster"
+    },
+    "datacenterName": {
+        "value": "dc0"
+    },
+    "publicIpOnNodes": {
+        "value": "yes"
+    },
+    "vnetNeworExisting": {
+        "value": "new"
+    },
+    "vnetName": {
+        "value": "cassandravnet"
+    },
+    "subnetName": {
+        "value": "subnet1"
+    },
+    "devOpsvmSize": {
+        "value": "Standard_D8s_v3"
+    },
+    "location": {
+        "value": "southcentralus"
+    }
 }

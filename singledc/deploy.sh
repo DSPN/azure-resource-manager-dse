@@ -24,10 +24,11 @@ az storage blob upload-batch --account-name $storage --destination testdse --sou
 az storage blob upload-batch --account-name $storage --destination testdse --source ./templates
 
 # baseUri has no default in the template
-az group deployment create \
- --resource-group $rg \
- --template-file mainTemplate.json \
- --parameters @$params \
- --parameters '{"_artifactsLocation": {"value": "https://'$storage'.blob.core.windows.net/testdse/"}}' \
- --parameters '{"location": {"value": "'$location'"}}' \
- --verbose
+az deployment group create \
+    --name $rg \
+    --resource-group $rg \
+    --template-file mainTemplate.json \
+    --parameters @$params \
+    --parameters '{"_artifactsLocation": {"value": "https://'$storage'.blob.core.windows.net/testdse/"}}' \
+    --parameters '{"location": {"value": "'$location'"}}' \
+    --verbose

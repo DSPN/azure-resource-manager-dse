@@ -1,5 +1,5 @@
 {
-  "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
     "nodeCount": {
@@ -175,7 +175,7 @@
       "defaultValue": 0,
       "metadata": {
         "description": "offset of nic and VMs"
-      }  
+      }
     }
   },
   "variables": {
@@ -251,7 +251,7 @@
           "addressPrefixes": [
             "[parameters('vnetCIDR')]"
           ]
-        }  
+        }
       },
       "resources": [
         {
@@ -436,11 +436,11 @@
         }
       }
     }
-  
+
 
 
   ],
-  "outputs": { 
+  "outputs": {
     "OpsCenterPubIp": {
       "type": "string",
       "value": "[if(equals(parameters('publicIpOnDevOps'),'yes'), reference('devOpsPublicIP','2017-08-01').outputs.devOpsPubIp.value, 'none')]"

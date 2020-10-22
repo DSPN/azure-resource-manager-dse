@@ -8,6 +8,7 @@
     dc: "{{ dc }}"
     seeds: "{{ seeds }}"
     opscip: "{{ opscip }}"
+    publicips: "{{ public_ips }}"
     num_tokens: 64
     compaction_throughput_mb_per_sec: 64
     zone: rack1
@@ -24,21 +25,27 @@
     - debug:
         msg: opscenter ip {{ opscip }}
     - debug:
+        msg: ===== public ip YES{{ publicips }} =====
+      when: publicips is match("yes")
+    - debug:
+        msg: ===== public ip NO {{ publicips }} =====
+      when: publicips is match("no")
+    - debug:
         msg: CREATE DIRECTORIES, SYMLINKS, UNTAR
     - name: Create DSE directory /usr/share/dse
       file:
-         path: /usr/share/dse
-         state: directory
-         owner: cassandra
-         group: cassandra
-         mode: '0755'
+        path: /usr/share/dse
+        state: directory
+        owner: cassandra
+        group: cassandra
+        mode: '0755'
     - name: Create DSE directory /usr/share/dse/agent
       file:
-         path: /usr/share/dse/agent
-         state: directory
-         owner: cassandra
-         group: cassandra
-         mode: '0755'
+        path: /usr/share/dse/agent
+        state: directory
+        owner: cassandra
+        group: cassandra
+        mode: '0755'
     - name: Unarchive DSE tarball
       unarchive:
         src: /home/dse/dse-6.7.7-bin.tar.gz
@@ -57,28 +64,28 @@
         - --strip-components=1
     - name: Copy /usr/share/dse/agent/conf/address.yaml with owner and permissions
       copy:
-         src: /usr/share/dse/agent/conf/address.yaml
-         remote_src: yes
-         dest: /usr/share/dse/agent/conf/address.yaml.bak
-         owner: cassandra
-         group: cassandra
-         mode: '0755'
-    - name: Copy start-cassandra to agent bin 
+        src: /usr/share/dse/agent/conf/address.yaml
+        remote_src: yes
+        dest: /usr/share/dse/agent/conf/address.yaml.bak
+        owner: cassandra
+        group: cassandra
+        mode: '0755'
+    - name: Copy start-cassandra to agent bin
       copy:
-         src: /home/dse/dse-azure-install/start-cassandra
-         remote_src: yes
-         dest: /usr/share/dse/agent/bin
-         owner: cassandra
-         group: cassandra
-         mode: '0755'
-    - name: Copy stop-cassandra to agent bin 
+        src: /home/dse/dse-azure-install/start-cassandra
+        remote_src: yes
+        dest: /usr/share/dse/agent/bin
+        owner: cassandra
+        group: cassandra
+        mode: '0755'
+    - name: Copy stop-cassandra to agent bin
       copy:
-         src: /home/dse/dse-azure-install/stop-cassandra
-         remote_src: yes
-         dest: /usr/share/dse/agent/bin
-         owner: cassandra
-         group: cassandra
-         mode: '0755'
+        src: /home/dse/dse-azure-install/stop-cassandra
+        remote_src: yes
+        dest: /usr/share/dse/agent/bin
+        owner: cassandra
+        group: cassandra
+        mode: '0755'
     - debug:
         msg: REPLACE/ADD LINES TO CASSANDRA.YAML/ADDRESS.YAML
     - stat: path=/etc/systemd/system/cassandra.service
@@ -95,10 +102,10 @@
       register: hostname
     - name: Copy /usr/share/dse/resources/cassandra/conf/cassandra.yaml with owner and permissions
       copy:
-         src: /usr/share/dse/resources/cassandra/conf/cassandra.yaml
-         remote_src: yes
-         dest: /usr/share/dse/resources/cassandra/conf/cassandra.yaml.bak
-         mode: '0755'
+        src: /usr/share/dse/resources/cassandra/conf/cassandra.yaml
+        remote_src: yes
+        dest: /usr/share/dse/resources/cassandra/conf/cassandra.yaml.bak
+        mode: '0755'
     - name: /usr/share/dse/resources/cassandra/conf/cassandra.yaml replacements
       lineinfile:
         path: /usr/share/dse/resources/cassandra/conf/cassandra.yaml
@@ -112,7 +119,7 @@
         - {regexp: "native_transport_address: localhost", line: "native_transport_address: {{ hostname.stdout }}"}
         - {regexp: "compaction_throughput_mb_per_sec: 16", line: "compaction_throughput_mb_per_sec: {{ compaction_throughput_mb_per_sec }}"}
         - {regexp: "trickle_fsync: false", line: "trickle_fsync: true"}
-        - {regexp: "endpoint_snitch: SimpleSnitch", line: "endpoint_snitch: GossipingPropertyFileSnitch"} 
+        - {regexp: "endpoint_snitch: SimpleSnitch", line: "endpoint_snitch: GossipingPropertyFileSnitch"}
     - name: Add a line to cassandra.yaml for autobootstrap
       lineinfile:
         path: /usr/share/dse/resources/cassandra/conf/cassandra.yaml
@@ -123,6 +130,20 @@
         path: /usr/share/dse/resources/cassandra/conf/cassandra.yaml
         line: "phi_convict_threshold: 12"
       when: service_file.stat.exists == False
+    - name: Get public IP when publicips is yes
+      shell: curl -H Metadata:true http://169.254.169.254/metadata/instance?api-version=2017-04-02| jq '.network.interface[0].ipv4.ipAddress[0].publicIpAddress'
+      register: pip
+      when: publicips is match("yes")
+    - name: Add a line to cassandra.yaml for broadcast_rpc_address
+      lineinfile:
+        path: /usr/share/dse/resources/cassandra/conf/cassandra.yaml
+        line: "broadcast_rpc_address: {{ pip.stdout }}"
+      when: publicips is match("yes")
+    - name: Add a line to cassandra.yaml for rpc_address
+      lineinfile:
+        path: /usr/share/dse/resources/cassandra/conf/cassandra.yaml
+        line: "rpc_address: 0.0.0.0"
+      when: publicips is match("yes")
     - debug:
         msg: REPLACE/ADD LINES TO CASSANDRA-RACDC.PROPERTIES
     - name: Getting zone/rack *** Azure ***
@@ -130,10 +151,10 @@
       register: zone
     - name: Copy cassandra-rackdc.properties with owner and permissions
       copy:
-         src: /usr/share/dse/resources/cassandra/conf/cassandra-rackdc.properties
-         remote_src: yes
-         dest: /usr/share/dse/resources/cassandra/conf/cassandra-rackdc.properties.bak
-         mode: '0755'
+        src: /usr/share/dse/resources/cassandra/conf/cassandra-rackdc.properties
+        remote_src: yes
+        dest: /usr/share/dse/resources/cassandra/conf/cassandra-rackdc.properties.bak
+        mode: '0755'
     - name: Replace dc
       lineinfile:
         path: /usr/share/dse/resources/cassandra/conf/cassandra-rackdc.properties
@@ -156,52 +177,52 @@
       blockinfile:
         path: /usr/share/dse/resources/dse/conf/dse.yaml
         block: |
-           authentication_options:
+          authentication_options:
                 enabled: true
                 default_scheme: internal
-           role_management_options:
+          role_management_options:
                 mode: internal
-           authorization_options:
+          authorization_options:
                 enabled: true
                 transitional_mode: normal
-                allow_row_level_security: true    
-    - debug: 
+                allow_row_level_security: true
+    - debug:
         msg: CONFIG/START ENVIRONMENT/SERVICES
     - name: Recursively change ownership of /usr/share/dse
       file:
-         path: /usr/share/dse
-         state: directory
-         recurse: yes
-         owner: cassandra
-         group: cassandra
+        path: /usr/share/dse
+        state: directory
+        recurse: yes
+        owner: cassandra
+        group: cassandra
     - name: Execute command to set environment path for DSE
       shell: sed -e 's|PATH="\(.*\)"|PATH="/usr/share/dse/bin:/usr/share/dse/tools/bin:\1"|g' -i /etc/environment
     - name: Copy cassconf to system dir
       copy:
-         src: /home/dse/dse-azure-install/cassconf
-         remote_src: yes
-         dest: /etc/systemd/system
-         owner: root
-         group: root
-         mode: '0644'
-    - name: Copy cassandra.service to system dir 
+        src: /home/dse/dse-azure-install/cassconf
+        remote_src: yes
+        dest: /etc/systemd/system
+        owner: root
+        group: root
+        mode: '0644'
+    - name: Copy cassandra.service to system dir
       copy:
-         src: /home/dse/dse-azure-install/cassandra.service
-         remote_src: yes
-         dest: /etc/systemd/system
-         owner: root
-         group: root
-         mode: '0644'
+        src: /home/dse/dse-azure-install/cassandra.service
+        remote_src: yes
+        dest: /etc/systemd/system
+        owner: root
+        group: root
+        mode: '0644'
     - name: enable cassandra service and ensure it is not masked
       systemd:
-         name: cassandra
-         enabled: yes
-         masked: no
+        name: cassandra
+        enabled: yes
+        masked: no
     - name: Make sure cassandra service is running
       systemd:
-         state: restarted
-         daemon_reload: yes
-         name: cassandra
+        state: restarted
+        daemon_reload: yes
+        name: cassandra
     - name: Start datastax agent
       shell: /usr/bin/nohup ./datastax-agent
       args:

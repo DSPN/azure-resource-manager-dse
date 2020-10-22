@@ -16,3 +16,5 @@ multidc/generatedTemplate.json
 # Misc junk
 *scratch*
 *.swp
+
+/.vscode/

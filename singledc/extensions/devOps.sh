@@ -10,6 +10,9 @@ cluster_name=$6
 deploy_opsc=$7
 nic_offset=$8
 
+#
+#sudo pip --disable-pip-version-check install ansible
+
 # replace -
 cluster_name=`sed 's/-/_/g' <<<"$cluster_name"`
 echo "Input to devOpsc is:"
@@ -19,6 +22,8 @@ echo cluster_name $cluster_name
 echo dc $dc
 echo deploy_opsc $deploy_opsc
 echo nic_offset $nic_offset
+echo public_ips $public_ips
+
 #
 alias python=python3
 #
@@ -26,9 +31,9 @@ echo "DSE Deploy : create base dirs"
 cd /home/dse
 if [ -d "/home/dse/dse-azure-install" ]
 then
-  echo "dse-azure-install exists"
+    echo "dse-azure-install exists"
 else
-  mkdir dse-azure-install
+    mkdir dse-azure-install
 fi
 cd dse-azure-install
 #
@@ -42,9 +47,9 @@ cp /var/lib/waagent/custom-script/download/0/devops* .
 # ansible setup
 if [ -d "/etc/ansible" ]
 then
-  echo "/etc/ansible exists"
+    echo "/etc/ansible exists"
 else
-   mkdir /etc/ansible
+    mkdir /etc/ansible
 fi
 cp ansible.cfg /etc/ansible
 cp hosts /etc/ansible
@@ -82,27 +87,29 @@ cp /home/dse/dse-azure-install/devops /root/.ssh/id_rsa
 cp /home/dse/dse-azure-install/devops.pub /root/.ssh/id_rsa.pub
 cat < /home/dse/dse-azure-install/devops.pub >> /root/.ssh/authorized_keys
 
-
 export ANSIBLE_HOST_KEY_CHECKING=False
 # seed node
 # check offset value before running although it is idempotent
-/usr/bin/ansible-playbook -u root /home/dse/dse-azure-install/os-config.yml --extra-vars "host=SEED"
-/usr/bin/ansible-playbook -u root /home/dse/dse-azure-install/ebs-init.yml --extra-vars "host=SEED"
-/usr/bin/ansible-playbook -u root /home/dse/dse-azure-install/dse-directories.yml --extra-vars "host=SEED"
-/usr/bin/ansible-playbook -u root /home/dse/dse-azure-install/dse-install.yml --extra-vars "host=SEED cluster_name=$cluster_name dc=$dc seeds=$seed1 opscip=$opscip"
+ansible-playbook -u root /home/dse/dse-azure-install/os-config.yml --extra-vars "host=SEED"
+ansible-playbook -u root /home/dse/dse-azure-install/ebs-init.yml --extra-vars "host=SEED"
+ansible-playbook -u root /home/dse/dse-azure-install/dse-directories.yml --extra-vars "host=SEED"
+ansible-playbook -u root /home/dse/dse-azure-install/dse-install.yml --extra-vars "host=SEED cluster_name=$cluster_name dc=$dc seeds=$seed1 opscip=$opscip public_ips=$public_ips"
+
 # nodes
-/usr/bin/ansible-playbook -u root /home/dse/dse-azure-install/os-config.yml -f 30 --extra-vars "host=DSE"
-/usr/bin/ansible-playbook -u root /home/dse/dse-azure-install/ebs-init.yml -f 30 --extra-vars "host=DSE"
-/usr/bin/ansible-playbook -u root /home/dse/dse-azure-install/dse-directories.yml -f 30 --extra-vars "host=DSE"
-/usr/bin/ansible-playbook -u root /home/dse/dse-azure-install/dse-install.yml -f 30 --extra-vars "host=DSE cluster_name=$cluster_name dc=$dc seeds=$seeds opscip=$opscip"
+ansible-playbook -u root /home/dse/dse-azure-install/os-config.yml -f 30 --extra-vars "host=DSE"
+ansible-playbook -u root /home/dse/dse-azure-install/ebs-init.yml -f 30 --extra-vars "host=DSE"
+ansible-playbook -u root /home/dse/dse-azure-install/dse-directories.yml -f 30 --extra-vars "host=DSE"
+ansible-playbook -u root /home/dse/dse-azure-install/dse-install.yml -f 30 --extra-vars "host=DSE cluster_name=$cluster_name dc=$dc seeds=$seeds opscip=$opscip public_ips=$public_ips"
+
 # opsc
 if [ "$deploy_opsc" == "true" ]; then
-   /usr/bin/ansible-playbook -u root /home/dse/dse-azure-install/opscenter-install.yml --extra-vars "seeds=$seeds cluster_name=$cluster_name"
+    ansible-playbook -u root /home/dse/dse-azure-install/opscenter-install.yml --extra-vars "seeds=$seeds cluster_name=$cluster_name"
 else
-   echo "OPSC not being installed"
+    echo "OPSC not being installed"
 fi
+
 # cleanup
-/usr/bin/ansible-playbook -u root /home/dse/dse-azure-install/os-removekeys.yml --extra-vars "host=DSE" -vvv
-/usr/bin/ansible-playbook -u root /home/dse/dse-azure-install/os-removekeys.yml --extra-vars "host=SEED" -vvv
+ansible-playbook -u root /home/dse/dse-azure-install/os-removekeys.yml --extra-vars "host=DSE" -vvv
+ansible-playbook -u root /home/dse/dse-azure-install/os-removekeys.yml --extra-vars "host=SEED" -vvv
 rm -rf /home/dse/dse-azure-install
 rm -f /home/dse/opscenter-6.7.7.tar.gz
